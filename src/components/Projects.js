@@ -84,10 +84,10 @@ const Projects = () => {
         <div className="text-center mb-12 sm:mb-16">
           <p className="text-blue-600 font-semibold text-base sm:text-lg mb-4">Portfolio</p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-            Delivering Reliable Logistics Solutions
+            Professional Machinery Packing Projects
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-            Explore our projects and discover efficient logistics solutions.
+            Explore our completed machinery packing and container loading projects for agricultural, construction, and mining equipment worldwide.
           </p>
         </div>
 

@@ -11,34 +11,34 @@ import {
 const Services = () => {
   const services = [
     {
-      icon: Truck,
-      title: "Inland Transportation",
-      description: "Fast and secure delivery within the USA and Canada. Our fleet of trucks ensures timely and efficient transport of your equipment."
-    },
-    {
       icon: Shield,
-      title: "Container Loading and Packing",
-      description: "Expert handling and packing for all types of machinery. We offer partial or complete disassembly and secure loading to ensure safe transit."
-    },
-    {
-      icon: Globe,
-      title: "Agricultural Machinery and Farm Equipment Dismantling",
-      description: "Specialized in dismantling and packing agricultural machinery. We provide washing and fumigating services for quarantine compliance."
-    },
-    {
-      icon: FileText,
-      title: "Export Logistics",
-      description: "Comprehensive export logistics solutions. We handle everything from documentation to final delivery, ensuring a smooth export process."
-    },
-    {
-      icon: Users,
-      title: "Storage Services",
-      description: "Secure storage solutions for your equipment. Our warehouses are strategically located to facilitate easy access and safe storage."
+      title: "Professional Machinery Dismantling & Packing",
+      description: "Expert dismantling and packing services for agricultural, construction, mining, and road-building equipment into 40ft containers. Our core specialty - from farm to container with precision and care."
     },
     {
       icon: Clock,
-      title: "Professional Machinery Dismantling and Container Loading Services",
-      description: "We provide expert dismantling and secure container loading services for agricultural and heavy-duty machinery."
+      title: "Container Loading & Export Shipping",
+      description: "Secure container loading and international shipping coordination for heavy machinery. Complete export logistics including vessel booking, documentation, and global delivery to your destination."
+    },
+    {
+      icon: Truck,
+      title: "Equipment Sales & Procurement",
+      description: "Machinery sales and procurement services for agricultural, construction, and mining equipment. We help source, evaluate, and facilitate equipment transactions for international buyers."
+    },
+    {
+      icon: Globe,
+      title: "Agricultural Equipment Specialization",
+      description: "Specialized services for combines, tractors, planters, and farm attachments. Complete washing, fumigation, and quarantine compliance for agricultural machinery export."
+    },
+    {
+      icon: FileText,
+      title: "Export Documentation & Compliance",
+      description: "Complete export documentation, customs compliance, and shipping coordination. Full-service logistics support from initial paperwork to final delivery worldwide."
+    },
+    {
+      icon: Users,
+      title: "Equipment Storage & Warehousing",
+      description: "Secure storage facilities across USA and Canada for machinery awaiting processing, packing, or shipment. Strategic warehouse locations for efficient logistics operations."
     }
   ];
 
@@ -48,10 +48,10 @@ const Services = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Our Services
+            Complete Machinery Export Solutions
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Offering a wide range of services to meet all logistics needs, Meridian Freight Inc. ensures efficient handling of agricultural and heavy-duty machinery
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+            From farm to container and beyond — we specialize in machinery dismantling, packing, sales, and shipping services for agricultural, construction, mining, and road-building equipment across USA & Canada.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ const Services = () => {
             Ready to Get Started?
           </h3>
           <p className="text-gray-600 mb-8">
-            Contact us today for a personalized quote and discover how we can help with your machinery logistics needs.
+            Contact us today for a personalized quote and discover how we can help with your machinery packing and container loading needs.
           </p>
           <a 
             href="mailto:info@meridianfreightllc.com" 

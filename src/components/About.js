@@ -9,10 +9,10 @@ const About = () => {
           <div>
             <p className="text-blue-600 font-semibold text-lg mb-4">Efficiency</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              End-to-End Logistics for Agricultural & Heavy Machinery Across USA & Canada
+              Complete Machinery Export Solutions Across USA & Canada
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              With a dedicated fleet and strategic warehouse partnerships, Meridian Freight ensures reliable transportation and storage solutions for heavy equipment. Serving key regions in the USA and Canada, including California, Georgia, Illinois, North Dakota, Texas, and Alberta, our services guarantee secure handling, flexible warehousing, and smooth delivery from pickup to final destination.
+              Meridian Freight provides comprehensive machinery export services including dismantling, packing, sales, and shipping for agricultural, construction, mining, and road-building equipment. With strategic warehouse partnerships across California, Georgia, Illinois, North Dakota, Texas, and Alberta, we handle everything from equipment procurement to final delivery worldwide.
             </p>
             <a 
               href="mailto:info@meridianfreightllc.com" 
@@ -47,10 +47,10 @@ const About = () => {
           <div className="order-1 lg:order-2">
             <p className="text-blue-600 font-semibold text-lg mb-4">Efficiency</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Professional Machinery Dismantling and Container Loading Services
+              From Farm to Container — Expert Dismantling, Sales & Shipping
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              We provide expert dismantling and secure container loading services for agricultural and heavy-duty machinery. Our specialized team ensures that every machine is disassembled, packed, and prepared for global export, with attention to safety and compliance regulations for seamless international shipping.
+              Our specialized team handles the complete export process for heavy machinery including equipment sales, expert dismantling, secure container packing, and international shipping coordination. We manage agricultural equipment, construction machinery, mining equipment, and road-building attachments from initial procurement through final delivery with full attention to safety and international compliance regulations.
             </p>
             <a 
               href="mailto:info@meridianfreightllc.com" 

@@ -17,19 +17,18 @@ const Hero = () => {
         <div className="max-w-5xl mx-auto">
           {/* Badge */}
           <div className="inline-block bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-            Professional Machinery Logistics
+            Professional Machinery Packing Services
           </div>
 
           {/* Main Heading - Responsive text sizing */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-            Specialized Pickup, Dismantling, and Container Packing for Agricultural & Heavy-Duty Machinery
+            We Disassemble & Load Heavy Machinery for Global Export
           </h1>
 
           {/* Subtitle - Responsive text sizing */}
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2">
-            Comprehensive logistics solutions for agricultural and heavy machinery—offering professional dismantling, 
-            secure storage, and container packing services across the USA & Canada, ensuring smooth delivery to global destinations.
-          </p>
+          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl text-white mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2 font-medium">
+            Fast. Secure. Worldwide. We load combines, tractors, and attachments into 40ft containers — ready to ship anywhere.
+          </h2>
 
           {/* CTA Buttons - Improved mobile layout */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">

@@ -1,0 +1,32 @@
+# Meridian Freight Inc. - Robots.txt
+# Professional Machinery Packing Services
+
+User-agent: *
+Allow: /
+
+# Preferred crawl rate
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://meridianfreight.com/sitemap.xml
+
+# Specific directives for major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Block access to admin areas (if any exist in future)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+
+# Allow important resources
+Allow: /images/
+Allow: /logos/
+Allow: /*.css
+Allow: /*.js 

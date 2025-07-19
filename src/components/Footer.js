@@ -27,7 +27,7 @@ const Footer = () => {
               />
             </div>
             <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-              Specialized pickup, dismantling, and container packing for agricultural and heavy-duty machinery.
+              Professional machinery packing and container loading services for agricultural, construction, mining, and road-building equipment across USA & Canada.
             </p>
 
             {/* Contact Info */}
@@ -100,11 +100,11 @@ const Footer = () => {
           <div>
             <h3 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6">SERVICES</h3>
             <ul className="space-y-2 sm:space-y-3">
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Equipment Pickup</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Agricultural Machinery Dismantling</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Container Loading and Packing</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Storage Services</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Export Logistics</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Machinery Packing Services</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Agricultural Equipment Packing</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Construction Equipment Packing</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Container Loading Services</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-sm sm:text-base">Mining Equipment Packing</button></li>
             </ul>
           </div>
         </div>
