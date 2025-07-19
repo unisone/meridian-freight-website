@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 const VideoSection = () => {
   return (

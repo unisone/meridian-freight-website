@@ -57,7 +57,7 @@ const WhatsAppWidget = () => {
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 <span>Online</span>
                 <span>|</span>
-                <a href="#" className="text-blue-500 hover:underline">Privacy policy</a>
+                <button className="text-blue-500 hover:underline">Privacy policy</button>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Projects = () => {
@@ -42,13 +42,13 @@ const Projects = () => {
     }
   ];
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % projects.length);
-  };
+  }, [projects.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + projects.length) % projects.length);
-  };
+  }, [projects.length]);
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -66,7 +66,7 @@ const Projects = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [prevSlide, nextSlide]);
 
   // Auto-play (optional - can be enabled/disabled)
   useEffect(() => {
@@ -75,7 +75,7 @@ const Projects = () => {
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(autoPlay);
-  }, [currentSlide]);
+  }, [currentSlide, nextSlide]);
 
   return (
     <section className="section-padding bg-white">
