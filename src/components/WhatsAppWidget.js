@@ -19,8 +19,9 @@ const WhatsAppWidget = () => {
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center overflow-hidden">
                 <img
                   src="/logos/MF Logos White/meridianFreight-logo-mobile-w-150.png"
-                  alt="MF"
+                  alt="Meridian Freight Inc. - Professional Machinery Export Services"
                   className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                  loading="lazy"
                 />
               </div>
               <div>

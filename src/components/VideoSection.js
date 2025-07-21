@@ -113,8 +113,9 @@ const VideoSection = () => {
       <div className="absolute top-4 left-4 opacity-60">
         <img
           src="/logos/MF Logos White/meridianFreight-logo-mobile-w-150.png"
-          alt="MF"
+          alt="Meridian Freight Inc. - Professional Machinery Export Services"
           className="h-8 w-auto"
+          loading="lazy"
         />
       </div>
     </div>

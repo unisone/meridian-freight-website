@@ -107,8 +107,11 @@ const Projects = () => {
                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                       <img
                         src={project.image}
-                        alt={project.title}
+                        alt={`${project.title} - Machinery export project by Meridian Freight Inc.`}
                         className="w-full h-full object-cover object-center"
+                        loading="lazy"
+                        width="600"
+                        height="400"
                         onError={(e) => {
                           e.target.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop";
                         }}
@@ -161,8 +164,11 @@ const Projects = () => {
                     <div className="relative overflow-hidden bg-gray-100 aspect-[16/10]">
                       <img
                         src={project.image}
-                        alt={project.title}
+                        alt={`${project.title} - Machinery export project by Meridian Freight Inc.`}
                         className="w-full h-full object-cover object-center"
+                        loading="lazy"
+                        width="800"
+                        height="500"
                         onError={(e) => {
                           e.target.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop";
                         }}

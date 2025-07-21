@@ -23,12 +23,13 @@ const Footer = () => {
             <div className="flex items-center space-x-2 mb-6 sm:mb-8">
               <img
                 src="/logos/MF Logos White/meridianFreight-logo-w-500.png"
-                alt="Meridian Freight Inc."
+                alt="Meridian Freight Inc. - Professional Machinery Export Services"
                 className="h-14 sm:h-18"
+                loading="lazy"
               />
             </div>
             <p className="text-gray-300 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg">
-              Professional machinery packing and container loading services for agricultural, construction, mining, and road-building equipment across USA & Canada.
+              Professional machinery packing and container loading services for agricultural, construction, mining, and road-building equipment. Based in USA, exporting globally.
             </p>
 
             {/* Contact Info - Enhanced touch targets */}
@@ -98,26 +99,27 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Company Links - Enhanced touch targets */}
+          {/* Quick Links - Enhanced touch targets */}
           <div>
-            <h3 className="text-lg sm:text-xl font-semibold mb-6 sm:mb-8">COMPANY</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-6 sm:mb-8">QUICK LINKS</h3>
             <ul className="space-y-3 sm:space-y-4">
-              <li><Link to="/" className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block">Home</Link></li>
+              <li><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Home</button></li>
               <li><button onClick={() => document.querySelector('#about-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">About</button></li>
               <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Services</button></li>
               <li><button onClick={() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Projects</button></li>
+              <li><button onClick={() => document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Pricing</button></li>
             </ul>
           </div>
 
-          {/* Services Links - Enhanced touch targets */}
+          {/* Services & Support - Enhanced touch targets */}
           <div>
-            <h3 className="text-lg sm:text-xl font-semibold mb-6 sm:mb-8">SERVICES</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-6 sm:mb-8">SERVICES & SUPPORT</h3>
             <ul className="space-y-3 sm:space-y-4">
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Machinery Packing Services</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Agricultural Equipment Packing</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Construction Equipment Packing</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Container Loading Services</button></li>
-              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Mining Equipment Packing</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Agricultural Equipment</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Construction Machinery</button></li>
+              <li><button onClick={() => document.querySelector('#services-mf')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Mining Equipment</button></li>
+              <li><button onClick={() => document.querySelector('#faq')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">FAQ</button></li>
+              <li><button onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-300 hover:text-blue-400 transition-colors text-base sm:text-lg py-2 px-3 rounded-lg hover:bg-gray-800 block w-full text-left">Contact Us</button></li>
             </ul>
           </div>
         </div>

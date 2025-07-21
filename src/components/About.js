@@ -32,8 +32,11 @@ const About = () => {
             <div className="relative aspect-[4/3] lg:aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden shadow-xl">
               <img 
                 src="/images/john-deere-s670.jpg"
-                alt="Agricultural machinery loading and heavy equipment transportation"
+                alt="John Deere S670 combine harvester being prepared for container loading and international export"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                width="800"
+                height="600"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
             </div>
@@ -47,8 +50,11 @@ const About = () => {
             <div className="relative aspect-[4/3] lg:aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden shadow-xl">
               <img 
                 src="/images/warehousing.jpg"
-                alt="Heavy machinery loading for international logistics"
+                alt="Heavy construction machinery being loaded into shipping containers for international export logistics"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                width="800"
+                height="600"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
             </div>

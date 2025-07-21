@@ -28,7 +28,7 @@ const FAQ = () => {
   };
 
   return (
-    <section className="section-padding bg-gray-50">
+    <section className="section-padding bg-gray-50" id="faq">
       <div className="container-custom">
         {/* Header - Enhanced mobile spacing */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">

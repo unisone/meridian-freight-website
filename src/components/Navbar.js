@@ -213,11 +213,11 @@ const Navbar = () => {
             >
               <img
                 src="/logos/MF Logos White/meridianFreight-logo-W-250.png"
-                alt=""
-                role="presentation"
+                alt="Meridian Freight Inc. - Professional Machinery Export Services"
                 className={`h-12 sm:h-14 lg:h-16 transition-all duration-500 group-hover:scale-105 ${
                   isScrolled && isOverLightSection ? 'filter brightness-0' : 'drop-shadow-2xl filter brightness-110'
                 }`}
+                loading="lazy"
               />
               {/* Optional tagline for larger screens with improved visibility */}
               <div className={`hidden xl:block transition-all duration-300 ${
