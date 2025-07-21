@@ -165,7 +165,7 @@ const PricingTable = () => {
                          item.model.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesCategory = selectedCategory === 'all' || 
-      (selectedCategory === 'harvesting' && item.type.includes('platform') || item.type.includes('header') || item.type.includes('Combines')) ||
+      (selectedCategory === 'harvesting' && (item.type.includes('platform') || item.type.includes('header') || item.type.includes('Combines'))) ||
       (selectedCategory === 'tillage' && (item.type.includes('cultivator') || item.type.includes('Disk') || item.type.includes('Plow') || item.type.includes('Harrow') || item.type.includes('Ripper'))) ||
       (selectedCategory === 'spraying' && item.type.includes('sprayer')) ||
       (selectedCategory === 'planting' && (item.type.includes('Planter') || item.type.includes('Seeder'))) ||
