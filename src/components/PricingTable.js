@@ -80,75 +80,131 @@ const PricingTable = () => {
     { route: "Montreal - Batumi - Kostanay", lines: "$12,150", soc: "" }
   ];
 
+  // Mobile Card Component for Pricing Data
+  const PricingCard = ({ item, index }) => (
+    <div key={index} className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-200">
+      <div className="mb-4">
+        <h3 className="font-bold text-gray-900 text-base sm:text-lg mb-2">{item.type}</h3>
+        {item.model && (
+          <p className="text-sm text-gray-600 mb-3">Models: {item.model}</p>
+        )}
+      </div>
+      
+      <div className="grid grid-cols-1 gap-3">
+        <div className="flex justify-between items-center py-2 border-b border-gray-100">
+          <span className="text-sm font-medium text-gray-700">Warehouse Delivery:</span>
+          <span className="text-sm font-bold text-gray-900">{item.delivery}</span>
+        </div>
+        <div className="flex justify-between items-center py-2 border-b border-gray-100">
+          <span className="text-sm font-medium text-gray-700">Containerized Price:</span>
+          <span className="text-sm font-bold text-blue-600">{item.containerized}</span>
+        </div>
+        {item.container && (
+          <div className="flex justify-between items-center py-2">
+            <span className="text-sm font-medium text-gray-700">Container Usage:</span>
+            <span className="text-sm font-medium text-gray-900">{item.container}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <section className="section-padding bg-gray-50">
       <div className="container-custom">
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
             Transparent Pricing for Our Comprehensive Services
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8">
+          <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto">
             Explore our competitive rates
           </p>
           
           <button
             onClick={() => setShowPricing(!showPricing)}
-            className="bg-blue-600 text-white font-semibold py-3 px-6 sm:px-8 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 mx-auto text-sm sm:text-base"
+            className="bg-blue-600 text-white font-semibold py-4 px-6 sm:px-8 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 mx-auto text-base sm:text-lg"
           >
             <span>Show Pricing</span>
-            {showPricing ? <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />}
+            {showPricing ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           </button>
         </div>
 
         {showPricing && (
           <div className="space-y-8 sm:space-y-12">
-            {/* Main Pricing Table */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[800px]">
-                  <thead className="bg-blue-600 text-white">
-                    <tr>
-                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">Type</th>
-                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">Model</th>
-                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">Price for delivery to warehouse</th>
-                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">Price containerized to most countries</th>
-                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">% of container used</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {pricingData.map((item, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">{item.type}</td>
-                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600">{item.model}</td>
-                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-gray-900">{item.delivery}</td>
-                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{item.containerized}</td>
-                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600">{item.container}</td>
+            {/* Main Pricing Section */}
+            <div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+                Equipment Pricing
+              </h3>
+              
+              {/* Mobile Cards (< lg) */}
+              <div className="lg:hidden grid grid-cols-1 gap-4">
+                {pricingData.map((item, index) => (
+                  <PricingCard key={index} item={item} index={index} />
+                ))}
+              </div>
+
+              {/* Desktop Table (>= lg) */}
+              <div className="hidden lg:block bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-blue-600 text-white">
+                      <tr>
+                        <th className="px-6 py-4 text-left font-semibold text-sm">Type</th>
+                        <th className="px-6 py-4 text-left font-semibold text-sm">Model</th>
+                        <th className="px-6 py-4 text-left font-semibold text-sm">Price for delivery to warehouse</th>
+                        <th className="px-6 py-4 text-left font-semibold text-sm">Price containerized to most countries</th>
+                        <th className="px-6 py-4 text-left font-semibold text-sm">% of container used</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {pricingData.map((item, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 text-sm text-gray-900">{item.type}</td>
+                          <td className="px-6 py-4 text-sm text-gray-600">{item.model}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-gray-900">{item.delivery}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-blue-600">{item.containerized}</td>
+                          <td className="px-6 py-4 text-sm text-gray-600">{item.container}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
-            {/* Miscellaneous Table */}
+            {/* Miscellaneous and Delivery Rates */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              {/* Miscellaneous Section */}
               <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="bg-blue-600 text-white px-4 sm:px-6 py-3 sm:py-4">
                   <h3 className="text-lg sm:text-xl font-semibold">Miscellaneous</h3>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[300px]">
+                
+                {/* Mobile Cards */}
+                <div className="lg:hidden p-4 space-y-3">
+                  {miscellaneousData.map((item, index) => (
+                    <div key={index} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                      <span className="font-medium text-gray-900">{item.item}</span>
+                      <span className="font-bold text-blue-600">{item.price}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden lg:block overflow-x-auto">
+                  <table className="w-full">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-3 sm:px-6 py-3 text-left font-semibold text-gray-900 text-xs sm:text-sm">Item</th>
-                        <th className="px-3 sm:px-6 py-3 text-left font-semibold text-gray-900 text-xs sm:text-sm">Price</th>
+                        <th className="px-6 py-3 text-left font-semibold text-gray-900 text-sm">Item</th>
+                        <th className="px-6 py-3 text-left font-semibold text-gray-900 text-sm">Price</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {miscellaneousData.map((item, index) => (
                         <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">{item.item}</td>
-                          <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{item.price}</td>
+                          <td className="px-6 py-4 text-sm text-gray-900">{item.item}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-blue-600">{item.price}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -159,23 +215,47 @@ const PricingTable = () => {
               {/* Container Delivery Rates */}
               <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="bg-blue-600 text-white px-4 sm:px-6 py-3 sm:py-4">
-                  <h3 className="text-lg sm:text-xl font-semibold">Rates for container's delivery get update per request</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold">Container Delivery Rates</h3>
+                  <p className="text-sm opacity-90 mt-1">Updated per request</p>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[400px]">
+                
+                {/* Mobile Cards */}
+                <div className="lg:hidden p-4 space-y-4">
+                  {deliveryRates.map((rate, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg p-3">
+                      <div className="font-medium text-gray-900 text-sm mb-2">{rate.route}</div>
+                      <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div>
+                          <span className="text-gray-600">Line's container:</span>
+                          <span className="font-medium text-blue-600 ml-1">{rate.lines}</span>
+                        </div>
+                        {rate.soc && (
+                          <div>
+                            <span className="text-gray-600">SOC container:</span>
+                            <span className="font-medium text-blue-600 ml-1">{rate.soc}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden lg:block overflow-x-auto">
+                  <table className="w-full">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-3 sm:px-6 py-3 text-left font-semibold text-gray-900 text-xs sm:text-sm">Container's delivery(auto delivery to port, sea freight)</th>
-                        <th className="px-3 sm:px-6 py-3 text-left font-semibold text-gray-900 text-xs sm:text-sm">Line's container</th>
-                        <th className="px-3 sm:px-6 py-3 text-left font-semibold text-gray-900 text-xs sm:text-sm">SOC cntr</th>
+                        <th className="px-6 py-3 text-left font-semibold text-gray-900 text-sm">Route</th>
+                        <th className="px-6 py-3 text-left font-semibold text-gray-900 text-sm">Line's Container</th>
+                        <th className="px-6 py-3 text-left font-semibold text-gray-900 text-sm">SOC Container</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {deliveryRates.map((rate, index) => (
                         <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">{rate.route}</td>
-                          <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{rate.lines}</td>
-                          <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{rate.soc}</td>
+                          <td className="px-6 py-4 text-sm text-gray-900">{rate.route}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-blue-600">{rate.lines}</td>
+                          <td className="px-6 py-4 text-sm font-medium text-blue-600">{rate.soc}</td>
                         </tr>
                       ))}
                     </tbody>

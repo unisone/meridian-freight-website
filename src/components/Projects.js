@@ -83,10 +83,10 @@ const Projects = () => {
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <p className="text-blue-600 font-semibold text-base sm:text-lg mb-4">Portfolio</p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
             Professional Machinery Packing Projects
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
             Explore our completed machinery packing and container loading projects for agricultural, construction, and mining equipment worldwide.
           </p>
         </div>
@@ -94,15 +94,67 @@ const Projects = () => {
         {/* Carousel Container */}
         <div className="relative max-w-7xl mx-auto">
           {/* Main Carousel */}
-          <div className="relative overflow-hidden rounded-lg sm:rounded-2xl bg-white shadow-xl sm:shadow-2xl">
+          <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-white shadow-xl">
             <div 
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {projects.map((project, index) => (
                 <div key={index} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 h-[400px] sm:h-[500px] lg:h-[600px]">
-                    {/* Image Section */}
+                  {/* Mobile Layout (< lg) */}
+                  <div className="lg:hidden">
+                    {/* Image Section - Mobile */}
+                    <div className="relative h-64 sm:h-80 overflow-hidden bg-gray-100">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop";
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                      
+                      {/* Project Badge on Image */}
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                          Project {String(index + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Content Section - Mobile */}
+                    <div className="p-6 sm:p-8 bg-white">
+                      <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+                        {project.title}
+                      </h3>
+                      
+                      <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
+                        {project.description}
+                      </p>
+                      
+                      {/* Project Stats - Mobile */}
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                          <div className="font-semibold text-gray-900 text-sm mb-1">Status</div>
+                          <div className="text-blue-600 font-medium">Completed</div>
+                        </div>
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                          <div className="font-semibold text-gray-900 text-sm mb-1">Type</div>
+                          <div className="text-blue-600 font-medium">Export Logistics</div>
+                        </div>
+                      </div>
+
+                      {/* Call to Action - Mobile */}
+                      <button className="w-full bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors text-lg shadow-lg hover:shadow-xl transform hover:scale-105">
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Desktop Layout (>= lg) */}
+                  <div className="hidden lg:grid lg:grid-cols-2 lg:min-h-[600px]">
+                    {/* Image Section - Desktop */}
                     <div className="relative overflow-hidden bg-gray-100">
                       <img
                         src={project.image}
@@ -115,36 +167,36 @@ const Projects = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
                     </div>
 
-                    {/* Content Section */}
-                    <div className="p-4 sm:p-6 lg:p-8 xl:p-12 flex flex-col justify-center bg-white">
-                      <div className="mb-4 sm:mb-6">
-                        <span className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 sm:px-3 py-1 rounded-full uppercase tracking-wider">
+                    {/* Content Section - Desktop */}
+                    <div className="p-8 xl:p-12 flex flex-col justify-center bg-white">
+                      <div className="mb-6">
+                        <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
                           Project {String(index + 1).padStart(2, '0')}
                         </span>
                       </div>
                       
-                      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
                         {project.title}
                       </h3>
                       
-                      <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8">
+                      <p className="text-lg text-gray-600 leading-relaxed mb-8">
                         {project.description}
                       </p>
                       
-                      {/* Project Stats */}
-                      <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg border border-gray-200">
-                          <div className="font-semibold text-gray-900 text-xs sm:text-sm mb-1">Status</div>
-                          <div className="text-blue-600 font-medium text-sm sm:text-base">Completed</div>
+                      {/* Project Stats - Desktop */}
+                      <div className="grid grid-cols-2 gap-4 mb-8">
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                          <div className="font-semibold text-gray-900 text-sm mb-1">Status</div>
+                          <div className="text-blue-600 font-medium">Completed</div>
                         </div>
-                        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg border border-gray-200">
-                          <div className="font-semibold text-gray-900 text-xs sm:text-sm mb-1">Type</div>
-                          <div className="text-blue-600 font-medium text-sm sm:text-base">Export Logistics</div>
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                          <div className="font-semibold text-gray-900 text-sm mb-1">Type</div>
+                          <div className="text-blue-600 font-medium">Export Logistics</div>
                         </div>
                       </div>
 
-                      {/* Call to Action */}
-                      <button className="bg-blue-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-blue-700 transition-colors w-fit text-sm sm:text-base">
+                      {/* Call to Action - Desktop */}
+                      <button className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors w-fit">
                         View Details
                       </button>
                     </div>
@@ -154,51 +206,54 @@ const Projects = () => {
             </div>
           </div>
 
-          {/* Navigation Arrows - Responsive positioning */}
+          {/* Navigation Arrows - Enhanced touch targets for mobile */}
           <button
             onClick={prevSlide}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200"
+            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200 transform hover:scale-110 active:scale-95"
+            aria-label="Previous project"
           >
-            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-gray-700" />
+            <ChevronLeft className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 text-gray-700" />
           </button>
           
           <button
             onClick={nextSlide}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200"
+            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200 transform hover:scale-110 active:scale-95"
+            aria-label="Next project"
           >
-            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-gray-700" />
+            <ChevronRight className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 text-gray-700" />
           </button>
 
-          {/* Dots Indicator */}
-          <div className="flex justify-center mt-6 sm:mt-8 space-x-2 sm:space-x-3">
+          {/* Dots Indicator - Enhanced touch targets */}
+          <div className="flex justify-center mt-8 sm:mt-10 space-x-3 sm:space-x-4">
             {projects.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                className={`h-4 w-4 sm:h-5 sm:w-5 rounded-full transition-all duration-300 border-2 ${
                   currentSlide === index
-                    ? 'bg-blue-600 w-8 sm:w-10'
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
+                    ? 'bg-blue-600 border-blue-600 w-10 sm:w-12'
+                    : 'bg-gray-300 border-gray-300 hover:bg-gray-400 hover:border-gray-400'
+                } hover:scale-125 active:scale-110`}
+                aria-label={`Go to project ${index + 1}`}
               />
             ))}
           </div>
 
-          {/* Project Counter */}
-          <div className="text-center mt-4 sm:mt-6">
-            <span className="text-gray-500 text-xs sm:text-sm font-medium">
+          {/* Project Counter - Enhanced typography */}
+          <div className="text-center mt-6 sm:mt-8">
+            <span className="text-gray-500 text-sm sm:text-base font-medium">
               {currentSlide + 1} of {projects.length}
             </span>
           </div>
         </div>
 
-        {/* Navigation Hint - Hidden on mobile */}
-        <div className="text-center mt-6 sm:mt-8 hidden sm:block">
-          <div className="inline-flex items-center space-x-4 bg-gray-50 rounded-full px-4 sm:px-6 py-2 sm:py-3">
-            <span className="text-xs sm:text-sm text-gray-600">Navigate:</span>
-            <div className="flex space-x-2">
-              <kbd className="px-2 sm:px-3 py-1 bg-white rounded text-xs text-gray-500 shadow-sm border">←</kbd>
-              <kbd className="px-2 sm:px-3 py-1 bg-white rounded text-xs text-gray-500 shadow-sm border">→</kbd>
+        {/* Navigation Hint - Enhanced for mobile */}
+        <div className="text-center mt-8 sm:mt-10">
+          <div className="inline-flex items-center space-x-4 bg-gray-50 rounded-full px-6 sm:px-8 py-3 sm:py-4">
+            <span className="text-sm sm:text-base text-gray-600">Navigate:</span>
+            <div className="flex space-x-3">
+              <kbd className="px-3 sm:px-4 py-2 bg-white rounded-lg text-sm text-gray-500 shadow-sm border">←</kbd>
+              <kbd className="px-3 sm:px-4 py-2 bg-white rounded-lg text-sm text-gray-500 shadow-sm border">→</kbd>
             </div>
           </div>
         </div>

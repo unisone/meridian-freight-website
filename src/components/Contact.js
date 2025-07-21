@@ -46,24 +46,24 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
+          {/* Contact Form - Enhanced mobile spacing */}
+          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 lg:p-10">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">
               Send us a Message
             </h3>
 
             {isSubmitted ? (
-              <div className="text-center py-8">
-                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h4>
-                <p className="text-gray-600">Thank you for contacting us. We'll get back to you within 24 hours.</p>
+              <div className="text-center py-12">
+                <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
+                <h4 className="text-2xl font-bold text-gray-900 mb-4">Message Sent!</h4>
+                <p className="text-gray-600 text-lg">Thank you for contacting us. We'll get back to you within 24 hours.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-base font-medium text-gray-700 mb-3">
                       Full Name *
                     </label>
                     <input
@@ -72,11 +72,12 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Enter your full name"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-base font-medium text-gray-700 mb-3">
                       Email *
                     </label>
                     <input
@@ -85,14 +86,15 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Enter your email address"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-base font-medium text-gray-700 mb-3">
                       Company
                     </label>
                     <input
@@ -100,11 +102,12 @@ const Contact = () => {
                       name="company"
                       value={formData.company}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Company name (optional)"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-base font-medium text-gray-700 mb-3">
                       Phone
                     </label>
                     <input
@@ -112,13 +115,14 @@ const Contact = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Phone number (optional)"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-base font-medium text-gray-700 mb-3">
                     Message *
                   </label>
                   <textarea
@@ -126,99 +130,109 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleInputChange}
                     required
-                    rows="4"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    rows="5"
+                    className="w-full px-4 py-4 text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-vertical"
                     placeholder="Tell us about your machinery logistics needs..."
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-blue-600 text-white font-semibold py-4 sm:py-5 px-6 sm:px-8 rounded-xl hover:bg-blue-700 transition-all duration-200 flex items-center justify-center space-x-3 text-lg sm:text-xl shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  <Send className="w-5 h-5" />
+                  <Send className="w-6 h-6" />
                   <span>Send Message</span>
                 </button>
               </form>
             )}
           </div>
 
-          {/* Contact Information */}
-          <div className="space-y-8">
+          {/* Contact Information - Enhanced spacing */}
+          <div className="space-y-8 sm:space-y-10">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">
                 Contact Information
               </h3>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-blue-600" />
+              <div className="space-y-6 sm:space-y-8">
+                <a 
+                  href="tel:+17863973888"
+                  className="flex items-center space-x-4 sm:space-x-5 group hover:text-blue-600 transition-colors duration-200 p-3 rounded-xl hover:bg-blue-50"
+                >
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 group-hover:bg-blue-600 rounded-xl flex items-center justify-center transition-colors duration-200">
+                    <Phone className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600 group-hover:text-white transition-colors duration-200" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">Phone</h4>
-                    <p className="text-gray-600">+1 (786) 397-3888</p>
+                    <h4 className="font-semibold text-gray-900 text-lg sm:text-xl">Phone</h4>
+                    <p className="text-gray-600 text-base sm:text-lg">+1 (786) 397-3888</p>
                   </div>
-                </div>
+                </a>
 
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-blue-600" />
+                <a 
+                  href="mailto:info@meridianfreightllc.com"
+                  className="flex items-center space-x-4 sm:space-x-5 group hover:text-blue-600 transition-colors duration-200 p-3 rounded-xl hover:bg-blue-50"
+                >
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 group-hover:bg-blue-600 rounded-xl flex items-center justify-center transition-colors duration-200">
+                    <Mail className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600 group-hover:text-white transition-colors duration-200" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">Email</h4>
-                    <p className="text-gray-600">info@meridianfreightllc.com</p>
+                    <h4 className="font-semibold text-gray-900 text-lg sm:text-xl">Email</h4>
+                    <p className="text-gray-600 text-base sm:text-lg">info@meridianfreightllc.com</p>
                   </div>
-                </div>
+                </a>
 
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-blue-600" />
+                <div className="flex items-center space-x-4 sm:space-x-5 p-3">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <MapPin className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">Address</h4>
-                    <p className="text-gray-600">2107 148th, Albion, IA, USA</p>
+                    <h4 className="font-semibold text-gray-900 text-lg sm:text-xl">Address</h4>
+                    <p className="text-gray-600 text-base sm:text-lg">2107 148th, Albion, IA, USA</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Follow Us Section */}
+            {/* Follow Us Section - Enhanced spacing */}
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">
                 Follow Us
               </h3>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 sm:space-x-5">
                 <a
                   href="https://www.facebook.com/meridianfreight"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
+                  className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
+                  aria-label="Follow us on Facebook"
                 >
-                  <Facebook className="w-6 h-6" />
+                  <Facebook className="w-7 h-7 sm:w-8 sm:h-8" />
                 </a>
                 <a
                   href="https://www.instagram.com/meridian_logistics_usa/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-pink-500 text-white rounded-lg flex items-center justify-center hover:bg-pink-600 transition-colors"
+                  className="w-14 h-14 sm:w-16 sm:h-16 bg-pink-500 text-white rounded-xl flex items-center justify-center hover:bg-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
+                  aria-label="Follow us on Instagram"
                 >
-                  <Instagram className="w-6 h-6" />
+                  <Instagram className="w-7 h-7 sm:w-8 sm:h-8" />
                 </a>
                 <a
                   href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-green-500 text-white rounded-lg flex items-center justify-center hover:bg-green-600 transition-colors"
+                  className="w-14 h-14 sm:w-16 sm:h-16 bg-green-500 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
+                  aria-label="Contact us on WhatsApp"
                 >
-                  <MessageCircle className="w-6 h-6" />
+                  <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8" />
                 </a>
                 <a
                   href="https://youtube.com/@merifreight_eng?si=qn2-2GCHMH5G7iPH"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-red-500 text-white rounded-lg flex items-center justify-center hover:bg-red-600 transition-colors"
+                  className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 text-white rounded-xl flex items-center justify-center hover:bg-red-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110"
+                  aria-label="Watch our YouTube videos"
                 >
-                  <Youtube className="w-6 h-6" />
+                  <Youtube className="w-7 h-7 sm:w-8 sm:h-8" />
                 </a>
               </div>
             </div>
