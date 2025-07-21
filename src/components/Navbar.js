@@ -28,7 +28,7 @@ const Navbar = () => {
       }
       
       // Update active section based on scroll position for one-page site
-      const sections = ['services-mf', 'about-mf', 'projects'];
+      const sections = ['services-mf', 'pricing', 'about-mf', 'projects'];
       let currentSection = 'home'; // Default to home
       let isLightSection = false; // Track if we're over a light section
       
@@ -48,8 +48,8 @@ const Navbar = () => {
                              sectionId;
               
               // Determine if this section has a light background
-              // Services and About sections typically have light backgrounds
-              isLightSection = ['services', 'about'].includes(currentSection);
+              // Services, Pricing, and About sections typically have light backgrounds
+              isLightSection = ['services', 'pricing', 'about'].includes(currentSection);
               break;
             }
           }
@@ -91,9 +91,10 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
-  // Enhanced navigation structure for B2B logistics
+  // Enhanced navigation structure for B2B logistics - Organized by website flow
   const navItems = [
     { name: 'Home', path: '#home', type: 'link', section: 'home' },
+    { name: 'About', path: '#about-mf', type: 'link', section: 'about' },
     { 
       name: 'Services', 
       path: '#services-mf', 
@@ -108,20 +109,8 @@ const Navbar = () => {
         { name: 'Warehouse & Storage', path: '#services-mf', icon: Package }
       ]
     },
-    { 
-      name: 'Industries', 
-      path: '#about-mf', 
-      type: 'dropdown',
-      section: 'industries',
-      items: [
-        { name: 'Agricultural Equipment', path: '#services-mf' },
-        { name: 'Construction Machinery', path: '#services-mf' },
-        { name: 'Mining Equipment', path: '#services-mf' },
-        { name: 'Road Building Equipment', path: '#services-mf' }
-      ]
-    },
     { name: 'Projects', path: '#projects', type: 'link', section: 'projects' },
-    { name: 'About', path: '#about-mf', type: 'link', section: 'about' }
+    { name: 'Pricing', path: '#pricing', type: 'link', section: 'pricing' }
   ];
 
   const handleNavClick = (path, event) => {
@@ -239,7 +228,7 @@ const Navbar = () => {
             </button>
 
             {/* Desktop Navigation with enhanced dropdown menus and improved visibility */}
-            <div className="hidden lg:flex items-center space-x-1" role="menubar">
+            <div className="hidden lg:flex items-center space-x-2 xl:space-x-4" role="menubar">
               {navItems.map((item, itemIndex) => (
                 <div key={item.name} className="relative" role="none">
                   {item.type === 'dropdown' ? (
@@ -260,7 +249,7 @@ const Navbar = () => {
                             dropdown?.focus();
                           }
                         }}
-                        className={`group relative font-medium transition-all duration-300 py-3 px-4 xl:py-3.5 xl:px-5 text-sm xl:text-base hover:scale-105 flex items-center space-x-1 focus:outline-none ${
+                        className={`group relative font-medium transition-all duration-300 py-3 px-3 xl:py-3.5 xl:px-4 text-sm xl:text-base hover:scale-105 flex items-center space-x-1 focus:outline-none ${
                           activeSection === item.section
                             ? isScrolled && isOverLightSection ? 'text-gray-900' : 'text-white'
                             : isScrolled && isOverLightSection ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
@@ -360,7 +349,7 @@ const Navbar = () => {
                   ) : (
                     <button
                       onClick={(e) => handleNavClick(item.path, e)}
-                      className={`group relative font-medium transition-all duration-300 py-3 px-4 xl:py-3.5 xl:px-5 text-sm xl:text-base hover:scale-105 focus:outline-none ${
+                      className={`group relative font-medium transition-all duration-300 py-3 px-3 xl:py-3.5 xl:px-4 text-sm xl:text-base hover:scale-105 focus:outline-none ${
                         activeSection === item.section
                           ? isScrolled && isOverLightSection ? 'text-gray-900' : 'text-white'
                           : isScrolled && isOverLightSection ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
@@ -381,7 +370,7 @@ const Navbar = () => {
               {/* Primary CTA Button - Enhanced for B2B with improved visibility */}
               <button
                 onClick={(e) => handleNavClick('#contact', e)}
-                className="group relative bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 xl:py-3.5 xl:px-8 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 text-sm xl:text-base shadow-lg hover:shadow-xl transform hover:scale-105 overflow-hidden ml-2 drop-shadow-md focus:outline-none"
+                className="group relative bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 xl:py-3.5 xl:px-8 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 text-sm xl:text-base shadow-lg hover:shadow-xl transform hover:scale-105 overflow-hidden ml-4 xl:ml-6 drop-shadow-md focus:outline-none"
                 aria-label="Get a quote for machinery export services"
               >
                 <span className="relative z-10 flex items-center space-x-2">
@@ -422,7 +411,7 @@ const Navbar = () => {
         {isOpen && (
           <div className={`lg:hidden ${isScrolled && isOverLightSection ? 'bg-white/98' : 'bg-black/90'} backdrop-blur-md shadow-xl border-t border-gray-100 animate-in slide-in-from-top duration-300`}>
             <div className="container-custom py-6">
-              <div className="flex flex-col space-y-1">
+              <div className="flex flex-col space-y-2">
                 {navItems.map((item, index) => (
                   <div key={item.name}>
                     {item.type === 'dropdown' ? (
