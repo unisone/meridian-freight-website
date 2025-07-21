@@ -115,12 +115,7 @@ const Projects = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
                       
-                      {/* Project Badge on Image */}
-                      <div className="absolute top-4 left-4">
-                        <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
-                          Project {String(index + 1).padStart(2, '0')}
-                        </span>
-                      </div>
+
                     </div>
 
                     {/* Content Section - Mobile */}
@@ -177,11 +172,6 @@ const Projects = () => {
 
                     {/* Content Section - Desktop */}
                     <div className="p-8 xl:p-12 flex flex-col justify-center bg-white">
-                      <div className="mb-6">
-                        <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
-                          Project {String(index + 1).padStart(2, '0')}
-                        </span>
-                      </div>
                       
                       <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
                         {project.title}
@@ -225,18 +215,18 @@ const Projects = () => {
           {/* Navigation Arrows - Enhanced touch targets for mobile */}
           <button
             onClick={prevSlide}
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200 transform hover:scale-110 active:scale-95"
+            className="absolute left-3 sm:left-6 top-1/3 sm:top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200 transform hover:scale-110 active:scale-95"
             aria-label="Previous project"
           >
-            <ChevronLeft className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 text-gray-700" />
+            <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-gray-700" />
           </button>
           
           <button
             onClick={nextSlide}
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200 transform hover:scale-110 active:scale-95"
+            className="absolute right-3 sm:right-6 top-1/3 sm:top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/95 backdrop-blur-sm rounded-full shadow-xl flex items-center justify-center hover:bg-white transition-all z-10 border border-gray-200 transform hover:scale-110 active:scale-95"
             aria-label="Next project"
           >
-            <ChevronRight className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 text-gray-700" />
+            <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-gray-700" />
           </button>
 
           {/* Dots Indicator - Enhanced touch targets */}
@@ -253,24 +243,6 @@ const Projects = () => {
                 aria-label={`Go to project ${index + 1}`}
               />
             ))}
-          </div>
-
-          {/* Project Counter - Enhanced typography */}
-          <div className="text-center mt-6 sm:mt-8">
-            <span className="text-gray-500 text-sm sm:text-base font-medium">
-              {currentSlide + 1} of {projects.length}
-            </span>
-          </div>
-        </div>
-
-        {/* Navigation Hint - Enhanced for mobile */}
-        <div className="text-center mt-8 sm:mt-10">
-          <div className="inline-flex items-center space-x-4 bg-gray-50 rounded-full px-6 sm:px-8 py-3 sm:py-4">
-            <span className="text-sm sm:text-base text-gray-600">Navigate:</span>
-            <div className="flex space-x-3">
-              <kbd className="px-3 sm:px-4 py-2 bg-white rounded-lg text-sm text-gray-500 shadow-sm border">←</kbd>
-              <kbd className="px-3 sm:px-4 py-2 bg-white rounded-lg text-sm text-gray-500 shadow-sm border">→</kbd>
-            </div>
           </div>
         </div>
       </div>

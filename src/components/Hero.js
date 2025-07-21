@@ -9,12 +9,16 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600" style={{
-      backgroundImage: `url('/images/logistics1.jpg')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundBlendMode: 'overlay'
-    }}>
+    <section 
+      id="main-content" 
+      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600" 
+      style={{
+        backgroundImage: `url('/images/logistics1.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundBlendMode: 'overlay'
+      }}
+    >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       
