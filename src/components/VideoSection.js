@@ -8,16 +8,16 @@ const VideoSection = () => {
         {/* Header - Enhanced mobile spacing and typography */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <p className="text-blue-600 font-semibold text-base sm:text-lg lg:text-xl mb-4 sm:mb-6">See Meridian Freight Inc. in Action</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 sm:mb-8 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-6 sm:mb-8 leading-tight">
             Delivering Precision and Reliability in Export Logistics
           </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4">
+          <p className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4">
             From transportation to container loading and equipment dismantling, discover our dedication to delivering top-notch service and ensuring seamless operations for our clients.
           </p>
         </div>
 
         {/* Video Player - Enhanced mobile spacing */}
-        <div className="max-w-5xl mx-auto mb-12 sm:mb-16 px-4">
+        <div className="max-w-6xl mx-auto mb-12 sm:mb-16 px-4">
           <div className="relative aspect-video bg-gray-200 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
             <iframe
               src="https://www.youtube.com/embed/?listType=user_uploads&list=merifreight_eng"
@@ -61,17 +61,24 @@ const VideoSection = () => {
                 Every machinery packing and shipping project is unique. Let us create a custom solution for your equipment export needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
-                  href="mailto:info@meridianfreightllc.com"
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector('#contact');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                   className="bg-blue-600 text-white font-semibold py-4 px-8 rounded-xl hover:bg-blue-700 transition-all duration-200 text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   Get Your Quote
-                </a>
+                </button>
                 <a 
-                  href="tel:+17863973888"
+                  href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="border-2 border-blue-600 text-blue-600 font-semibold py-4 px-8 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 text-lg"
                 >
-                  Call Us Today
+                  WhatsApp Us
                 </a>
               </div>
             </div>

@@ -83,10 +83,10 @@ const Projects = () => {
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <p className="text-blue-600 font-semibold text-base sm:text-lg mb-4">Portfolio</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-6">
             Professional Machinery Packing Projects
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
             Explore our completed machinery packing and container loading projects for agricultural, construction, and mining equipment worldwide.
           </p>
         </div>
@@ -104,11 +104,11 @@ const Projects = () => {
                   {/* Mobile Layout (< lg) */}
                   <div className="lg:hidden">
                     {/* Image Section - Mobile */}
-                    <div className="relative h-64 sm:h-80 overflow-hidden bg-gray-100">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-center"
                         onError={(e) => {
                           e.target.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop";
                         }}
@@ -146,8 +146,16 @@ const Projects = () => {
                       </div>
 
                       {/* Call to Action - Mobile */}
-                      <button className="w-full bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors text-lg shadow-lg hover:shadow-xl transform hover:scale-105">
-                        View Details
+                      <button 
+                        onClick={() => {
+                          const element = document.querySelector('#contact');
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        className="w-full bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
+                      >
+                        Get Quote
                       </button>
                     </div>
                   </div>
@@ -155,11 +163,11 @@ const Projects = () => {
                   {/* Desktop Layout (>= lg) */}
                   <div className="hidden lg:grid lg:grid-cols-2 lg:min-h-[600px]">
                     {/* Image Section - Desktop */}
-                    <div className="relative overflow-hidden bg-gray-100">
+                    <div className="relative overflow-hidden bg-gray-100 aspect-[16/10]">
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-center"
                         onError={(e) => {
                           e.target.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop";
                         }}
@@ -196,8 +204,16 @@ const Projects = () => {
                       </div>
 
                       {/* Call to Action - Desktop */}
-                      <button className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors w-fit">
-                        View Details
+                      <button 
+                        onClick={() => {
+                          const element = document.querySelector('#contact');
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors w-fit"
+                      >
+                        Get Quote
                       </button>
                     </div>
                   </div>

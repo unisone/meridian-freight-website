@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  CheckCircle,
-  Facebook,
-  Instagram,
-  Youtube
-} from 'lucide-react';
+import { Phone, Mail, MapPin, Send, CheckCircle, MessageCircle, Facebook, Instagram, Youtube } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +10,8 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleInputChange = (e) => {
     setFormData({
@@ -27,14 +20,93 @@ const Contact = () => {
     });
   };
 
+  // ALTERNATIVE: If hosting on Netlify, use this instead:
+  /*
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'contact',
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          message: formData.message,
+        }).toString(),
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', company: '', phone: '', message: '' });
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      setSubmitError('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  */
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsSubmitting(true);
+
+    try {
+      // Create email content
+      const subject = encodeURIComponent('New Contact Form Submission - Meridian Freight');
+      const body = encodeURIComponent(`
+Hello,
+
+You have received a new contact form submission from your website:
+
+Name: ${formData.name}
+Email: ${formData.email}
+Company: ${formData.company || 'Not provided'}
+Phone: ${formData.phone || 'Not provided'}
+
+Message:
+${formData.message}
+
+---
+This email was sent from your Meridian Freight website contact form.
+      `);
+
+      // Open email client with pre-filled content
+      const mailtoLink = `mailto:info@meridianfreightllc.com?subject=${subject}&body=${body}`;
+      window.open(mailtoLink, '_blank');
+
+      // Show success message
+      setIsSubmitted(true);
+      
+      // Reset form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        message: ''
+      });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitError('Failed to open email client. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section className="section-padding bg-gray-50">
+    <section className="section-padding bg-gray-50" id="contact">
       <div className="container-custom">
         {/* Header */}
         <div className="text-center mb-16">
@@ -56,8 +128,8 @@ const Contact = () => {
             {isSubmitted ? (
               <div className="text-center py-12">
                 <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
-                <h4 className="text-2xl font-bold text-gray-900 mb-4">Message Sent!</h4>
-                <p className="text-gray-600 text-lg">Thank you for contacting us. We'll get back to you within 24 hours.</p>
+                <h4 className="text-2xl font-bold text-gray-900 mb-4">Email Client Opened!</h4>
+                <p className="text-gray-600 text-lg">Your email client should have opened with your message pre-filled. Please send the email to complete your inquiry.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
@@ -138,11 +210,32 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white font-semibold py-4 sm:py-5 px-6 sm:px-8 rounded-xl hover:bg-blue-700 transition-all duration-200 flex items-center justify-center space-x-3 text-lg sm:text-xl shadow-lg hover:shadow-xl transform hover:scale-105"
+                  disabled={isSubmitting}
+                  className={`w-full font-semibold py-4 sm:py-5 px-6 sm:px-8 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3 text-lg sm:text-xl shadow-lg ${
+                    isSubmitting 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-blue-600 hover:bg-blue-700 hover:shadow-xl transform hover:scale-105'
+                  } text-white`}
                 >
-                  <Send className="w-6 h-6" />
-                  <span>Send Message</span>
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-6 h-6" />
+                      <span>Send Message</span>
+                    </>
+                  )}
                 </button>
+
+                {/* Error Message */}
+                {submitError && (
+                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                    <p className="text-red-600 text-center">{submitError}</p>
+                  </div>
+                )}
               </form>
             )}
           </div>
@@ -155,7 +248,9 @@ const Contact = () => {
               </h3>
               <div className="space-y-6 sm:space-y-8">
                 <a 
-                  href="tel:+17863973888"
+                  href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center space-x-4 sm:space-x-5 group hover:text-blue-600 transition-colors duration-200 p-3 rounded-xl hover:bg-blue-50"
                 >
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 group-hover:bg-blue-600 rounded-xl flex items-center justify-center transition-colors duration-200">
@@ -238,74 +333,9 @@ const Contact = () => {
             </div>
           </div>
         </div>
-
-        {/* Duplicate Contact Info Section */}
-        <div className="mt-16 pt-16 border-t border-gray-200">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">
-              Contact Us
-            </h3>
-            
-            <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-12 mb-8">
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5 text-blue-600" />
-                <span className="text-gray-600">2107 148th, Albion, IA, USA</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="w-5 h-5 text-blue-600" />
-                <span className="text-gray-600">+1 (786) 397-3888</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="w-5 h-5 text-blue-600" />
-                <span className="text-gray-600">info@meridianfreightllc.com</span>
-              </div>
-            </div>
-
-            <div className="flex justify-center space-x-4">
-              <a
-                href="https://www.facebook.com/meridianfreight"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.instagram.com/meridian_logistics_usa/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-pink-500 text-white rounded-lg flex items-center justify-center hover:bg-pink-600 transition-colors"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-green-500 text-white rounded-lg flex items-center justify-center hover:bg-green-600 transition-colors"
-              >
-                <MessageCircle className="w-6 h-6" />
-              </a>
-              <a
-                href="https://youtube.com/@merifreight_eng?si=qn2-2GCHMH5G7iPH"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-red-500 text-white rounded-lg flex items-center justify-center hover:bg-red-600 transition-colors"
-              >
-                <Youtube className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
 };
-
-const MessageCircle = ({ className }) => (
-  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.35L2 22l5.65-1.05C9.96 21.64 11.46 22 13 22h7c1.1 0 2-.9 2-2V12c0-5.52-4.48-10-10-10z"/>
-  </svg>
-);
 
 export default Contact; 

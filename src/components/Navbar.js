@@ -41,7 +41,9 @@ const Navbar = () => {
         <div className="container-custom">
           <div className="flex items-center justify-end text-sm sm:text-base">
             <a 
-              href="tel:+17863973888"
+              href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center space-x-2 sm:space-x-3 hover:text-blue-200 transition-colors py-2 px-3 rounded-lg hover:bg-blue-800"
             >
               <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -71,14 +73,14 @@ const Navbar = () => {
               />
             </Link>
 
-            {/* Desktop Navigation - Enhanced spacing */}
-            <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
+            {/* Desktop Navigation - Enhanced spacing and fixed breakpoint */}
+            <div className="hidden lg:flex items-center space-x-2 xl:space-x-4">
               {navItems.map((item) => (
                 item.path.startsWith('#') ? (
                   <button
                     key={item.name}
                     onClick={() => handleNavClick(item.path)}
-                    className={`font-medium transition-all duration-200 py-3 px-4 rounded-lg text-base lg:text-lg ${
+                    className={`font-medium transition-all duration-200 py-2 px-3 xl:py-3 xl:px-4 rounded-lg text-sm xl:text-base ${
                       isScrolled
                         ? 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
                         : 'text-white hover:text-blue-200 hover:bg-white hover:bg-opacity-10'
@@ -90,7 +92,7 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`font-medium transition-all duration-200 py-3 px-4 rounded-lg text-base lg:text-lg ${
+                    className={`font-medium transition-all duration-200 py-2 px-3 xl:py-3 xl:px-4 rounded-lg text-sm xl:text-base ${
                       location.pathname === item.path
                         ? 'text-blue-600 bg-blue-50'
                         : isScrolled
@@ -102,18 +104,18 @@ const Navbar = () => {
                   </Link>
                 )
               ))}
-              <Link
-                to="/contact"
-                className="bg-blue-600 text-white font-medium py-3 px-6 lg:px-8 rounded-lg hover:bg-blue-700 transition-all duration-200 text-base lg:text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
+              <button
+                onClick={() => handleNavClick('#contact')}
+                className="bg-blue-600 text-white font-medium py-2 px-4 xl:py-3 xl:px-6 rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm xl:text-base shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Get Quote
-              </Link>
+              </button>
             </div>
 
             {/* Mobile menu button - Enhanced touch target */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-3 rounded-lg hover:bg-black hover:bg-opacity-10 transition-colors"
+              className="lg:hidden p-3 rounded-lg hover:bg-black hover:bg-opacity-10 transition-colors"
               aria-label="Toggle mobile menu"
             >
               {isOpen ? (
@@ -127,7 +129,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation - Enhanced touch targets */}
         {isOpen && (
-          <div className="md:hidden bg-white shadow-lg border-t border-gray-200">
+          <div className="lg:hidden bg-white shadow-lg border-t border-gray-200">
             <div className="container-custom py-4">
               <div className="flex flex-col space-y-2">
                 {navItems.map((item) => (
@@ -154,13 +156,12 @@ const Navbar = () => {
                     </Link>
                   )
                 ))}
-                <Link
-                  to="/contact"
-                  className="bg-blue-600 text-white font-medium py-4 px-6 rounded-lg hover:bg-blue-700 transition-all duration-200 w-full text-center text-lg mt-4 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  onClick={() => setIsOpen(false)}
+                <button
+                  onClick={() => handleNavClick('#contact')}
+                  className="bg-blue-600 text-white font-medium py-4 px-4 rounded-lg hover:bg-blue-700 transition-all duration-200 text-lg text-center mt-4"
                 >
                   Get Quote
-                </Link>
+                </button>
               </div>
             </div>
           </div>

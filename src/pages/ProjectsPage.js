@@ -144,11 +144,11 @@ const ProjectsPage = () => {
           {filteredProjects.map((project) => (
             <div key={project.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
               {/* Project Image */}
-              <div className="relative h-64 bg-gray-200 overflow-hidden">
+              <div className="relative aspect-[4/3] bg-gray-200 overflow-hidden">
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
                 />
                 {project.videoUrl && (
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">

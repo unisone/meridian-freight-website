@@ -6,7 +6,8 @@ import {
   MapPin,
   Facebook,
   Instagram,
-  Youtube
+  Youtube,
+  MessageCircle
 } from 'lucide-react';
 
 const Footer = () => {
@@ -33,7 +34,9 @@ const Footer = () => {
             {/* Contact Info - Enhanced touch targets */}
             <div className="space-y-4 sm:space-y-5">
               <a 
-                href="tel:+17863973888"
+                href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center space-x-3 sm:space-x-4 hover:text-blue-400 transition-colors py-2 px-3 rounded-lg hover:bg-gray-800"
               >
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
@@ -136,12 +139,5 @@ const Footer = () => {
     </footer>
   );
 };
-
-// WhatsApp Icon Component - Enhanced
-const MessageCircle = ({ className }) => (
-  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.35L2 22l5.65-1.05C9.96 21.64 11.46 22 13 22h7c1.1 0 2-.9 2-2V12c0-5.52-4.48-10-10-10z"/>
-  </svg>
-);
 
 export default Footer; 

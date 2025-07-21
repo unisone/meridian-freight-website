@@ -33,14 +33,22 @@ const FAQ = () => {
         {/* Header - Enhanced mobile spacing */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <p className="text-blue-600 font-semibold text-base sm:text-lg lg:text-xl mb-4 sm:mb-6">Learn More From</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-6 sm:mb-8">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto mb-8 sm:mb-10 leading-relaxed px-4">
+          <p className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-2xl text-gray-600 max-w-4xl mx-auto mb-8 sm:mb-10 leading-relaxed px-4">
             Find answers to common questions about our logistics services to better understand how we can help your business.
           </p>
           
-          <button className="bg-blue-600 text-white font-semibold py-4 sm:py-5 px-8 sm:px-10 rounded-xl hover:bg-blue-700 transition-all duration-200 text-lg sm:text-xl shadow-lg hover:shadow-xl transform hover:scale-105">
+          <button 
+            onClick={() => {
+              const element = document.querySelector('#contact');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="bg-blue-600 text-white font-semibold py-4 sm:py-5 px-8 sm:px-10 rounded-xl hover:bg-blue-700 transition-all duration-200 text-lg sm:text-xl shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
             Contact us
           </button>
         </div>
@@ -98,17 +106,24 @@ const FAQ = () => {
               Our team is here to help with any additional questions about our machinery packing and shipping services.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="mailto:info@meridianfreightllc.com"
+              <button 
+                onClick={() => {
+                  const element = document.querySelector('#contact');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 className="bg-blue-600 text-white font-semibold py-4 px-8 rounded-xl hover:bg-blue-700 transition-all duration-200 text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Email Us
-              </a>
+              </button>
               <a 
-                href="tel:+17863973888"
+                href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="border-2 border-blue-600 text-blue-600 font-semibold py-4 px-8 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 text-lg"
               >
-                Call Us
+                WhatsApp Us
               </a>
             </div>
           </div>

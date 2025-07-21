@@ -120,15 +120,15 @@ const FAQPage = () => {
     <div className="min-h-screen bg-gray-50 pt-24">
       <div className="container-custom section-padding">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center space-x-2 bg-primary-100 text-primary-600 rounded-full px-4 py-2 mb-4">
             <HelpCircle className="w-5 h-5" />
             <span className="font-medium">Frequently Asked Questions</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-6">
             FAQ - Common Questions
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
             Find answers to the most common questions about our machinery logistics services. 
             Can't find what you're looking for? Contact us directly.
           </p>
@@ -137,14 +137,14 @@ const FAQPage = () => {
         {/* FAQ Categories */}
         <div className="max-w-4xl mx-auto">
           {faqData.map((category, categoryIndex) => (
-            <div key={categoryIndex} className="mb-12">
+            <div key={categoryIndex} className="mb-8 sm:mb-12">
               {/* Category Header */}
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b-2 border-primary-200 pb-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 border-b-2 border-primary-200 pb-2">
                 {category.category}
               </h2>
 
               {/* Questions */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {category.questions.map((item, questionIndex) => {
                   const itemKey = `${categoryIndex}-${questionIndex}`;
                   const isOpen = openItems[itemKey];
@@ -157,22 +157,27 @@ const FAQPage = () => {
                       {/* Question */}
                       <button
                         onClick={() => toggleItem(itemKey)}
-                        className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                        className="w-full px-4 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset"
+                        aria-expanded={isOpen}
+                        aria-controls={`answer-${itemKey}`}
                       >
-                        <span className="font-semibold text-gray-900 pr-4">
+                        <span className="font-semibold text-gray-900 pr-4 text-base sm:text-lg">
                           {item.question}
                         </span>
                         {isOpen ? (
-                          <ChevronUp className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                          <ChevronUp className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 flex-shrink-0" />
                         ) : (
-                          <ChevronDown className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                          <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 flex-shrink-0" />
                         )}
                       </button>
 
                       {/* Answer */}
                       {isOpen && (
-                        <div className="px-6 pb-4 border-t border-gray-100">
-                          <p className="text-gray-600 leading-relaxed pt-4">
+                        <div 
+                          id={`answer-${itemKey}`}
+                          className="px-4 sm:px-6 pb-4 sm:pb-5 border-t border-gray-100"
+                        >
+                          <p className="text-gray-600 leading-relaxed pt-4 text-base sm:text-lg">
                             {item.answer}
                           </p>
                         </div>
@@ -186,24 +191,25 @@ const FAQPage = () => {
         </div>
 
         {/* Contact CTA */}
-        <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-3xl p-8 md:p-12 text-white text-center max-w-4xl mx-auto mt-16">
-          <h3 className="text-3xl md:text-4xl font-bold mb-4">
+        <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-white text-center max-w-4xl mx-auto mt-12 sm:mt-16">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
             Still Have Questions?
           </h3>
-          <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-primary-100 mb-6 sm:mb-8 max-w-2xl mx-auto">
             Our experienced team is ready to answer any specific questions about your machinery logistics needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="tel:+17863973888"
-              className="bg-white text-primary-600 font-semibold py-4 px-8 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2"
+              href="https://api.whatsapp.com/send/?phone=17863973888&text&type=phone_number&app_absent=0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border-2 border-primary-600 text-primary-600 font-medium py-3 px-4 rounded-lg hover:bg-primary-50 transition-colors"
             >
-              <Phone className="w-5 h-5" />
-              <span>Call Us: +1 (786) 397-3888</span>
+              WhatsApp Us
             </a>
             <a 
               href="mailto:info@meridianfreightllc.com"
-              className="border-2 border-white text-white font-semibold py-4 px-8 rounded-lg hover:bg-white hover:text-primary-600 transition-colors flex items-center justify-center space-x-2"
+              className="border-2 border-white text-white font-semibold py-4 px-6 sm:px-8 rounded-lg hover:bg-white hover:text-primary-600 transition-colors flex items-center justify-center space-x-2 text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <Mail className="w-5 h-5" />
               <span>Email Us</span>

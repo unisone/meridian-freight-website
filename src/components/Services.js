@@ -47,10 +47,10 @@ const Services = () => {
       <div className="container-custom">
         {/* Header - Enhanced mobile spacing */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-6 sm:mb-8">
             Complete Machinery Export Solutions
           </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             From farm to container and beyond — we specialize in machinery dismantling, packing, sales, and shipping services for agricultural, construction, mining, and road-building equipment across USA & Canada.
           </p>
         </div>
@@ -75,8 +75,16 @@ const Services = () => {
                 </p>
 
                 {/* Learn More Link */}
-                <button className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center space-x-2 group-hover:translate-x-1 transition-transform duration-200">
-                  <span>Learn More</span>
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector('#contact');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 flex items-center space-x-2 group-hover:translate-x-1 transition-transform duration-200"
+                >
+                  <span>Get Quote</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -95,12 +103,17 @@ const Services = () => {
             <p className="text-gray-600 mb-8 sm:mb-10 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
               Contact us today for a personalized quote and discover how we can help with your machinery packing and container loading needs.
             </p>
-            <a 
-              href="mailto:info@meridianfreightllc.com" 
+            <button 
+              onClick={() => {
+                const element = document.querySelector('#contact');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               className="inline-block bg-blue-600 text-white font-semibold py-4 sm:py-5 px-8 sm:px-10 rounded-xl hover:bg-blue-700 transition-all duration-200 text-lg sm:text-xl shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Get a Quote
-            </a>
+            </button>
           </div>
         </div>
       </div>
