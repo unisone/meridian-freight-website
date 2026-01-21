@@ -1,207 +1,215 @@
-# Meridian Export Website
+<div align="center">
 
-A modern, responsive website for Meridian Export - a professional export services company. Built with React, Tailwind CSS, and modern web technologies.
+# 🚢 Meridian Export
 
-## 🚀 Features
+**Professional Machinery Logistics Website**
 
-- **Modern Design**: Clean, professional design with smooth animations
-- **Responsive Layout**: Fully responsive across all devices
-- **Interactive Components**: Hover effects, animations, and smooth transitions
-- **Contact Forms**: Functional contact forms with validation
-- **Product Showcase**: Interactive product filtering and display
-- **Service Pages**: Comprehensive service descriptions
-- **Global Offices**: Multi-location contact information
-- **Newsletter Signup**: Email subscription functionality
-- **SEO Optimized**: Meta tags, structured data, and performance optimized
+[![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-## 🛠️ Technologies Used
+[Live Demo](https://meridianexport.com) • [Features](#-features) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started)
 
-- **React 18**: Modern React with hooks and functional components
-- **React Router**: Client-side routing
-- **Tailwind CSS**: Utility-first CSS framework
-- **Lucide React**: Beautiful, customizable icons
-- **Framer Motion**: Smooth animations and transitions
-- **PostCSS**: CSS processing
-- **Autoprefixer**: CSS vendor prefixing
+</div>
 
-## 📦 Installation
+---
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd meridian-export-website
-   ```
+## 📋 Overview
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+A modern, responsive marketing website for Meridian Export - a professional machinery export and logistics company. Built with React 18, Tailwind CSS, and Framer Motion for smooth animations.
 
-3. **Start the development server**
-   ```bash
-   npm start
-   ```
+<div align="center">
 
-4. **Open your browser**
-   Navigate to `http://localhost:3000` to view the website.
+| Feature | Description |
+|---------|-------------|
+| 🎨 **Modern Design** | Clean, professional UI with smooth animations |
+| 📱 **Fully Responsive** | Optimized for mobile, tablet, and desktop |
+| ⚡ **Performance** | Vercel Analytics + Speed Insights integrated |
+| 🔍 **SEO Ready** | Meta tags, Open Graph, structured data |
 
-## 🏗️ Project Structure
+</div>
+
+---
+
+## ✨ Features
+
+### 🏠 Landing Page
+- Animated hero section with gradient effects
+- Statistics showcase with counters
+- Smooth scroll navigation
+- Call-to-action buttons
+
+### 📦 Services Section
+- 6 main service categories with icons
+- Interactive cards with hover effects
+- Feature lists for each service
+- CTA integration
+
+### 🛒 Products Display
+- Category filtering system
+- Product cards with images
+- Rating and view counts
+- Feature tags and badges
+
+### 📞 Contact System
+- Functional contact form with validation
+- Global office locations map
+- Newsletter signup
+- Social media integration
+
+### 🎭 Animations
+- Framer Motion page transitions
+- Scroll-triggered animations
+- Hover effects on interactive elements
+- Smooth loading states
+
+---
+
+## 🛠 Tech Stack
+
+<div align="center">
+
+![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![React Router](https://img.shields.io/badge/React_Router_6-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
+![Lucide](https://img.shields.io/badge/Lucide_Icons-F56565?style=for-the-badge&logo=lucide&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+
+</div>
+
+| Category | Technology |
+|----------|------------|
+| **Framework** | React 18 with Hooks |
+| **Routing** | React Router v6 |
+| **Styling** | Tailwind CSS 3 |
+| **Animations** | Framer Motion |
+| **Icons** | Lucide React |
+| **Analytics** | Vercel Analytics + Speed Insights |
+| **Build** | Create React App |
+
+---
+
+## 🏗 Project Structure
 
 ```
 src/
-├── components/          # Reusable UI components
-│   ├── Navbar.js       # Navigation component
-│   ├── Hero.js         # Hero section
-│   ├── Services.js     # Services showcase
-│   ├── About.js        # About section
-│   ├── Products.js     # Products display
-│   ├── Contact.js      # Contact form
-│   └── Footer.js       # Footer component
-├── pages/              # Page components
-│   └── HomePage.js     # Main homepage
-├── App.js              # Main app component
-├── index.js            # React entry point
-└── index.css           # Global styles and Tailwind imports
+├── components/           # Reusable UI components
+│   ├── Navbar.js        # Navigation with mobile menu
+│   ├── Hero.js          # Hero section with animations
+│   ├── Services.js      # Services showcase
+│   ├── About.js         # Company information
+│   ├── Products.js      # Product catalog
+│   ├── Contact.js       # Contact form
+│   └── Footer.js        # Site footer
+├── pages/               # Page components
+│   └── HomePage.js      # Main landing page
+├── App.js               # Router configuration
+├── index.js             # React entry point
+└── index.css            # Global styles + Tailwind
 ```
 
-## 🎨 Design System
+---
 
-### Colors
-- **Primary**: Blue gradient (#0ea5e9 to #0284c7)
-- **Secondary**: Gray scale (#f8fafc to #0f172a)
-- **Accent**: Yellow (#eab308)
+## 🚀 Getting Started
 
-### Typography
-- **Font Family**: Inter (Google Fonts)
-- **Headings**: Bold weights (600-700)
-- **Body**: Regular weight (400)
+### Prerequisites
 
-### Components
-- **Buttons**: Primary and secondary variants
-- **Cards**: Rounded corners with shadows
-- **Forms**: Clean, accessible form elements
-- **Navigation**: Sticky header with scroll effects
+- Node.js 16+
+- npm or yarn
 
-## 📱 Responsive Breakpoints
+### Installation
 
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
+```bash
+# Clone the repository
+git clone https://github.com/unisone/meridian-freight-website.git
+cd meridian-freight-website
 
-## 🚀 Deployment
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
 
-### Deploy to Netlify
-1. Connect your GitHub repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `build`
-
-### Deploy to Vercel
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run: `vercel`
-
-## 🔧 Customization
-
-### Colors
-Edit `tailwind.config.js` to modify the color palette:
-
-```javascript
-colors: {
-  primary: {
-    50: '#f0f9ff',
-    // ... other shades
-    900: '#0c4a6e',
-  }
-}
-```
-
-### Content
-Update component files to modify:
-- Company information
-- Contact details
-- Service descriptions
-- Product listings
-- Office locations
-
-### Styling
-Modify `src/index.css` for custom styles and component classes.
-
-## 📄 Pages
-
-- **Home** (`/`): Landing page with all sections
-- **About** (`/about`): Company information and values
-- **Services** (`/services`): Detailed service offerings
-- **Products** (`/products`): Product catalog with filtering
-- **Contact** (`/contact`): Contact form and information
-
-## 🎯 Key Features
-
-### Hero Section
-- Animated background with gradient effects
-- Compelling copy and call-to-action buttons
-- Statistics showcase
-- Scroll indicator
-
-### Services Section
-- 6 main service categories
-- Feature lists for each service
-- Interactive cards with hover effects
-- CTA section
-
-### About Section
-- Company story and mission
-- Key statistics
-- Core values
-- Certifications and credentials
-
-### Products Section
-- Category filtering
-- Product cards with images
-- Rating and view counts
-- Feature tags
-
-### Contact Section
-- Functional contact form
-- Contact information cards
-- Global office locations
-- Newsletter signup
-
-### Footer
-- Comprehensive link structure
-- Social media links
-- Newsletter subscription
-- Legal links
-
-## 🔍 SEO Features
-
-- Semantic HTML structure
-- Meta tags and descriptions
-- Open Graph tags
-- Structured data
-- Performance optimized
-
-## 🎨 Animation Features
-
-- Smooth scroll behavior
-- Hover effects on cards and buttons
-- Fade-in animations
-- Transform effects
-- Loading states
-
-## 📞 Support
-
-For questions or support, please contact:
-- Email: info@meridianexport.com
-- Phone: +1 (555) 123-4567
-
-## 📄 License
-
-This project is licensed under the MIT License.
+The optimized build will be in the `build/` folder.
 
 ---
 
-**Meridian Export** - Connecting Global Markets with Quality Products 
+## 🎨 Design System
+
+### Colors
+
+| Color | Hex | Usage |
+|-------|-----|-------|
+| **Primary** | `#0ea5e9` → `#0284c7` | Buttons, links, accents |
+| **Secondary** | `#f8fafc` → `#0f172a` | Backgrounds, text |
+| **Accent** | `#eab308` | Highlights, badges |
+
+### Typography
+
+- **Font**: Inter (Google Fonts)
+- **Headings**: 600-700 weight
+- **Body**: 400 weight
+
+### Breakpoints
+
+| Device | Width |
+|--------|-------|
+| Mobile | < 768px |
+| Tablet | 768px - 1024px |
+| Desktop | > 1024px |
+
+---
+
+## 📱 Pages
+
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page with all sections |
+| `/about` | Company information and values |
+| `/services` | Detailed service offerings |
+| `/products` | Product catalog with filtering |
+| `/contact` | Contact form and locations |
+
+---
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+```bash
+npm i -g vercel
+vercel
+```
+
+### Netlify
+
+1. Connect GitHub repository
+2. Build command: `npm run build`
+3. Publish directory: `build`
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**Built for [Meridian Export](https://meridianexport.com)**
+
+*Connecting Global Markets with Quality Products*
+
+</div>
