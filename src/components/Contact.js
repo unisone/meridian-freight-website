@@ -55,51 +55,30 @@ const Contact = () => {
   };
   */
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
-      // Create email content
-      const subject = encodeURIComponent('New Contact Form Submission - Meridian Freight');
-      const body = encodeURIComponent(`
-Hello,
-
-You have received a new contact form submission from your website:
-
-Name: ${formData.name}
-Email: ${formData.email}
-Company: ${formData.company || 'Not provided'}
-Phone: ${formData.phone || 'Not provided'}
-
-Message:
-${formData.message}
-
----
-This email was sent from your Meridian Freight website contact form.
-      `);
-
-      // Open email client with pre-filled content
-      const mailtoLink = `mailto:info@meridianfreightllc.com?subject=${subject}&body=${body}`;
-      window.open(mailtoLink, '_blank');
-
-      // Show success message
-      setIsSubmitted(true);
-      
-      // Reset form after successful submission
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        phone: '',
-        message: ''
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-      
-      // Reset success message after 5 seconds
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', company: '', phone: '', message: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error('Form submission error:', error);
-      setSubmitError('Failed to open email client. Please try again.');
+      setSubmitError(error.message || 'Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -128,8 +107,8 @@ This email was sent from your Meridian Freight website contact form.
             {isSubmitted ? (
               <div className="text-center py-12">
                 <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
-                <h4 className="text-2xl font-bold text-gray-900 mb-4">Email Client Opened!</h4>
-                <p className="text-gray-600 text-lg">Your email client should have opened with your message pre-filled. Please send the email to complete your inquiry.</p>
+                <h4 className="text-2xl font-bold text-gray-900 mb-4">Message Sent!</h4>
+                <p className="text-gray-600 text-lg">Thank you for reaching out. We'll get back to you shortly.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
