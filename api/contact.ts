@@ -76,7 +76,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (error) {
       console.error("Resend error:", error);
-      return res.status(500).json({ error: "Failed to send email." });
+      return res.status(500).json({
+        error:
+          // Surface Resend's message to help debug (safe to remove once verified)
+          (error as any)?.message || "Failed to send email.",
+      });
     }
 
     return res.status(200).json({ success: true });
