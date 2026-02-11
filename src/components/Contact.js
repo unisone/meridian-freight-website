@@ -7,7 +7,9 @@ const Contact = () => {
     email: '',
     company: '',
     phone: '',
-    message: ''
+    message: '',
+    // Honeypot (spam bots often fill hidden fields)
+    website: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,11 +62,23 @@ const Contact = () => {
     setIsSubmitting(true);
     setSubmitError('');
 
+    // Capture UTM parameters for attribution
+    const params = new URLSearchParams(window.location.search);
+    const payload = {
+      ...formData,
+      source_page: window.location.href,
+      utm_source: params.get('utm_source') || undefined,
+      utm_medium: params.get('utm_medium') || undefined,
+      utm_campaign: params.get('utm_campaign') || undefined,
+      utm_term: params.get('utm_term') || undefined,
+      utm_content: params.get('utm_content') || undefined,
+    };
+
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
@@ -74,7 +88,7 @@ const Contact = () => {
       }
 
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', company: '', phone: '', message: '' });
+      setFormData({ name: '', email: '', company: '', phone: '', message: '', website: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error('Form submission error:', error);
@@ -112,6 +126,20 @@ const Contact = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+                {/* Honeypot field (hidden) */}
+                <div className="hidden" aria-hidden="true">
+                  <label>
+                    Website
+                    <input
+                      type="text"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleInputChange}
+                      autoComplete="off"
+                      tabIndex={-1}
+                    />
+                  </label>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                   <div>
                     <label className="block text-base font-medium text-gray-700 mb-3">
