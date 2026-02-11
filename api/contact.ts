@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
-      from: "Meridian Freight Contact <onboarding@resend.dev>",
+      from: "Meridian Freight Contact <contact@meridianexport.com>",
       to: "alex.z@meridianexport.com",
       replyTo: email,
       subject: `New Contact Form: ${name}`,
