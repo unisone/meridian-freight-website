@@ -60,18 +60,22 @@ async function insertLeadToSupabase(lead: any) {
 }
 
 async function notifySlack(payload: { text: string }) {
-  const webhookUrl = process.env.SLACK_WEBHOOK_URL;
-  if (!webhookUrl) return { ok: false as const, skipped: true as const };
+  const token = process.env.SLACK_BOT_TOKEN;
+  const channel = process.env.SLACK_CHANNEL_ID;
+  if (!token || !channel) return { ok: false as const, skipped: true as const };
 
-  const resp = await fetch(webhookUrl, {
+  const resp = await fetch("https://slack.com/api/chat.postMessage", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text: payload.text }),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ channel, text: payload.text }),
   });
 
-  if (!resp.ok) {
-    const text = await resp.text().catch(() => "");
-    return { ok: false as const, skipped: false as const, status: resp.status, text };
+  const data = await resp.json().catch(() => ({} as any));
+  if (!resp.ok || !data.ok) {
+    return { ok: false as const, skipped: false as const, status: resp.status, text: data.error || "" };
   }
 
   return { ok: true as const };
