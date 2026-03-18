@@ -13,6 +13,8 @@ npm run dev        # Dev server at http://localhost:3000 (Turbopack)
 npm run build      # Production build (Next.js static + serverless)
 npm run start      # Serve production build locally
 npm run lint       # ESLint
+npm test           # Vitest unit tests (freight engine)
+npm run test:watch # Vitest watch mode
 ```
 
 ## Tech Stack
@@ -25,7 +27,8 @@ npm run lint       # ESLint
 - **Lucide React** for icons
 - **Zod** for form validation
 - **Resend** for transactional email
-- **Supabase** (REST API) for lead storage
+- **Supabase** (REST API) for lead storage + freight rate tables
+- **Vitest** for unit testing
 - **Slack Bot API** for notifications
 
 ## Architecture
@@ -74,6 +77,30 @@ Contact form and calculator both use Server Actions (not API routes):
 4. Resend email to owner (must succeed)
 5. Resend auto-reply to visitor (best-effort)
 6. Slack notification (best-effort)
+7. Meta CAPI Lead event (best-effort)
+
+### Freight Calculator V2 (Supabase-powered)
+The calculator at `/pricing/calculator` uses real freight rates from the shared Supabase database (same as `mf-chatbot-ui`). Key files:
+- `lib/freight-engine-v2.ts` — Multi-component calculation engine
+- `lib/supabase-rates.ts` — Server-side queries for `equipment_packing_rates` and `ocean_freight_rates` tables
+- `app/actions/calculator-data.ts` — Server Action fetches rates on wizard mount
+- `app/actions/calculator.ts` — Server Action re-calculates server-side, sends emails/Slack
+- `lib/types/calculator.ts` — Types, display labels, country name mappings
+- `components/freight-calculator/calculator-wizard.tsx` — 4-step wizard UI
+
+**Calculation formulas (must match chatbot):**
+- **40HC Container:** Total = US Inland + Packing & Loading + Ocean Freight
+  - Inland = (ZIP → Albion, IA × $6.50/mi) + $1,800 Chicago drayage
+  - Packing = `equipment.packing_cost × size` (per_row/per_foot/per_shank/per_bottom)
+  - Ocean = `ocean_rate + drayage` (cheapest carrier: HAPAG > Maersk > CMA)
+- **Flatrack:** Total = US Inland + Sea Freight & Loading
+  - Inland = ZIP → nearest of 4 US ports × $6.50/mi
+  - Sea Freight = `ocean_rate + packing_drayage` (packing INCLUDED — no separate charge)
+  - NO separate `equipment.packing_cost` for flatrack — `packing_drayage` covers port-side packing
+
+**Graceful degradation:** If `SUPABASE_URL` not configured, shows "Calculator unavailable" with contact CTAs. The `/pricing` static table (from `content/pricing.ts`) is unaffected.
+
+**Old engine (`lib/freight-engine.ts`) is deprecated** — kept only for the static pricing table page and its tests.
 
 ### Styling
 - **No dark mode** — corporate marketing site, light theme only
@@ -86,7 +113,7 @@ Contact form and calculator both use Server Actions (not API routes):
 Content lives in typed TypeScript files in `content/`:
 - `content/services.ts` — 6 services with slugs, descriptions, icons, keywords
 - `content/projects.ts` — project case studies with images
-- `content/pricing.ts` — 64 equipment types + 21 shipping routes
+- `content/pricing.ts` — Static pricing for `/pricing` table page (deprecated for calculator; DO NOT use for calculations)
 - `content/faq.ts` — categorized FAQ entries
 
 ### Environment Variables
@@ -95,8 +122,8 @@ See `.env.example` for the full list. Required in `.env.local`:
 | Variable | Service | Required |
 |----------|---------|----------|
 | `RESEND_API_KEY` | Email sending | Yes |
-| `SUPABASE_URL` | Lead storage | No (graceful skip) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Lead storage | No (graceful skip) |
+| `SUPABASE_URL` | Lead storage + freight rate tables | No (graceful skip; calculator shows "unavailable") |
+| `SUPABASE_SERVICE_ROLE_KEY` | Lead storage + freight rate tables | No (graceful skip; calculator shows "unavailable") |
 | `SLACK_BOT_TOKEN` | Slack notifications | No (graceful skip) |
 | `SLACK_FORM_INTAKE_CHANNEL_ID` | Slack notifications | No (graceful skip) |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 | No |
