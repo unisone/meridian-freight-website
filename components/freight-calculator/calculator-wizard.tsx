@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { equipmentPricing, deliveryRates, equipmentCategories } from "@/content/pricing";
+import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
 import Link from "next/link";
 import { CONTACT } from "@/lib/constants";
@@ -51,6 +52,14 @@ export function CalculatorWizard() {
       if (res.success && res.estimate) {
         setResult(res);
         setStep(4);
+        // Fire tracking events
+        trackGA4Event("generate_lead", {
+          event_category: "calculator",
+          lead_source: "freight_calculator",
+        });
+        if (res.eventId) {
+          trackPixelEvent("Lead", { content_name: "freight_calculator" }, res.eventId);
+        }
       } else {
         setError(res.error || "Something went wrong");
       }

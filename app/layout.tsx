@@ -10,6 +10,7 @@ import { MobileBottomBar } from "@/components/mobile-bottom-bar";
 import { CookieConsent } from "@/components/cookie-consent";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { MetaPixel } from "@/components/meta-pixel";
+import { AttributionCapture } from "@/components/attribution-capture";
 import { COMPANY, CONTACT, SITE, SOCIAL } from "@/lib/constants";
 import "./globals.css";
 
@@ -124,6 +125,7 @@ export default function RootLayout({
           <MobileBottomBar />
           <CookieConsent />
         </TooltipProvider>
+        <AttributionCapture />
         <GoogleAnalytics />
         <MetaPixel />
         <Analytics />

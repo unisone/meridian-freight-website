@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/app/actions/contact";
-import { trackGA4Event } from "@/lib/tracking";
+import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
 import type { ContactFormData } from "@/lib/schemas";
 
 export function ContactForm() {
@@ -63,6 +63,10 @@ export function ContactForm() {
           event_category: "contact",
           event_label: "corporate_contact_form",
         });
+        // Fire Pixel event with same eventId as CAPI for deduplication
+        if (result.eventId) {
+          trackPixelEvent("Lead", { content_name: "corporate_contact_form" }, result.eventId);
+        }
       } else {
         setError(result.error || "Failed to send message. Please try again.");
       }
@@ -115,6 +119,27 @@ export function ContactForm() {
           <Label htmlFor="phone">Phone</Label>
           <Input id="phone" name="phone" type="tel" placeholder="Phone number (optional)" className="mt-1.5" />
         </div>
+      </div>
+
+      <div>
+        <Label htmlFor="equipmentType">Equipment Type</Label>
+        <select
+          id="equipmentType"
+          name="equipmentType"
+          className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          defaultValue=""
+        >
+          <option value="">Select equipment type (optional)</option>
+          <option value="Combine">Combine Harvester</option>
+          <option value="Tractor">Tractor</option>
+          <option value="Planter">Planter / Seeder</option>
+          <option value="Sprayer">Sprayer</option>
+          <option value="Header">Header / Platform</option>
+          <option value="Tillage">Tillage Equipment</option>
+          <option value="Excavator">Excavator</option>
+          <option value="Construction">Construction Equipment</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
 
       <div>

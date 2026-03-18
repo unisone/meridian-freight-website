@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import { contactFormSchema, type ContactFormData } from "@/lib/schemas";
 import { CONTACT, COMPANY } from "@/lib/constants";
 import { notifySlack } from "@/lib/slack";
+import { sendCAPIEvent } from "@/lib/meta-capi";
 
 function escapeHtml(input: string): string {
   return String(input)
@@ -43,6 +44,7 @@ async function insertLeadToSupabase(lead: Record<string, unknown>) {
 export type ContactActionResult = {
   success: boolean;
   error?: string;
+  eventId?: string;
 };
 
 export async function submitContactForm(
@@ -167,5 +169,16 @@ export async function submitContactForm(
 
   await notifySlack(slackLines);
 
-  return { success: true };
+  // 7. Meta CAPI Lead event (best-effort, server-side)
+  const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  await sendCAPIEvent({
+    eventName: "Lead",
+    eventId,
+    email,
+    phone: phone || undefined,
+    sourceUrl: data.source_page || undefined,
+    customData: { lead_source: "corporate_contact_form" },
+  });
+
+  return { success: true, eventId };
 }

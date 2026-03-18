@@ -1,12 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { MessageCircle, X, Send } from "lucide-react";
-import { CONTACT, COMPANY } from "@/lib/constants";
+import { COMPANY } from "@/lib/constants";
+import { generateRefCode, buildWhatsAppUrl } from "@/lib/wa-attribution";
+import { trackGA4Event, trackPixelEvent, generateEventId } from "@/lib/tracking";
 
 export function WhatsAppWidget() {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Generate a unique ref code per session for attribution
+  const refCode = useMemo(() => generateRefCode(), []);
+  const waUrl = useMemo(() => buildWhatsAppUrl(refCode), [refCode]);
+
+  function handleWhatsAppClick() {
+    // Track the click
+    const eventId = generateEventId();
+    trackGA4Event("contact_whatsapp", { event_category: "contact", ref_code: refCode });
+    trackPixelEvent("Contact", { content_name: "whatsapp_widget" }, eventId);
+
+    // Fire attribution tracking (best-effort)
+    fetch("/api/track/wa-click", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ref_code: refCode,
+        source_page: window.location.href,
+        utm_source: new URLSearchParams(window.location.search).get("utm_source") || "",
+      }),
+    }).catch(() => {}); // best-effort
+  }
 
   return (
     <>
@@ -47,9 +71,10 @@ export function WhatsAppWidget() {
               </p>
             </div>
             <a
-              href={CONTACT.whatsappUrl}
+              href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleWhatsAppClick}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 py-3.5 font-semibold text-white shadow-md transition-all hover:bg-green-600 hover:shadow-lg"
             >
               <Send className="h-5 w-5" />
