@@ -22,16 +22,16 @@ export default function ServicesPage() {
       <ProcessSteps />
 
       {/* CTA */}
-      <section className="bg-gradient-to-r from-blue-700 to-blue-600 py-12 sm:py-16">
+      <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-2xl font-bold sm:text-3xl">
             Ready to Get Started?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-blue-100">
+          <p className="mx-auto mt-3 max-w-xl text-sky-300">
             Contact us for a free quote on your machinery export project.
           </p>
           <Link href="/contact" className="mt-6 inline-block">
-            <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-blue-700 hover:bg-gray-100 font-semibold shadow-lg">
+            <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
               Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>

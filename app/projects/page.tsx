@@ -1,4 +1,4 @@
-import { ProjectsGallery } from "@/components/projects-gallery";
+import { ProjectGrid } from "@/components/project-grid";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { projects } from "@/content/projects";
 import { pageMetadata } from "@/lib/metadata";
@@ -33,7 +33,7 @@ export default function ProjectsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "Projects" }]} />
         </div>
-        <ProjectsGallery />
+        <ProjectGrid />
       </div>
     </>
   );

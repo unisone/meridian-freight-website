@@ -98,7 +98,7 @@ export default async function ServicePage({
         </div>
 
         {/* Hero */}
-        <section className="bg-gradient-to-br from-blue-700 to-blue-600 py-16 sm:py-20">
+        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
@@ -108,11 +108,11 @@ export default async function ServicePage({
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
               {service.title}
             </h1>
-            <p className="mt-4 max-w-3xl text-lg text-blue-100 leading-relaxed">
+            <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
               {service.description}
             </p>
             <Link href="/contact" className="mt-8 inline-block">
-              <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-blue-700 hover:bg-gray-100 font-semibold shadow-lg">
+              <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
                 Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -122,10 +122,10 @@ export default async function ServicePage({
         {/* What We Do */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               What We Do
             </h2>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-gray-600">
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
               {service.longDescription}
             </p>
           </div>
@@ -133,9 +133,9 @@ export default async function ServicePage({
 
         {/* Equipment Types */}
         {service.equipmentTypes.length > 0 && (
-          <section className="bg-gray-50 py-16 md:py-20">
+          <section className="bg-slate-50 py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+              <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
                 Equipment We Handle
               </h2>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -145,7 +145,7 @@ export default async function ServicePage({
                     variant="secondary"
                     className="px-4 py-2 text-sm font-medium"
                   >
-                    <CheckCircle className="mr-1.5 h-3.5 w-3.5 text-blue-600" />
+                    <CheckCircle className="mr-1.5 h-3.5 w-3.5 text-sky-500" />
                     {type}
                   </Badge>
                 ))}
@@ -158,7 +158,7 @@ export default async function ServicePage({
         {related.length > 0 && (
           <section className="py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+              <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
                 Related Services
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -168,11 +168,11 @@ export default async function ServicePage({
                     <Link key={rs.slug} href={`/services/${rs.slug}`} className="group">
                       <Card className="h-full transition-all group-hover:shadow-lg group-hover:-translate-y-1">
                         <CardContent className="p-6">
-                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors">
                             <RsIcon className="h-5 w-5" />
                           </div>
-                          <h3 className="font-bold text-gray-900">{rs.shortTitle}</h3>
-                          <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+                          <h3 className="font-bold text-slate-900">{rs.shortTitle}</h3>
+                          <p className="mt-2 text-sm text-slate-600 line-clamp-2">
                             {rs.description}
                           </p>
                         </CardContent>
@@ -186,22 +186,22 @@ export default async function ServicePage({
         )}
 
         {/* CTA */}
-        <section className="bg-gradient-to-r from-blue-700 to-blue-600 py-12 sm:py-16">
+        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
             <h2 className="text-2xl font-bold sm:text-3xl">
               Need {service.shortTitle} Services?
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-blue-100">
+            <p className="mx-auto mt-3 max-w-xl text-sky-300">
               Get a free quote for your project. We respond within 24 hours.
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link href="/contact">
-                <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-blue-700 hover:bg-gray-100 font-semibold shadow-lg">
+                <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
                   Get a Quote
                 </Button>
               </Link>
               <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-blue-700 font-semibold">
+                <Button size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold">
                   WhatsApp Us
                 </Button>
               </a>
