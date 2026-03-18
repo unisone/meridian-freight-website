@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, ArrowRight, Loader2, Package, MapPin, Mail, CheckCircle } from "lucide-react";
+import { useState, useRef } from "react";
+import { ArrowLeft, ArrowRight, Loader2, Package, MapPin, Mail, CheckCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { equipmentPricing, deliveryRates, equipmentCategories } from "@/content/pricing";
 import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
@@ -14,6 +15,8 @@ import Link from "next/link";
 import { CONTACT } from "@/lib/constants";
 
 type Step = 1 | 2 | 3 | 4;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function CalculatorWizard() {
   const [step, setStep] = useState<Step>(1);
@@ -23,30 +26,57 @@ export function CalculatorWizard() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<CalculatorResult | null>(null);
+  const submittingRef = useRef(false); // double-submit guard
 
+  // "all" category is excluded from the filter buttons — it only exists for the pricing table page
   const filteredEquipment = category
     ? equipmentPricing.filter((e) => e.category === category)
     : equipmentPricing;
 
   const selectedEquipment = equipmentPricing.find((e) => e.type === equipmentType);
 
+  const isEmailValid = EMAIL_RE.test(email);
+
   async function handleCalculate() {
-    if (!email) return;
+    if (!isEmailValid) return;
+    // Double-fire guard using ref (synchronous, not batched like useState)
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setIsSubmitting(true);
     setError("");
 
+    // Honeypot short-circuit — don't even call the server
+    if (website) {
+      setIsSubmitting(false);
+      submittingRef.current = false;
+      setResult({ success: true, estimate: undefined });
+      setStep(4);
+      return;
+    }
+
     try {
+      // Capture UTM attribution from URL params
+      const params = new URLSearchParams(window.location.search);
+
       const res = await submitCalculator({
         email,
         name,
         company,
         equipmentCategory: category,
         equipmentType,
-        originRegion: route.split("→")[0]?.trim() || "",
+        originRegion: route.includes("→") ? route.split("→")[0].trim() : route.trim(),
         destination: route,
+        website,
+        source_page: window.location.pathname,
+        utm_source: params.get("utm_source") || "",
+        utm_medium: params.get("utm_medium") || "",
+        utm_campaign: params.get("utm_campaign") || "",
+        utm_term: params.get("utm_term") || "",
+        utm_content: params.get("utm_content") || "",
       });
 
       if (res.success && res.estimate) {
@@ -67,13 +97,20 @@ export function CalculatorWizard() {
       setError("Failed to calculate. Please try again.");
     } finally {
       setIsSubmitting(false);
+      submittingRef.current = false;
     }
+  }
+
+  /** Parse a container percentage string like "130%" into a number */
+  function parseContainerPercent(s: string): number {
+    const match = s.match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : 0;
   }
 
   return (
     <Card className="mx-auto max-w-2xl overflow-hidden border-sky-200 shadow-xl">
-      {/* Progress bar */}
-      <div className="flex border-b border-slate-100" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={4} aria-label={`Step ${step} of 4`}>
+      {/* Progress indicator — group (not progressbar, since it shows labels not a numeric value) */}
+      <div className="flex border-b border-slate-100" role="group" aria-label={`Step ${step} of 4`}>
         {[1, 2, 3, 4].map((s) => (
           <div
             key={s}
@@ -102,10 +139,12 @@ export function CalculatorWizard() {
 
             <div>
               <Label>Category</Label>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-2 flex flex-wrap gap-2" role="listbox" aria-label="Equipment category">
                 {equipmentCategories.filter((c) => c.id !== "all").map((cat) => (
                   <button
                     key={cat.id}
+                    role="option"
+                    aria-selected={category === cat.id}
                     onClick={() => { setCategory(cat.id); setEquipmentType(""); }}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                       category === cat.id
@@ -122,10 +161,12 @@ export function CalculatorWizard() {
             {category && (
               <div>
                 <Label>Equipment Type</Label>
-                <div className="mt-2 max-h-48 space-y-1.5 overflow-y-auto rounded-lg border border-slate-200 p-2">
+                <div className="mt-2 max-h-48 space-y-1.5 overflow-y-auto rounded-lg border border-slate-200 p-2" role="listbox" aria-label="Equipment type">
                   {filteredEquipment.map((eq) => (
                     <button
                       key={eq.type}
+                      role="option"
+                      aria-selected={equipmentType === eq.type}
                       onClick={() => setEquipmentType(eq.type)}
                       className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
                         equipmentType === eq.type
@@ -145,7 +186,21 @@ export function CalculatorWizard() {
 
             {selectedEquipment && (
               <div className="rounded-lg bg-sky-50 p-4">
-                <div className="text-sm text-slate-600">Estimated packing cost:</div>
+                <div className="flex items-center gap-2">
+                  <div className="text-sm text-slate-600">Estimated packing cost:</div>
+                  {parseContainerPercent(selectedEquipment.container) > 100 && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Info className="h-4 w-4 text-amber-500" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Over 100% means equipment exceeds a standard container. A flat-rack or open-top container will be used, which may affect pricing.
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
                 <div className="font-mono text-xl font-bold text-sky-600">
                   {selectedEquipment.containerized}
                 </div>
@@ -173,10 +228,12 @@ export function CalculatorWizard() {
               <h3 className="text-lg font-bold">Select Shipping Route</h3>
             </div>
 
-            <div className="max-h-64 space-y-1.5 overflow-y-auto rounded-lg border border-slate-200 p-2">
+            <div className="max-h-64 space-y-1.5 overflow-y-auto rounded-lg border border-slate-200 p-2" role="listbox" aria-label="Shipping route">
               {deliveryRates.map((dr) => (
                 <button
                   key={dr.route}
+                  role="option"
+                  aria-selected={route === dr.route}
                   onClick={() => setRoute(dr.route)}
                   className={`w-full rounded-lg px-3 py-3 text-left text-sm transition-colors ${
                     route === dr.route
@@ -186,7 +243,11 @@ export function CalculatorWizard() {
                 >
                   <div className="font-medium">{dr.route}</div>
                   <div className={`text-xs ${route === dr.route ? "text-sky-200" : "text-slate-500"}`}>
-                    Line&apos;s: {dr.lines || "—"} | SOC: {dr.soc || "—"}
+                    {dr.lines && dr.soc
+                      ? "Line\u2019s & SOC available"
+                      : dr.lines
+                        ? "Line\u2019s only"
+                        : "SOC only"}
                   </div>
                 </button>
               ))}
@@ -234,6 +295,9 @@ export function CalculatorWizard() {
                 required
                 className="mt-1.5"
               />
+              {email && !isEmailValid && (
+                <p className="mt-1 text-xs text-red-500">Please enter a valid email address</p>
+              )}
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -258,6 +322,19 @@ export function CalculatorWizard() {
               </div>
             </div>
 
+            {/* Honeypot — invisible to humans, filled by bots */}
+            <div aria-hidden="true" style={{ opacity: 0, position: "absolute", pointerEvents: "none", height: 0, overflow: "hidden" }}>
+              <Label htmlFor="calc-website">Website</Label>
+              <Input
+                id="calc-website"
+                type="text"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             {/* Summary */}
             <div className="rounded-lg bg-slate-50 p-4 text-sm">
               <div className="font-semibold text-slate-900">Your selection:</div>
@@ -279,7 +356,7 @@ export function CalculatorWizard() {
               </Button>
               <Button
                 onClick={handleCalculate}
-                disabled={!email || isSubmitting}
+                disabled={!isEmailValid || isSubmitting}
                 className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl"
               >
                 {isSubmitting ? (
@@ -313,13 +390,18 @@ export function CalculatorWizard() {
                 <span className="font-semibold text-slate-900">Estimated Total</span>
                 <span className="font-mono text-2xl font-bold text-sky-600">{result.estimate.totalEstimate}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="secondary" className="font-mono text-xs">
                   Container: {result.estimate.containerPercent}
                 </Badge>
                 <Badge variant="secondary" className="text-xs capitalize">
-                  {result.estimate.shippingType === "lines" ? "Line's Container" : "SOC"}
+                  {result.estimate.shippingType === "lines" ? "Line\u2019s Container" : "SOC"}
                 </Badge>
+                {result.estimate.shippingType === "lines" && !deliveryRates.find((r) => r.route === route)?.soc && (
+                  <Badge variant="outline" className="text-xs text-amber-600 border-amber-300">
+                    Line&apos;s only
+                  </Badge>
+                )}
               </div>
             </div>
 
@@ -339,7 +421,18 @@ export function CalculatorWizard() {
 
             <Button
               variant="ghost"
-              onClick={() => { setStep(1); setResult(null); setEquipmentType(""); setRoute(""); setEmail(""); }}
+              onClick={() => {
+                setStep(1);
+                setResult(null);
+                setEquipmentType("");
+                setRoute("");
+                setEmail("");
+                setName("");
+                setCompany("");
+                setCategory("");
+                setError("");
+                setWebsite("");
+              }}
               className="w-full"
             >
               Calculate Another
