@@ -118,7 +118,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground antialiased">
         <TooltipProvider>
           <Header />
-          <main>{children}</main>
+          <main className="pb-16 lg:pb-0">{children}</main>
           <Footer />
           <WhatsAppWidget />
           <MobileBottomBar />

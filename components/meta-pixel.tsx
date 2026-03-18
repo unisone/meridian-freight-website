@@ -8,16 +8,12 @@ import { TRACKING } from "@/lib/constants";
  * Consent-gated Meta Pixel. Only loads after cookie consent is accepted.
  */
 export function MetaPixel() {
-  const [hasConsent, setHasConsent] = useState(false);
+  const [hasConsent, setHasConsent] = useState(
+    () => typeof window !== "undefined" && localStorage.getItem("cookie-consent") === "accepted"
+  );
   const pixelId = TRACKING.metaPixelId;
 
   useEffect(() => {
-    // Check initial consent
-    if (localStorage.getItem("cookie-consent") === "accepted") {
-      setHasConsent(true);
-    }
-
-    // Listen for consent events
     function onConsent() {
       setHasConsent(true);
     }

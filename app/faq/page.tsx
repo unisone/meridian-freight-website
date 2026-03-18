@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { faqEntries } from "@/content/faq";
-import { SITE, CONTACT } from "@/lib/constants";
+import { CONTACT } from "@/lib/constants";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone } from "lucide-react";

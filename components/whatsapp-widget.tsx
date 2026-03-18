@@ -12,7 +12,7 @@ export function WhatsAppWidget() {
     <>
       {/* Chat popup */}
       {isOpen && (
-        <div className="fixed bottom-24 right-4 z-50 w-80 overflow-hidden rounded-xl border bg-white shadow-2xl sm:right-6 sm:w-96">
+        <div className="fixed bottom-36 right-4 z-50 w-80 overflow-hidden rounded-xl border bg-white shadow-2xl lg:bottom-24 lg:right-6 sm:w-96">
           {/* Header */}
           <div className="flex items-center justify-between bg-green-500 p-4 text-white">
             <div className="flex items-center gap-3">
@@ -62,7 +62,7 @@ export function WhatsAppWidget() {
       {/* Floating button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-xl transition-all hover:bg-green-600 hover:scale-110 active:scale-95 sm:h-16 sm:w-16"
+        className="fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-xl transition-all hover:bg-green-600 hover:scale-110 active:scale-95 lg:bottom-6 lg:right-6 sm:h-16 sm:w-16"
         aria-label="Open WhatsApp chat"
       >
         <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />

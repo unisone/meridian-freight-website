@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ProjectsGallery } from "@/components/projects-gallery";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { SITE } from "@/lib/constants";
 import { projects } from "@/content/projects";
 
 export const metadata: Metadata = {

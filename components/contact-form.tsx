@@ -60,7 +60,7 @@ export function ContactForm() {
         setIsSubmitted(true);
         // GA4 event placeholder — wired in Phase 7
         if (typeof window !== "undefined" && "gtag" in window) {
-          (window as unknown as Record<string, Function>).gtag("event", "generate_lead", {
+          (window as unknown as Record<string, (...args: unknown[]) => void>).gtag("event", "generate_lead", {
             event_category: "contact",
             event_label: "corporate_contact_form",
           });

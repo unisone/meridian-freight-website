@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { CONTACT, NAV_ITEMS, SOCIAL } from "@/lib/constants";
+import { CONTACT, NAV_ITEMS } from "@/lib/constants";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);

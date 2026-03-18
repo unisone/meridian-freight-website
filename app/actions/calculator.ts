@@ -3,7 +3,7 @@
 import { Resend } from "resend";
 import { calculatorEmailSchema, type CalculatorEmailData } from "@/lib/schemas";
 import { calculateFreight, type FreightEstimate } from "@/lib/freight-engine";
-import { CONTACT, COMPANY } from "@/lib/constants";
+import { CONTACT } from "@/lib/constants";
 
 async function insertCalculatorLead(data: Record<string, unknown>) {
   const url = process.env.SUPABASE_URL;

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StatsBar } from "@/components/stats-bar";
-import { COMPANY, WAREHOUSE_LOCATIONS, CONTACT } from "@/lib/constants";
+import { COMPANY, WAREHOUSE_LOCATIONS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "About Us — Our Story & Locations",

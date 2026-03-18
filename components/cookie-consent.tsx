@@ -1,24 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const CONSENT_KEY = "cookie-consent";
 
 export function CookieConsent() {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    const consent = localStorage.getItem(CONSENT_KEY);
-    if (!consent) {
-      setShow(true);
-    }
-  }, []);
+  const [show, setShow] = useState(
+    () => typeof window !== "undefined" && !localStorage.getItem(CONSENT_KEY)
+  );
 
   function accept() {
     localStorage.setItem(CONSENT_KEY, "accepted");
     setShow(false);
-    // Meta Pixel and other consent-gated scripts can check this value
     window.dispatchEvent(new CustomEvent("cookie-consent-accepted"));
   }
 
