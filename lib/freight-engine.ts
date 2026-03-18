@@ -1,3 +1,5 @@
+/** @deprecated Use lib/freight-engine-v2.ts which uses real Supabase rates. This file is kept for pricing-table.tsx compatibility. */
+
 import { equipmentPricing, deliveryRates } from "@/content/pricing";
 import type { EquipmentPricing, DeliveryRate } from "@/content/pricing";
 
