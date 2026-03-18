@@ -96,6 +96,8 @@ export const CATEGORY_LABELS: Record<string, string> = {
   tillage: "Tillage Equipment",
   baler: "Balers",
   misc: "Miscellaneous",
+  construction: "Construction Equipment",
+  forestry: "Forestry Equipment",
   backhoe: "Backhoes",
   excavator: "Excavators",
   wheel_loader: "Wheel Loaders",
@@ -152,4 +154,9 @@ export const COUNTRY_NAMES: Record<string, string> = {
   CN: "China",
   HK: "Hong Kong",
   RU: "Russia",
+  AE: "United Arab Emirates",
+  AU: "Australia",
+  DZ: "Algeria",
+  EG: "Egypt",
+  NA: "Namibia",
 };
