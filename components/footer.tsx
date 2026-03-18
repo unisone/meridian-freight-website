@@ -186,7 +186,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
           <p className="text-sm text-gray-500">
-            &copy; {year} {COMPANY.legalName}. All rights reserved.
+            &copy; {year} {COMPANY.legalName} All rights reserved.
           </p>
           <p className="text-xs text-gray-600">
             {CONTACT.address.full}
