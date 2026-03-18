@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { submitContactForm } from "@/app/actions/contact";
+import type { ContactFormData } from "@/lib/schemas";
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,11 +38,41 @@ export function ContactForm() {
     formData.set("utm_term", params.get("utm_term") ?? "");
     formData.set("utm_content", params.get("utm_content") ?? "");
 
-    // TODO: Wire to Server Action in Phase 5 (Task 25)
-    // For now, simulate success
-    await new Promise((r) => setTimeout(r, 1000));
-    setIsSubmitted(true);
-    setIsSubmitting(false);
+    const payload: ContactFormData = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      company: (formData.get("company") as string) || "",
+      phone: (formData.get("phone") as string) || "",
+      equipmentType: (formData.get("equipmentType") as string) || "",
+      message: formData.get("message") as string,
+      website: (formData.get("website") as string) || "",
+      source_page: formData.get("source_page") as string,
+      utm_source: (formData.get("utm_source") as string) || "",
+      utm_medium: (formData.get("utm_medium") as string) || "",
+      utm_campaign: (formData.get("utm_campaign") as string) || "",
+      utm_term: (formData.get("utm_term") as string) || "",
+      utm_content: (formData.get("utm_content") as string) || "",
+    };
+
+    try {
+      const result = await submitContactForm(payload);
+      if (result.success) {
+        setIsSubmitted(true);
+        // GA4 event placeholder — wired in Phase 7
+        if (typeof window !== "undefined" && "gtag" in window) {
+          (window as unknown as Record<string, Function>).gtag("event", "generate_lead", {
+            event_category: "contact",
+            event_label: "corporate_contact_form",
+          });
+        }
+      } else {
+        setError(result.error || "Failed to send message. Please try again.");
+      }
+    } catch {
+      setError("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (isSubmitted) {
