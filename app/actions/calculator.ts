@@ -5,6 +5,15 @@ import { calculatorEmailSchema, type CalculatorEmailData } from "@/lib/schemas";
 import { calculateFreight, type FreightEstimate } from "@/lib/freight-engine";
 import { CONTACT } from "@/lib/constants";
 
+function escapeHtml(input: string): string {
+  return String(input)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 async function insertCalculatorLead(data: Record<string, unknown>) {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -72,11 +81,11 @@ export async function submitCalculator(
         html: `
           <div style="font-family:system-ui,sans-serif;max-width:500px">
             <h2 style="color:#2563eb">New Calculator Lead</h2>
-            <p><strong>Email:</strong> ${data.email}</p>
-            ${data.name ? `<p><strong>Name:</strong> ${data.name}</p>` : ""}
-            ${data.company ? `<p><strong>Company:</strong> ${data.company}</p>` : ""}
-            <p><strong>Equipment:</strong> ${data.equipmentType}</p>
-            <p><strong>Route:</strong> ${data.destination}</p>
+            <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+            ${data.name ? `<p><strong>Name:</strong> ${escapeHtml(data.name)}</p>` : ""}
+            ${data.company ? `<p><strong>Company:</strong> ${escapeHtml(data.company)}</p>` : ""}
+            <p><strong>Equipment:</strong> ${escapeHtml(data.equipmentType)}</p>
+            <p><strong>Route:</strong> ${escapeHtml(data.destination)}</p>
             <hr/>
             <p><strong>Estimate:</strong> ${estimate.totalEstimate}</p>
             <p>Packing: ${estimate.packingCost} | Shipping: ${estimate.shippingCost}</p>

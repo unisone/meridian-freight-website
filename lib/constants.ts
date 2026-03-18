@@ -23,7 +23,7 @@ export const CONTACT = {
     street: "2107 148th",
     city: "Albion",
     state: "IA",
-    zip: "",
+    zip: "50005",
     country: "USA",
     full: "2107 148th, Albion, IA, USA",
   },
@@ -45,7 +45,7 @@ export const SITE = {
 
 export const TRACKING = {
   gaId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "",
-  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "3521194048053891",
+  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "",
   googleAdsId: process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "",
 } as const;
 

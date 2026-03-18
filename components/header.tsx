@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -19,7 +19,7 @@ import { CONTACT, NAV_ITEMS } from "@/lib/constants";
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -27,14 +27,14 @@ export function Header() {
     const y = window.scrollY;
     setIsScrolled(y > 50);
 
-    if (y > lastScrollY && y > 100) {
+    if (y > lastScrollYRef.current && y > 100) {
       setIsVisible(false);
       setOpenDropdown(null);
     } else {
       setIsVisible(true);
     }
-    setLastScrollY(y);
-  }, [lastScrollY]);
+    lastScrollYRef.current = y;
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });

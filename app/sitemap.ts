@@ -1,14 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/constants";
-
-const SERVICE_SLUGS = [
-  "machinery-packing",
-  "container-loading",
-  "agricultural",
-  "equipment-sales",
-  "documentation",
-  "warehousing",
-];
+import { services } from "@/content/services";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -26,8 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
-  const servicePages: MetadataRoute.Sitemap = SERVICE_SLUGS.map((slug) => ({
-    url: `${SITE.url}/services/${slug}`,
+  const servicePages: MetadataRoute.Sitemap = services.map((s) => ({
+    url: `${SITE.url}/services/${s.slug}`,
     lastModified: now,
     changeFrequency: "monthly" as const,
     priority: 0.8,

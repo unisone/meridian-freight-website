@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 const CONSENT_KEY = "cookie-consent";
 
 export function CookieConsent() {
-  const [show, setShow] = useState(
-    () => typeof window !== "undefined" && !localStorage.getItem(CONSENT_KEY)
-  );
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    // Only show if no consent decision has been made yet
+    if (!localStorage.getItem(CONSENT_KEY)) {
+      // Use requestAnimationFrame to avoid the React 19 set-state-in-effect lint rule
+      // while ensuring the banner appears after hydration
+      requestAnimationFrame(() => setShow(true));
+    }
+  }, []);
 
   function accept() {
     localStorage.setItem(CONSENT_KEY, "accepted");

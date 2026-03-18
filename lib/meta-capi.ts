@@ -3,7 +3,7 @@
  * Sends events from Server Actions for accurate attribution.
  */
 
-const PIXEL_ID = process.env.META_PIXEL_ID;
+const PIXEL_ID = process.env.META_PIXEL_ID ?? process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
 const API_VERSION = "v21.0";
 

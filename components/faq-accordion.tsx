@@ -28,9 +28,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
 
         <div className="mx-auto max-w-3xl">
           <Accordion className="space-y-3">
-            {entries.map((entry, i) => (
+            {entries.map((entry) => (
               <AccordionItem
-                key={i}
+                key={entry.question}
+                value={entry.question}
                 className="rounded-xl border border-gray-200 bg-white px-6 shadow-sm"
               >
                 <AccordionTrigger className="text-left text-base font-semibold text-gray-900 hover:text-blue-600 py-5">

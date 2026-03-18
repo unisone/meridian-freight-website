@@ -84,8 +84,8 @@ export function PricingTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.map((item, i) => (
-                <TableRow key={i}>
+              {filtered.map((item) => (
+                <TableRow key={item.type}>
                   <TableCell className="font-medium">{item.type}</TableCell>
                   <TableCell className="text-sm text-gray-600">{item.model}</TableCell>
                   <TableCell className="text-right font-mono text-sm">{item.delivery}</TableCell>
@@ -119,8 +119,8 @@ export function PricingTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {miscPricing.map((item, i) => (
-                <TableRow key={i}>
+              {miscPricing.map((item) => (
+                <TableRow key={item.item}>
                   <TableCell className="font-medium">{item.item}</TableCell>
                   <TableCell className="text-right font-mono font-semibold">{item.price}</TableCell>
                 </TableRow>
@@ -148,8 +148,8 @@ export function PricingTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {deliveryRates.map((rate, i) => (
-                <TableRow key={i}>
+              {deliveryRates.map((rate) => (
+                <TableRow key={rate.route}>
                   <TableCell className="font-medium">{rate.route}</TableCell>
                   <TableCell className="text-right font-mono font-semibold">{rate.lines}</TableCell>
                   <TableCell className="text-right font-mono font-semibold">{rate.soc || "—"}</TableCell>

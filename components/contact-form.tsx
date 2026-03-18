@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/app/actions/contact";
+import { trackGA4Event } from "@/lib/tracking";
 import type { ContactFormData } from "@/lib/schemas";
 
 export function ContactForm() {
@@ -58,13 +59,10 @@ export function ContactForm() {
       const result = await submitContactForm(payload);
       if (result.success) {
         setIsSubmitted(true);
-        // GA4 event placeholder — wired in Phase 7
-        if (typeof window !== "undefined" && "gtag" in window) {
-          (window as unknown as Record<string, (...args: unknown[]) => void>).gtag("event", "generate_lead", {
-            event_category: "contact",
-            event_label: "corporate_contact_form",
-          });
-        }
+        trackGA4Event("generate_lead", {
+          event_category: "contact",
+          event_label: "corporate_contact_form",
+        });
       } else {
         setError(result.error || "Failed to send message. Please try again.");
       }
