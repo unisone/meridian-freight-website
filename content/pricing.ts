@@ -1,10 +1,11 @@
 export interface EquipmentPricing {
   type: string;
   model: string;
+  /** Domestic delivery cost per mile (not included in ocean freight estimates) */
   delivery: string;
   containerized: string;
   container: string;
-  category: "harvesting" | "tillage" | "spraying" | "planting" | "large";
+  category: "harvesting" | "tillage" | "spraying" | "planting" | "large" | "misc";
 }
 
 export interface MiscPricing {
@@ -70,8 +71,16 @@ export const equipmentPricing: EquipmentPricing[] = [
   { type: "Tractors", model: "JD R4045", delivery: "$10", containerized: "$6,350.00", container: "100%+", category: "large" },
   { type: "Planters - Container Fit", model: "Fits in 40' container", delivery: "$10", containerized: "$6,500.00", container: "100%", category: "large" },
   { type: "Planters - Multi-Container", model: "Requires multiple containers", delivery: "$10", containerized: "$7,500.00", container: "100%+", category: "large" },
+
+  // Miscellaneous Equipment
+  { type: "Wheels", model: "Various", delivery: "$6", containerized: "$200.00", container: "10%", category: "misc" },
+  { type: "Head Carts", model: "Various", delivery: "$8", containerized: "$1,050.00", container: "25%", category: "misc" },
+  { type: "Balers", model: "Various", delivery: "$10", containerized: "$2,200.00", container: "50%", category: "misc" },
+  { type: "Lawn Mowers", model: "Various", delivery: "$6", containerized: "$775.00", container: "25%", category: "misc" },
+  { type: "Mower MOCO", model: "Various", delivery: "$8", containerized: "$1,550.00", container: "50%", category: "misc" },
 ];
 
+/** @deprecated Use equipmentPricing with category "misc" instead. Kept for pricing-table.tsx compatibility. */
 export const miscPricing: MiscPricing[] = [
   { item: "Wheels", price: "$200.00" },
   { item: "Head Carts", price: "$1,050.00" },
@@ -112,4 +121,5 @@ export const equipmentCategories = [
   { id: "spraying", label: "Spraying" },
   { id: "planting", label: "Planting" },
   { id: "large", label: "Large Equipment" },
+  { id: "misc", label: "Miscellaneous" },
 ] as const;
