@@ -13,9 +13,11 @@ export interface FreightEstimate {
 
 /**
  * Parse a dollar string like "$8,250.00" into a number (8250).
- * Returns null if the string contains "per row", "per foot", etc. (variable pricing).
+ * Returns null if the string contains variable pricing keywords
+ * ("per row", "per foot", "per shank", "per bottom").
  */
 function parseDollar(s: string): number | null {
+  if (/per\s+(row|foot|shank|bottom)/i.test(s)) return null;
   const cleaned = s.replace(/[^0-9.]/g, "");
   if (!cleaned) return null;
   const val = parseFloat(cleaned);
