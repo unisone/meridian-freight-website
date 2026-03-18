@@ -1,0 +1,72 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { MessageCircle, X, Send } from "lucide-react";
+import { CONTACT, COMPANY } from "@/lib/constants";
+
+export function WhatsAppWidget() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      {/* Chat popup */}
+      {isOpen && (
+        <div className="fixed bottom-24 right-4 z-50 w-80 overflow-hidden rounded-xl border bg-white shadow-2xl sm:right-6 sm:w-96">
+          {/* Header */}
+          <div className="flex items-center justify-between bg-green-500 p-4 text-white">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white/20">
+                <Image
+                  src="/logos/MF Logos White/meridianFreight-logo-mobile-w-150.png"
+                  alt={COMPANY.name}
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
+              </div>
+              <div>
+                <div className="font-semibold">{COMPANY.name}</div>
+                <div className="text-sm opacity-90">Typically replies within minutes</div>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="rounded-lg p-2 transition-colors hover:bg-white/20"
+              aria-label="Close chat"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Body */}
+          <div className="p-5">
+            <div className="mb-4 rounded-xl bg-gray-100 p-4">
+              <p className="text-sm text-gray-700">
+                Have questions about equipment pickup or export? We&apos;re here to help!
+              </p>
+            </div>
+            <a
+              href={CONTACT.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 py-3.5 font-semibold text-white shadow-md transition-all hover:bg-green-600 hover:shadow-lg"
+            >
+              <Send className="h-5 w-5" />
+              Contact Us on WhatsApp
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Floating button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-xl transition-all hover:bg-green-600 hover:scale-110 active:scale-95 sm:h-16 sm:w-16"
+        aria-label="Open WhatsApp chat"
+      >
+        <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
+      </button>
+    </>
+  );
+}

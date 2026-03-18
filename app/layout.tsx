@@ -5,6 +5,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { WhatsAppWidget } from "@/components/whatsapp-widget";
+import { MobileBottomBar } from "@/components/mobile-bottom-bar";
+import { CookieConsent } from "@/components/cookie-consent";
 import { COMPANY, CONTACT, SITE, SOCIAL } from "@/lib/constants";
 import "./globals.css";
 
@@ -115,6 +118,9 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
+          <WhatsAppWidget />
+          <MobileBottomBar />
+          <CookieConsent />
         </TooltipProvider>
         <Analytics />
         <SpeedInsights />
