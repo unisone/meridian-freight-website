@@ -28,6 +28,15 @@ export const calculatorEmailSchema = z.object({
   equipmentType: z.string().min(1),
   originRegion: z.string().min(1),
   destination: z.string().min(1),
+  // Honeypot — bots fill hidden fields, humans don't
+  website: z.string().max(500).optional().default(""),
+  // UTM attribution (auto-captured on client)
+  source_page: z.string().max(500).optional().default(""),
+  utm_source: z.string().max(200).optional().default(""),
+  utm_medium: z.string().max(200).optional().default(""),
+  utm_campaign: z.string().max(200).optional().default(""),
+  utm_term: z.string().max(200).optional().default(""),
+  utm_content: z.string().max(200).optional().default(""),
 });
 
 export type CalculatorEmailData = z.infer<typeof calculatorEmailSchema>;
