@@ -67,8 +67,8 @@ export function CalculatorEstimateCard({
     return (
       <div className="rounded-2xl bg-slate-900 p-6 text-white" aria-live="polite">
         <div className="mb-4 flex items-center gap-2">
-          <CheckCircle className="h-5 w-5 text-emerald-400" />
-          <span className="text-sm font-medium text-emerald-400">
+          <CheckCircle className="h-5 w-5 text-emerald-500" />
+          <span className="text-sm font-medium text-emerald-500">
             Estimate sent to {email}
           </span>
         </div>
@@ -146,7 +146,7 @@ export function CalculatorEstimateCard({
             {estimate.carrier}
           </Badge>
           {estimate.totalExcludesInland && (
-            <Badge className="border-amber-600/30 bg-amber-900/30 text-xs text-amber-400">
+            <Badge className="border-amber-600/30 bg-amber-900/30 text-xs text-amber-500">
               Excludes US inland
             </Badge>
           )}
@@ -156,7 +156,7 @@ export function CalculatorEstimateCard({
         {estimate.notes.length > 0 && (
           <div className="mt-4 space-y-1">
             {estimate.notes.map((note, i) => (
-              <p key={i} className="flex items-start gap-1.5 text-xs text-amber-400/80">
+              <p key={i} className="flex items-start gap-1.5 text-xs text-amber-500">
                 <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {note}
               </p>
             ))}
@@ -186,14 +186,14 @@ export function CalculatorEstimateCard({
               />
             }
             variant="outline"
-            className="w-full border-emerald-500/50 py-5 font-semibold text-emerald-400 hover:bg-emerald-500/10"
+            className="w-full border-emerald-600/50 py-5 font-semibold text-emerald-500 hover:bg-emerald-600/10"
           >
             WhatsApp Us
           </Button>
           <Button
             variant="ghost"
             onClick={onReset}
-            className="w-full text-slate-400 hover:text-white"
+            className="w-full text-slate-300 hover:text-white"
           >
             Calculate Another
           </Button>
@@ -298,7 +298,7 @@ export function CalculatorEstimateCard({
               className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-600 focus:border-primary"
             />
             {email && !isEmailValid && (
-              <p className="mt-1 text-xs text-red-400">Please enter a valid email</p>
+              <p className="mt-1 text-xs text-red-500">Please enter a valid email</p>
             )}
           </div>
 
@@ -345,7 +345,7 @@ export function CalculatorEstimateCard({
             />
           </div>
 
-          {error && <p className="text-center text-xs text-red-400">{error}</p>}
+          {error && <p className="text-center text-xs text-red-500">{error}</p>}
 
           <Button
             onClick={onSubmit}
@@ -379,7 +379,7 @@ export function CalculatorEstimateCard({
           </Button>
           <Button
             variant="ghost"
-            className="w-full text-slate-400 hover:text-white"
+            className="w-full text-slate-300 hover:text-white"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             Refine Quote Parameters
