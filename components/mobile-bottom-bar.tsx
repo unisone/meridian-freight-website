@@ -24,7 +24,7 @@ export function MobileBottomBar() {
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleWhatsAppClick}
-          className="flex flex-col items-center gap-1 py-3 text-green-600 transition-colors hover:bg-green-50"
+          className="flex flex-col items-center gap-1 py-3 text-emerald-600 transition-colors hover:bg-emerald-50"
         >
           <MessageCircle className="h-5 w-5" />
           <span className="text-xs font-medium">WhatsApp</span>

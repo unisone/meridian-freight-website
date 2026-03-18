@@ -11,6 +11,12 @@ export const metadata = pageMetadata({
   title: "FAQ — Frequently Asked Questions",
   description: "Find answers to common questions about machinery export, container packing, shipping costs, documentation, and more.",
   path: "/faq",
+  keywords: [
+    "machinery export FAQ",
+    "equipment shipping questions",
+    "container packing guide",
+    "export documentation help",
+  ],
 });
 
 export default function FaqPage() {
@@ -49,16 +55,12 @@ export default function FaqPage() {
               Our team is ready to help with any specific questions about your project.
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link href="/contact">
-                <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
+              <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
                   <Mail className="mr-2 h-4 w-4" /> Contact Us
-                </Button>
-              </Link>
-              <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold">
+              </Button>
+              <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp with our team" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold">
                   <Phone className="mr-2 h-4 w-4" /> WhatsApp Us
-                </Button>
-              </a>
+              </Button>
             </div>
           </div>
         </section>

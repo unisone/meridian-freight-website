@@ -8,7 +8,7 @@ const SERVICE_LINKS = [
   { label: "Machinery Dismantling & Packing", href: "/services/machinery-packing" },
   { label: "Container Loading & Export", href: "/services/container-loading" },
   { label: "Agricultural Equipment", href: "/services/agricultural" },
-  { label: "Equipment Sales & Procurement", href: "/services/equipment-sales" },
+  { label: "Equipment Sourcing & Procurement", href: "/services/equipment-sales" },
   { label: "Export Documentation", href: "/services/documentation" },
   { label: "Warehouse & Storage", href: "/services/warehousing" },
 ];
@@ -189,7 +189,7 @@ export function Footer() {
             &copy; {year} {COMPANY.legalName} All rights reserved.
           </p>
           <p className="text-xs text-slate-600">
-            {CONTACT.address.full}
+            {CONTACT.address.full} &middot; We speak English, Spanish, Russian &amp; Arabic
           </p>
         </div>
       </div>

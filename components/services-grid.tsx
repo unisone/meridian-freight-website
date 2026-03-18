@@ -3,7 +3,7 @@ import {
   Package,
   Truck,
   Wheat,
-  ShoppingCart,
+  Search,
   FileText,
   Warehouse,
   ArrowRight,
@@ -15,7 +15,7 @@ const iconMap: Record<string, typeof Package> = {
   Package,
   Truck,
   Wheat,
-  ShoppingCart,
+  Search,
   FileText,
   Warehouse,
 };

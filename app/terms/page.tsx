@@ -6,6 +6,7 @@ export const metadata = pageMetadata({
   title: "Terms of Service",
   description: `Terms of service for ${SITE.domain}.`,
   path: "/terms",
+  keywords: ["terms of service", "terms and conditions", "service agreement"],
 });
 
 export default function TermsPage() {

@@ -1,19 +1,46 @@
 import Link from "next/link";
-import { Calculator, ArrowRight } from "lucide-react";
+import { Calculator, ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PricingTable } from "@/components/pricing-table";
+import { CONTACT, COMPANY, SITE } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Pricing — Equipment Packing & Shipping Rates",
-  description: "Reference pricing for machinery packing, container loading, and international shipping. 40+ equipment types with transparent pricing.",
+  description: "Reference pricing for machinery packing, container loading, and international shipping. 60+ equipment types with transparent, itemized pricing.",
   path: "/pricing",
+  keywords: [
+    "equipment packing costs",
+    "machinery shipping rates",
+    "container loading pricing",
+    "freight cost estimate",
+  ],
 });
 
 export default function PricingPage() {
+  const pricingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AggregateOffer",
+    priceCurrency: "USD",
+    offerCount: 40,
+    lowPrice: "1500",
+    highPrice: "12000",
+    description:
+      "Reference pricing for machinery packing, container loading, and international shipping services.",
+    seller: {
+      "@type": "Organization",
+      name: COMPANY.name,
+      url: SITE.url,
+    },
+  };
+
   return (
     <div className="pt-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }}
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={[{ label: "Pricing" }]} />
       </div>
@@ -22,11 +49,11 @@ export default function PricingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
-              Equipment Pricing
+              Equipment Pricing — Transparent &amp; Itemized
             </h1>
             <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-600">
-              Transparent reference pricing for our machinery export services.
-              Prices are subject to change — contact us for a current quote.
+              Reference rates for 60+ equipment types and 20+ shipping routes.
+              Every quote includes detailed line items — no hidden fees.
             </p>
           </div>
 
@@ -39,15 +66,45 @@ export default function PricingPage() {
             <p className="mt-2 text-slate-600">
               Use our freight calculator to get an estimated cost for your equipment and destination.
             </p>
-            <Link href="/pricing/calculator" className="mt-4 inline-block">
-              <Button className="bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl">
+            <Button render={<Link href="/pricing/calculator" />} className="mt-4 bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl">
                 Open Freight Calculator
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            </Button>
           </div>
 
           <PricingTable />
+
+          {/* Bottom CTA */}
+          <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16">
+            <div className="mx-auto max-w-3xl px-4 text-center text-white">
+              <h2 className="text-2xl font-bold sm:text-3xl">
+                Get an Exact Quote
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-slate-300">
+                Reference prices above are estimates. Contact us for a precise
+                quote based on your equipment and destination.
+              </p>
+              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                <Button
+                    render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a pricing quote" />}
+                    size="lg"
+                    className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
+                  >
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    WhatsApp Us
+                </Button>
+                <Button
+                    render={<Link href="/contact" />}
+                    size="lg"
+                    variant="outline"
+                    className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold"
+                  >
+                    Contact Us
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
     </div>

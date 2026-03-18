@@ -8,7 +8,6 @@ import {
   Menu,
   ChevronDown,
   MessageCircle,
-  ArrowRight,
 } from "lucide-react";
 import {
   Sheet,
@@ -80,6 +79,9 @@ export function Header() {
                         );
                       }}
                       onMouseEnter={() => setOpenDropdown(item.label)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") setOpenDropdown(null);
+                      }}
                       className="flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md text-slate-600 hover:text-slate-900"
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
@@ -132,14 +134,16 @@ export function Header() {
               </div>
             ))}
 
-            {/* CTA */}
-            <Link
-              href="/contact"
-              className="ml-4 inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
+            {/* CTA — WhatsApp primary */}
+            <a
+              href={CONTACT.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-4 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
             >
-              Get Quote
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp Us
+            </a>
           </div>
 
           {/* Mobile menu */}

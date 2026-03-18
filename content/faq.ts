@@ -12,7 +12,7 @@ export const faqEntries: FaqEntry[] = [
   },
   {
     question: "What areas do you serve?",
-    answer: "We provide pickup services across the entire USA and Canada. Our warehouse facilities are located in California, Georgia, Illinois, North Dakota, Texas, and Alberta (Canada). We ship to any port worldwide.",
+    answer: "We provide pickup services across the entire USA and Canada. Our main packing facility is in Iowa, with partner warehouses in California, Georgia, Illinois, North Dakota, Texas, and Alberta (Canada). We ship to any port worldwide.",
     category: "General",
   },
   {
@@ -37,7 +37,7 @@ export const faqEntries: FaqEntry[] = [
   },
   {
     question: "Do you provide transportation insurance?",
-    answer: "Yes, all transportation and storage services are fully insured. We carry comprehensive coverage for equipment damage, theft, and liability. We can also arrange marine cargo insurance for the ocean transit portion.",
+    answer: "Our transportation and storage services are insured. Coverage details and limits are outlined in our service agreement. We can also arrange marine cargo insurance for the ocean transit portion.",
     category: "General",
   },
   {
@@ -47,12 +47,12 @@ export const faqEntries: FaqEntry[] = [
   },
   {
     question: "Can you source and purchase equipment for me?",
-    answer: "Yes, our Equipment Sales & Procurement service helps international buyers find specific machinery from dealers, auctions, and private sellers across North America. Every piece is inspected and documented before shipping.",
+    answer: "Yes, our Equipment Sourcing & Procurement service helps international buyers find specific machinery from dealers, auctions, and private sellers across North America. Every piece is inspected and documented before shipping.",
     category: "General",
   },
   {
     question: "Do you offer storage services?",
-    answer: "Yes, we provide secure storage at our facilities across the USA and Canada. Whether you need short-term staging or long-term storage while awaiting shipping schedules, we keep your equipment protected.",
+    answer: "Yes, we provide secure storage through our facility network across the USA and Canada. Whether you need short-term staging or long-term storage while awaiting shipping schedules, we keep your equipment protected.",
     category: "General",
   },
   {
@@ -62,8 +62,23 @@ export const faqEntries: FaqEntry[] = [
   },
   {
     question: "Is there a minimum order requirement?",
-    answer: "No minimum. We handle everything from single pieces of equipment to fleet-scale operations with dozens of machines. Every project receives the same level of professional service.",
+    answer: "No minimum for equipment freight services. We handle everything from single pieces of equipment to full fleet operations. Every project receives the same level of professional service.",
     category: "Pricing",
+  },
+  {
+    question: "What happens if my equipment is damaged in transit?",
+    answer: "Our transportation and storage services are insured. Every piece of equipment is thoroughly documented with photos before packing, providing a clear condition baseline. If damage occurs during transit, we work with the carrier and insurance to resolve claims. We also offer marine cargo insurance for the ocean shipping portion.",
+    category: "General",
+  },
+  {
+    question: "Can you handle equipment I've never exported before?",
+    answer: "Absolutely. We handle first-time exports regularly. Our team manages the entire process — from figuring out the best way to disassemble your specific equipment to handling all export documentation and customs requirements. You don't need any prior export experience.",
+    category: "General",
+  },
+  {
+    question: "What countries have you shipped to?",
+    answer: "We ship worldwide — anywhere with a seaport or airport. Our most active markets include Latin America (Brazil, Colombia, Mexico), the Middle East (UAE, Turkey), Africa, Central Asia, and Eastern Europe. We coordinate with established ocean carriers like Maersk and Hapag-Lloyd for reliable transit.",
+    category: "Shipping",
   },
 ];
 

@@ -1,32 +1,38 @@
 import Link from "next/link";
-import { MapPin, ArrowRight, Clock, Globe, Shield, Star } from "lucide-react";
+import { MapPin, ArrowRight, Clock, Globe, Shield, Star, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { COMPANY, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
+import { COMPANY, CONTACT, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "About Us — Our Story & Locations",
-  description: `${COMPANY.name} — ${COMPANY.tagline}. Over 10 years of experience in machinery export logistics with warehouse facilities across USA & Canada.`,
+  description: `Meridian Freight — 500+ equipment exports worldwide. Iowa HQ with 6 partner warehouses across USA & Canada. Get a free machinery shipping quote.`,
   path: "/about",
+  keywords: [
+    "machinery export company",
+    "equipment logistics USA Canada",
+    "warehouse storage services",
+    "about meridian freight",
+  ],
 });
 
 const differentiators = [
   {
-    icon: Clock,
-    title: "Available 24/7",
-    description: "Our team is always reachable. Machinery logistics doesn't wait for business hours.",
+    icon: Shield,
+    title: "One Company, Complete Service",
+    description: "Most exporters only handle one part of the chain. We manage the entire process — from equipment pickup at the seller to container loading at port. One point of contact, no handoff risks.",
   },
   {
     icon: Globe,
-    title: "Worldwide Shipping",
-    description: "We ship to any destination globally with established relationships at major ports worldwide.",
+    title: "Ship Anywhere With a Port",
+    description: "We coordinate with established ocean carriers like Maersk and Hapag-Lloyd, plus air freight options. Wherever there's a port or airport, we can deliver.",
   },
   {
-    icon: Shield,
-    title: "Equipment Expertise",
-    description: "Our technicians specialize in agricultural and industrial machinery — we know every make and model.",
+    icon: Clock,
+    title: "Equipment Specialists",
+    description: "13+ years handling John Deere combines, Case IH headers, Kinze planters, and CAT machinery. We know the disassembly specs so your equipment reassembles correctly.",
   },
 ];
 
@@ -44,7 +50,7 @@ export default function AboutPage() {
             About {COMPANY.name}
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-600">
-            With over 10 years of experience and 500+ completed shipments,{" "}
+            With over 13 years of experience and 500+ completed shipments,{" "}
             {COMPANY.name} is a full-service machinery export company
             headquartered in Iowa. We specialize in the complete logistics
             chain — from equipment pickup and professional dismantling to
@@ -141,11 +147,15 @@ export default function AboutPage() {
           <p className="mx-auto mt-3 max-w-xl text-slate-600">
             Get a free quote for your machinery export project. We respond within 24 hours.
           </p>
-          <Link href="/contact" className="mt-6 inline-block">
-            <Button size="lg" className="h-12 px-8 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold shadow-lg">
-              Contact Us <ArrowRight className="ml-2 h-4 w-4" />
+          <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a free quote" />} size="lg" className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg">
+                <MessageCircle className="mr-2 h-4 w-4" />
+                WhatsApp Us
             </Button>
-          </Link>
+            <Button render={<Link href="/contact" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-slate-300 text-slate-700 font-semibold">
+                Contact Us <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </section>
     </div>

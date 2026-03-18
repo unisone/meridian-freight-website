@@ -5,8 +5,14 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Contact Us — Get a Free Quote",
-  description: "Contact Meridian Freight for a free quote on machinery export services. Available 24/7 by phone, WhatsApp, or email.",
+  description: "Get a free machinery export quote — response within 24 hours. WhatsApp, phone, or email. Worldwide shipping from USA & Canada.",
   path: "/contact",
+  keywords: [
+    "contact machinery export",
+    "get freight quote",
+    "equipment shipping quote",
+    "machinery logistics contact",
+  ],
 });
 
 export default function ContactPage() {

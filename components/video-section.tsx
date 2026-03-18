@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Play, ExternalLink } from "lucide-react";
-import { SOCIAL } from "@/lib/constants";
+import { Play, ExternalLink, MessageCircle } from "lucide-react";
+import { SOCIAL, CONTACT } from "@/lib/constants";
 
 const VIDEO_ID = "SrjUBSD2_5Q";
 const THUMBNAIL = `https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`;
@@ -19,7 +19,7 @@ export function VideoSection() {
             See Us In Action
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
-            Watch Our Operations
+            See How We Pack &amp; Ship Machinery
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
             See how we handle heavy machinery dismantling, packing, and container loading.
@@ -62,8 +62,17 @@ export function VideoSection() {
           </div>
         </div>
 
-        {/* Watch more link */}
-        <div className="mt-8 text-center">
+        {/* Actions */}
+        <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <a
+            href={CONTACT.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Get a Quote
+          </a>
           <a
             href={SOCIAL.youtube}
             target="_blank"

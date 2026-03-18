@@ -12,44 +12,41 @@ export function Hero() {
           {/* Text content */}
           <div>
             <p className="text-xs font-medium uppercase tracking-wider text-sky-500 sm:text-sm">
-              Trusted Worldwide
+              All-In-One Machinery Export
             </p>
 
             <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl xl:text-6xl leading-tight">
-              Professional Machinery Export &amp; Logistics
+              From Seller to Port — We Handle Everything
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
-              We disassemble, pack, and ship heavy machinery worldwide.
-              Combines, tractors, excavators — securely loaded into 40ft
-              containers, ready for global export.
+              One company for the entire chain: equipment pickup, professional
+              dismantling, secure packing, export documentation, and worldwide
+              shipping. No coordination headaches.
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Serving buyers in Latin America, Africa, the Middle East &amp; Central Asia
             </p>
 
             {/* CTAs */}
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:gap-4">
-              <a
-                href={CONTACT.whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Button
+                size="lg"
+                className="h-13 w-full px-7 text-base font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all hover:shadow-lg sm:w-auto"
+                render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Get a quote on WhatsApp" />}
               >
-                <Button
-                  size="lg"
-                  className="h-13 w-full px-7 text-base font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all hover:shadow-lg sm:w-auto"
-                >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Get a Quote on WhatsApp
-                </Button>
-              </a>
-              <Link href="/services">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-slate-300 text-slate-700 bg-transparent hover:bg-slate-50 transition-all sm:w-auto"
-                >
-                  Our Services
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Get a Quote on WhatsApp
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-slate-300 text-slate-700 bg-transparent hover:bg-slate-50 transition-all sm:w-auto"
+                render={<Link href="/pricing/calculator" />}
+              >
+                Get Instant Estimate
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
             </div>
           </div>
 
@@ -57,11 +54,12 @@ export function Hero() {
           <div className="relative">
             <div className="overflow-hidden rounded-2xl shadow-lg">
               <Image
-                src="/images/logistics1.jpg"
-                alt="Heavy machinery being loaded into shipping containers"
+                src="/images/hero-jd-w260-flatrack.jpg"
+                alt="John Deere W260 windrower secured on a Hapag-Lloyd flat rack container for export"
                 width={720}
                 height={540}
                 className="h-auto w-full object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
                 quality={85}
               />

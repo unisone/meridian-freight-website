@@ -36,17 +36,17 @@ export function PricingTable() {
     <div className="space-y-12">
       {/* Equipment Pricing */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
           Equipment Pricing
         </h2>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-slate-600">
           Reference pricing for packing and container loading services. Final quotes provided upon request.
         </p>
 
         {/* Filters */}
         <div className="mt-6 flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <Input
               placeholder="Search equipment type or model..."
               value={search}
@@ -72,10 +72,10 @@ export function PricingTable() {
         </div>
 
         {/* Table */}
-        <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200">
+        <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50">
+              <TableRow className="bg-slate-50">
                 <TableHead className="font-semibold">Equipment Type</TableHead>
                 <TableHead className="font-semibold">Models</TableHead>
                 <TableHead className="font-semibold text-right">Delivery</TableHead>
@@ -87,7 +87,7 @@ export function PricingTable() {
               {filtered.map((item) => (
                 <TableRow key={item.type}>
                   <TableCell className="font-medium">{item.type}</TableCell>
-                  <TableCell className="text-sm text-gray-600">{item.model}</TableCell>
+                  <TableCell className="text-sm text-slate-600">{item.model}</TableCell>
                   <TableCell className="text-right font-mono text-sm">{item.delivery}</TableCell>
                   <TableCell className="text-right font-mono text-sm font-semibold">{item.containerized}</TableCell>
                   <TableCell className="text-right font-mono text-sm">{item.container}</TableCell>
@@ -95,7 +95,7 @@ export function PricingTable() {
               ))}
               {filtered.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center text-gray-500">
+                  <TableCell colSpan={5} className="py-8 text-center text-slate-500">
                     No equipment found matching your search.
                   </TableCell>
                 </TableRow>
@@ -107,13 +107,13 @@ export function PricingTable() {
 
       {/* Miscellaneous */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
           Miscellaneous Items
         </h2>
-        <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200">
+        <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50">
+              <TableRow className="bg-slate-50">
                 <TableHead className="font-semibold">Item</TableHead>
                 <TableHead className="font-semibold text-right">Price</TableHead>
               </TableRow>
@@ -132,16 +132,16 @@ export function PricingTable() {
 
       {/* Delivery Rates */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
           Container Delivery Rates
         </h2>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-slate-600">
           40ft container rates. Line&apos;s = shipping line container. SOC = shipper-owned container.
         </p>
-        <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200">
+        <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50">
+              <TableRow className="bg-slate-50">
                 <TableHead className="font-semibold">Route</TableHead>
                 <TableHead className="font-semibold text-right">Line&apos;s Container</TableHead>
                 <TableHead className="font-semibold text-right">SOC Container</TableHead>

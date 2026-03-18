@@ -5,7 +5,7 @@ import {
   Package,
   Truck,
   Wheat,
-  ShoppingCart,
+  Search,
   FileText,
   Warehouse,
   ArrowRight,
@@ -22,7 +22,7 @@ const iconMap: Record<string, typeof Package> = {
   Package,
   Truck,
   Wheat,
-  ShoppingCart,
+  Search,
   FileText,
   Warehouse,
 };
@@ -43,6 +43,7 @@ export async function generateMetadata({
   return {
     title: service.title,
     description: service.description,
+    keywords: service.keywords,
     alternates: { canonical: `${SITE.url}/services/${slug}` },
     openGraph: {
       title: `${service.title} | ${SITE.name}`,
@@ -70,6 +71,9 @@ export default async function ServicePage({
     "@type": "Service",
     name: service.title,
     description: service.longDescription,
+    image: `${SITE.url}${SITE.ogImage}`,
+    availableLanguage: ["English", "Russian", "Spanish", "Arabic"],
+    priceRange: "Contact for quote",
     provider: {
       "@type": "Organization",
       name: COMPANY.name,
@@ -111,11 +115,9 @@ export default async function ServicePage({
             <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
               {service.description}
             </p>
-            <Link href="/contact" className="mt-8 inline-block">
-              <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
+            <Button render={<Link href="/contact" />} size="lg" className="mt-8 h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
                 Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            </Button>
           </div>
         </section>
 
@@ -195,16 +197,12 @@ export default async function ServicePage({
               Get a free quote for your project. We respond within 24 hours.
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link href="/contact">
-                <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
+              <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
                   Get a Quote
-                </Button>
-              </Link>
-              <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold">
+              </Button>
+              <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp about our services" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold">
                   WhatsApp Us
-                </Button>
-              </a>
+              </Button>
             </div>
           </div>
         </section>

@@ -71,16 +71,16 @@ export function CalculatorWizard() {
   }
 
   return (
-    <Card className="mx-auto max-w-2xl overflow-hidden border-blue-200 shadow-xl">
+    <Card className="mx-auto max-w-2xl overflow-hidden border-sky-200 shadow-xl">
       {/* Progress bar */}
-      <div className="flex border-b border-gray-100">
+      <div className="flex border-b border-slate-100" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={4} aria-label={`Step ${step} of 4`}>
         {[1, 2, 3, 4].map((s) => (
           <div
             key={s}
             className={`flex-1 py-2.5 text-center text-xs font-medium transition-colors ${
               s <= step
-                ? "bg-blue-600 text-white"
-                : "bg-gray-50 text-gray-400"
+                ? "bg-sky-500 text-white"
+                : "bg-slate-50 text-slate-400"
             }`}
           >
             {s === 1 && "Equipment"}
@@ -95,7 +95,7 @@ export function CalculatorWizard() {
         {/* Step 1: Equipment Selection */}
         {step === 1 && (
           <div className="space-y-5">
-            <div className="flex items-center gap-2 text-blue-600">
+            <div className="flex items-center gap-2 text-sky-500">
               <Package className="h-5 w-5" />
               <h3 className="text-lg font-bold">Select Equipment</h3>
             </div>
@@ -109,8 +109,8 @@ export function CalculatorWizard() {
                     onClick={() => { setCategory(cat.id); setEquipmentType(""); }}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                       category === cat.id
-                        ? "bg-blue-600 text-white"
-                        : "border border-gray-200 text-gray-700 hover:bg-blue-50"
+                        ? "bg-sky-500 text-white"
+                        : "border border-slate-200 text-slate-700 hover:bg-sky-50"
                     }`}
                   >
                     {cat.label}
@@ -122,19 +122,19 @@ export function CalculatorWizard() {
             {category && (
               <div>
                 <Label>Equipment Type</Label>
-                <div className="mt-2 max-h-48 space-y-1.5 overflow-y-auto rounded-lg border border-gray-200 p-2">
+                <div className="mt-2 max-h-48 space-y-1.5 overflow-y-auto rounded-lg border border-slate-200 p-2">
                   {filteredEquipment.map((eq) => (
                     <button
                       key={eq.type}
                       onClick={() => setEquipmentType(eq.type)}
                       className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
                         equipmentType === eq.type
-                          ? "bg-blue-600 text-white"
-                          : "hover:bg-gray-50"
+                          ? "bg-sky-500 text-white"
+                          : "hover:bg-slate-50"
                       }`}
                     >
                       <div className="font-medium">{eq.type}</div>
-                      <div className={`text-xs ${equipmentType === eq.type ? "text-blue-100" : "text-gray-500"}`}>
+                      <div className={`text-xs ${equipmentType === eq.type ? "text-sky-200" : "text-slate-500"}`}>
                         {eq.model}
                       </div>
                     </button>
@@ -144,12 +144,12 @@ export function CalculatorWizard() {
             )}
 
             {selectedEquipment && (
-              <div className="rounded-lg bg-blue-50 p-4">
-                <div className="text-sm text-gray-600">Estimated packing cost:</div>
-                <div className="font-mono text-xl font-bold text-blue-700">
+              <div className="rounded-lg bg-sky-50 p-4">
+                <div className="text-sm text-slate-600">Estimated packing cost:</div>
+                <div className="font-mono text-xl font-bold text-sky-600">
                   {selectedEquipment.containerized}
                 </div>
-                <div className="mt-1 text-xs text-gray-500">
+                <div className="mt-1 text-xs text-slate-500">
                   Container usage: {selectedEquipment.container}
                 </div>
               </div>
@@ -158,7 +158,7 @@ export function CalculatorWizard() {
             <Button
               onClick={() => setStep(2)}
               disabled={!equipmentType}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 rounded-xl"
+              className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl"
             >
               Next: Select Route <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -168,24 +168,24 @@ export function CalculatorWizard() {
         {/* Step 2: Route Selection */}
         {step === 2 && (
           <div className="space-y-5">
-            <div className="flex items-center gap-2 text-blue-600">
+            <div className="flex items-center gap-2 text-sky-500">
               <MapPin className="h-5 w-5" />
               <h3 className="text-lg font-bold">Select Shipping Route</h3>
             </div>
 
-            <div className="max-h-64 space-y-1.5 overflow-y-auto rounded-lg border border-gray-200 p-2">
+            <div className="max-h-64 space-y-1.5 overflow-y-auto rounded-lg border border-slate-200 p-2">
               {deliveryRates.map((dr) => (
                 <button
                   key={dr.route}
                   onClick={() => setRoute(dr.route)}
                   className={`w-full rounded-lg px-3 py-3 text-left text-sm transition-colors ${
                     route === dr.route
-                      ? "bg-blue-600 text-white"
-                      : "hover:bg-gray-50"
+                      ? "bg-sky-500 text-white"
+                      : "hover:bg-slate-50"
                   }`}
                 >
                   <div className="font-medium">{dr.route}</div>
-                  <div className={`text-xs ${route === dr.route ? "text-blue-100" : "text-gray-500"}`}>
+                  <div className={`text-xs ${route === dr.route ? "text-sky-200" : "text-slate-500"}`}>
                     Line&apos;s: {dr.lines || "—"} | SOC: {dr.soc || "—"}
                   </div>
                 </button>
@@ -203,7 +203,7 @@ export function CalculatorWizard() {
               <Button
                 onClick={() => setStep(3)}
                 disabled={!route}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 rounded-xl"
+                className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl"
               >
                 Next <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -214,12 +214,12 @@ export function CalculatorWizard() {
         {/* Step 3: Email Gate */}
         {step === 3 && (
           <div className="space-y-5">
-            <div className="flex items-center gap-2 text-blue-600">
+            <div className="flex items-center gap-2 text-sky-500">
               <Mail className="h-5 w-5" />
               <h3 className="text-lg font-bold">Get Your Estimate</h3>
             </div>
 
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-slate-600">
               Enter your email to receive the freight cost estimate. We&apos;ll also send a copy to your inbox.
             </p>
 
@@ -259,10 +259,10 @@ export function CalculatorWizard() {
             </div>
 
             {/* Summary */}
-            <div className="rounded-lg bg-gray-50 p-4 text-sm">
-              <div className="font-semibold text-gray-900">Your selection:</div>
-              <div className="mt-1 text-gray-600">{equipmentType}</div>
-              <div className="text-gray-600">{route}</div>
+            <div className="rounded-lg bg-slate-50 p-4 text-sm">
+              <div className="font-semibold text-slate-900">Your selection:</div>
+              <div className="mt-1 text-slate-600">{equipmentType}</div>
+              <div className="text-slate-600">{route}</div>
             </div>
 
             {error && (
@@ -280,7 +280,7 @@ export function CalculatorWizard() {
               <Button
                 onClick={handleCalculate}
                 disabled={!email || isSubmitting}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 rounded-xl"
+                className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl"
               >
                 {isSubmitting ? (
                   <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Calculating...</>
@@ -295,23 +295,23 @@ export function CalculatorWizard() {
         {/* Step 4: Results */}
         {step === 4 && result?.estimate && (
           <div className="space-y-6">
-            <div className="flex items-center gap-2 text-green-600">
+            <div className="flex items-center gap-2 text-emerald-600">
               <CheckCircle className="h-5 w-5" />
               <h3 className="text-lg font-bold">Your Freight Estimate</h3>
             </div>
 
-            <div className="space-y-4 rounded-xl border border-blue-200 bg-blue-50 p-6">
+            <div className="space-y-4 rounded-xl border border-sky-200 bg-sky-50 p-6">
               <div className="flex justify-between">
-                <span className="text-gray-700">Packing & Loading</span>
-                <span className="font-mono font-bold text-gray-900">{result.estimate.packingCost}</span>
+                <span className="text-slate-700">Packing & Loading</span>
+                <span className="font-mono font-bold text-slate-900">{result.estimate.packingCost}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-700">Container Shipping</span>
-                <span className="font-mono font-bold text-gray-900">{result.estimate.shippingCost}</span>
+                <span className="text-slate-700">Container Shipping</span>
+                <span className="font-mono font-bold text-slate-900">{result.estimate.shippingCost}</span>
               </div>
-              <div className="border-t border-blue-200 pt-3 flex justify-between">
-                <span className="font-semibold text-gray-900">Estimated Total</span>
-                <span className="font-mono text-2xl font-bold text-blue-700">{result.estimate.totalEstimate}</span>
+              <div className="border-t border-sky-200 pt-3 flex justify-between">
+                <span className="font-semibold text-slate-900">Estimated Total</span>
+                <span className="font-mono text-2xl font-bold text-sky-600">{result.estimate.totalEstimate}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant="secondary" className="font-mono text-xs">
@@ -323,22 +323,18 @@ export function CalculatorWizard() {
               </div>
             </div>
 
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-slate-500">
               This is an estimate based on reference rates. Actual costs may vary depending on
               equipment condition, accessibility, and current market rates. Contact us for a detailed quote.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Link href="/contact" className="flex-1">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 rounded-xl">
+              <Button render={<Link href="/contact" />} className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl">
                   Get Detailed Quote
-                </Button>
-              </Link>
-              <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                <Button variant="outline" className="w-full py-5 rounded-xl font-semibold border-green-500 text-green-600 hover:bg-green-50">
+              </Button>
+              <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a detailed quote" />} variant="outline" className="flex-1 py-5 rounded-xl font-semibold border-emerald-600 text-emerald-600 hover:bg-emerald-50">
                   WhatsApp Us
-                </Button>
-              </a>
+              </Button>
             </div>
 
             <Button

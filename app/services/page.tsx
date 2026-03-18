@@ -10,6 +10,13 @@ export const metadata = pageMetadata({
   title: "Services — Machinery Export & Logistics",
   description: "Complete machinery export services: dismantling, container packing, shipping, documentation, storage, and equipment procurement across USA & Canada.",
   path: "/services",
+  keywords: [
+    "machinery export services",
+    "equipment dismantling",
+    "container loading",
+    "export documentation",
+    "warehousing services",
+  ],
 });
 
 export default function ServicesPage() {
@@ -30,11 +37,9 @@ export default function ServicesPage() {
           <p className="mx-auto mt-3 max-w-xl text-sky-300">
             Contact us for a free quote on your machinery export project.
           </p>
-          <Link href="/contact" className="mt-6 inline-block">
-            <Button size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
+          <Button render={<Link href="/contact" />} size="lg" className="mt-6 h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
               Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+          </Button>
         </div>
       </section>
     </div>

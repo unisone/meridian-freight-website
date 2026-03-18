@@ -18,7 +18,7 @@ export const services: Service[] = [
     description:
       "Professional dismantling, labeling, and secure container packing for heavy machinery of all types. Every component documented for reassembly.",
     longDescription:
-      "Our team of certified technicians handles complete or partial disassembly of heavy machinery for export. Each component is tagged, photographed, and cataloged using our proprietary documentation system. Hardware is bagged and labeled with corresponding assembly points. We use professional blocking, bracing, and tie-down methods to ensure zero damage during transit.",
+      "Our experienced technicians handle complete or partial disassembly of heavy machinery for export. Each component is tagged, photographed, and cataloged using our detailed documentation process. Hardware is bagged and labeled with corresponding assembly points. We use professional blocking, bracing, and tie-down methods to protect against damage during transit.",
     icon: "Package",
     keywords: ["machinery container packing services", "heavy equipment dismantling", "machinery disassembly for export"],
     equipmentTypes: ["Combines", "Tractors", "Excavators", "Bulldozers", "Loaders", "Cranes"],
@@ -57,7 +57,7 @@ export const services: Service[] = [
     description:
       "We help international buyers locate and inspect quality used machinery from dealers, auctions, and sellers across North America.",
     longDescription:
-      "Looking for specific equipment? We can assist with sourcing from our network of dealers, auctions, and private sellers across the USA and Canada. Each piece is inspected and documented with photos and condition reports before export. This is an additional service we offer alongside our core logistics — helping you find the right machinery and then handling the complete export process.",
+      "Looking for specific equipment? We can assist with sourcing from our network of dealers, auctions, and private sellers across the USA and Canada. Each piece is inspected and documented with photos and condition reports before export. All equipment is sourced as-is — we provide detailed condition reports and photos so you can make an informed decision. This is an additional service we offer alongside our core logistics — helping you find the right machinery and then handling the complete export process.",
     icon: "Search",
     keywords: ["used farm equipment sourcing", "equipment procurement services", "machinery sourcing international"],
     equipmentTypes: ["Any agricultural equipment", "Construction machinery", "Industrial equipment"],
