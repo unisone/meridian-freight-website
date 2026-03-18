@@ -6,9 +6,7 @@ import {
   zipToCoords,
   estimateRoadMiles,
   findBestOceanRate,
-  DELIVERY_PER_MILE,
   DRAYAGE_CHICAGO,
-  FLATRACK_PORTS,
 } from "@/lib/freight-engine-v2";
 import type {
   EquipmentPackingRate,
