@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     "equipment logistics USA Canada",
   ],
   authors: [{ name: COMPANY.name }],
+  alternates: { canonical: SITE.url },
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",

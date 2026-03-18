@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import { ProjectsGallery } from "@/components/projects-gallery";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { projects } from "@/content/projects";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Projects — Completed Machinery Export Projects",
-  description:
-    "Browse our portfolio of completed machinery export projects. From John Deere combines to CAT excavators — see real projects with real results.",
-};
+  description: "Browse our portfolio of completed machinery export projects. From John Deere combines to CAT excavators — see real projects with real results.",
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   const jsonLd = {

@@ -41,12 +41,14 @@ export async function generateMetadata({
   if (!service) return {};
 
   return {
-    title: `${service.title} | ${SITE.name}`,
+    title: service.title,
     description: service.description,
+    alternates: { canonical: `${SITE.url}/services/${slug}` },
     openGraph: {
-      title: service.title,
+      title: `${service.title} | ${SITE.name}`,
       description: service.description,
       url: `${SITE.url}/services/${slug}`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: service.title }],
     },
   };
 }

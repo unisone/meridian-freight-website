@@ -1,18 +1,13 @@
-import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CalculatorWizard } from "@/components/freight-calculator/calculator-wizard";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Freight Cost Calculator — Instant Estimate",
-  description:
-    "Get an instant freight cost estimate for your heavy equipment. Select your machinery type and destination for packing and shipping costs.",
-  keywords: [
-    "freight cost calculator heavy equipment",
-    "machinery shipping cost estimator",
-    "container loading cost calculator",
-    "equipment export shipping rates",
-  ],
-};
+  description: "Get an instant freight cost estimate for your heavy equipment. Select your machinery type and destination for packing and shipping costs.",
+  path: "/pricing/calculator",
+  keywords: ["freight cost calculator heavy equipment", "machinery shipping cost estimator", "container loading cost calculator", "equipment export shipping rates"],
+});
 
 export default function CalculatorPage() {
   return (

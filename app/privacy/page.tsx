@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Privacy Policy",
   description: `Privacy policy for ${SITE.domain}. How we collect, use, and protect your information.`,
-};
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

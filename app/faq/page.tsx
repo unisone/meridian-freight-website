@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { faqEntries } from "@/content/faq";
@@ -6,12 +5,13 @@ import { CONTACT } from "@/lib/constants";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone } from "lucide-react";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "FAQ — Frequently Asked Questions",
-  description:
-    "Find answers to common questions about machinery export, container packing, shipping costs, documentation, and more.",
-};
+  description: "Find answers to common questions about machinery export, container packing, shipping costs, documentation, and more.",
+  path: "/faq",
+});
 
 export default function FaqPage() {
   const jsonLd = {

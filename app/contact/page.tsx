@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contact Us — Get a Free Quote",
-  description:
-    "Contact Meridian Freight for a free quote on machinery export services. Available 24/7 by phone, WhatsApp, or email.",
-};
+  description: "Contact Meridian Freight for a free quote on machinery export services. Available 24/7 by phone, WhatsApp, or email.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

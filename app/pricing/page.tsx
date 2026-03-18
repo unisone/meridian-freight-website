@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Calculator, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PricingTable } from "@/components/pricing-table";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Pricing — Equipment Packing & Shipping Rates",
-  description:
-    "Reference pricing for machinery packing, container loading, and international shipping. 40+ equipment types with transparent pricing.",
-};
+  description: "Reference pricing for machinery packing, container loading, and international shipping. 40+ equipment types with transparent pricing.",
+  path: "/pricing",
+});
 
 export default function PricingPage() {
   return (

@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Terms of Service",
   description: `Terms of service for ${SITE.domain}.`,
-};
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

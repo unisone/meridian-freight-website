@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, ArrowRight, Clock, Globe, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,11 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { StatsBar } from "@/components/stats-bar";
 import { COMPANY, WAREHOUSE_LOCATIONS } from "@/lib/constants";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "About Us — Our Story & Locations",
   description: `${COMPANY.name} — ${COMPANY.tagline}. Over 10 years of experience in machinery export logistics with warehouses across USA & Canada.`,
-};
+  path: "/about",
+});
 
 const differentiators = [
   {

@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
 import { ServicesGrid } from "@/components/services-grid";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProcessSteps } from "@/components/process-steps";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Services — Machinery Export & Logistics",
-  description:
-    "Complete machinery export services: dismantling, container packing, shipping, documentation, storage, and equipment procurement across USA & Canada.",
-};
+  description: "Complete machinery export services: dismantling, container packing, shipping, documentation, storage, and equipment procurement across USA & Canada.",
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (
