@@ -654,7 +654,7 @@ export function CalculatorWizard() {
       </div>
 
       {/* ─── MOBILE: Sticky bottom bar + Sheet ──────────────────── */}
-      <div className="fixed inset-x-0 bottom-0 z-40 lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden">
         <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
           {/* Bottom bar */}
           <div className="flex items-center justify-between border-t border-slate-800 bg-slate-900 px-4 py-3 shadow-2xl">
