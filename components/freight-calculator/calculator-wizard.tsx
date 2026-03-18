@@ -293,31 +293,42 @@ export function CalculatorWizard() {
             {/* Packing cost preview */}
             {selectedEquipment && (
               <div className="rounded-lg bg-sky-50 p-4">
-                <div className="flex items-center gap-2">
-                  <div className="text-sm text-slate-600">Estimated packing cost:</div>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Info className="h-4 w-4 text-slate-400" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        Cost to pack and load your equipment into a {containerLabel.toLowerCase()} at our Albion, IA facility.
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <div className="font-mono text-xl font-bold text-sky-600">
-                  {needsSize && equipmentSize && equipmentSize > 0
-                    ? formatDollar(selectedEquipment.packing_cost * equipmentSize)
-                    : needsSize
-                      ? `${formatDollar(selectedEquipment.packing_cost)}/${unitLabel ? unitLabel.slice(0, -1) : "unit"}`
-                      : formatDollar(selectedEquipment.packing_cost)
-                  }
-                </div>
-                {needsSize && equipmentSize && equipmentSize > 0 && (
-                  <div className="mt-0.5 text-xs text-slate-500">
-                    {formatDollar(selectedEquipment.packing_cost)}/{unitLabel ? unitLabel.slice(0, -1) : "unit"} × {equipmentSize} {unitLabel}
-                  </div>
+                {selectedEquipment.container_type === "fortyhc" ? (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <div className="text-sm text-slate-600">Estimated packing cost:</div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Info className="h-4 w-4 text-slate-400" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Cost to pack and load your equipment into a 40&apos; high cube container at our Albion, IA facility.
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <div className="font-mono text-xl font-bold text-sky-600">
+                      {needsSize && equipmentSize && equipmentSize > 0
+                        ? formatDollar(selectedEquipment.packing_cost * equipmentSize)
+                        : needsSize
+                          ? `${formatDollar(selectedEquipment.packing_cost)}/${unitLabel ? unitLabel.slice(0, -1) : "unit"}`
+                          : formatDollar(selectedEquipment.packing_cost)
+                      }
+                    </div>
+                    {needsSize && equipmentSize && equipmentSize > 0 && (
+                      <div className="mt-0.5 text-xs text-slate-500">
+                        {formatDollar(selectedEquipment.packing_cost)}/{unitLabel ? unitLabel.slice(0, -1) : "unit"} × {equipmentSize} {unitLabel}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="text-sm text-slate-600">Shipping method:</div>
+                    <div className="mt-1 text-sm text-slate-700">
+                      Ships whole on a flat rack. Packing & loading included in sea freight.
+                    </div>
+                  </>
                 )}
                 <div className="mt-2 flex items-center gap-2">
                   <Badge variant="secondary" className="text-xs">
