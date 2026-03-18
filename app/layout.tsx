@@ -8,6 +8,8 @@ import { Footer } from "@/components/footer";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { MobileBottomBar } from "@/components/mobile-bottom-bar";
 import { CookieConsent } from "@/components/cookie-consent";
+import { GoogleAnalytics } from "@/components/google-analytics";
+import { MetaPixel } from "@/components/meta-pixel";
 import { COMPANY, CONTACT, SITE, SOCIAL } from "@/lib/constants";
 import "./globals.css";
 
@@ -122,6 +124,8 @@ export default function RootLayout({
           <MobileBottomBar />
           <CookieConsent />
         </TooltipProvider>
+        <GoogleAnalytics />
+        <MetaPixel />
         <Analytics />
         <SpeedInsights />
       </body>
