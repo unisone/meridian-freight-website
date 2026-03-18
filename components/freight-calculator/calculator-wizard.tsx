@@ -1,39 +1,73 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { ArrowLeft, ArrowRight, Loader2, Package, Globe, Mail, CheckCircle, Info, Ship, Truck } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Globe,
+  Info,
+  Loader2,
+  Package,
+  Ship,
+  Truck,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
 import { getCalculatorData } from "@/app/actions/calculator-data";
 import { calculateFreightV2, formatDollar } from "@/lib/freight-engine-v2";
-import type { CalculatorData, EquipmentPackingRate, FreightEstimateV2 } from "@/lib/types/calculator";
-import { CATEGORY_LABELS, UNIT_LABELS, COUNTRY_NAMES } from "@/lib/types/calculator";
-import Link from "next/link";
+import type {
+  CalculatorData,
+  EquipmentPackingRate,
+  FreightEstimateV2,
+} from "@/lib/types/calculator";
+import {
+  CATEGORY_LABELS,
+  UNIT_LABELS,
+  COUNTRY_NAMES,
+} from "@/lib/types/calculator";
 import { CONTACT } from "@/lib/constants";
+import Link from "next/link";
 
-type Step = 1 | 2 | 3 | 4;
+import { CalculatorProgressBar } from "./calculator-progress-bar";
+import { CalculatorEstimateCard } from "./calculator-estimate-card";
+import { CATEGORY_ICONS } from "./category-icons";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function CalculatorWizard() {
-  // Data
+  // ─── Data ──────────────────────────────────────────────────────────────
   const [data, setData] = useState<CalculatorData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dataError, setDataError] = useState(false);
 
-  // Wizard state
-  const [step, setStep] = useState<Step>(1);
+  // ─── Form state ────────────────────────────────────────────────────────
   const [category, setCategory] = useState("");
-  const [selectedEquipment, setSelectedEquipment] = useState<EquipmentPackingRate | null>(null);
+  const [selectedEquipment, setSelectedEquipment] =
+    useState<EquipmentPackingRate | null>(null);
   const [equipmentSize, setEquipmentSize] = useState<number | null>(null);
   const [destinationCountry, setDestinationCountry] = useState("");
   const [zipCode, setZipCode] = useState("");
+
+  // ─── Email gate state ──────────────────────────────────────────────────
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
@@ -43,22 +77,25 @@ export function CalculatorWizard() {
   const [result, setResult] = useState<CalculatorResult | null>(null);
   const submittingRef = useRef(false);
 
-  // Client-side preview estimate
+  // ─── Preview estimate ──────────────────────────────────────────────────
   const [preview, setPreview] = useState<FreightEstimateV2 | null>(null);
 
-  // Fetch rate data on mount
+  // ─── Mobile sheet ──────────────────────────────────────────────────────
+  const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
+
+  // ─── Category expansion (for >8 categories) ───────────────────────────
+  const [showAllCategories, setShowAllCategories] = useState(false);
+
+  // ─── Fetch rate data on mount ──────────────────────────────────────────
   useEffect(() => {
     getCalculatorData().then((d) => {
-      if (d) {
-        setData(d);
-      } else {
-        setDataError(true);
-      }
+      if (d) setData(d);
+      else setDataError(true);
       setLoading(false);
     });
   }, []);
 
-  // Recalculate preview when inputs change
+  // ─── Recalculate preview when inputs change ────────────────────────────
   useEffect(() => {
     if (!selectedEquipment || !destinationCountry || !data) {
       setPreview(null);
@@ -74,19 +111,46 @@ export function CalculatorWizard() {
     setPreview(est);
   }, [selectedEquipment, equipmentSize, destinationCountry, zipCode, data]);
 
+  // ─── Derived state ─────────────────────────────────────────────────────
   const filteredEquipment = data
     ? category
       ? data.equipment.filter((e) => e.equipment_category === category)
       : data.equipment
     : [];
 
-  const unitLabel = selectedEquipment ? UNIT_LABELS[selectedEquipment.packing_unit] : null;
-  const isEmailValid = EMAIL_RE.test(email);
-  const needsSize = selectedEquipment !== null && selectedEquipment.packing_unit !== "flat";
-  const containerLabel = selectedEquipment?.container_type === "fortyhc" ? "40' High Cube Container" : "Flat Rack";
+  const unitLabel = selectedEquipment
+    ? UNIT_LABELS[selectedEquipment.packing_unit]
+    : null;
+  const needsSize =
+    selectedEquipment !== null && selectedEquipment.packing_unit !== "flat";
+  const containerLabel =
+    selectedEquipment?.container_type === "fortyhc"
+      ? "40' High Cube Container"
+      : "Flat Rack";
 
+  // Progress: how many steps are complete?
+  const step1Done = selectedEquipment !== null;
+  const step2Done =
+    step1Done && (!needsSize || (equipmentSize !== null && equipmentSize > 0));
+  const step3Done = step2Done && destinationCountry !== "" && preview !== null;
+  const step4Done = result?.success === true;
+  const completedSteps =
+    (step1Done ? 1 : 0) +
+    (step2Done ? 1 : 0) +
+    (step3Done ? 1 : 0) +
+    (step4Done ? 1 : 0);
+  const isComplete = step3Done; // all 3 input sections filled
+
+  // Categories to display (first 8 + expansion)
+  const visibleCategories =
+    data && !showAllCategories && data.categories.length > 8
+      ? data.categories.slice(0, 8)
+      : data?.categories ?? [];
+
+  // ─── Handlers ──────────────────────────────────────────────────────────
   async function handleCalculate() {
-    if (!isEmailValid || !selectedEquipment || !destinationCountry) return;
+    if (!EMAIL_RE.test(email) || !selectedEquipment || !destinationCountry)
+      return;
     if (submittingRef.current) return;
     submittingRef.current = true;
     setIsSubmitting(true);
@@ -123,13 +187,16 @@ export function CalculatorWizard() {
 
       if (res.success && res.estimate) {
         setResult(res);
-        setStep(4);
         trackGA4Event("generate_lead", {
           event_category: "calculator",
           lead_source: "freight_calculator_v2",
         });
         if (res.eventId) {
-          trackPixelEvent("Lead", { content_name: "freight_calculator_v2" }, res.eventId);
+          trackPixelEvent(
+            "Lead",
+            { content_name: "freight_calculator_v2" },
+            res.eventId
+          );
         }
       } else {
         setError(res.error || "Something went wrong");
@@ -143,7 +210,6 @@ export function CalculatorWizard() {
   }
 
   function resetAll() {
-    setStep(1);
     setCategory("");
     setSelectedEquipment(null);
     setEquipmentSize(null);
@@ -156,34 +222,50 @@ export function CalculatorWizard() {
     setError("");
     setResult(null);
     setPreview(null);
+    setMobileSheetOpen(false);
+    setShowAllCategories(false);
   }
 
-  // Loading state
+  // ─── Loading state ─────────────────────────────────────────────────────
   if (loading) {
     return (
-      <Card className="mx-auto max-w-2xl border-sky-200 shadow-xl">
-        <CardContent className="flex items-center justify-center p-12">
-          <Loader2 className="mr-3 h-6 w-6 animate-spin text-sky-500" />
-          <span className="text-slate-500">Loading freight rates...</span>
-        </CardContent>
-      </Card>
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="mr-3 h-6 w-6 animate-spin text-primary" />
+        <span className="text-muted-foreground">Loading freight rates...</span>
+      </div>
     );
   }
 
-  // Data unavailable
+  // ─── Data unavailable ──────────────────────────────────────────────────
   if (dataError || !data) {
     return (
-      <Card className="mx-auto max-w-2xl border-sky-200 shadow-xl">
-        <CardContent className="p-8 text-center space-y-4">
-          <h3 className="text-lg font-bold text-slate-900">Calculator Temporarily Unavailable</h3>
-          <p className="text-sm text-slate-600">
-            We&apos;re unable to load current freight rates. Please contact us directly for a quote.
+      <Card className="mx-auto max-w-2xl border-primary/20 shadow-xl">
+        <CardContent className="space-y-4 p-8 text-center">
+          <h3 className="text-lg font-bold text-foreground">
+            Calculator Temporarily Unavailable
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            We&apos;re unable to load current freight rates. Please contact us
+            directly for a quote.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button render={<Link href="/contact" />} className="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl">
+            <Button
+              render={<Link href="/contact" />}
+              className="bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
+            >
               Contact Us
             </Button>
-            <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" />} variant="outline" className="py-5 rounded-xl font-semibold border-emerald-600 text-emerald-600 hover:bg-emerald-50">
+            <Button
+              render={
+                <a
+                  href={CONTACT.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              }
+              variant="outline"
+              className="border-emerald-600 py-5 font-semibold text-emerald-600 hover:bg-emerald-50"
+            >
               WhatsApp Us
             </Button>
           </div>
@@ -192,453 +274,453 @@ export function CalculatorWizard() {
     );
   }
 
+  // ─── Shared estimate card props ────────────────────────────────────────
+  const estimateCardProps = {
+    preview,
+    result,
+    selectedEquipment,
+    destinationCountry,
+    isComplete,
+    email,
+    onEmailChange: setEmail,
+    name,
+    onNameChange: setName,
+    company,
+    onCompanyChange: setCompany,
+    website,
+    onWebsiteChange: setWebsite,
+    isSubmitting,
+    error,
+    onSubmit: handleCalculate,
+    onReset: resetAll,
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // RENDER
+  // ═══════════════════════════════════════════════════════════════════════
   return (
-    <Card className="mx-auto max-w-2xl overflow-hidden border-sky-200 shadow-xl">
-      {/* Progress indicator */}
-      <div className="flex border-b border-slate-100" role="group" aria-label={`Step ${step} of 4`}>
-        {[1, 2, 3, 4].map((s) => (
-          <div
-            key={s}
-            className={`flex-1 py-2.5 text-center text-xs font-medium transition-colors ${
-              s <= step ? "bg-sky-500 text-white" : "bg-slate-50 text-slate-400"
-            }`}
-          >
-            {s === 1 && "Equipment"}
-            {s === 2 && "Destination"}
-            {s === 3 && "Details"}
-            {s === 4 && "Estimate"}
-          </div>
-        ))}
-      </div>
+    <div>
+      {/* Progress bar */}
+      <CalculatorProgressBar completedSteps={completedSteps} />
 
-      <CardContent className="p-6 sm:p-8">
-        {/* Step 1: Equipment Selection */}
-        {step === 1 && (
-          <div className="space-y-5">
-            <div className="flex items-center gap-2 text-sky-500">
-              <Package className="h-5 w-5" />
-              <h3 className="text-lg font-bold">Select Equipment</h3>
-            </div>
+      {/* Two-column layout */}
+      <div className="flex flex-col gap-8 lg:flex-row">
+        {/* ─── LEFT COLUMN: Form sections ─────────────────────────── */}
+        <div className="min-w-0 flex-[3] space-y-8">
+          {/* ╔═══════════════════════════════════════════════╗ */}
+          {/* ║ Section 01: Select Equipment                  ║ */}
+          {/* ╚═══════════════════════════════════════════════╝ */}
+          <section>
+            <SectionHeader num={1} title="Select Equipment Category" />
 
-            <div>
-              <Label>Category</Label>
-              <div className="mt-2 flex flex-wrap gap-2" role="listbox" aria-label="Equipment category">
-                {data.categories.map((cat) => (
+            {/* Category cards grid */}
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {visibleCategories.map((cat) => {
+                const Icon = CATEGORY_ICONS[cat] ?? Package;
+                const isSelected = category === cat;
+                return (
                   <button
                     key={cat}
-                    role="option"
-                    aria-selected={category === cat}
-                    onClick={() => { setCategory(cat); setSelectedEquipment(null); setEquipmentSize(null); }}
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                      category === cat
-                        ? "bg-sky-500 text-white"
-                        : "border border-slate-200 text-slate-700 hover:bg-sky-50"
+                    onClick={() => {
+                      setCategory(cat);
+                      setSelectedEquipment(null);
+                      setEquipmentSize(null);
+                    }}
+                    className={`group flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-all ${
+                      isSelected
+                        ? "border-primary bg-primary/5 ring-1 ring-primary/20"
+                        : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
                     }`}
+                    aria-pressed={isSelected}
                   >
-                    {CATEGORY_LABELS[cat] ?? cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {category && (
-              <div>
-                <Label>Equipment Type</Label>
-                <div className="mt-2 max-h-48 space-y-1.5 overflow-y-auto rounded-lg border border-slate-200 p-2" role="listbox" aria-label="Equipment type">
-                  {filteredEquipment.map((eq) => (
-                    <button
-                      key={eq.id}
-                      role="option"
-                      aria-selected={selectedEquipment?.id === eq.id}
-                      onClick={() => { setSelectedEquipment(eq); setEquipmentSize(null); }}
-                      className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
-                        selectedEquipment?.id === eq.id
-                          ? "bg-sky-500 text-white"
-                          : "hover:bg-slate-50"
+                    <Icon
+                      className={`h-6 w-6 transition-colors ${
+                        isSelected
+                          ? "text-primary"
+                          : "text-muted-foreground group-hover:text-primary/70"
+                      }`}
+                    />
+                    <span
+                      className={`text-xs font-medium leading-tight ${
+                        isSelected ? "text-primary" : "text-foreground"
                       }`}
                     >
-                      <div className="font-medium">{eq.display_name_en}</div>
-                      {eq.models && (
-                        <div className={`text-xs ${selectedEquipment?.id === eq.id ? "text-sky-200" : "text-slate-500"}`}>
-                          {eq.models}
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                      {CATEGORY_LABELS[cat] ?? cat}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Show more categories */}
+            {data.categories.length > 8 && !showAllCategories && (
+              <button
+                onClick={() => setShowAllCategories(true)}
+                className="mt-2 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+              >
+                Show all {data.categories.length} categories{" "}
+                <ChevronDown className="h-3 w-3" />
+              </button>
             )}
 
-            {/* Size input for variable pricing */}
-            {needsSize && (
-              <div>
-                <Label htmlFor="equipment-size">
-                  {selectedEquipment.packing_unit === "per_row" && "Number of rows"}
-                  {selectedEquipment.packing_unit === "per_foot" && "Width in feet"}
-                  {selectedEquipment.packing_unit === "per_shank" && "Number of shanks"}
-                  {selectedEquipment.packing_unit === "per_bottom" && "Number of bottoms"}
+            {/* Equipment type list */}
+            {category && (
+              <div className="mt-4">
+                <Label className="text-sm text-muted-foreground">
+                  Equipment Type
                 </Label>
-                <Input
-                  id="equipment-size"
-                  type="number"
-                  min={1}
-                  value={equipmentSize ?? ""}
-                  onChange={(e) => setEquipmentSize(e.target.value ? parseInt(e.target.value, 10) : null)}
-                  placeholder="Enter size"
-                  className="mt-1.5 max-w-32"
-                />
+                <ScrollArea className="mt-2 max-h-64 rounded-xl border border-border">
+                  <div className="space-y-1 p-2">
+                    {filteredEquipment.map((eq) => {
+                      const isSelected = selectedEquipment?.id === eq.id;
+                      return (
+                        <button
+                          key={eq.id}
+                          onClick={() => {
+                            setSelectedEquipment(eq);
+                            setEquipmentSize(null);
+                          }}
+                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground"
+                              : "hover:bg-muted"
+                          }`}
+                        >
+                          <div>
+                            <div className="font-medium">
+                              {eq.display_name_en}
+                            </div>
+                            {eq.models && (
+                              <div
+                                className={`text-xs ${
+                                  isSelected
+                                    ? "text-primary-foreground/70"
+                                    : "text-muted-foreground"
+                                }`}
+                              >
+                                {eq.models}
+                              </div>
+                            )}
+                          </div>
+                          <Badge
+                            variant="secondary"
+                            className={`text-[10px] ${
+                              isSelected
+                                ? "bg-primary-foreground/20 text-primary-foreground"
+                                : ""
+                            }`}
+                          >
+                            {eq.container_type === "fortyhc" ? (
+                              <>
+                                <Ship className="mr-0.5 h-2.5 w-2.5" /> 40&apos;HC
+                              </>
+                            ) : (
+                              <>
+                                <Truck className="mr-0.5 h-2.5 w-2.5" /> Flat
+                              </>
+                            )}
+                          </Badge>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
               </div>
             )}
+          </section>
 
-            {/* Packing cost preview */}
-            {selectedEquipment && (
-              <div className="rounded-lg bg-sky-50 p-4">
-                {selectedEquipment.container_type === "fortyhc" ? (
-                  <>
-                    <div className="flex items-center gap-2">
-                      <div className="text-sm text-slate-600">Estimated packing cost:</div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Info className="h-4 w-4 text-slate-400" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            Cost to pack and load your equipment into a 40&apos; high cube container at our Albion, IA facility.
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <div className="font-mono text-xl font-bold text-sky-600">
-                      {needsSize && equipmentSize && equipmentSize > 0
-                        ? formatDollar(selectedEquipment.packing_cost * equipmentSize)
-                        : needsSize
-                          ? `${formatDollar(selectedEquipment.packing_cost)}/${unitLabel ? unitLabel.slice(0, -1) : "unit"}`
-                          : formatDollar(selectedEquipment.packing_cost)
-                      }
-                    </div>
-                    {needsSize && equipmentSize && equipmentSize > 0 && (
-                      <div className="mt-0.5 text-xs text-slate-500">
-                        {formatDollar(selectedEquipment.packing_cost)}/{unitLabel ? unitLabel.slice(0, -1) : "unit"} × {equipmentSize} {unitLabel}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <div className="text-sm text-slate-600">Shipping method:</div>
-                    <div className="mt-1 text-sm text-slate-700">
-                      Ships whole on a flat rack. Packing & loading included in sea freight.
-                    </div>
-                  </>
-                )}
-                <div className="mt-2 flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
-                    {selectedEquipment.container_type === "fortyhc" ? (
-                      <><Ship className="mr-1 h-3 w-3" /> 40&apos; High Cube</>
-                    ) : (
-                      <><Truck className="mr-1 h-3 w-3" /> Flat Rack</>
-                    )}
-                  </Badge>
-                </div>
-              </div>
-            )}
+          {/* ╔═══════════════════════════════════════════════╗ */}
+          {/* ║ Section 02: Equipment Specs                   ║ */}
+          {/* ╚═══════════════════════════════════════════════╝ */}
+          <section
+            className={
+              !selectedEquipment ? "pointer-events-none opacity-40" : ""
+            }
+          >
+            <SectionHeader num={2} title="Equipment Specs" />
 
-            <Button
-              onClick={() => setStep(2)}
-              disabled={!selectedEquipment || (needsSize && (!equipmentSize || equipmentSize < 1))}
-              className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl"
-            >
-              Next: Select Destination <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        )}
-
-        {/* Step 2: Destination */}
-        {step === 2 && (
-          <div className="space-y-5">
-            <div className="flex items-center gap-2 text-sky-500">
-              <Globe className="h-5 w-5" />
-              <h3 className="text-lg font-bold">Select Destination</h3>
-            </div>
-
-            <div>
-              <Label htmlFor="dest-country">Destination Country *</Label>
-              <select
-                id="dest-country"
-                value={destinationCountry}
-                onChange={(e) => setDestinationCountry(e.target.value)}
-                className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
-              >
-                <option value="">Select a country...</option>
-                {data.countries.map((code) => (
-                  <option key={code} value={code}>
-                    {COUNTRY_NAMES[code] ?? code}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="zip-code">US Pickup ZIP Code</Label>
-                <span className="text-xs text-slate-400">(optional)</span>
-              </div>
-              <Input
-                id="zip-code"
-                type="text"
-                inputMode="numeric"
-                maxLength={5}
-                value={zipCode}
-                onChange={(e) => setZipCode(e.target.value.replace(/\D/g, "").slice(0, 5))}
-                placeholder="e.g. 50005"
-                className="mt-1.5 max-w-32"
-              />
-              <p className="mt-1 text-xs text-slate-500">
-                Enter ZIP to include US inland transport in your estimate.
+            {!selectedEquipment ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                Select equipment above to see specifications.
               </p>
-            </div>
-
-            {/* Route preview */}
-            {destinationCountry && selectedEquipment && (
-              <div className="rounded-lg bg-slate-50 p-4 text-sm">
-                <div className="font-semibold text-slate-900">Shipping route:</div>
-                <div className="mt-1 text-slate-600">
-                  {selectedEquipment.container_type === "fortyhc" ? (
-                    <>
-                      {zipCode ? `ZIP ${zipCode}` : "Pickup location"} → Albion, IA (packing) → Chicago, IL (rail) → {COUNTRY_NAMES[destinationCountry] ?? destinationCountry}
-                    </>
-                  ) : (
-                    <>
-                      {zipCode ? `ZIP ${zipCode}` : "Pickup location"} → Nearest US port → {COUNTRY_NAMES[destinationCountry] ?? destinationCountry}
-                    </>
-                  )}
-                </div>
-                {preview && (
-                  <div className="mt-2 font-mono text-lg font-bold text-sky-600">
-                    Est. {formatDollar(preview.estimatedTotal)}
-                    {preview.totalExcludesInland && <span className="ml-1 text-xs font-normal text-slate-400">(excl. inland)</span>}
+            ) : (
+              <div className="mt-4 space-y-4">
+                {/* Size input for variable pricing */}
+                {needsSize && (
+                  <div>
+                    <Label htmlFor="equipment-size" className="text-sm">
+                      {selectedEquipment.packing_unit === "per_row" &&
+                        "Number of Rows"}
+                      {selectedEquipment.packing_unit === "per_foot" &&
+                        "Width in Feet"}
+                      {selectedEquipment.packing_unit === "per_shank" &&
+                        "Number of Shanks"}
+                      {selectedEquipment.packing_unit === "per_bottom" &&
+                        "Number of Bottoms"}
+                    </Label>
+                    <Input
+                      id="equipment-size"
+                      type="number"
+                      min={1}
+                      value={equipmentSize ?? ""}
+                      onChange={(e) =>
+                        setEquipmentSize(
+                          e.target.value ? parseInt(e.target.value, 10) : null
+                        )
+                      }
+                      placeholder="Enter size"
+                      className="mt-1.5 max-w-40"
+                    />
                   </div>
                 )}
+
+                {/* Packing cost preview */}
+                <div className="rounded-xl bg-muted p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      Estimated packing cost:
+                    </span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Info className="h-4 w-4 text-muted-foreground" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Cost to pack and load your equipment into a{" "}
+                          {containerLabel.toLowerCase()} at our Albion, IA
+                          facility.
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <div className="font-mono text-xl font-bold text-primary">
+                    {needsSize && equipmentSize && equipmentSize > 0
+                      ? formatDollar(
+                          selectedEquipment.packing_cost * equipmentSize
+                        )
+                      : needsSize
+                        ? `${formatDollar(selectedEquipment.packing_cost)}/${unitLabel ? unitLabel.slice(0, -1) : "unit"}`
+                        : formatDollar(selectedEquipment.packing_cost)}
+                  </div>
+                  {needsSize && equipmentSize && equipmentSize > 0 && (
+                    <div className="mt-0.5 text-xs text-muted-foreground">
+                      {formatDollar(selectedEquipment.packing_cost)}/
+                      {unitLabel ? unitLabel.slice(0, -1) : "unit"} ×{" "}
+                      {equipmentSize} {unitLabel}
+                    </div>
+                  )}
+                  <div className="mt-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {selectedEquipment.container_type === "fortyhc" ? (
+                        <>
+                          <Ship className="mr-1 h-3 w-3" /> 40&apos; High Cube
+                        </>
+                      ) : (
+                        <>
+                          <Truck className="mr-1 h-3 w-3" /> Flat Rack
+                        </>
+                      )}
+                    </Badge>
+                  </div>
+                </div>
               </div>
             )}
+          </section>
 
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setStep(1)} className="flex-1 py-5 rounded-xl">
-                <ArrowLeft className="mr-2 h-4 w-4" /> Back
-              </Button>
-              <Button
-                onClick={() => setStep(3)}
-                disabled={!destinationCountry || !preview}
-                className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl"
-              >
-                Next <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        )}
+          {/* ╔═══════════════════════════════════════════════╗ */}
+          {/* ║ Section 03: Shipping Route                    ║ */}
+          {/* ╚═══════════════════════════════════════════════╝ */}
+          <section
+            className={!step2Done ? "pointer-events-none opacity-40" : ""}
+          >
+            <SectionHeader num={3} title="Shipping Route" />
 
-        {/* Step 3: Email Gate */}
-        {step === 3 && (
-          <div className="space-y-5">
-            <div className="flex items-center gap-2 text-sky-500">
-              <Mail className="h-5 w-5" />
-              <h3 className="text-lg font-bold">Get Your Estimate</h3>
-            </div>
+            {!step2Done ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                Complete equipment selection to configure routing.
+              </p>
+            ) : (
+              <div className="mt-4 space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {/* Country */}
+                  <div>
+                    <Label
+                      htmlFor="dest-country"
+                      className="flex items-center gap-1.5 text-sm"
+                    >
+                      <Globe className="h-3.5 w-3.5 text-primary" />
+                      Destination Country *
+                    </Label>
+                    <select
+                      id="dest-country"
+                      value={destinationCountry}
+                      onChange={(e) => setDestinationCountry(e.target.value)}
+                      className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                    >
+                      <option value="">Select a country...</option>
+                      {data.countries.map((code) => (
+                        <option key={code} value={code}>
+                          {COUNTRY_NAMES[code] ?? code}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-            <p className="text-sm text-slate-600">
-              Enter your email to receive the freight cost estimate. We&apos;ll also send a copy to your inbox.
-            </p>
-
-            <div>
-              <Label htmlFor="calc-email">Email *</Label>
-              <Input
-                id="calc-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="mt-1.5"
-              />
-              {email && !isEmailValid && (
-                <p className="mt-1 text-xs text-red-500">Please enter a valid email address</p>
-              )}
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label htmlFor="calc-name">Name</Label>
-                <Input id="calc-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Optional" className="mt-1.5" />
-              </div>
-              <div>
-                <Label htmlFor="calc-company">Company</Label>
-                <Input id="calc-company" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Optional" className="mt-1.5" />
-              </div>
-            </div>
-
-            {/* Honeypot */}
-            <div aria-hidden="true" style={{ opacity: 0, position: "absolute", pointerEvents: "none", height: 0, overflow: "hidden" }}>
-              <Label htmlFor="calc-website">Website</Label>
-              <Input id="calc-website" type="text" value={website} onChange={(e) => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" />
-            </div>
-
-            {/* Summary */}
-            <div className="rounded-lg bg-slate-50 p-4 text-sm space-y-1">
-              <div className="font-semibold text-slate-900">Your selection:</div>
-              <div className="text-slate-600">{selectedEquipment?.display_name_en}</div>
-              <div className="text-slate-600">
-                → {COUNTRY_NAMES[destinationCountry] ?? destinationCountry}
-                {zipCode && <span> (ZIP: {zipCode})</span>}
-              </div>
-              <div className="text-slate-500 text-xs">{containerLabel}</div>
-              {preview && (
-                <div className="font-mono font-bold text-sky-600">Preview: {formatDollar(preview.estimatedTotal)}</div>
-              )}
-            </div>
-
-            {error && <p className="text-center text-sm text-red-600">{error}</p>}
-
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setStep(2)} className="flex-1 py-5 rounded-xl">
-                <ArrowLeft className="mr-2 h-4 w-4" /> Back
-              </Button>
-              <Button
-                onClick={handleCalculate}
-                disabled={!isEmailValid || isSubmitting}
-                className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl"
-              >
-                {isSubmitting ? (
-                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Calculating...</>
-                ) : (
-                  <>Calculate Estimate</>
-                )}
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 4: Results */}
-        {step === 4 && result?.estimate && (
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 text-emerald-600">
-              <CheckCircle className="h-5 w-5" />
-              <h3 className="text-lg font-bold">Your Freight Estimate</h3>
-            </div>
-
-            <div className="space-y-4 rounded-xl border border-sky-200 bg-sky-50 p-6">
-              {/* Line items */}
-              {result.estimate.usInlandTransport !== null && (
-                <div className="flex justify-between">
-                  <span className="text-slate-700">
-                    US Inland Transport
-                    {result.estimate.distanceMiles !== null && (
-                      <span className="ml-1 text-xs text-slate-400">({result.estimate.distanceMiles} mi × ${result.estimate.deliveryRatePerMile}/mi{result.estimate.containerType === "fortyhc" ? " + $1,800 drayage" : ""})</span>
-                    )}
-                  </span>
-                  <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.usInlandTransport)}</span>
+                  {/* ZIP */}
+                  <div>
+                    <Label
+                      htmlFor="zip-code"
+                      className="flex items-center gap-1.5 text-sm"
+                    >
+                      <Package className="h-3.5 w-3.5 text-primary" />
+                      US Pickup ZIP Code
+                      <span className="text-xs text-muted-foreground">
+                        (optional)
+                      </span>
+                    </Label>
+                    <Input
+                      id="zip-code"
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={5}
+                      value={zipCode}
+                      onChange={(e) =>
+                        setZipCode(
+                          e.target.value.replace(/\D/g, "").slice(0, 5)
+                        )
+                      }
+                      placeholder="e.g. 50005"
+                      className="mt-1.5"
+                    />
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Enter ZIP to include US inland transport in your estimate.
+                    </p>
+                  </div>
                 </div>
-              )}
-              {result.estimate.usInlandTransport === null && (
-                <div className="flex justify-between">
-                  <span className="text-slate-400">US Inland Transport</span>
-                  <span className="text-xs text-slate-400 italic">Enter ZIP for estimate</span>
-                </div>
-              )}
 
-              {/* 40HC: separate packing + ocean lines */}
-              {result.estimate.containerType === "fortyhc" && (
-                <>
-                  <div className="flex justify-between">
-                    <div>
-                      <span className="text-slate-700">Packing & Loading</span>
-                      {result.estimate.packingBreakdown && (
-                        <div className="text-xs text-slate-400">{result.estimate.packingBreakdown}</div>
+                {/* Route preview */}
+                {destinationCountry && selectedEquipment && (
+                  <div className="rounded-xl bg-muted p-4 text-sm">
+                    <div className="font-semibold text-foreground">
+                      Shipping route:
+                    </div>
+                    <div className="mt-1 text-muted-foreground">
+                      {selectedEquipment.container_type === "fortyhc" ? (
+                        <>
+                          {zipCode ? `ZIP ${zipCode}` : "Pickup location"} →
+                          Albion, IA (packing) → Chicago, IL (rail) →{" "}
+                          {COUNTRY_NAMES[destinationCountry] ??
+                            destinationCountry}
+                        </>
+                      ) : (
+                        <>
+                          {zipCode ? `ZIP ${zipCode}` : "Pickup location"} →
+                          Nearest US port →{" "}
+                          {COUNTRY_NAMES[destinationCountry] ??
+                            destinationCountry}
+                        </>
                       )}
                     </div>
-                    <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.packingAndLoading)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <div>
-                      <span className="text-slate-700">Ocean Freight</span>
-                      <div className="text-xs text-slate-400">
-                        {result.estimate.carrier} • {result.estimate.originPort} → {result.estimate.destinationPort}
-                        {result.estimate.transitTimeDays && ` • ${result.estimate.transitTimeDays} days`}
+                    {preview && (
+                      <div className="mt-2 font-mono text-lg font-bold text-primary">
+                        Est. {formatDollar(preview.estimatedTotal)}
+                        {preview.totalExcludesInland && (
+                          <span className="ml-1 text-xs font-normal text-muted-foreground">
+                            (excl. inland)
+                          </span>
+                        )}
                       </div>
-                    </div>
-                    <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.oceanFreight)}</span>
+                    )}
                   </div>
-                </>
-              )}
-
-              {/* Flatrack: combined "Sea Freight & Loading" (packing included in packing_drayage) */}
-              {result.estimate.containerType === "flatrack" && (
-                <div className="flex justify-between">
-                  <div>
-                    <span className="text-slate-700">Sea Freight & Loading</span>
-                    <div className="text-xs text-slate-400">
-                      {result.estimate.carrier} • {result.estimate.originPort} → {result.estimate.destinationPort}
-                      {result.estimate.transitTimeDays && ` • ${result.estimate.transitTimeDays} days`}
-                    </div>
-                    <div className="text-xs text-slate-400">Includes port-side packing & drayage</div>
-                  </div>
-                  <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.oceanFreight)}</span>
-                </div>
-              )}
-
-              <div className="border-t border-sky-200 pt-3 flex justify-between">
-                <span className="font-semibold text-slate-900">Estimated Total</span>
-                <span className="font-mono text-2xl font-bold text-sky-600">
-                  {formatDollar(result.estimate.estimatedTotal)}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="secondary" className="text-xs">
-                  {result.estimate.containerType === "fortyhc" ? (
-                    <><Ship className="mr-1 h-3 w-3" /> 40&apos; High Cube</>
-                  ) : (
-                    <><Truck className="mr-1 h-3 w-3" /> Flat Rack</>
-                  )}
-                </Badge>
-                <Badge variant="secondary" className="text-xs">
-                  {result.estimate.carrier}
-                </Badge>
-                {result.estimate.totalExcludesInland && (
-                  <Badge variant="outline" className="text-xs text-amber-600 border-amber-300">
-                    Excludes US inland
-                  </Badge>
                 )}
               </div>
-            </div>
-
-            {result.estimate.notes.length > 0 && (
-              <div className="space-y-1">
-                {result.estimate.notes.map((note, i) => (
-                  <p key={i} className="text-xs text-amber-600 flex items-start gap-1.5">
-                    <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" /> {note}
-                  </p>
-                ))}
-              </div>
             )}
+          </section>
 
-            <p className="text-xs text-slate-500">
-              This estimate covers packing, loading, and ocean freight. Customs duties, import taxes,
-              insurance, and destination inland transport are not included. Contact us for a detailed quote.
-            </p>
+          {/* Disclaimer */}
+          <p className="text-xs text-muted-foreground">
+            Estimates cover packing, loading, and ocean freight. Customs duties,
+            import taxes, insurance, and destination inland transport are not
+            included. Contact us for a comprehensive quote.
+          </p>
+        </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button render={<Link href="/contact" />} className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl">
-                Get Detailed Quote
-              </Button>
-              <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a detailed quote" />} variant="outline" className="flex-1 py-5 rounded-xl font-semibold border-emerald-600 text-emerald-600 hover:bg-emerald-50">
-                WhatsApp Us
-              </Button>
-            </div>
+        {/* ─── RIGHT COLUMN: Estimate sidebar (desktop) ────────── */}
+        <div className="hidden flex-[2] lg:block">
+          <div className="sticky top-24">
+            <CalculatorEstimateCard {...estimateCardProps} />
+          </div>
+        </div>
+      </div>
 
-            <Button variant="ghost" onClick={resetAll} className="w-full">
-              Calculate Another
+      {/* ─── MOBILE: Sticky bottom bar + Sheet ──────────────────── */}
+      <div className="fixed inset-x-0 bottom-0 z-40 lg:hidden">
+        <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
+          {/* Bottom bar */}
+          <div className="flex items-center justify-between border-t border-slate-800 bg-slate-900 px-4 py-3 shadow-2xl">
+            <SheetTrigger
+              className="flex items-center gap-2 text-white"
+            >
+              {preview ? (
+                <>
+                  <span className="text-xs text-slate-400">Est.</span>
+                  <span className="font-mono text-lg font-bold">
+                    {formatDollar(preview.estimatedTotal)}
+                  </span>
+                </>
+              ) : selectedEquipment ? (
+                <span className="text-sm text-slate-400">
+                  Select destination for estimate
+                </span>
+              ) : (
+                <span className="text-sm text-slate-400">
+                  Select equipment to begin
+                </span>
+              )}
+            </SheetTrigger>
+            <Button
+              size="sm"
+              className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
+              disabled={!isComplete}
+              onClick={() => setMobileSheetOpen(true)}
+            >
+              {result?.success ? "View Estimate" : "Book This Freight"}
+              <ArrowRight className="ml-1 h-3.5 w-3.5" />
             </Button>
           </div>
-        )}
-      </CardContent>
-    </Card>
+
+          {/* Sheet content */}
+          <SheetContent
+            side="bottom"
+            className="max-h-[85vh] overflow-y-auto rounded-t-2xl p-0"
+            showCloseButton={false}
+          >
+            <SheetHeader className="border-b border-border px-5 py-4">
+              <SheetTitle>Your Freight Estimate</SheetTitle>
+            </SheetHeader>
+            <div className="p-5">
+              <CalculatorEstimateCard {...estimateCardProps} />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Bottom spacing for mobile sticky bar */}
+      <div className="h-16 lg:hidden" />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Section header with numbered circle
+// ═══════════════════════════════════════════════════════════════════════════
+function SectionHeader({ num, title }: { num: number; title: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+        {String(num).padStart(2, "0")}
+      </div>
+      <h3 className="text-lg font-bold text-foreground">{title}</h3>
+    </div>
   );
 }
