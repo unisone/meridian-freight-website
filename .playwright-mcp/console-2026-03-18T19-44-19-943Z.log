@@ -1,0 +1,8 @@
+[     542ms] [ERROR] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/Projects_meridian-freight-website_22593de7._.js:168:260)
+    at ProjectsPage (about://React/Server/file:///Users/zaytsev/Projects/meridian-freight-website/.next/dev/server/chunks/ssr/%5Broot-of-the-server%5D__209ca22d._.js?134:731:338) @ http://localhost:3000/_next/static/chunks/70ed4_next_dist_e4626e3d._.js:3127
+[     542ms] [ERROR] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/Projects_meridian-freight-website_22593de7._.js:168:260)
+    at ProjectsPage (about://React/Server/file:///Users/zaytsev/Projects/meridian-freight-website/.next/dev/server/chunks/ssr/%5Broot-of-the-server%5D__209ca22d._.js?135:759:338) @ http://localhost:3000/_next/static/chunks/70ed4_next_dist_e4626e3d._.js:3127
+[     556ms] [WARNING] Image with src "/images/project-case-ih-combine.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading @ http://localhost:3000/_next/static/chunks/70ed4_next_dist_e4626e3d._.js:2297

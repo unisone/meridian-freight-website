@@ -14,9 +14,9 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 1,
-    title: "John Deere S670 Combine to South America",
-    description: "End-to-end export of a John Deere S670 combine to Brazil — secured on a Hapag-Lloyd flat rack with professional blocking and strapping for ocean transit.",
-    image: "/images/project-jd-s670-combine.jpg",
+    title: "John Deere 9650STS Combine Export",
+    description: "End-to-end export of a John Deere 9650STS combine — loaded on a UASC flat rack with tires secured alongside, ready for ocean transit.",
+    image: "/images/project-jd-9650sts-combine.jpg",
     equipmentType: "Combine Harvester",
     destination: "Santos, Brazil",
     containerType: "40ft Flat Rack",
@@ -61,18 +61,6 @@ export const projects: Project[] = [
     category: "Harvesting",
   },
   {
-    id: 5,
-    title: "Agricultural Parts & Components Shipment",
-    description: "Consolidated shipment of agricultural parts and components — palletized, boxed, and secured in a 40ft container for international delivery.",
-    image: "/images/kinze-3700.jpg",
-    equipmentType: "Parts & Components",
-    destination: "Busan, South Korea",
-    containerType: "40ft HC",
-    weight: "9,500 kg",
-    transitTime: "18 days",
-    category: "Parts",
-  },
-  {
     id: 6,
     title: "Shelbourne Stripper Headers",
     description: "End-to-end export of Shelbourne stripper headers — forklift-loaded into a shipping container at our packing facility with custom protective bracing.",
@@ -102,5 +90,4 @@ export const projectCategories = [
   "All",
   "Harvesting",
   "Spraying",
-  "Parts",
 ];
