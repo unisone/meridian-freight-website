@@ -52,11 +52,15 @@ export const TRACKING = {
 export const STATS = {
   projectsCompleted: 500,
   yearsExperience: 10,
-  clientSatisfaction: 99,
-  staffMembers: 100,
 } as const;
 
-export const WAREHOUSE_LOCATIONS = [
+export const WAREHOUSE_MAIN = {
+  state: "IA",
+  name: "Iowa (Headquarters)",
+  description: "Main packing & loading facility",
+} as const;
+
+export const WAREHOUSE_PARTNERS = [
   { state: "CA", name: "California" },
   { state: "GA", name: "Georgia" },
   { state: "IL", name: "Illinois" },
@@ -64,6 +68,9 @@ export const WAREHOUSE_LOCATIONS = [
   { state: "TX", name: "Texas" },
   { state: "AB", name: "Alberta, Canada" },
 ] as const;
+
+/** @deprecated Use WAREHOUSE_MAIN + WAREHOUSE_PARTNERS instead */
+export const WAREHOUSE_LOCATIONS = WAREHOUSE_PARTNERS;
 
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },

@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { MapPin, ArrowRight, Clock, Globe, Shield } from "lucide-react";
+import { MapPin, ArrowRight, Clock, Globe, Shield, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { StatsBar } from "@/components/stats-bar";
-import { COMPANY, WAREHOUSE_LOCATIONS } from "@/lib/constants";
+import { COMPANY, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "About Us — Our Story & Locations",
-  description: `${COMPANY.name} — ${COMPANY.tagline}. Over 10 years of experience in machinery export logistics with warehouses across USA & Canada.`,
+  description: `${COMPANY.name} — ${COMPANY.tagline}. Over 10 years of experience in machinery export logistics with warehouse facilities across USA & Canada.`,
   path: "/about",
 });
 
@@ -21,8 +20,8 @@ const differentiators = [
   },
   {
     icon: Globe,
-    title: "Global Network",
-    description: "We ship to 30+ countries with established relationships at major ports worldwide.",
+    title: "Worldwide Shipping",
+    description: "We ship to any destination globally with established relationships at major ports worldwide.",
   },
   {
     icon: Shield,
@@ -45,17 +44,17 @@ export default function AboutPage() {
             About {COMPANY.name}
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-600">
-            Founded in 2015, {COMPANY.name} has grown from a small operation in
-            Iowa to a full-service machinery export company with warehouse
-            facilities across the United States and Canada. We specialize in the
-            complete logistics chain — from equipment pickup and professional
-            dismantling to secure container packing and worldwide shipping.
+            With over 10 years of experience and 500+ completed shipments,{" "}
+            {COMPANY.name} is a full-service machinery export company
+            headquartered in Iowa. We specialize in the complete logistics
+            chain — from equipment pickup and professional dismantling to
+            secure container packing and worldwide shipping.
           </p>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
-            Our team of experienced technicians understands the unique
-            requirements of heavy machinery. Whether it&apos;s a John Deere combine
-            heading to Brazil or a CAT excavator bound for the Middle East, we
-            ensure every piece arrives safely and on time.
+            Our experienced technicians understand the unique requirements of
+            heavy machinery. Whether it&apos;s a John Deere combine heading to
+            Brazil or a CAT excavator bound for the Middle East, we ensure
+            every piece arrives safely and on time.
           </p>
         </div>
       </section>
@@ -89,15 +88,38 @@ export default function AboutPage() {
             Our Locations
           </h2>
           <p className="mt-3 text-slate-600">
-            Strategically located warehouses for efficient equipment handling.
+            Headquartered in Iowa with a partner warehouse network across the
+            US and Canada for efficient equipment handling.
           </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {WAREHOUSE_LOCATIONS.map((loc) => (
+
+          {/* Main facility */}
+          <div className="mt-8 rounded-xl border-2 border-sky-200 bg-sky-50 p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-500 text-white">
+                <Star className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="font-semibold text-slate-900">
+                  {WAREHOUSE_MAIN.name}
+                </div>
+                <div className="text-sm text-slate-500">
+                  {WAREHOUSE_MAIN.description}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Partner locations */}
+          <p className="mt-6 text-sm font-medium text-slate-500 uppercase tracking-wider">
+            Partner Facilities
+          </p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {WAREHOUSE_PARTNERS.map((loc) => (
               <div
                 key={loc.state}
                 className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-500">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
@@ -109,8 +131,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      <StatsBar />
 
       {/* CTA */}
       <section className="py-16 md:py-20">

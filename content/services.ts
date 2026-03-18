@@ -52,14 +52,14 @@ export const services: Service[] = [
   },
   {
     slug: "equipment-sales",
-    title: "Equipment Sales & Procurement",
-    shortTitle: "Equipment Sales",
+    title: "Equipment Sourcing & Procurement",
+    shortTitle: "Equipment Sourcing",
     description:
-      "We source, inspect, and procure quality used machinery from across North America for international buyers.",
+      "We help international buyers locate and inspect quality used machinery from dealers, auctions, and sellers across North America.",
     longDescription:
-      "Need specific equipment for your operation? We leverage our network of dealers, auctions, and private sellers across the USA and Canada to find exactly what you need. Every piece is inspected, documented with photos and condition reports, and prepared for export. We handle the entire procurement chain from sourcing to delivery.",
-    icon: "ShoppingCart",
-    keywords: ["used farm equipment for export", "equipment procurement services", "machinery sales international"],
+      "Looking for specific equipment? We can assist with sourcing from our network of dealers, auctions, and private sellers across the USA and Canada. Each piece is inspected and documented with photos and condition reports before export. This is an additional service we offer alongside our core logistics — helping you find the right machinery and then handling the complete export process.",
+    icon: "Search",
+    keywords: ["used farm equipment sourcing", "equipment procurement services", "machinery sourcing international"],
     equipmentTypes: ["Any agricultural equipment", "Construction machinery", "Industrial equipment"],
     relatedSlugs: ["agricultural", "documentation"],
   },

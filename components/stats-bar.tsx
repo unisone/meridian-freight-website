@@ -5,10 +5,8 @@ import { Briefcase, Calendar, ThumbsUp, Users } from "lucide-react";
 import { STATS } from "@/lib/constants";
 
 const stats = [
-  { value: STATS.projectsCompleted, suffix: "+", label: "Projects Completed", icon: Briefcase },
+  { value: STATS.projectsCompleted, suffix: "+", label: "Shipments Completed", icon: Briefcase },
   { value: STATS.yearsExperience, suffix: "+", label: "Years Experience", icon: Calendar },
-  { value: STATS.clientSatisfaction, suffix: "%", label: "Client Satisfaction", icon: ThumbsUp },
-  { value: STATS.staffMembers, suffix: "+", label: "Staff Members", icon: Users },
 ];
 
 function useCountUp(target: number, duration = 2000) {
