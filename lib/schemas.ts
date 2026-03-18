@@ -40,3 +40,29 @@ export const calculatorEmailSchema = z.object({
 });
 
 export type CalculatorEmailData = z.infer<typeof calculatorEmailSchema>;
+
+export const calculatorV2Schema = z.object({
+  email: z.string().email("Invalid email address"),
+  name: z.string().max(200).optional().default(""),
+  company: z.string().max(200).optional().default(""),
+  // Equipment selection
+  equipmentCategory: z.string().min(1),
+  equipmentType: z.string().min(1),
+  equipmentDisplayName: z.string().min(1),
+  equipmentSize: z.number().positive().nullable().default(null),
+  containerType: z.enum(["fortyhc", "flatrack"]),
+  // Destination
+  destinationCountry: z.string().min(1),
+  zipCode: z.string().max(10).optional().default(""),
+  // Honeypot — bots fill hidden fields, humans don't
+  website: z.string().max(500).optional().default(""),
+  // UTM attribution (auto-captured on client)
+  source_page: z.string().max(500).optional().default(""),
+  utm_source: z.string().max(200).optional().default(""),
+  utm_medium: z.string().max(200).optional().default(""),
+  utm_campaign: z.string().max(200).optional().default(""),
+  utm_term: z.string().max(200).optional().default(""),
+  utm_content: z.string().max(200).optional().default(""),
+});
+
+export type CalculatorV2Data = z.infer<typeof calculatorV2Schema>;
