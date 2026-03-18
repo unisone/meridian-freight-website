@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { COMPANY, CONTACT, SITE, SOCIAL } from "@/lib/constants";
 import "./globals.css";
 
@@ -110,7 +112,9 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-foreground antialiased">
         <TooltipProvider>
-          {children}
+          <Header />
+          <main>{children}</main>
+          <Footer />
         </TooltipProvider>
         <Analytics />
         <SpeedInsights />

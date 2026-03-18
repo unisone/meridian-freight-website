@@ -1,0 +1,198 @@
+import Link from "next/link";
+import Image from "next/image";
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { COMPANY, CONTACT, SOCIAL, NAV_ITEMS } from "@/lib/constants";
+
+const SERVICE_LINKS = [
+  { label: "Machinery Dismantling & Packing", href: "/services/machinery-packing" },
+  { label: "Container Loading & Export", href: "/services/container-loading" },
+  { label: "Agricultural Equipment", href: "/services/agricultural" },
+  { label: "Equipment Sales & Procurement", href: "/services/equipment-sales" },
+  { label: "Export Documentation", href: "/services/documentation" },
+  { label: "Warehouse & Storage", href: "/services/warehousing" },
+];
+
+const QUICK_LINKS = NAV_ITEMS.filter(
+  (item) => !("children" in item && item.children)
+);
+
+const LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+];
+
+export function Footer() {
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="bg-gray-900 text-gray-300">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Column 1: Company info */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <Link href="/" aria-label="Meridian Freight Inc. — Home">
+              <Image
+                src="/logos/MF Logos White/meridianFreight-logo-W-250.png"
+                alt={COMPANY.name}
+                width={200}
+                height={45}
+                className="h-10 w-auto brightness-110"
+              />
+            </Link>
+            <p className="mt-4 text-sm leading-relaxed text-gray-400">
+              {COMPANY.tagline}. Expert machinery packing, container loading,
+              and global shipping services for agricultural, construction, and
+              industrial equipment.
+            </p>
+
+            {/* Contact details */}
+            <div className="mt-6 space-y-3">
+              <a
+                href={CONTACT.phoneHref}
+                className="flex items-center gap-3 text-sm transition-colors hover:text-white"
+              >
+                <Phone className="h-4 w-4 text-blue-400" />
+                {CONTACT.phone}
+              </a>
+              <a
+                href={CONTACT.emailHref}
+                className="flex items-center gap-3 text-sm transition-colors hover:text-white"
+              >
+                <Mail className="h-4 w-4 text-blue-400" />
+                {CONTACT.email}
+              </a>
+              <div className="flex items-center gap-3 text-sm">
+                <MapPin className="h-4 w-4 shrink-0 text-blue-400" />
+                {CONTACT.address.full}
+              </div>
+            </div>
+
+            {/* Social icons */}
+            <div className="mt-6 flex gap-3">
+              <a
+                href={SOCIAL.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-800 text-gray-400 transition-all hover:bg-blue-600 hover:text-white hover:scale-110"
+                aria-label="Follow us on Facebook"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a
+                href={SOCIAL.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-800 text-gray-400 transition-all hover:bg-pink-500 hover:text-white hover:scale-110"
+                aria-label="Follow us on Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href={SOCIAL.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-800 text-gray-400 transition-all hover:bg-red-600 hover:text-white hover:scale-110"
+                aria-label="Watch our YouTube videos"
+              >
+                <Youtube className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Column 2: Quick Links */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+              Quick Links
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {QUICK_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-sm transition-colors hover:text-white"
+                >
+                  FAQ
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Services */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+              Services
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {SERVICE_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Legal */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+              Legal
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+                Get a Quote
+              </h3>
+              <p className="mt-3 text-sm text-gray-400">
+                Need machinery packed and shipped? Get a free estimate.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-4 inline-block rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <Separator className="my-10 bg-gray-800" />
+
+        {/* Copyright */}
+        <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+          <p className="text-sm text-gray-500">
+            &copy; {year} {COMPANY.legalName}. All rights reserved.
+          </p>
+          <p className="text-xs text-gray-600">
+            {CONTACT.address.full}
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
