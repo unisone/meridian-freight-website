@@ -61,8 +61,8 @@ export function PricingTable() {
                 onClick={() => setCategory(cat.id)}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                   category === cat.id
-                    ? "bg-blue-600 text-white"
-                    : "border border-gray-200 bg-white text-gray-700 hover:bg-blue-50"
+                    ? "bg-sky-500 text-white"
+                    : "border border-slate-200 bg-white text-slate-700 hover:bg-sky-50"
                 }`}
               >
                 {cat.label}
