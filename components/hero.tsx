@@ -54,8 +54,8 @@ export function Hero() {
           <div className="relative">
             <div className="overflow-hidden rounded-2xl shadow-lg">
               <Image
-                src="/images/hero-jd-w260-flatrack.jpg"
-                alt="John Deere W260 windrower secured on a Hapag-Lloyd flat rack container for export"
+                src="/images/hero-jd-s670-crew.jpg"
+                alt="John Deere S670 combine being secured on a Hapag-Lloyd flat rack by crew in hi-vis vests"
                 width={720}
                 height={540}
                 className="h-auto w-full object-cover"
