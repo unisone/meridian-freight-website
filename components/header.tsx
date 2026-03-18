@@ -41,10 +41,10 @@ export function Header() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 bg-white ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/50"
-          : "bg-transparent"
+          ? "shadow-sm border-b border-slate-200/50"
+          : ""
       }`}
       aria-label="Main navigation"
     >
@@ -61,9 +61,7 @@ export function Header() {
               alt="Meridian Freight Inc."
               width={250}
               height={56}
-              className={`h-10 lg:h-12 w-auto transition-all ${
-                isScrolled ? "brightness-0" : "brightness-110 drop-shadow-lg"
-              }`}
+              className="h-10 lg:h-12 w-auto brightness-0"
               priority
             />
           </Link>
@@ -82,11 +80,7 @@ export function Header() {
                         );
                       }}
                       onMouseEnter={() => setOpenDropdown(item.label)}
-                      className={`flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md ${
-                        isScrolled
-                          ? "text-slate-600 hover:text-slate-900"
-                          : "text-white/90 hover:text-white"
-                      }`}
+                      className="flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md text-slate-600 hover:text-slate-900"
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
                     >
@@ -130,11 +124,7 @@ export function Header() {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`font-medium py-2 px-3 text-sm transition-colors rounded-md ${
-                      isScrolled
-                        ? "text-slate-600 hover:text-slate-900"
-                        : "text-white/90 hover:text-white"
-                    }`}
+                    className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-slate-600 hover:text-slate-900"
                   >
                     {item.label}
                   </Link>
@@ -155,15 +145,11 @@ export function Header() {
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
-              className={`lg:hidden p-2.5 rounded-lg transition-colors ${
-                isScrolled ? "hover:bg-slate-100" : "hover:bg-white/15"
-              }`}
+              className="lg:hidden p-2.5 rounded-lg transition-colors hover:bg-slate-100"
               aria-label="Open menu"
             >
               <Menu
-                className={`h-6 w-6 ${
-                  isScrolled ? "text-slate-700" : "text-white drop-shadow-md"
-                }`}
+                className="h-6 w-6 text-slate-700"
               />
             </SheetTrigger>
             <SheetContent side="right" className="w-80 overflow-y-auto">
