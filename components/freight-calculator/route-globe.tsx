@@ -12,7 +12,6 @@ interface RouteGlobeProps {
   originPort: string | null;
   destinationPort: string | null;
   destinationCountry: string | null;
-  /** For 40HC: show Albion→Chicago rail segment */
   containerType?: "fortyhc" | "flatrack" | null;
   className?: string;
 }
@@ -47,32 +46,39 @@ interface LabelDatum {
   altitude: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type GeoFeature = any;
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 const ALBION_IA: [number, number] = [42.1172, -92.9835];
 const CHICAGO_IL: [number, number] = [41.88, -87.63];
 
-const EARTH_DARK_URL =
-  "https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg";
-const EARTH_TOPO_URL =
-  "https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png";
+const GEOJSON_URL =
+  "https://cdn.jsdelivr.net/npm/globe.gl/example/datasets/ne_110m_admin_0_countries.geojson";
 
-// Brand color for arcs/markers (teal)
-const TEAL = "rgba(0, 200, 200, 1)";
-const TEAL_70 = "rgba(0, 200, 200, 0.7)";
-const TEAL_40 = "rgba(0, 200, 200, 0.4)";
-const TEAL_20 = "rgba(0, 200, 200, 0.2)";
-const WHITE_70 = "rgba(255, 255, 255, 0.7)";
+// Dark cartographic palette (matching reference: intelligence-dashboard aesthetic)
+const LAND_COLOR = "rgba(25, 25, 38, 0.95)";
+const BORDER_COLOR = "rgba(65, 65, 85, 0.5)";
+const LAND_SIDE_COLOR = "rgba(15, 15, 25, 0.4)";
+
+// Route colors: red/pink (matching reference video)
+const ARC_PRIMARY = "rgba(220, 60, 60, 0.85)";
+const ARC_PRIMARY_FADE = "rgba(220, 60, 60, 0.35)";
+const ARC_SECONDARY = "rgba(220, 60, 60, 0.5)";
+const ARC_SECONDARY_FADE = "rgba(220, 60, 60, 0.2)";
+const MARKER_PRIMARY = "rgba(220, 60, 60, 1)";
+const MARKER_SECONDARY = "rgba(220, 60, 60, 0.7)";
+const LABEL_COLOR = "rgba(255, 255, 255, 0.75)";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Calculate great-circle distance between two points (degrees) */
 function haversineDistance(
   lat1: number,
   lon1: number,
   lat2: number,
   lon2: number
 ): number {
-  const R = 6371; // km
+  const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
   const a =
@@ -83,12 +89,13 @@ function haversineDistance(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-/** Calculate appropriate camera altitude based on route distance */
+/** Camera altitude: closer than before to show geographic detail */
 function getAltitude(distKm: number): number {
-  if (distKm < 3000) return 1.4;
-  if (distKm < 6000) return 1.8;
-  if (distKm < 10000) return 2.2;
-  return 2.8;
+  if (distKm < 2000) return 1.2;
+  if (distKm < 4000) return 1.5;
+  if (distKm < 7000) return 1.8;
+  if (distKm < 12000) return 2.2;
+  return 2.5;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -103,6 +110,17 @@ export function RouteGlobe({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const globeRef = useRef<any>(null);
   const [globeReady, setGlobeReady] = useState(false);
+  const [countries, setCountries] = useState<{ features: GeoFeature[] }>({
+    features: [],
+  });
+
+  // Load GeoJSON countries on mount
+  useEffect(() => {
+    fetch(GEOJSON_URL)
+      .then((r) => r.json())
+      .then(setCountries)
+      .catch(() => {});
+  }, []);
 
   // Resolve coordinates
   const originCoords = originPort
@@ -111,40 +129,61 @@ export function RouteGlobe({
   const destCoords = resolveCoordinates(destinationPort, destinationCountry);
   const hasRoute = originCoords !== null && destCoords !== null;
 
+  // Filter out Antarctica
+  const polygonData = useMemo(
+    () => countries.features.filter((d: GeoFeature) => d.properties?.ISO_A2 !== "AQ"),
+    [countries]
+  );
+
   // ─── Build arc data ─────────────────────────────────────────────────
   const arcsData = useMemo<ArcDatum[]>(() => {
     if (!originCoords || !destCoords) return [];
 
     const arcs: ArcDatum[] = [];
 
-    // Main ocean route arc (prominent)
+    // Main ocean route arc
     arcs.push({
       startLat: originCoords[0],
       startLng: originCoords[1],
       endLat: destCoords[0],
       endLng: destCoords[1],
-      color: [TEAL_70, TEAL_40],
-      stroke: 0.6,
+      color: [ARC_PRIMARY, ARC_PRIMARY_FADE],
+      stroke: 0.4,
       dashLength: 0.4,
       dashGap: 0.2,
       animateTime: 3000,
       label: `${originPort} → ${destinationPort}`,
     });
 
-    // For 40HC: show Albion→Chicago rail segment
+    // For 40HC: Albion→Chicago rail segment
     if (containerType === "fortyhc") {
       arcs.push({
         startLat: ALBION_IA[0],
         startLng: ALBION_IA[1],
         endLat: CHICAGO_IL[0],
         endLng: CHICAGO_IL[1],
-        color: [TEAL_20, TEAL_40],
-        stroke: 0.3,
+        color: [ARC_SECONDARY, ARC_SECONDARY_FADE],
+        stroke: 0.25,
         dashLength: 0.2,
         dashGap: 0.3,
         animateTime: 1500,
         label: "Albion, IA → Chicago, IL (rail)",
       });
+      // Also Albion→origin port if origin is Chicago
+      if (originPort === "Chicago, IL") {
+        arcs.push({
+          startLat: ALBION_IA[0],
+          startLng: ALBION_IA[1],
+          endLat: originCoords[0],
+          endLng: originCoords[1],
+          color: [ARC_SECONDARY, ARC_SECONDARY_FADE],
+          stroke: 0.25,
+          dashLength: 0.2,
+          dashGap: 0.3,
+          animateTime: 1500,
+          label: "Albion, IA → Chicago, IL (drayage)",
+        });
+      }
     }
 
     return arcs;
@@ -158,38 +197,31 @@ export function RouteGlobe({
       {
         lat: originCoords[0],
         lng: originCoords[1],
-        size: 0.6,
-        color: TEAL,
+        size: 0.8,
+        color: MARKER_PRIMARY,
         label: originPort ?? "Origin",
       },
       {
         lat: destCoords[0],
         lng: destCoords[1],
         size: 0.5,
-        color: TEAL_70,
+        color: MARKER_SECONDARY,
         label: destinationPort ?? "Destination",
       },
     ];
 
-    // Hub marker at Albion for 40HC
     if (containerType === "fortyhc") {
       points.push({
         lat: ALBION_IA[0],
         lng: ALBION_IA[1],
-        size: 0.4,
-        color: TEAL_40,
-        label: "Albion, IA (packing)",
+        size: 0.6,
+        color: MARKER_SECONDARY,
+        label: "Albion, IA (packing hub)",
       });
     }
 
     return points;
-  }, [
-    originCoords,
-    destCoords,
-    originPort,
-    destinationPort,
-    containerType,
-  ]);
+  }, [originCoords, destCoords, originPort, destinationPort, containerType]);
 
   // ─── Build labels ──────────────────────────────────────────────────
   const labelsData = useMemo<LabelDatum[]>(() => {
@@ -199,23 +231,34 @@ export function RouteGlobe({
       {
         lat: originCoords[0],
         lng: originCoords[1],
-        text: originPort ?? "Origin",
-        color: WHITE_70,
+        text: (originPort ?? "Origin").toUpperCase(),
+        color: LABEL_COLOR,
         size: 0.7,
-        altitude: 0.01,
+        altitude: 0.015,
       },
       {
         lat: destCoords[0],
         lng: destCoords[1],
-        text: destinationPort ?? "Destination",
-        color: WHITE_70,
+        text: (destinationPort ?? "Destination").toUpperCase(),
+        color: LABEL_COLOR,
         size: 0.7,
-        altitude: 0.01,
+        altitude: 0.015,
       },
     ];
 
+    if (containerType === "fortyhc") {
+      labels.push({
+        lat: ALBION_IA[0],
+        lng: ALBION_IA[1],
+        text: "ALBION, IA",
+        color: "rgba(255, 255, 255, 0.5)",
+        size: 0.5,
+        altitude: 0.015,
+      });
+    }
+
     return labels;
-  }, [originCoords, destCoords, originPort, destinationPort]);
+  }, [originCoords, destCoords, originPort, destinationPort, containerType]);
 
   // ─── Camera positioning ─────────────────────────────────────────────
   const animateCamera = useCallback(() => {
@@ -231,17 +274,19 @@ export function RouteGlobe({
     );
     const altitude = getAltitude(dist);
 
-    globeRef.current.pointOfView({ lat: midLat, lng: midLng, altitude }, 1200);
+    globeRef.current.pointOfView(
+      { lat: midLat, lng: midLng, altitude },
+      1200
+    );
   }, [originCoords, destCoords]);
 
-  // Animate camera when route changes
   useEffect(() => {
     if (globeReady && hasRoute) {
       animateCamera();
     }
   }, [globeReady, hasRoute, animateCamera]);
 
-  // Disable auto-rotation when globe is ready
+  // Disable auto-rotation, disable zoom
   useEffect(() => {
     if (globeReady && globeRef.current) {
       const controls = globeRef.current.controls();
@@ -252,16 +297,16 @@ export function RouteGlobe({
     }
   }, [globeReady]);
 
-  // Initial camera position (show Americas)
+  // Initial camera: Americas view
   useEffect(() => {
     if (globeReady && globeRef.current && !hasRoute) {
-      globeRef.current.pointOfView({ lat: 25, lng: -80, altitude: 2.2 }, 0);
+      globeRef.current.pointOfView({ lat: 25, lng: -80, altitude: 2.0 }, 0);
     }
   }, [globeReady, hasRoute]);
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl bg-[#080a12] ${className}`}
+      className={`relative overflow-hidden rounded-xl bg-black ${className}`}
     >
       <GlobeGL
         ref={globeRef}
@@ -269,12 +314,16 @@ export function RouteGlobe({
         width={600}
         height={500}
         backgroundColor="rgba(0,0,0,0)"
-        globeImageUrl={EARTH_DARK_URL}
-        bumpImageUrl={EARTH_TOPO_URL}
-        showAtmosphere={true}
-        atmosphereColor="rgba(0, 180, 180, 0.15)"
-        atmosphereAltitude={0.12}
-        // Arcs
+        // No photo texture — dark cartographic style via polygons
+        showGlobe={true}
+        showAtmosphere={false}
+        // Country polygons: dark gray land with visible borders
+        polygonsData={polygonData}
+        polygonCapColor={() => LAND_COLOR}
+        polygonSideColor={() => LAND_SIDE_COLOR}
+        polygonStrokeColor={() => BORDER_COLOR}
+        polygonAltitude={0.005}
+        // Arcs: thin red/pink route lines
         arcsData={arcsData}
         arcStartLat="startLat"
         arcStartLng="startLng"
@@ -286,7 +335,7 @@ export function RouteGlobe({
         arcDashGap="dashGap"
         arcDashAnimateTime="animateTime"
         arcLabel="label"
-        // Points
+        // Points: hub and destination markers
         pointsData={pointsData}
         pointLat="lat"
         pointLng="lng"
@@ -294,7 +343,7 @@ export function RouteGlobe({
         pointAltitude={0.01}
         pointRadius="size"
         pointLabel="label"
-        // Labels
+        // Labels: white port names on the surface
         labelsData={labelsData}
         labelLat="lat"
         labelLng="lng"
@@ -302,7 +351,7 @@ export function RouteGlobe({
         labelColor="color"
         labelSize="size"
         labelAltitude="altitude"
-        labelDotRadius={0.3}
+        labelDotRadius={0.4}
         labelResolution={2}
         // Interaction
         enablePointerInteraction={true}
@@ -313,8 +362,8 @@ export function RouteGlobe({
       {hasRoute && (
         <div className="absolute bottom-4 left-4 flex items-center gap-1.5">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
           </span>
           <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
             Live Route Analysis
