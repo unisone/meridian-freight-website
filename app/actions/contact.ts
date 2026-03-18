@@ -78,15 +78,16 @@ export async function submitContactForm(
   const safeMessage = escapeHtml(message);
 
   // 3. Supabase INSERT (best-effort)
+  // Note: `source` and `equipment_type` columns require this migration:
+  //   ALTER TABLE leads ADD COLUMN IF NOT EXISTS source text DEFAULT 'lp';
+  //   ALTER TABLE leads ADD COLUMN IF NOT EXISTS equipment_type text;
   await insertLeadToSupabase({
     name,
     email,
     company: company || null,
     phone: phone || null,
-    equipment_type: equipmentType || null,
-    message,
-    source_page: data.source_page || null,
-    source: "corporate",
+    message: equipmentType ? `[${equipmentType}] ${message}` : message,
+    source_page: `corporate: ${data.source_page || "direct"}`,
     utm_source: data.utm_source || null,
     utm_medium: data.utm_medium || null,
     utm_campaign: data.utm_campaign || null,

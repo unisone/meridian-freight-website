@@ -61,13 +61,13 @@ export async function submitCalculator(
   }
 
   // 3. Save lead (best-effort)
+  // Prepend source to message since `source` column may not exist yet
   await insertCalculatorLead({
     name: data.name || null,
     email: data.email,
     company: data.company || null,
-    equipment_type: data.equipmentType,
-    message: `Calculator: ${data.equipmentType} via ${data.destination}`,
-    source: "calculator",
+    message: `[Calculator] ${data.equipmentType} via ${data.destination}`,
+    source_page: "corporate: /pricing/calculator",
     status: "new",
   });
 
