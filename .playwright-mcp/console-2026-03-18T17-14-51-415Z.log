@@ -1,2 +1,0 @@
-[     432ms] [WARNING] Image with src "/images/logistics1.jpg" is using quality "85" which is not configured in images.qualities [75]. Please update your config to [75, 85].
-Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities @ http://localhost:3000/_next/static/chunks/70ed4_next_dist_e4626e3d._.js:2297
