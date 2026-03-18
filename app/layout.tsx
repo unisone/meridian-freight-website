@@ -27,7 +27,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${COMPANY.tagline} | ${SITE.name}`,
+    default: `Machinery Export & Logistics | ${SITE.name}`,
     template: `%s | ${SITE.name}`,
   },
   description: COMPANY.description,
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
 function JsonLd() {
   const org = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "LocalBusiness",
     name: COMPANY.name,
     url: SITE.url,
     logo: `${SITE.url}/logos/MF Logos White/meridianFreight-logo-w-500.png`,
@@ -75,13 +75,25 @@ function JsonLd() {
       streetAddress: CONTACT.address.street,
       addressLocality: CONTACT.address.city,
       addressRegion: CONTACT.address.state,
+      postalCode: CONTACT.address.zip,
       addressCountry: CONTACT.address.country,
     },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 42.1219,
+      longitude: -93.0015,
+    },
+    telephone: CONTACT.phoneRaw,
+    priceRange: "$$",
+    areaServed: [
+      { "@type": "Country", name: "United States" },
+      { "@type": "Country", name: "Canada" },
+    ],
     contactPoint: {
       "@type": "ContactPoint",
       telephone: CONTACT.phoneRaw,
       contactType: "customer service",
-      availableLanguage: ["English", "Russian", "Spanish"],
+      availableLanguage: ["English", "Russian", "Spanish", "Arabic"],
     },
     sameAs: [SOCIAL.facebook, SOCIAL.instagram, SOCIAL.youtube],
   };

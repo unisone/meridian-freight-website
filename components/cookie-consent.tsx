@@ -31,8 +31,8 @@ export function CookieConsent() {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[60] border-t border-gray-200 bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:bottom-4 sm:left-4 sm:right-auto sm:max-w-md sm:rounded-xl sm:border">
-      <p className="text-sm text-gray-600">
+    <div className="fixed bottom-16 left-0 right-0 z-[60] border-t border-slate-200 bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:bottom-4 sm:left-4 sm:right-auto sm:max-w-md sm:rounded-xl sm:border">
+      <p className="text-sm text-slate-600">
         We use cookies to analyze site traffic and optimize your experience.
         By accepting, you consent to our use of analytics cookies.
       </p>
@@ -40,7 +40,7 @@ export function CookieConsent() {
         <Button
           onClick={accept}
           size="sm"
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="bg-sky-500 hover:bg-sky-600 text-white"
         >
           Accept
         </Button>

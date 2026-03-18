@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle, Loader2 } from "lucide-react";
+import { Send, CheckCircle, Loader2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/app/actions/contact";
 import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
+import { CONTACT } from "@/lib/constants";
 import type { ContactFormData } from "@/lib/schemas";
 
 export function ContactForm() {
@@ -81,10 +82,19 @@ export function ContactForm() {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <CheckCircle className="h-16 w-16 text-green-500" />
-        <h3 className="mt-4 text-2xl font-bold text-gray-900">Message Sent!</h3>
-        <p className="mt-2 text-gray-600">
+        <h3 className="mt-4 text-2xl font-bold text-slate-900">Message Sent!</h3>
+        <p className="mt-2 text-slate-600">
           Thank you for reaching out. We&apos;ll get back to you within 24 hours.
         </p>
+        <a
+          href={CONTACT.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
+        >
+          <MessageCircle className="h-4 w-4" />
+          Can&apos;t wait? Chat with us now on WhatsApp
+        </a>
       </div>
     );
   }
@@ -158,7 +168,7 @@ export function ContactForm() {
         type="submit"
         disabled={isSubmitting}
         size="lg"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base"
+        className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base"
       >
         {isSubmitting ? (
           <>

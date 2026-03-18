@@ -17,14 +17,14 @@ export function MobileBottomBar() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur-sm shadow-[0_-2px_10px_rgba(0,0,0,0.1)] lg:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-sm shadow-[0_-2px_10px_rgba(0,0,0,0.1)] lg:hidden">
       <div className="grid grid-cols-3">
         <a
           href={CONTACT.whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleWhatsAppClick}
-          className="flex flex-col items-center gap-1 py-3 text-green-600 transition-colors hover:bg-green-50"
+          className="flex flex-col items-center gap-1 py-3 text-emerald-600 transition-colors hover:bg-emerald-50"
         >
           <MessageCircle className="h-5 w-5" />
           <span className="text-xs font-medium">WhatsApp</span>
@@ -32,14 +32,14 @@ export function MobileBottomBar() {
         <a
           href={CONTACT.phoneHref}
           onClick={handlePhoneClick}
-          className="flex flex-col items-center gap-1 py-3 text-blue-600 transition-colors hover:bg-blue-50"
+          className="flex flex-col items-center gap-1 py-3 text-sky-500 transition-colors hover:bg-sky-50"
         >
           <Phone className="h-5 w-5" />
           <span className="text-xs font-medium">Call</span>
         </a>
         <Link
           href="/contact"
-          className="flex flex-col items-center gap-1 py-3 text-blue-600 transition-colors hover:bg-blue-50"
+          className="flex flex-col items-center gap-1 py-3 text-sky-500 transition-colors hover:bg-sky-50"
         >
           <FileText className="h-5 w-5" />
           <span className="text-xs font-medium">Get Quote</span>

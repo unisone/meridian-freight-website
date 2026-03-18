@@ -7,7 +7,7 @@ export const COMPANY = {
   tagline: "Professional Machinery Export & Logistics",
   description:
     "Expert machinery packing and container loading services for agricultural, construction, mining, and road-building equipment. Professional dismantling and 40ft container packing across USA & Canada.",
-  foundedYear: 2015,
+  foundedYear: 2013,
 } as const;
 
 export const CONTACT = {
@@ -27,7 +27,7 @@ export const CONTACT = {
     country: "USA",
     full: "2107 148th, Albion, IA, USA",
   },
-  hours: "Available 24/7",
+  hours: "Responsive Communication",
 } as const;
 
 export const SOCIAL = {
@@ -51,12 +51,16 @@ export const TRACKING = {
 
 export const STATS = {
   projectsCompleted: 500,
-  yearsExperience: 10,
-  clientSatisfaction: 99,
-  staffMembers: 100,
+  yearsExperience: new Date().getFullYear() - 2015,
 } as const;
 
-export const WAREHOUSE_LOCATIONS = [
+export const WAREHOUSE_MAIN = {
+  state: "IA",
+  name: "Iowa (Headquarters)",
+  description: "Main packing & loading facility",
+} as const;
+
+export const WAREHOUSE_PARTNERS = [
   { state: "CA", name: "California" },
   { state: "GA", name: "Georgia" },
   { state: "IL", name: "Illinois" },
@@ -64,6 +68,9 @@ export const WAREHOUSE_LOCATIONS = [
   { state: "TX", name: "Texas" },
   { state: "AB", name: "Alberta, Canada" },
 ] as const;
+
+/** @deprecated Use WAREHOUSE_MAIN + WAREHOUSE_PARTNERS instead */
+export const WAREHOUSE_LOCATIONS = WAREHOUSE_PARTNERS;
 
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -75,7 +82,7 @@ export const NAV_ITEMS = [
       { label: "Machinery Dismantling & Packing", href: "/services/machinery-packing" },
       { label: "Container Loading & Export", href: "/services/container-loading" },
       { label: "Agricultural Equipment", href: "/services/agricultural" },
-      { label: "Equipment Sales & Procurement", href: "/services/equipment-sales" },
+      { label: "Equipment Sourcing & Procurement", href: "/services/equipment-sales" },
       { label: "Export Documentation", href: "/services/documentation" },
       { label: "Warehouse & Storage", href: "/services/warehousing" },
     ],

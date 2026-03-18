@@ -13,10 +13,10 @@ interface ScrollRevealProps {
 }
 
 const offsets = {
-  up: { y: 30, x: 0 },
-  down: { y: -30, x: 0 },
-  left: { x: 30, y: 0 },
-  right: { x: -30, y: 0 },
+  up: { y: 15, x: 0 },
+  down: { y: -15, x: 0 },
+  left: { x: 15, y: 0 },
+  right: { x: -15, y: 0 },
 };
 
 export function ScrollReveal({

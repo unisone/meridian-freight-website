@@ -6,6 +6,7 @@ export const metadata = pageMetadata({
   title: "Privacy Policy",
   description: `Privacy policy for ${SITE.domain}. How we collect, use, and protect your information.`,
   path: "/privacy",
+  keywords: ["privacy policy", "data protection", "privacy notice"],
 });
 
 export default function PrivacyPage() {
@@ -16,9 +17,9 @@ export default function PrivacyPage() {
       </div>
 
       <article className="py-16 md:py-20">
-        <div className="prose prose-gray mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div className="prose prose-slate mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h1>Privacy Policy</h1>
-          <p className="text-sm text-gray-500">Last updated: March 2026</p>
+          <p className="text-sm text-slate-500">Last updated: March 2026</p>
 
           <h2>Information We Collect</h2>
           <p>

@@ -21,7 +21,7 @@ async function insertCalculatorLead(data: Record<string, unknown>) {
   if (!url || !key) return;
 
   try {
-    await fetch(`${url}/rest/v1/leads`, {
+    const resp = await fetch(`${url}/rest/v1/leads`, {
       method: "POST",
       headers: {
         apikey: key,
@@ -31,6 +31,9 @@ async function insertCalculatorLead(data: Record<string, unknown>) {
       },
       body: JSON.stringify(data),
     });
+    if (!resp.ok) {
+      console.error("Calculator lead insert failed:", resp.status, await resp.text());
+    }
   } catch (e) {
     console.error("Calculator lead insert failed:", e);
   }
