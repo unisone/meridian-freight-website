@@ -29,7 +29,14 @@ export function CalculatorProgressBar({ completedSteps }: CalculatorProgressBarP
       </div>
 
       {/* Progress bar segments */}
-      <div className="flex gap-1">
+      <div
+        className="flex gap-1"
+        role="progressbar"
+        aria-valuenow={completedSteps}
+        aria-valuemin={0}
+        aria-valuemax={4}
+        aria-label={`Calculator progress: ${completedSteps} of 4 steps complete`}
+      >
         {STEPS.map((step) => (
           <div
             key={step.num}

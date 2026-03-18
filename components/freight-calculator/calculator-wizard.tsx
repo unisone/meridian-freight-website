@@ -89,11 +89,13 @@ export function CalculatorWizard() {
 
   // ─── Fetch rate data on mount ──────────────────────────────────────────
   useEffect(() => {
-    getCalculatorData().then((d) => {
-      if (d) setData(d);
-      else setDataError(true);
-      setLoading(false);
-    });
+    getCalculatorData()
+      .then((d) => {
+        if (d) setData(d);
+        else setDataError(true);
+      })
+      .catch(() => setDataError(true))
+      .finally(() => setLoading(false));
   }, []);
 
   // ─── Recalculate preview when inputs change ────────────────────────────
@@ -152,16 +154,11 @@ export function CalculatorWizard() {
   async function handleCalculate() {
     if (!EMAIL_RE.test(email) || !selectedEquipment || !destinationCountry)
       return;
+    if (website) return; // honeypot — silent reject before any state changes
     if (submittingRef.current) return;
     submittingRef.current = true;
     setIsSubmitting(true);
     setError("");
-
-    if (website) {
-      setIsSubmitting(false);
-      submittingRef.current = false;
-      return;
-    }
 
     try {
       const params = new URLSearchParams(window.location.search);
@@ -335,6 +332,7 @@ export function CalculatorWizard() {
                     aria-pressed={isSelected}
                   >
                     <Icon
+                      aria-hidden="true"
                       className={`h-6 w-6 transition-colors ${
                         isSelected
                           ? "text-primary"
@@ -464,11 +462,14 @@ export function CalculatorWizard() {
                       type="number"
                       min={1}
                       value={equipmentSize ?? ""}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const parsed = parseInt(e.target.value, 10);
                         setEquipmentSize(
-                          e.target.value ? parseInt(e.target.value, 10) : null
-                        )
-                      }
+                          !isNaN(parsed) && parsed > 0 && parsed <= 999
+                            ? parsed
+                            : e.target.value ? null : null
+                        );
+                      }}
                       placeholder="Enter size"
                       className="mt-1.5 max-w-40"
                     />
@@ -704,7 +705,7 @@ export function CalculatorWizard() {
           <SheetContent
             side="bottom"
             className="max-h-[85vh] overflow-y-auto rounded-t-2xl p-0"
-            showCloseButton={false}
+            showCloseButton={true}
           >
             <SheetHeader className="border-b border-border px-5 py-4">
               <SheetTitle>Your Freight Estimate</SheetTitle>

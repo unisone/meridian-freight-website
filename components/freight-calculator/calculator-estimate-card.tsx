@@ -246,7 +246,6 @@ export function CalculatorEstimateCard({
         <>
           <div className="mb-1 font-mono text-4xl font-bold tracking-tight text-white">
             {formatDollar(preview.estimatedTotal)}
-            <span className="text-lg text-slate-500">.00</span>
           </div>
           <p className="mb-5 text-xs font-semibold uppercase tracking-wider text-primary">
             {preview.totalExcludesInland ? "Excl. inland transport" : "Optimized route rate"}

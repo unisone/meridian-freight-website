@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { resolveCoordinates, PORT_COORDINATES } from "./port-coordinates";
 
-// Dynamic import — react-globe.gl uses Three.js/WebGL, no SSR
 const GlobeGL = dynamic(() => import("react-globe.gl"), { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -46,8 +45,9 @@ interface LabelDatum {
   altitude: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GeoFeature = any;
+interface GeoFeature {
+  properties?: { ISO_A2?: string };
+}
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const ALBION_IA: [number, number] = [42.1172, -92.9835];
@@ -56,18 +56,18 @@ const CHICAGO_IL: [number, number] = [41.88, -87.63];
 const GEOJSON_URL =
   "https://cdn.jsdelivr.net/npm/globe.gl/example/datasets/ne_110m_admin_0_countries.geojson";
 
-// Dark cartographic palette (matching reference: intelligence-dashboard aesthetic)
+// Dark cartographic palette
 const LAND_COLOR = "rgba(25, 25, 38, 0.95)";
 const BORDER_COLOR = "rgba(65, 65, 85, 0.5)";
 const LAND_SIDE_COLOR = "rgba(15, 15, 25, 0.4)";
 
-// Route colors: red/pink (matching reference video)
-const ARC_PRIMARY = "rgba(220, 60, 60, 0.85)";
-const ARC_PRIMARY_FADE = "rgba(220, 60, 60, 0.35)";
-const ARC_SECONDARY = "rgba(220, 60, 60, 0.5)";
-const ARC_SECONDARY_FADE = "rgba(220, 60, 60, 0.2)";
-const MARKER_PRIMARY = "rgba(220, 60, 60, 1)";
-const MARKER_SECONDARY = "rgba(220, 60, 60, 0.7)";
+// Route colors: TEAL (brand color — matches site design system)
+const ARC_PRIMARY = "rgba(0, 200, 200, 0.85)";
+const ARC_PRIMARY_FADE = "rgba(0, 200, 200, 0.35)";
+const ARC_SECONDARY = "rgba(0, 200, 200, 0.5)";
+const ARC_SECONDARY_FADE = "rgba(0, 200, 200, 0.2)";
+const MARKER_PRIMARY = "rgba(0, 200, 200, 1)";
+const MARKER_SECONDARY = "rgba(0, 200, 200, 0.7)";
 const LABEL_COLOR = "rgba(255, 255, 255, 0.75)";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -89,7 +89,6 @@ function haversineDistance(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-/** Camera altitude: closer than before to show geographic detail */
 function getAltitude(distKm: number): number {
   if (distKm < 2000) return 1.2;
   if (distKm < 4000) return 1.5;
@@ -108,18 +107,38 @@ export function RouteGlobe({
   className = "",
 }: RouteGlobeProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const globeRef = useRef<any>(null);
+  const globeRef = useRef<any>(undefined);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [globeReady, setGlobeReady] = useState(false);
+  const [globeWidth, setGlobeWidth] = useState(600);
   const [countries, setCountries] = useState<{ features: GeoFeature[] }>({
     features: [],
   });
 
-  // Load GeoJSON countries on mount
+  // Responsive sizing via ResizeObserver
   useEffect(() => {
-    fetch(GEOJSON_URL)
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new ResizeObserver(([entry]) => {
+      setGlobeWidth(Math.round(entry.contentRect.width));
+    });
+    obs.observe(el);
+    setGlobeWidth(el.offsetWidth);
+    return () => obs.disconnect();
+  }, []);
+
+  // Load GeoJSON countries on mount with proper cleanup
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(GEOJSON_URL, { signal: controller.signal })
       .then((r) => r.json())
       .then(setCountries)
-      .catch(() => {});
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          console.error("GeoJSON load failed:", err);
+        }
+      });
+    return () => controller.abort();
   }, []);
 
   // Resolve coordinates
@@ -131,7 +150,10 @@ export function RouteGlobe({
 
   // Filter out Antarctica
   const polygonData = useMemo(
-    () => countries.features.filter((d: GeoFeature) => d.properties?.ISO_A2 !== "AQ"),
+    () =>
+      countries.features.filter(
+        (d: GeoFeature) => d.properties?.ISO_A2 !== "AQ"
+      ),
     [countries]
   );
 
@@ -155,8 +177,8 @@ export function RouteGlobe({
       label: `${originPort} → ${destinationPort}`,
     });
 
-    // For 40HC: Albion→Chicago rail segment
-    if (containerType === "fortyhc") {
+    // For 40HC: Albion→Chicago rail segment (only if origin is Chicago)
+    if (containerType === "fortyhc" && originPort === "Chicago, IL") {
       arcs.push({
         startLat: ALBION_IA[0],
         startLng: ALBION_IA[1],
@@ -169,21 +191,6 @@ export function RouteGlobe({
         animateTime: 1500,
         label: "Albion, IA → Chicago, IL (rail)",
       });
-      // Also Albion→origin port if origin is Chicago
-      if (originPort === "Chicago, IL") {
-        arcs.push({
-          startLat: ALBION_IA[0],
-          startLng: ALBION_IA[1],
-          endLat: originCoords[0],
-          endLng: originCoords[1],
-          color: [ARC_SECONDARY, ARC_SECONDARY_FADE],
-          stroke: 0.25,
-          dashLength: 0.2,
-          dashGap: 0.3,
-          animateTime: 1500,
-          label: "Albion, IA → Chicago, IL (drayage)",
-        });
-      }
     }
 
     return arcs;
@@ -210,7 +217,7 @@ export function RouteGlobe({
       },
     ];
 
-    if (containerType === "fortyhc") {
+    if (containerType === "fortyhc" && originPort === "Chicago, IL") {
       points.push({
         lat: ALBION_IA[0],
         lng: ALBION_IA[1],
@@ -246,7 +253,7 @@ export function RouteGlobe({
       },
     ];
 
-    if (containerType === "fortyhc") {
+    if (containerType === "fortyhc" && originPort === "Chicago, IL") {
       labels.push({
         lat: ALBION_IA[0],
         lng: ALBION_IA[1],
@@ -286,7 +293,6 @@ export function RouteGlobe({
     }
   }, [globeReady, hasRoute, animateCamera]);
 
-  // Disable auto-rotation, disable zoom
   useEffect(() => {
     if (globeReady && globeRef.current) {
       const controls = globeRef.current.controls();
@@ -297,33 +303,32 @@ export function RouteGlobe({
     }
   }, [globeReady]);
 
-  // Initial camera: Americas view
   useEffect(() => {
     if (globeReady && globeRef.current && !hasRoute) {
       globeRef.current.pointOfView({ lat: 25, lng: -80, altitude: 2.0 }, 0);
     }
   }, [globeReady, hasRoute]);
 
+  const globeHeight = Math.round(globeWidth * 0.83);
+
   return (
     <div
+      ref={containerRef}
       className={`relative overflow-hidden rounded-xl bg-black ${className}`}
     >
       <GlobeGL
         ref={globeRef}
         onGlobeReady={() => setGlobeReady(true)}
-        width={600}
-        height={500}
+        width={globeWidth}
+        height={globeHeight}
         backgroundColor="rgba(0,0,0,0)"
-        // No photo texture — dark cartographic style via polygons
         showGlobe={true}
         showAtmosphere={false}
-        // Country polygons: dark gray land with visible borders
         polygonsData={polygonData}
         polygonCapColor={() => LAND_COLOR}
         polygonSideColor={() => LAND_SIDE_COLOR}
         polygonStrokeColor={() => BORDER_COLOR}
         polygonAltitude={0.005}
-        // Arcs: thin red/pink route lines
         arcsData={arcsData}
         arcStartLat="startLat"
         arcStartLng="startLng"
@@ -335,7 +340,6 @@ export function RouteGlobe({
         arcDashGap="dashGap"
         arcDashAnimateTime="animateTime"
         arcLabel="label"
-        // Points: hub and destination markers
         pointsData={pointsData}
         pointLat="lat"
         pointLng="lng"
@@ -343,7 +347,6 @@ export function RouteGlobe({
         pointAltitude={0.01}
         pointRadius="size"
         pointLabel="label"
-        // Labels: white port names on the surface
         labelsData={labelsData}
         labelLat="lat"
         labelLng="lng"
@@ -353,17 +356,15 @@ export function RouteGlobe({
         labelAltitude="altitude"
         labelDotRadius={0.4}
         labelResolution={2}
-        // Interaction
         enablePointerInteraction={true}
         animateIn={true}
       />
 
-      {/* Live route badge */}
       {hasRoute && (
         <div className="absolute bottom-4 left-4 flex items-center gap-1.5">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
           </span>
           <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
             Live Route Analysis
