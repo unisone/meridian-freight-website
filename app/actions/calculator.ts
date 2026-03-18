@@ -145,8 +145,8 @@ export async function submitCalculator(
             <hr style="border:none;border-top:1px dashed #e5e7eb;margin:16px 0"/>
             <table style="width:100%;border-collapse:collapse">
               ${estimate.usInlandTransport !== null ? `<tr><td style="padding:6px 0">US Inland Transport</td><td style="text-align:right;font-weight:bold">${formatDollar(estimate.usInlandTransport)}</td></tr>` : ""}
-              <tr><td style="padding:6px 0">Packing & Loading</td><td style="text-align:right;font-weight:bold">${formatDollar(estimate.packingAndLoading)}</td></tr>
-              <tr><td style="padding:6px 0">Ocean Freight (${escapeHtml(estimate.carrier)})</td><td style="text-align:right;font-weight:bold">${formatDollar(estimate.oceanFreight)}</td></tr>
+              ${estimate.packingAndLoading > 0 ? `<tr><td style="padding:6px 0">Packing & Loading</td><td style="text-align:right;font-weight:bold">${formatDollar(estimate.packingAndLoading)}</td></tr>` : ""}
+              <tr><td style="padding:6px 0">${estimate.containerType === "flatrack" ? "Sea Freight & Loading" : "Ocean Freight"} (${escapeHtml(estimate.carrier)})</td><td style="text-align:right;font-weight:bold">${formatDollar(estimate.oceanFreight)}</td></tr>
               <tr style="border-top:2px solid #2563eb"><td style="padding:8px 0;font-weight:bold;font-size:16px">Estimated Total</td><td style="text-align:right;font-weight:bold;font-size:16px;color:#2563eb">${formatDollar(estimate.estimatedTotal)}</td></tr>
             </table>
             <p style="font-size:12px;color:#6b7280;margin-top:16px">
@@ -199,12 +199,13 @@ export async function submitCalculator(
               <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>US Inland Transport</strong></td>
               <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.usInlandTransport)}</td>
             </tr>` : ""}
+            ${estimate.packingAndLoading > 0 ? `
             <tr style="background:#f0f9ff">
               <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Packing &amp; Loading</strong></td>
               <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.packingAndLoading)}${estimate.packingBreakdown ? ` <span style="color:#6b7280;font-size:12px">(${escapeHtml(estimate.packingBreakdown)})</span>` : ""}</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Ocean Freight</strong></td>
+            </tr>` : ""}
+            <tr${estimate.packingAndLoading > 0 ? "" : ' style="background:#f0f9ff"'}>
+              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>${estimate.containerType === "flatrack" ? "Sea Freight &amp; Loading" : "Ocean Freight"}</strong></td>
               <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.oceanFreight)} (${escapeHtml(estimate.carrier)}${estimate.transitTimeDays ? `, ${escapeHtml(estimate.transitTimeDays)} days` : ""})</td>
             </tr>
             <tr style="background:#eff6ff">

@@ -326,11 +326,14 @@ describe("calculateFreightV2 — Flatrack", () => {
 
     expect(est).not.toBeNull();
     expect(est!.containerType).toBe("flatrack");
-    expect(est!.packingAndLoading).toBe(8250);
+    // Flatrack: packing is INCLUDED in packing_drayage, not charged separately
+    expect(est!.packingAndLoading).toBe(0);
     expect(est!.usInlandTransport).toBeNull();
     expect(est!.totalExcludesInland).toBe(true);
-    // Ocean = best flatrack rate for UY (HAPAG preferred)
+    // Ocean = best flatrack rate for UY (HAPAG preferred): ocean_rate + packing_drayage
     expect(est!.oceanFreight).toBe(5200 + 900); // HAPAG Savannah rate
+    // Total = only ocean (no inland, no separate packing)
+    expect(est!.estimatedTotal).toBe(5200 + 900);
   });
 
   it("picks cheapest port with ZIP for flatrack", () => {

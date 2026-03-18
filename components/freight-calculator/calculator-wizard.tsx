@@ -532,26 +532,45 @@ export function CalculatorWizard() {
                 </div>
               )}
 
-              <div className="flex justify-between">
-                <div>
-                  <span className="text-slate-700">Packing & Loading</span>
-                  {result.estimate.packingBreakdown && (
-                    <div className="text-xs text-slate-400">{result.estimate.packingBreakdown}</div>
-                  )}
-                </div>
-                <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.packingAndLoading)}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <div>
-                  <span className="text-slate-700">Ocean Freight</span>
-                  <div className="text-xs text-slate-400">
-                    {result.estimate.carrier} • {result.estimate.originPort} → {result.estimate.destinationPort}
-                    {result.estimate.transitTimeDays && ` • ${result.estimate.transitTimeDays} days`}
+              {/* 40HC: separate packing + ocean lines */}
+              {result.estimate.containerType === "fortyhc" && (
+                <>
+                  <div className="flex justify-between">
+                    <div>
+                      <span className="text-slate-700">Packing & Loading</span>
+                      {result.estimate.packingBreakdown && (
+                        <div className="text-xs text-slate-400">{result.estimate.packingBreakdown}</div>
+                      )}
+                    </div>
+                    <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.packingAndLoading)}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <span className="text-slate-700">Ocean Freight</span>
+                      <div className="text-xs text-slate-400">
+                        {result.estimate.carrier} • {result.estimate.originPort} → {result.estimate.destinationPort}
+                        {result.estimate.transitTimeDays && ` • ${result.estimate.transitTimeDays} days`}
+                      </div>
+                    </div>
+                    <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.oceanFreight)}</span>
+                  </div>
+                </>
+              )}
+
+              {/* Flatrack: combined "Sea Freight & Loading" (packing included in packing_drayage) */}
+              {result.estimate.containerType === "flatrack" && (
+                <div className="flex justify-between">
+                  <div>
+                    <span className="text-slate-700">Sea Freight & Loading</span>
+                    <div className="text-xs text-slate-400">
+                      {result.estimate.carrier} • {result.estimate.originPort} → {result.estimate.destinationPort}
+                      {result.estimate.transitTimeDays && ` • ${result.estimate.transitTimeDays} days`}
+                    </div>
+                    <div className="text-xs text-slate-400">Includes port-side packing & drayage</div>
+                  </div>
+                  <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.oceanFreight)}</span>
                 </div>
-                <span className="font-mono font-bold text-slate-900">{formatDollar(result.estimate.oceanFreight)}</span>
-              </div>
+              )}
 
               <div className="border-t border-sky-200 pt-3 flex justify-between">
                 <span className="font-semibold text-slate-900">Estimated Total</span>

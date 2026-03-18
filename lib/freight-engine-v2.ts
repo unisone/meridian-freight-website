@@ -5,7 +5,11 @@
  *   Total = US Inland Transport + Packing & Loading + Ocean Freight
  *
  * 40HC Container: ZIP → Albion, IA (packing) → Chicago (rail) → ocean
- * Flatrack:       ZIP → nearest US port → ocean (packing included in packing_drayage)
+ *   Total = US Inland + Packing & Loading + Ocean Freight
+ *
+ * Flatrack: ZIP → nearest US port → ocean
+ *   Total = US Inland + Sea Freight & Loading (packing is inside packing_drayage)
+ *   NO separate packing cost — packing_drayage covers port-side packing + drayage
  */
 
 import type {
@@ -169,12 +173,13 @@ export function findBestOceanRate(
 
   if (matching.length === 0) return null;
 
-  // Sort: carrier preference first, then cheapest total
+  // Sort: carrier preference first, then cheapest (ocean_rate + drayage)
+  // Note: packing_drayage is NOT included in comparison — matches chatbot behavior
   matching.sort((a, b) => {
     const rankDiff = carrierRank(a.carrier) - carrierRank(b.carrier);
     if (rankDiff !== 0) return rankDiff;
-    const totalA = (a.ocean_rate ?? 0) + (a.drayage ?? 0) + (a.packing_drayage ?? 0);
-    const totalB = (b.ocean_rate ?? 0) + (b.drayage ?? 0) + (b.packing_drayage ?? 0);
+    const totalA = (a.ocean_rate ?? 0) + (a.drayage ?? 0);
+    const totalB = (b.ocean_rate ?? 0) + (b.drayage ?? 0);
     return totalA - totalB;
   });
 
@@ -201,20 +206,23 @@ export function calculateFreightV2(
   const notes: string[] = [];
 
   // ── Packing ──
-  const packingAndLoading = adjustForUnit(
-    equipment.packing_cost,
-    equipment.packing_unit,
-    equipmentSize,
-  );
+  // For 40HC: packing is a separate cost (done at Albion, IA)
+  // For Flatrack: packing is INCLUDED in packing_drayage (done at port) — no separate charge
+  const isFlatrack = containerType === "flatrack";
+  const packingAndLoading = isFlatrack
+    ? 0
+    : adjustForUnit(equipment.packing_cost, equipment.packing_unit, equipmentSize);
 
   let packingBreakdown: string | null = null;
-  const unitLabel = getUnitLabel(equipment.packing_unit);
-  const unitSingular: Record<string, string> = {
-    rows: "row", feet: "foot", shanks: "shank", bottoms: "bottom",
-  };
-  if (unitLabel && equipmentSize && equipmentSize > 0) {
-    const singular = unitSingular[unitLabel] ?? unitLabel;
-    packingBreakdown = `${formatDollar(equipment.packing_cost)}/${singular} × ${equipmentSize} ${unitLabel} = ${formatDollar(packingAndLoading)}`;
+  if (!isFlatrack) {
+    const unitLabel = getUnitLabel(equipment.packing_unit);
+    const unitSingular: Record<string, string> = {
+      rows: "row", feet: "foot", shanks: "shank", bottoms: "bottom",
+    };
+    if (unitLabel && equipmentSize && equipmentSize > 0) {
+      const singular = unitSingular[unitLabel] ?? unitLabel;
+      packingBreakdown = `${formatDollar(equipment.packing_cost)}/${singular} × ${equipmentSize} ${unitLabel} = ${formatDollar(packingAndLoading)}`;
+    }
   }
 
   // ── Ocean Freight ──
