@@ -636,11 +636,12 @@ export function CalculatorWizard() {
                 )}
 
                 {/* Interactive route globe */}
-                <div className="mt-4 overflow-hidden rounded-xl bg-slate-950 p-4">
+                <div className="mt-4 overflow-hidden rounded-xl">
                   <RouteGlobe
                     originPort={preview?.originPort ?? null}
                     destinationPort={preview?.destinationPort ?? null}
                     destinationCountry={destinationCountry || null}
+                    containerType={selectedEquipment?.container_type ?? null}
                   />
                 </div>
               </div>

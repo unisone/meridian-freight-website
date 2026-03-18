@@ -1,39 +1,95 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import createGlobe, { type Globe } from "cobe";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { resolveCoordinates, PORT_COORDINATES } from "./port-coordinates";
+
+// Dynamic import — react-globe.gl uses Three.js/WebGL, no SSR
+const GlobeGL = dynamic(() => import("react-globe.gl"), { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface RouteGlobeProps {
   originPort: string | null;
   destinationPort: string | null;
   destinationCountry: string | null;
+  /** For 40HC: show Albion→Chicago rail segment */
+  containerType?: "fortyhc" | "flatrack" | null;
   className?: string;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-const DEG2RAD = Math.PI / 180;
-const CAMERA_LERP = 0.04;
-const IDLE_ROTATION_SPEED = 0.003;
-const INITIAL_THETA = 0.25;
+interface ArcDatum {
+  startLat: number;
+  startLng: number;
+  endLat: number;
+  endLng: number;
+  color: string[];
+  stroke: number;
+  dashLength: number;
+  dashGap: number;
+  animateTime: number;
+  label: string;
+}
 
-// Theme: dark globe matching our slate-900 sidebar
-const GLOBE_BASE: Omit<
-  Parameters<typeof createGlobe>[1],
-  "width" | "height" | "devicePixelRatio" | "phi" | "theta"
-> = {
-  dark: 1,
-  diffuse: 1.2,
-  mapSamples: 20000,
-  mapBrightness: 5,
-  baseColor: [0.18, 0.18, 0.22],
-  markerColor: [0.1, 0.78, 0.78],
-  glowColor: [0.04, 0.12, 0.18],
-  arcColor: [0.1, 0.78, 0.78],
-  arcWidth: 1.5,
-  arcHeight: 0.3,
-};
+interface PointDatum {
+  lat: number;
+  lng: number;
+  size: number;
+  color: string;
+  label: string;
+}
+
+interface LabelDatum {
+  lat: number;
+  lng: number;
+  text: string;
+  color: string;
+  size: number;
+  altitude: number;
+}
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+const ALBION_IA: [number, number] = [42.1172, -92.9835];
+const CHICAGO_IL: [number, number] = [41.88, -87.63];
+
+const EARTH_DARK_URL =
+  "https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg";
+const EARTH_TOPO_URL =
+  "https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png";
+
+// Brand color for arcs/markers (teal)
+const TEAL = "rgba(0, 200, 200, 1)";
+const TEAL_70 = "rgba(0, 200, 200, 0.7)";
+const TEAL_40 = "rgba(0, 200, 200, 0.4)";
+const TEAL_20 = "rgba(0, 200, 200, 0.2)";
+const WHITE_70 = "rgba(255, 255, 255, 0.7)";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Calculate great-circle distance between two points (degrees) */
+function haversineDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371; // km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/** Calculate appropriate camera altitude based on route distance */
+function getAltitude(distKm: number): number {
+  if (distKm < 3000) return 1.4;
+  if (distKm < 6000) return 1.8;
+  if (distKm < 10000) return 2.2;
+  return 2.8;
+}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -41,160 +97,227 @@ export function RouteGlobe({
   originPort,
   destinationPort,
   destinationCountry,
+  containerType,
   className = "",
 }: RouteGlobeProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const globeRef = useRef<Globe | null>(null);
-  const phiRef = useRef(0);
-  const targetPhiRef = useRef(0);
-  const rafRef = useRef<number>(0);
-  const pointerDownRef = useRef(false);
-  const pointerXRef = useRef(0);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const globeRef = useRef<any>(null);
+  const [globeReady, setGlobeReady] = useState(false);
 
   // Resolve coordinates
   const originCoords = originPort
     ? PORT_COORDINATES[originPort] ?? null
     : null;
-  const destCoords = resolveCoordinates(
-    destinationPort,
-    destinationCountry
-  );
+  const destCoords = resolveCoordinates(destinationPort, destinationCountry);
   const hasRoute = originCoords !== null && destCoords !== null;
 
-  // ─── Create globe ──────────────────────────────────────────────────────
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+  // ─── Build arc data ─────────────────────────────────────────────────
+  const arcsData = useMemo<ArcDatum[]>(() => {
+    if (!originCoords || !destCoords) return [];
 
-    const size = container.offsetWidth;
-    const dpr = Math.min(window.devicePixelRatio, 2);
-    const pixelSize = size * dpr;
+    const arcs: ArcDatum[] = [];
 
-    canvas.width = pixelSize;
-    canvas.height = pixelSize;
-    canvas.style.width = `${size}px`;
-    canvas.style.height = `${size}px`;
-
-    const globe = createGlobe(canvas, {
-      width: pixelSize,
-      height: pixelSize,
-      devicePixelRatio: dpr,
-      phi: phiRef.current,
-      theta: INITIAL_THETA,
-      ...GLOBE_BASE,
-      markers: [],
-      arcs: [],
+    // Main ocean route arc (prominent)
+    arcs.push({
+      startLat: originCoords[0],
+      startLng: originCoords[1],
+      endLat: destCoords[0],
+      endLng: destCoords[1],
+      color: [TEAL_70, TEAL_40],
+      stroke: 0.6,
+      dashLength: 0.4,
+      dashGap: 0.2,
+      animateTime: 3000,
+      label: `${originPort} → ${destinationPort}`,
     });
 
-    globeRef.current = globe;
-
-    // Animation loop
-    const animate = () => {
-      if (!pointerDownRef.current) {
-        if (hasRoute) {
-          // Lerp toward route center
-          const diff = targetPhiRef.current - phiRef.current;
-          phiRef.current += diff * CAMERA_LERP;
-        } else {
-          // Idle auto-rotation
-          phiRef.current += IDLE_ROTATION_SPEED;
-        }
-      }
-      globe.update({ phi: phiRef.current });
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      globe.destroy();
-      globeRef.current = null;
-    };
-    // Only recreate on mount — we use update() for dynamic changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ─── Update markers & arcs when route changes ─────────────────────────
-  useEffect(() => {
-    const globe = globeRef.current;
-    if (!globe) return;
-
-    if (originCoords && destCoords) {
-      globe.update({
-        markers: [
-          { location: originCoords, size: 0.07 },
-          { location: destCoords, size: 0.07 },
-        ],
-        arcs: [{ from: originCoords, to: destCoords }],
+    // For 40HC: show Albion→Chicago rail segment
+    if (containerType === "fortyhc") {
+      arcs.push({
+        startLat: ALBION_IA[0],
+        startLng: ALBION_IA[1],
+        endLat: CHICAGO_IL[0],
+        endLng: CHICAGO_IL[1],
+        color: [TEAL_20, TEAL_40],
+        stroke: 0.3,
+        dashLength: 0.2,
+        dashGap: 0.3,
+        animateTime: 1500,
+        label: "Albion, IA → Chicago, IL (rail)",
       });
-
-      // Animate camera to route midpoint
-      const midLon = (originCoords[1] + destCoords[1]) / 2;
-      targetPhiRef.current = -midLon * DEG2RAD;
-    } else {
-      globe.update({ markers: [], arcs: [] });
     }
-  }, [originCoords, destCoords, hasRoute]);
 
-  // ─── Pointer interaction (drag to rotate) ──────────────────────────────
+    return arcs;
+  }, [originCoords, destCoords, originPort, destinationPort, containerType]);
+
+  // ─── Build point markers ────────────────────────────────────────────
+  const pointsData = useMemo<PointDatum[]>(() => {
+    if (!originCoords || !destCoords) return [];
+
+    const points: PointDatum[] = [
+      {
+        lat: originCoords[0],
+        lng: originCoords[1],
+        size: 0.6,
+        color: TEAL,
+        label: originPort ?? "Origin",
+      },
+      {
+        lat: destCoords[0],
+        lng: destCoords[1],
+        size: 0.5,
+        color: TEAL_70,
+        label: destinationPort ?? "Destination",
+      },
+    ];
+
+    // Hub marker at Albion for 40HC
+    if (containerType === "fortyhc") {
+      points.push({
+        lat: ALBION_IA[0],
+        lng: ALBION_IA[1],
+        size: 0.4,
+        color: TEAL_40,
+        label: "Albion, IA (packing)",
+      });
+    }
+
+    return points;
+  }, [
+    originCoords,
+    destCoords,
+    originPort,
+    destinationPort,
+    containerType,
+  ]);
+
+  // ─── Build labels ──────────────────────────────────────────────────
+  const labelsData = useMemo<LabelDatum[]>(() => {
+    if (!originCoords || !destCoords) return [];
+
+    const labels: LabelDatum[] = [
+      {
+        lat: originCoords[0],
+        lng: originCoords[1],
+        text: originPort ?? "Origin",
+        color: WHITE_70,
+        size: 0.7,
+        altitude: 0.01,
+      },
+      {
+        lat: destCoords[0],
+        lng: destCoords[1],
+        text: destinationPort ?? "Destination",
+        color: WHITE_70,
+        size: 0.7,
+        altitude: 0.01,
+      },
+    ];
+
+    return labels;
+  }, [originCoords, destCoords, originPort, destinationPort]);
+
+  // ─── Camera positioning ─────────────────────────────────────────────
+  const animateCamera = useCallback(() => {
+    if (!globeRef.current || !originCoords || !destCoords) return;
+
+    const midLat = (originCoords[0] + destCoords[0]) / 2;
+    const midLng = (originCoords[1] + destCoords[1]) / 2;
+    const dist = haversineDistance(
+      originCoords[0],
+      originCoords[1],
+      destCoords[0],
+      destCoords[1]
+    );
+    const altitude = getAltitude(dist);
+
+    globeRef.current.pointOfView({ lat: midLat, lng: midLng, altitude }, 1200);
+  }, [originCoords, destCoords]);
+
+  // Animate camera when route changes
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (globeReady && hasRoute) {
+      animateCamera();
+    }
+  }, [globeReady, hasRoute, animateCamera]);
 
-    const onPointerDown = (e: PointerEvent) => {
-      pointerDownRef.current = true;
-      pointerXRef.current = e.clientX;
-      canvas.setPointerCapture(e.pointerId);
-    };
-    const onPointerMove = (e: PointerEvent) => {
-      if (!pointerDownRef.current) return;
-      const dx = e.clientX - pointerXRef.current;
-      pointerXRef.current = e.clientX;
-      phiRef.current -= dx * 0.005;
-      targetPhiRef.current = phiRef.current;
-    };
-    const onPointerUp = () => {
-      pointerDownRef.current = false;
-    };
+  // Disable auto-rotation when globe is ready
+  useEffect(() => {
+    if (globeReady && globeRef.current) {
+      const controls = globeRef.current.controls();
+      if (controls) {
+        controls.autoRotate = false;
+        controls.enableZoom = false;
+      }
+    }
+  }, [globeReady]);
 
-    canvas.addEventListener("pointerdown", onPointerDown);
-    canvas.addEventListener("pointermove", onPointerMove);
-    canvas.addEventListener("pointerup", onPointerUp);
-    canvas.addEventListener("pointerleave", onPointerUp);
-
-    return () => {
-      canvas.removeEventListener("pointerdown", onPointerDown);
-      canvas.removeEventListener("pointermove", onPointerMove);
-      canvas.removeEventListener("pointerup", onPointerUp);
-      canvas.removeEventListener("pointerleave", onPointerUp);
-    };
-  }, []);
+  // Initial camera position (show Americas)
+  useEffect(() => {
+    if (globeReady && globeRef.current && !hasRoute) {
+      globeRef.current.pointOfView({ lat: 25, lng: -80, altitude: 2.2 }, 0);
+    }
+  }, [globeReady, hasRoute]);
 
   return (
     <div
-      ref={containerRef}
-      className={`relative mx-auto aspect-square w-full max-w-[420px] select-none ${className}`}
+      className={`relative overflow-hidden rounded-xl bg-[#080a12] ${className}`}
     >
-      {/* Ambient glow behind globe */}
-      <div className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(0,200,200,0.06)_0%,transparent_70%)]" />
-
-      {/* Cobe WebGL globe */}
-      <canvas
-        ref={canvasRef}
-        className="h-full w-full cursor-grab active:cursor-grabbing"
+      <GlobeGL
+        ref={globeRef}
+        onGlobeReady={() => setGlobeReady(true)}
+        width={600}
+        height={500}
+        backgroundColor="rgba(0,0,0,0)"
+        globeImageUrl={EARTH_DARK_URL}
+        bumpImageUrl={EARTH_TOPO_URL}
+        showAtmosphere={true}
+        atmosphereColor="rgba(0, 180, 180, 0.15)"
+        atmosphereAltitude={0.12}
+        // Arcs
+        arcsData={arcsData}
+        arcStartLat="startLat"
+        arcStartLng="startLng"
+        arcEndLat="endLat"
+        arcEndLng="endLng"
+        arcColor="color"
+        arcStroke="stroke"
+        arcDashLength="dashLength"
+        arcDashGap="dashGap"
+        arcDashAnimateTime="animateTime"
+        arcLabel="label"
+        // Points
+        pointsData={pointsData}
+        pointLat="lat"
+        pointLng="lng"
+        pointColor="color"
+        pointAltitude={0.01}
+        pointRadius="size"
+        pointLabel="label"
+        // Labels
+        labelsData={labelsData}
+        labelLat="lat"
+        labelLng="lng"
+        labelText="text"
+        labelColor="color"
+        labelSize="size"
+        labelAltitude="altitude"
+        labelDotRadius={0.3}
+        labelResolution={2}
+        // Interaction
+        enablePointerInteraction={true}
+        animateIn={true}
       />
 
-      {/* Live route analysis badge */}
+      {/* Live route badge */}
       {hasRoute && (
-        <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+        <div className="absolute bottom-4 left-4 flex items-center gap-1.5">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
           </span>
           <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-            Live Route Analysis Active
+            Live Route Analysis
           </span>
         </div>
       )}
