@@ -48,6 +48,7 @@ import { CONTACT } from "@/lib/constants";
 import Link from "next/link";
 
 import { CalculatorProgressBar } from "./calculator-progress-bar";
+import { RouteGlobe } from "./route-globe";
 import { CalculatorEstimateCard } from "./calculator-estimate-card";
 import { CATEGORY_ICONS } from "./category-icons";
 
@@ -633,6 +634,15 @@ export function CalculatorWizard() {
                     )}
                   </div>
                 )}
+
+                {/* Interactive route globe */}
+                <div className="mt-4 overflow-hidden rounded-xl bg-slate-950 p-4">
+                  <RouteGlobe
+                    originPort={preview?.originPort ?? null}
+                    destinationPort={preview?.destinationPort ?? null}
+                    destinationCountry={destinationCountry || null}
+                  />
+                </div>
               </div>
             )}
           </section>
