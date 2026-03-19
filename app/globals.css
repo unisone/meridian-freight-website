@@ -85,6 +85,7 @@
   --border: oklch(0.929 0.006 264.531);          /* #E2E8F0 — slate-200, subtle */
   --input: oklch(0.929 0.006 264.531);
   --ring: oklch(0.685 0.169 222.7);              /* matches primary */
+  --outline-variant: oklch(0.554 0.022 257.417); /* slate-500 — ghost border base */
   --chart-1: oklch(0.685 0.169 222.7);
   --chart-2: oklch(0.696 0.17 162.48);           /* #10B981 — emerald-500 */
   --chart-3: oklch(0.554 0.135 217);
@@ -252,5 +253,21 @@
   }
   .animate-shake {
     animation: shake var(--duration-normal) var(--ease-default);
+  }
+
+  /* ─── Ghost Border — felt, not seen ────────────── */
+  .ghost-border {
+    outline: 1px solid oklch(0.554 0.022 257.417 / 15%); /* --outline-variant @ 15% */
+  }
+
+  /* ─── Glassmorphism — depth with translucency ──── */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl;
+  }
+  .glass-heavy {
+    @apply bg-white/80 backdrop-blur-xl;
+  }
+  .glass-overlay {
+    @apply bg-black/15 backdrop-blur-xl;
   }
 }

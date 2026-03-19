@@ -44,7 +44,7 @@ export function Header() {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-sm"
+          ? "glass-heavy shadow-sm ghost-border"
           : "bg-white"
       }`}
       aria-label="Main navigation"
@@ -107,7 +107,7 @@ export function Header() {
                             ease: EASE.decelerate,
                           }}
                           style={{ transformOrigin: "top" }}
-                          className="absolute top-full left-0 mt-1 w-72 rounded-lg bg-white py-1.5 shadow-xl"
+                          className="absolute top-full left-0 mt-1 w-72 rounded-lg glass-heavy ghost-border py-1.5 shadow-xl"
                           onMouseLeave={() => setOpenDropdown(null)}
                         >
                           <div className="py-1">
@@ -124,7 +124,7 @@ export function Header() {
                               >
                                 <Link
                                   href={child.href}
-                                  className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-sky-50 hover:text-primary/80"
+                                  className="block px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/5 hover:text-primary/80"
                                   onClick={() => setOpenDropdown(null)}
                                 >
                                   {child.label}
@@ -171,11 +171,11 @@ export function Header() {
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
-              className="lg:hidden p-2.5 rounded-lg transition-colors hover:bg-slate-100"
+              className="lg:hidden p-2.5 rounded-lg transition-colors hover:bg-muted"
               aria-label="Open menu"
             >
               <Menu
-                className="h-6 w-6 text-slate-700"
+                className="h-6 w-6 text-foreground"
               />
             </SheetTrigger>
             <SheetContent side="right" className="w-80 overflow-y-auto">
