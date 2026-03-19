@@ -62,7 +62,7 @@ export function PricingTable() {
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                   category === cat.id
                     ? "bg-sky-500 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 hover:bg-sky-50"
+                    : "bg-slate-50 text-slate-700 hover:bg-sky-100"
                 }`}
               >
                 {cat.label}
@@ -72,7 +72,7 @@ export function PricingTable() {
         </div>
 
         {/* Table */}
-        <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200">
+        <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
               <TableRow className="bg-slate-50">
@@ -110,7 +110,7 @@ export function PricingTable() {
         <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
           Miscellaneous Items
         </h2>
-        <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200">
+        <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
               <TableRow className="bg-slate-50">
@@ -138,7 +138,7 @@ export function PricingTable() {
         <p className="mt-2 text-slate-600">
           40ft container rates. Line&apos;s = shipping line container. SOC = shipper-owned container.
         </p>
-        <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200">
+        <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
               <TableRow className="bg-slate-50">

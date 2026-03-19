@@ -101,7 +101,7 @@ export default function AboutPage() {
           </p>
 
           {/* Main facility */}
-          <div className="mt-8 rounded-xl border-2 border-sky-200 bg-sky-50 p-5">
+          <div className="mt-8 rounded-xl bg-sky-50 p-5 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-500 text-white">
                 <Star className="h-5 w-5" />
@@ -125,7 +125,7 @@ export default function AboutPage() {
             {WAREHOUSE_PARTNERS.map((loc) => (
               <div
                 key={loc.state}
-                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md"
+                className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
                   <MapPin className="h-5 w-5" />

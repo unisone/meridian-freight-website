@@ -59,7 +59,7 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
                   </p>
 
                   {/* Metadata */}
-                  <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
+                  <div className="mt-4 grid grid-cols-2 gap-2 bg-slate-50 -mx-5 px-5 py-3 rounded-b-xl">
                     <div className="flex items-center gap-1.5 text-xs text-slate-500">
                       <MapPin className="h-3.5 w-3.5" />
                       <span>{project.destination}</span>

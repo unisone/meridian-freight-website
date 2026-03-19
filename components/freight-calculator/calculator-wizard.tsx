@@ -368,7 +368,7 @@ export function CalculatorWizard() {
                 <Label className="text-sm text-muted-foreground">
                   Equipment Type
                 </Label>
-                <ScrollArea className="mt-2 max-h-64 rounded-xl border border-border">
+                <ScrollArea className="mt-2 max-h-64 rounded-xl shadow-sm bg-muted/30">
                   <div className="space-y-1 p-2">
                     {filteredEquipment.map((eq) => {
                       const isSelected = selectedEquipment?.id === eq.id;
@@ -671,7 +671,7 @@ export function CalculatorWizard() {
       <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden">
         <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
           {/* Bottom bar */}
-          <div className="flex items-center justify-between border-t border-slate-800 bg-slate-900 px-4 py-3 shadow-2xl">
+          <div className="flex items-center justify-between bg-slate-900 px-4 py-3 shadow-2xl">
             <SheetTrigger
               className="flex items-center gap-2 text-white"
             >
@@ -709,7 +709,7 @@ export function CalculatorWizard() {
             className="max-h-[85vh] overflow-y-auto rounded-t-2xl p-0"
             showCloseButton={true}
           >
-            <SheetHeader className="border-b border-border px-5 py-4">
+            <SheetHeader className="bg-muted px-5 py-4">
               <SheetTitle>Your Freight Estimate</SheetTitle>
             </SheetHeader>
             <div className="p-5">

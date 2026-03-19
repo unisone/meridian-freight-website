@@ -60,7 +60,7 @@ export default function PricingPage() {
 
           {/* Calculator CTA */}
           <ScrollReveal variant="fade">
-          <div className="mb-12 rounded-xl border border-sky-200 bg-sky-50 p-6 text-center sm:p-8">
+          <div className="mb-12 rounded-xl bg-sky-50 p-6 text-center shadow-sm sm:p-8">
             <Calculator className="mx-auto h-8 w-8 text-sky-500" />
             <h2 className="mt-3 text-xl font-bold text-slate-900">
               Want an instant estimate?

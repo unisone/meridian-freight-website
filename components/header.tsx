@@ -44,7 +44,7 @@ export function Header() {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-sm border-b border-slate-200/50"
+          ? "bg-white/95 backdrop-blur-sm shadow-sm"
           : "bg-white"
       }`}
       aria-label="Main navigation"
@@ -107,7 +107,7 @@ export function Header() {
                             ease: EASE.decelerate,
                           }}
                           style={{ transformOrigin: "top" }}
-                          className="absolute top-full left-0 mt-1 w-72 rounded-lg border border-slate-100 bg-white py-1.5 shadow-xl"
+                          className="absolute top-full left-0 mt-1 w-72 rounded-lg bg-white py-1.5 shadow-xl"
                           onMouseLeave={() => setOpenDropdown(null)}
                         >
                           <div className="py-1">
@@ -132,7 +132,7 @@ export function Header() {
                               </motion.div>
                             ))}
                           </div>
-                          <div className="border-t border-slate-100 px-3 pt-2 pb-1.5">
+                          <div className="mt-1 bg-slate-50 px-3 pt-2.5 pb-2 rounded-b-lg">
                             <Link
                               href="/contact"
                               className="block w-full rounded-md bg-sky-500 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-sky-600"
@@ -257,7 +257,7 @@ export function Header() {
                     delay: 0.25,
                     ease: EASE.decelerate,
                   }}
-                  className="mt-6 space-y-3 border-t border-slate-200 pt-6"
+                  className="mt-6 space-y-3 bg-slate-50 -mx-4 px-4 pt-6 pb-2 rounded-lg"
                 >
                   <a
                     href={CONTACT.phoneHref}

@@ -145,7 +145,7 @@ export function CalculatorEstimateCard({
             </span>
           </div>
 
-          <div className="border-t border-slate-700 pt-3">
+          <div className="mt-3 rounded-lg bg-white/5 p-3">
             <div className="flex items-baseline justify-between">
               <span className="font-semibold text-white">Estimated Total</span>
               <span className="font-mono text-3xl font-bold text-white">
@@ -229,7 +229,7 @@ export function CalculatorEstimateCard({
   // ---------------------------------------------------------------------------
   if (!selectedEquipment) {
     return (
-      <div className="flex min-h-[280px] items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 p-6 text-center">
+      <div className="flex min-h-[280px] items-center justify-center rounded-2xl bg-muted p-6 text-center">
         <div>
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
             <Ship className="h-6 w-6 text-muted-foreground" />
@@ -283,7 +283,7 @@ export function CalculatorEstimateCard({
       )}
 
       {/* Detail rows */}
-      <div className="space-y-3 border-t border-slate-800 pt-4">
+      <div className="space-y-3 mt-4 pt-4 bg-white/5 -mx-6 px-6 rounded-lg">
         <DetailRow label="Transit Time" value={preview?.transitTimeDays ? `${preview.transitTimeDays} Days` : "—"} />
         <DetailRow label="Container" value={containerLabel} />
         <DetailRow label="Carrier" value={preview?.carrier ?? "—"} highlight />
@@ -301,7 +301,7 @@ export function CalculatorEstimateCard({
 
       {/* Email gate section */}
       {emailGateOpen && !hasResult ? (
-        <div className="mt-5 space-y-3 border-t border-slate-800 pt-5">
+        <div className="mt-5 space-y-3 bg-white/5 -mx-6 px-6 py-5 rounded-lg">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Get Your Detailed Estimate
           </p>

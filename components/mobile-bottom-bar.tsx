@@ -21,7 +21,7 @@ export function MobileBottomBar() {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-sm shadow-[0_-2px_10px_rgba(0,0,0,0.1)] lg:hidden transition-transform duration-300 ${
+      className={`fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm shadow-[0_-4px_16px_rgba(0,0,0,0.08)] lg:hidden transition-transform duration-300 ${
         scrollDir === "down" ? "translate-y-full" : "translate-y-0"
       }`}
     >

@@ -38,7 +38,7 @@ export default function ContactPage() {
           </ScrollReveal>
 
           <div className="grid gap-12 lg:grid-cols-2">
-            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="rounded-xl bg-white p-6 shadow-md sm:p-8">
               <h2 className="mb-6 text-2xl font-bold text-slate-900">
                 Send us a Message
               </h2>

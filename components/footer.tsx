@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+
 import { COMPANY, CONTACT, SOCIAL, NAV_ITEMS } from "@/lib/constants";
 
 const SERVICE_LINKS = [
@@ -181,7 +181,7 @@ export function Footer() {
           </div>
         </div>
 
-        <Separator className="my-10 bg-slate-800" />
+        <div className="my-10 h-px bg-slate-800/50" />
 
         {/* Copyright */}
         <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
