@@ -78,11 +78,11 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <BarChart3 className="mx-auto h-8 w-8 text-sky-400" />
             <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
-              Estimate Your Freight Cost in 60 Seconds
+              How Much Will It Cost? Find Out in 60 Seconds.
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-slate-300">
-              Select your equipment and destination — get an instant cost
-              estimate.
+              Pick your equipment type and destination — our calculator gives
+              you a line-by-line estimate instantly.
             </p>
             <Button
               size="lg"
@@ -113,11 +113,11 @@ export default function HomePage() {
                 Get In Touch
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-                Contact Us
+                Get Your Free Quote
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-                Ready to ship your equipment? Get a free, itemized quote or
-                ask us anything — we respond within 24 hours.
+                Tell us what you need shipped and where — we send back a
+                detailed, itemized quote within 24 hours. No obligation.
               </p>
             </div>
             <div className="grid gap-12 lg:grid-cols-2">

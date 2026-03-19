@@ -22,18 +22,18 @@ export const metadata = pageMetadata({
 const differentiators = [
   {
     icon: Shield,
-    title: "One Company, Complete Service",
-    description: "Most exporters only handle one part of the chain. We manage the entire process — from equipment pickup at the seller to container loading at port. One point of contact, no handoff risks.",
+    title: "One Invoice, Zero Coordination",
+    description: "Most exporters hand you off between trucker, packer, and freight forwarder. We own the entire chain — pickup to port — so nothing falls through the cracks.",
   },
   {
     icon: Globe,
-    title: "Ship Anywhere With a Port",
-    description: "We coordinate with established ocean carriers like Maersk and Hapag-Lloyd, plus air freight options. Wherever there's a port or airport, we can deliver.",
+    title: "Any Port, Any Continent",
+    description: "We work with Maersk, Hapag-Lloyd, and CMA CGM on established routes to Latin America, Africa, the Middle East, and Central Asia. If it has a port, we can get there.",
   },
   {
     icon: Clock,
-    title: "Equipment Specialists",
-    description: `${STATS.yearsExperience}+ years handling John Deere combines, Case IH headers, Kinze planters, and CAT machinery. We know the disassembly specs so your equipment reassembles correctly.`,
+    title: "We Know Your Equipment",
+    description: `${STATS.yearsExperience}+ years dismantling combines, headers, sprayers, and excavators. We know which bolts to pull, how to tag components, and how to pack it so it reassembles right.`,
   },
 ];
 
@@ -51,17 +51,16 @@ export default function AboutPage() {
             About {COMPANY.name}
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-            With over {STATS.yearsExperience} years of experience and {STATS.projectsCompleted}+ completed shipments,{" "}
-            {COMPANY.name} is a full-service machinery export company
-            headquartered in Iowa. We specialize in the complete logistics
-            chain — from equipment pickup and professional dismantling to
-            secure container packing and worldwide shipping.
+            Since {COMPANY.foundedYear}, we&apos;ve shipped {STATS.projectsCompleted}+ pieces
+            of heavy equipment from the USA and Canada to ports in Latin America,
+            Africa, the Middle East, and Central Asia. We handle the entire chain —
+            pickup, dismantling, packing, documentation, and ocean freight — so
+            international buyers don&apos;t have to coordinate multiple vendors.
           </p>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-            Our experienced technicians understand the unique requirements of
-            heavy machinery. Whether it&apos;s a John Deere combine heading to
-            Brazil or a CAT excavator bound for the Middle East, we ensure
-            every piece arrives safely and on time.
+            Our technicians know the disassembly specs for John Deere, Case IH,
+            CAT, Kinze, and dozens of other brands. Every component gets tagged,
+            photographed, and packed so it reassembles correctly on the other end.
           </p>
         </div>
       </section>

@@ -7,12 +7,12 @@ import { useCountUp } from "@/hooks/use-count-up";
 import { STATS } from "@/lib/constants";
 
 const items = [
-  { icon: TrendingUp, label: "Equipment Exports", value: STATS.projectsCompleted, suffix: "+" },
-  { icon: Clock, label: "Years", value: STATS.yearsExperience, suffix: "+" },
-  { icon: Ship, label: "Worldwide Shipping", value: null, suffix: null },
+  { icon: TrendingUp, label: "Machines Shipped", value: STATS.projectsCompleted, suffix: "+" },
+  { icon: Clock, label: "Years in Business", value: STATS.yearsExperience, suffix: "+" },
+  { icon: Ship, label: "Any Port Worldwide", value: null, suffix: null },
   { icon: Star, label: "5.0 Google Rating", value: null, suffix: null },
-  { icon: FileText, label: "Export Docs", value: null, suffix: null },
-  { icon: Package, label: "Packing & Crating", value: null, suffix: null },
+  { icon: FileText, label: "Full Documentation", value: null, suffix: null },
+  { icon: Package, label: "Professional Packing", value: null, suffix: null },
 ];
 
 function StatItem({ item }: { item: (typeof items)[number] }) {

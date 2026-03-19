@@ -29,11 +29,11 @@ export default function ContactPage() {
           <ScrollReveal variant="fade">
           <div className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              Contact Us
+              Get a Free Quote
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              Ready to ship your equipment? Get a free quote or ask us anything
-              about our services. We respond within 24 hours.
+              Tell us what you need shipped and where it&apos;s going. We send back a
+              detailed, itemized quote within 24 hours — no obligation.
             </p>
           </div>
           </ScrollReveal>

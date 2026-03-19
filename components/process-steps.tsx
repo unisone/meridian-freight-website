@@ -8,26 +8,26 @@ import { DURATION, EASE } from "@/lib/motion";
 const steps = [
   {
     number: 1,
-    title: "Consultation",
-    description: "Tell us about your equipment and destination. We provide a detailed quote within 24 hours.",
+    title: "Tell Us What You Need",
+    description: "Send us the equipment details and destination. You get a detailed, itemized quote within 24 hours.",
     icon: MessageSquare,
   },
   {
     number: 2,
-    title: "Equipment Pickup",
-    description: "We collect from anywhere in USA & Canada with our specialized transport fleet.",
+    title: "We Pick It Up",
+    description: "Our team collects the equipment from anywhere in the USA or Canada and brings it to our facility.",
     icon: Truck,
   },
   {
     number: 3,
-    title: "Packing & Loading",
-    description: "Expert dismantling, documentation, and secure container packing at our facilities.",
+    title: "Dismantle, Pack & Load",
+    description: "We take it apart, tag every component, pack it into the container, and prepare all export paperwork.",
     icon: Package,
   },
   {
     number: 4,
-    title: "Global Shipping",
-    description: "Door-to-port delivery worldwide with full tracking and export documentation.",
+    title: "It Ships to Your Port",
+    description: "The container goes on a vessel — you get tracking, documentation, and arrival confirmation.",
     icon: Globe,
   },
 ];
@@ -57,10 +57,10 @@ export function ProcessSteps() {
             How It Works
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            Simple 4-Step Process
+            How Your Equipment Gets There
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            From your first call to delivery at the destination port — we handle everything.
+            From your first message to container arrival at destination — four steps, one point of contact.
           </p>
         </motion.div>
 

@@ -54,7 +54,7 @@ export default function FaqPage() {
               Still Have Questions?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sky-300 text-lg">
-              Our team is ready to help with any specific questions about your project.
+              Send us your equipment details and destination — we&apos;ll answer everything and send a quote within 24 hours.
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">

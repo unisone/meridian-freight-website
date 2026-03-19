@@ -27,7 +27,7 @@ export const CONTACT = {
     country: "USA",
     full: "2107 148th, Albion, IA, USA",
   },
-  hours: "Responsive Communication",
+  hours: "Mon–Sat, replies within 24 hrs",
 } as const;
 
 export const SOCIAL = {

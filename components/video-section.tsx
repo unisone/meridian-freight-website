@@ -16,10 +16,10 @@ export function VideoSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            See Us In Action
+            Watch Us Work
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            See How We Pack &amp; Ship Machinery
+            From Dismantle to Container — In Under 3 Minutes
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Watch our team dismantle, pack, and load heavy equipment into shipping containers at our Iowa facility.

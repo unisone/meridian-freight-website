@@ -41,9 +41,9 @@ export function Footer() {
               />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-slate-400">
-              {COMPANY.tagline}. Expert machinery packing, container loading,
-              and global shipping services for agricultural, construction, and
-              industrial equipment.
+              One company for the entire export chain — equipment pickup,
+              dismantling, packing, documentation, and worldwide shipping
+              from the USA and Canada.
             </p>
 
             {/* Contact details */}
@@ -168,8 +168,8 @@ export function Footer() {
               <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
                 Get a Quote
               </h3>
-              <p className="mt-3 text-sm text-slate-400">
-                Need machinery packed and shipped? Get a free estimate.
+            <p className="mt-3 text-sm text-slate-400">
+                Tell us what you need shipped — free quote within 24 hours.
               </p>
               <Link
                 href="/contact"

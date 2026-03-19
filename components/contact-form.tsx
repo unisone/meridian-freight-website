@@ -190,7 +190,7 @@ export function ContactForm() {
               name="message"
               required
               rows={4}
-              placeholder="Tell us about your machinery logistics needs..."
+              placeholder="What equipment do you need shipped, and where is it going?"
               className="mt-1.5 resize-y"
             />
           </div>

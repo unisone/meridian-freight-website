@@ -15,29 +15,30 @@ export function Hero() {
               style={{ animationDelay: "0s" }}
               className="animate-slide-up text-sm font-semibold uppercase tracking-wider text-primary"
             >
-              All-In-One Machinery Export
+              500+ Machines Shipped Worldwide
             </p>
 
             <h1
               style={{ animationDelay: "0.15s" }}
               className="animate-slide-up mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-6xl leading-tight"
             >
-              From Seller to Port — We Handle Everything
+              Buy the Machine.{" "}
+              <span className="text-primary">We&apos;ll Get It to Your Port.</span>
             </h1>
 
             <p
               style={{ animationDelay: "0.3s" }}
               className="animate-fade-in mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"
             >
-              One company for the entire chain: equipment pickup, professional
-              dismantling, secure packing, export documentation, and worldwide
-              shipping. No coordination headaches.
+              Stop coordinating truckers, packers, and freight forwarders.
+              We pick up your equipment anywhere in the USA, dismantle and pack it,
+              handle all export docs, and ship it to your port. One company, one invoice.
             </p>
             <p
               style={{ animationDelay: "0.35s" }}
-              className="animate-fade-in mt-2 text-sm text-muted-foreground"
+              className="animate-fade-in mt-2 text-sm font-medium text-muted-foreground"
             >
-              Serving buyers in Latin America, Africa, the Middle East &amp; Central Asia
+              Trusted by buyers in Latin America, Africa, the Middle East &amp; Central Asia since 2013
             </p>
 
             {/* CTAs — shadow-breathe on WhatsApp (not pulse rings) */}

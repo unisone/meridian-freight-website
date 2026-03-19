@@ -53,7 +53,7 @@ export default function PricingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              Equipment Pricing — Transparent &amp; Itemized
+              What It Costs — No Hidden Fees
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
               Reference rates for 60+ equipment types and 20+ shipping routes.
@@ -88,11 +88,11 @@ export default function PricingPage() {
           <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Get an Exact Quote
+                Need an Exact Number?
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-slate-300">
-                Reference prices above are estimates. Contact us for a precise
-                quote based on your equipment and destination.
+                The rates above are reference estimates. Tell us your equipment
+                and destination — we&apos;ll send a precise, itemized quote within 24 hours.
               </p>
               <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Button
