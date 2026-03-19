@@ -36,10 +36,10 @@ export function PricingTable() {
     <div className="space-y-12">
       {/* Equipment Pricing */}
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+        <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
           Equipment Pricing
         </h2>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-muted-foreground">
           Reference pricing for packing and container loading services. Final quotes provided upon request.
         </p>
 
@@ -62,7 +62,7 @@ export function PricingTable() {
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                   category === cat.id
                     ? "bg-sky-500 text-white"
-                    : "bg-slate-50 text-slate-700 hover:bg-sky-100"
+                    : "bg-muted text-slate-700 hover:bg-sky-100"
                 }`}
               >
                 {cat.label}
@@ -75,7 +75,7 @@ export function PricingTable() {
         <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
-              <TableRow className="bg-slate-50">
+              <TableRow className="bg-muted">
                 <TableHead className="font-semibold">Equipment Type</TableHead>
                 <TableHead className="font-semibold">Models</TableHead>
                 <TableHead className="font-semibold text-right">Delivery</TableHead>
@@ -87,7 +87,7 @@ export function PricingTable() {
               {filtered.map((item) => (
                 <TableRow key={item.type}>
                   <TableCell className="font-medium">{item.type}</TableCell>
-                  <TableCell className="text-sm text-slate-600">{item.model}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{item.model}</TableCell>
                   <TableCell className="text-right font-mono text-sm">{item.delivery}</TableCell>
                   <TableCell className="text-right font-mono text-sm font-semibold">{item.containerized}</TableCell>
                   <TableCell className="text-right font-mono text-sm">{item.container}</TableCell>
@@ -107,13 +107,13 @@ export function PricingTable() {
 
       {/* Miscellaneous */}
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+        <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
           Miscellaneous Items
         </h2>
         <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
-              <TableRow className="bg-slate-50">
+              <TableRow className="bg-muted">
                 <TableHead className="font-semibold">Item</TableHead>
                 <TableHead className="font-semibold text-right">Price</TableHead>
               </TableRow>
@@ -132,16 +132,16 @@ export function PricingTable() {
 
       {/* Delivery Rates */}
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+        <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
           Container Delivery Rates
         </h2>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-muted-foreground">
           40ft container rates. Line&apos;s = shipping line container. SOC = shipper-owned container.
         </p>
         <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
-              <TableRow className="bg-slate-50">
+              <TableRow className="bg-muted">
                 <TableHead className="font-semibold">Route</TableHead>
                 <TableHead className="font-semibold text-right">Line&apos;s Container</TableHead>
                 <TableHead className="font-semibold text-right">SOC Container</TableHead>

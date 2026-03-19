@@ -47,7 +47,7 @@ export default function HomePage() {
       {/* Mid-page CTA */}
       <ScrollReveal variant="fade">
         <div className="py-8 text-center">
-          <p className="text-slate-600">Need equipment shipped?</p>
+          <p className="text-muted-foreground">Need equipment shipped?</p>
           <div className="mt-4 flex justify-center gap-4">
             <Button
               className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
@@ -84,7 +84,7 @@ export default function HomePage() {
             </p>
             <Button
               size="lg"
-              className="mt-6 h-12 px-8 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold shadow-lg"
+              className="mt-6 h-12 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg"
               render={<Link href="/pricing/calculator" />}
             >
               Open Calculator
@@ -104,23 +104,23 @@ export default function HomePage() {
 
       {/* Contact section */}
       <ScrollReveal>
-        <section id="contact" className="py-16 md:py-28 bg-slate-50">
+        <section id="contact" className="py-16 md:py-28 bg-muted">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 sm:mb-16">
-              <p className="text-xs font-medium uppercase tracking-wider text-sky-500 sm:text-sm">
+              <p className="text-xs font-medium uppercase tracking-wider text-primary sm:text-sm">
                 Get In Touch
               </p>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+              <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
                 Contact Us
               </h2>
-              <p className="mt-4 max-w-2xl text-base text-slate-600 lg:text-lg">
+              <p className="mt-4 max-w-2xl text-base text-muted-foreground lg:text-lg">
                 Ready to ship your equipment? Get a free quote or ask us
                 anything about our services.
               </p>
             </div>
             <div className="grid gap-12 lg:grid-cols-2">
               <div className="rounded-xl bg-white p-6 shadow-md sm:p-8">
-                <h3 className="mb-6 text-2xl font-bold text-slate-900">
+                <h3 className="mb-6 text-2xl font-bold text-foreground">
                   Send us a Message
                 </h3>
                 <ContactForm />

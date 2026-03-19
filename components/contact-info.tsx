@@ -5,7 +5,7 @@ export function ContactInfo() {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+        <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
           Contact Information
         </h3>
         <div className="mt-6 space-y-5">
@@ -16,11 +16,11 @@ export function ContactInfo() {
             className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-sky-50 group"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100 group-hover:bg-sky-500 transition-colors">
-              <Phone className="h-6 w-6 text-sky-500 group-hover:text-white transition-colors" />
+              <Phone className="h-6 w-6 text-primary group-hover:text-white transition-colors" />
             </div>
             <div>
-              <div className="font-semibold text-slate-900 text-lg">Phone / WhatsApp</div>
-              <div className="text-slate-600">{CONTACT.phone}</div>
+              <div className="font-semibold text-foreground text-lg">Phone / WhatsApp</div>
+              <div className="text-muted-foreground">{CONTACT.phone}</div>
             </div>
           </a>
 
@@ -29,31 +29,31 @@ export function ContactInfo() {
             className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-sky-50 group"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100 group-hover:bg-sky-500 transition-colors">
-              <Mail className="h-6 w-6 text-sky-500 group-hover:text-white transition-colors" />
+              <Mail className="h-6 w-6 text-primary group-hover:text-white transition-colors" />
             </div>
             <div>
-              <div className="font-semibold text-slate-900 text-lg">Email</div>
-              <div className="text-slate-600">{CONTACT.email}</div>
+              <div className="font-semibold text-foreground text-lg">Email</div>
+              <div className="text-muted-foreground">{CONTACT.email}</div>
             </div>
           </a>
 
           <div className="flex items-center gap-4 p-3">
             <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100">
-              <MapPin className="h-6 w-6 text-sky-500" />
+              <MapPin className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <div className="font-semibold text-slate-900 text-lg">Address</div>
-              <div className="text-slate-600">{CONTACT.address.full}</div>
+              <div className="font-semibold text-foreground text-lg">Address</div>
+              <div className="text-muted-foreground">{CONTACT.address.full}</div>
             </div>
           </div>
 
           <div className="flex items-center gap-4 p-3">
             <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100">
-              <Clock className="h-6 w-6 text-sky-500" />
+              <Clock className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <div className="font-semibold text-slate-900 text-lg">Hours</div>
-              <div className="text-slate-600">{CONTACT.hours}</div>
+              <div className="font-semibold text-foreground text-lg">Hours</div>
+              <div className="text-muted-foreground">{CONTACT.hours}</div>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ export function ContactInfo() {
 
       {/* Social */}
       <div>
-        <h3 className="text-xl font-bold text-slate-900">Follow Us</h3>
+        <h3 className="text-xl font-bold text-foreground">Follow Us</h3>
         <div className="mt-4 flex gap-3">
           <a
             href={SOCIAL.facebook}

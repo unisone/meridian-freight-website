@@ -13,21 +13,21 @@ export function Hero() {
           <div>
             <p
               style={{ animationDelay: "0s" }}
-              className="animate-slide-up text-xs font-medium uppercase tracking-wider text-sky-500 sm:text-sm"
+              className="animate-slide-up text-xs font-medium uppercase tracking-wider text-primary sm:text-sm"
             >
               All-In-One Machinery Export
             </p>
 
             <h1
               style={{ animationDelay: "0.15s" }}
-              className="animate-slide-up mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl xl:text-6xl leading-tight"
+              className="animate-slide-up mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-6xl leading-tight"
             >
               From Seller to Port — We Handle Everything
             </h1>
 
             <p
               style={{ animationDelay: "0.3s" }}
-              className="animate-fade-in mt-6 max-w-xl text-lg leading-relaxed text-slate-600"
+              className="animate-fade-in mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"
             >
               One company for the entire chain: equipment pickup, professional
               dismantling, secure packing, export documentation, and worldwide
@@ -56,7 +56,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-slate-300 text-slate-700 bg-transparent hover:bg-slate-50 transition-all sm:w-auto"
+                className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-slate-300 text-slate-700 bg-transparent hover:bg-muted transition-all sm:w-auto"
                 render={<Link href="/pricing/calculator" />}
               >
                 Get Instant Estimate

@@ -47,17 +47,17 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
             About {COMPANY.name}
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
             With over 13 years of experience and 500+ completed shipments,{" "}
             {COMPANY.name} is a full-service machinery export company
             headquartered in Iowa. We specialize in the complete logistics
             chain — from equipment pickup and professional dismantling to
             secure container packing and worldwide shipping.
           </p>
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
             Our experienced technicians understand the unique requirements of
             heavy machinery. Whether it&apos;s a John Deere combine heading to
             Brazil or a CAT excavator bound for the Middle East, we ensure
@@ -67,20 +67,20 @@ export default function AboutPage() {
       </section>
 
       {/* Differentiators */}
-      <section className="bg-slate-50 py-16 md:py-20">
+      <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+          <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
             Why Choose Us
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {differentiators.map((d, idx) => (
               <StaggerItem key={d.title} index={idx}><Card>
                 <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-500">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-primary">
                     <d.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900">{d.title}</h3>
-                  <p className="mt-2 text-sm text-slate-600">{d.description}</p>
+                  <h3 className="text-lg font-bold text-foreground">{d.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{d.description}</p>
                 </CardContent>
               </Card></StaggerItem>
             ))}
@@ -92,10 +92,10 @@ export default function AboutPage() {
       <ScrollReveal>
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+          <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
             Our Locations
           </h2>
-          <p className="mt-3 text-slate-600">
+          <p className="mt-3 text-muted-foreground">
             Headquartered in Iowa with a partner warehouse network across the
             US and Canada for efficient equipment handling.
           </p>
@@ -107,7 +107,7 @@ export default function AboutPage() {
                 <Star className="h-5 w-5" />
               </div>
               <div>
-                <div className="font-semibold text-slate-900">
+                <div className="font-semibold text-foreground">
                   {WAREHOUSE_MAIN.name}
                 </div>
                 <div className="text-sm text-slate-500">
@@ -131,7 +131,7 @@ export default function AboutPage() {
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="font-semibold text-slate-900">{loc.name}</div>
+                  <div className="font-semibold text-foreground">{loc.name}</div>
                   <div className="text-sm text-slate-500">{loc.state}</div>
                 </div>
               </div>
@@ -145,10 +145,10 @@ export default function AboutPage() {
       <ScrollReveal variant="fade">
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+          <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
             Ready to Work With Us?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-slate-600">
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
             Get a free quote for your machinery export project. We respond within 24 hours.
           </p>
           <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">

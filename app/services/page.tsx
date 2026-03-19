@@ -39,7 +39,7 @@ export default function ServicesPage() {
           <p className="mx-auto mt-3 max-w-xl text-sky-300">
             Contact us for a free quote on your machinery export project.
           </p>
-          <Button render={<Link href="/contact" />} size="lg" className="mt-6 h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
+          <Button render={<Link href="/contact" />} size="lg" className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
               Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

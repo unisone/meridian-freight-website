@@ -84,7 +84,7 @@ export function Header() {
                       onKeyDown={(e) => {
                         if (e.key === "Escape") setOpenDropdown(null);
                       }}
-                      className="flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md text-slate-600 hover:text-slate-900 link-underline"
+                      className="flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline"
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
                     >
@@ -124,7 +124,7 @@ export function Header() {
                               >
                                 <Link
                                   href={child.href}
-                                  className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-sky-50 hover:text-sky-600"
+                                  className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-sky-50 hover:text-primary/80"
                                   onClick={() => setOpenDropdown(null)}
                                 >
                                   {child.label}
@@ -132,10 +132,10 @@ export function Header() {
                               </motion.div>
                             ))}
                           </div>
-                          <div className="mt-1 bg-slate-50 px-3 pt-2.5 pb-2 rounded-b-lg">
+                          <div className="mt-1 bg-muted px-3 pt-2.5 pb-2 rounded-b-lg">
                             <Link
                               href="/contact"
-                              className="block w-full rounded-md bg-sky-500 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-sky-600"
+                              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary/90"
                               onClick={() => setOpenDropdown(null)}
                             >
                               Get Free Quote
@@ -148,7 +148,7 @@ export function Header() {
                 ) : (
                   <Link
                     href={item.href}
-                    className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-slate-600 hover:text-slate-900 link-underline"
+                    className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline"
                   >
                     {item.label}
                   </Link>
@@ -196,7 +196,7 @@ export function Header() {
                       <div>
                         <Link
                           href={item.href}
-                          className="block py-3 px-4 text-lg font-medium text-slate-900 hover:text-sky-600 transition-colors rounded-lg hover:bg-slate-50"
+                          className="block py-3 px-4 text-lg font-medium text-foreground hover:text-primary/80 transition-colors rounded-lg hover:bg-muted"
                           onClick={() => setMobileOpen(false)}
                         >
                           {item.label}
@@ -206,7 +206,7 @@ export function Header() {
                             <Link
                               key={child.href}
                               href={child.href}
-                              className="block py-2.5 px-4 text-sm text-slate-600 hover:text-sky-600 transition-colors rounded-lg hover:bg-slate-50"
+                              className="block py-2.5 px-4 text-sm text-muted-foreground hover:text-primary/80 transition-colors rounded-lg hover:bg-muted"
                               onClick={() => setMobileOpen(false)}
                             >
                               {child.label}
@@ -217,7 +217,7 @@ export function Header() {
                     ) : (
                       <Link
                         href={item.href}
-                        className="block py-3 px-4 text-lg font-medium text-slate-900 hover:text-sky-600 transition-colors rounded-lg hover:bg-slate-50"
+                        className="block py-3 px-4 text-lg font-medium text-foreground hover:text-primary/80 transition-colors rounded-lg hover:bg-muted"
                         onClick={() => setMobileOpen(false)}
                       >
                         {item.label}
@@ -257,7 +257,7 @@ export function Header() {
                     delay: 0.25,
                     ease: EASE.decelerate,
                   }}
-                  className="mt-6 space-y-3 bg-slate-50 -mx-4 px-4 pt-6 pb-2 rounded-lg"
+                  className="mt-6 space-y-3 bg-muted -mx-4 px-4 pt-6 pb-2 rounded-lg"
                 >
                   <a
                     href={CONTACT.phoneHref}
@@ -265,10 +265,10 @@ export function Header() {
                   >
                     <Phone className="h-5 w-5 text-emerald-600" />
                     <div>
-                      <div className="font-medium text-slate-900">
+                      <div className="font-medium text-foreground">
                         Call Now
                       </div>
-                      <div className="text-sm text-slate-600">
+                      <div className="text-sm text-muted-foreground">
                         {CONTACT.phone}
                       </div>
                     </div>
@@ -281,10 +281,10 @@ export function Header() {
                   >
                     <MessageCircle className="h-5 w-5 text-emerald-600" />
                     <div>
-                      <div className="font-medium text-slate-900">
+                      <div className="font-medium text-foreground">
                         WhatsApp
                       </div>
-                      <div className="text-sm text-slate-600">
+                      <div className="text-sm text-muted-foreground">
                         Quick Response
                       </div>
                     </div>

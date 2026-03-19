@@ -116,7 +116,7 @@ export default async function ServicePage({
             <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
               {service.description}
             </p>
-            <Button render={<Link href="/contact" />} size="lg" className="mt-8 h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
+            <Button render={<Link href="/contact" />} size="lg" className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
                 Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -125,10 +125,10 @@ export default async function ServicePage({
         {/* What We Do */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+            <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
               What We Do
             </h2>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
               {service.longDescription}
             </p>
           </div>
@@ -136,9 +136,9 @@ export default async function ServicePage({
 
         {/* Equipment Types */}
         {service.equipmentTypes.length > 0 && (
-          <section className="bg-slate-50 py-16 md:py-20">
+          <section className="bg-muted py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+              <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
                 Equipment We Handle
               </h2>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -148,7 +148,7 @@ export default async function ServicePage({
                     variant="secondary"
                     className="px-4 py-2 text-sm font-medium"
                   >
-                    <CheckCircle className="mr-1.5 h-3.5 w-3.5 text-sky-500" />
+                    <CheckCircle className="mr-1.5 h-3.5 w-3.5 text-primary" />
                     {type}
                   </Badge></StaggerItem>
                 ))}
@@ -161,7 +161,7 @@ export default async function ServicePage({
         {related.length > 0 && (
           <section className="py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+              <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
                 Related Services
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -171,11 +171,11 @@ export default async function ServicePage({
                     <StaggerItem key={rs.slug} index={idx}><Link href={`/services/${rs.slug}`} className="group">
                       <Card className="h-full transition-all group-hover:shadow-lg group-hover:-translate-y-1">
                         <CardContent className="p-6">
-                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-primary group-hover:bg-sky-500 group-hover:text-white transition-colors">
                             <RsIcon className="h-5 w-5" />
                           </div>
-                          <h3 className="font-bold text-slate-900">{rs.shortTitle}</h3>
-                          <p className="mt-2 text-sm text-slate-600 line-clamp-2">
+                          <h3 className="font-bold text-foreground">{rs.shortTitle}</h3>
+                          <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
                             {rs.description}
                           </p>
                         </CardContent>
@@ -199,10 +199,10 @@ export default async function ServicePage({
               Get a free quote for your project. We respond within 24 hours.
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-slate-900 hover:bg-slate-50 font-semibold shadow-lg">
+              <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
                   Get a Quote
               </Button>
-              <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp about our services" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold">
+              <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp about our services" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
                   WhatsApp Us
               </Button>
             </div>

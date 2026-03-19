@@ -27,10 +27,10 @@ export default function ContactPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="fade">
           <div className="mb-12">
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
               Contact Us
             </h1>
-            <p className="mt-4 max-w-2xl text-lg text-slate-600">
+            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
               Ready to ship your equipment? Get a free quote or ask us anything
               about our services. We respond within 24 hours.
             </p>
@@ -39,7 +39,7 @@ export default function ContactPage() {
 
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="rounded-xl bg-white p-6 shadow-md sm:p-8">
-              <h2 className="mb-6 text-2xl font-bold text-slate-900">
+              <h2 className="mb-6 text-2xl font-bold text-foreground">
                 Send us a Message
               </h2>
               <ContactForm />

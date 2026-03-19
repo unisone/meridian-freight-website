@@ -39,14 +39,14 @@ export function MobileBottomBar() {
         <a
           href={CONTACT.phoneHref}
           onClick={handlePhoneClick}
-          className="flex flex-col items-center gap-1 py-3 text-sky-500 transition-colors hover:bg-sky-50"
+          className="flex flex-col items-center gap-1 py-3 text-primary transition-colors hover:bg-sky-50"
         >
           <Phone className="h-5 w-5" />
           <span className="text-xs font-medium">Call</span>
         </a>
         <Link
           href="/contact"
-          className="flex flex-col items-center gap-1 py-3 text-sky-500 transition-colors hover:bg-sky-50"
+          className="flex flex-col items-center gap-1 py-3 text-primary transition-colors hover:bg-sky-50"
         >
           <FileText className="h-5 w-5" />
           <span className="text-xs font-medium">Get Quote</span>

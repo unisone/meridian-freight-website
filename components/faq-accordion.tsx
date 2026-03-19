@@ -18,10 +18,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
-          <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             FAQ
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
             Frequently Asked Questions
           </h2>
         </div>
@@ -34,10 +34,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
                 value={entry.question}
                 className="rounded-xl border-0 bg-white px-6 shadow-sm"
               >
-                <AccordionTrigger className="text-left text-base font-semibold text-slate-900 hover:text-sky-500 py-5">
+                <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:text-primary py-5">
                   {entry.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-slate-600 leading-relaxed pb-5">
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
                   {entry.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -48,7 +48,7 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
             <div className="mt-8 text-center">
               <Link
                 href="/faq"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-sky-500 transition-colors hover:text-sky-600 link-underline"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 link-underline"
               >
                 View All Questions
                 <ArrowRight className="h-4 w-4" />

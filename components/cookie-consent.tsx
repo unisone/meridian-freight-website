@@ -37,7 +37,7 @@ export function CookieConsent() {
           : "translate-y-full opacity-0 pointer-events-none"
       }`}
     >
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-muted-foreground">
         We use cookies to analyze site traffic and optimize your experience.
         By accepting, you consent to our use of analytics cookies.
       </p>

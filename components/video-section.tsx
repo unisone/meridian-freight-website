@@ -15,13 +15,13 @@ export function VideoSection() {
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
-          <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             See Us In Action
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
             See How We Pack &amp; Ship Machinery
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
             See how we handle heavy machinery dismantling, packing, and container loading.
           </p>
         </div>
@@ -79,7 +79,7 @@ export function VideoSection() {
             href={SOCIAL.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-500 transition-colors hover:text-sky-600 link-underline"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 link-underline"
           >
             Watch More Videos on YouTube
             <ExternalLink className="h-4 w-4" />

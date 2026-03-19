@@ -49,10 +49,10 @@ export default function PricingPage() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
               Equipment Pricing — Transparent &amp; Itemized
             </h1>
-            <p className="mt-4 max-w-2xl text-lg text-slate-600">
+            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
               Reference rates for 60+ equipment types and 20+ shipping routes.
               Every quote includes detailed line items — no hidden fees.
             </p>
@@ -61,11 +61,11 @@ export default function PricingPage() {
           {/* Calculator CTA */}
           <ScrollReveal variant="fade">
           <div className="mb-12 rounded-xl bg-sky-50 p-6 text-center shadow-sm sm:p-8">
-            <Calculator className="mx-auto h-8 w-8 text-sky-500" />
-            <h2 className="mt-3 text-xl font-bold text-slate-900">
+            <Calculator className="mx-auto h-8 w-8 text-primary" />
+            <h2 className="mt-3 text-xl font-bold text-foreground">
               Want an instant estimate?
             </h2>
-            <p className="mt-2 text-slate-600">
+            <p className="mt-2 text-muted-foreground">
               Use our freight calculator to get an estimated cost for your equipment and destination.
             </p>
             <Button render={<Link href="/pricing/calculator" />} className="mt-4 bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl">
@@ -101,7 +101,7 @@ export default function PricingPage() {
                     render={<Link href="/contact" />}
                     size="lg"
                     variant="outline"
-                    className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold"
+                    className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
                   >
                     Contact Us
                     <ArrowRight className="ml-2 h-4 w-4" />

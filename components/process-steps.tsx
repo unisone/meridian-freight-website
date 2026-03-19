@@ -53,13 +53,13 @@ export function ProcessSteps() {
           transition={{ duration: DURATION.entrance, ease: EASE.decelerate }}
           className="mb-12 sm:mb-16"
         >
-          <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             How It Works
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
             Simple 4-Step Process
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
             From your first call to delivery at the destination port — we handle everything.
           </p>
         </motion.div>
@@ -117,12 +117,12 @@ export function ProcessSteps() {
                 {/* Content */}
                 <div className="pb-8 lg:pb-0">
                   <div className="mb-2 flex items-center gap-2 lg:justify-center">
-                    <step.icon className="h-5 w-5 text-sky-500" />
-                    <h3 className="text-lg font-bold text-slate-900">
+                    <step.icon className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold text-foreground">
                       {step.title}
                     </h3>
                   </div>
-                  <p className="text-sm leading-relaxed text-slate-600 lg:mx-auto lg:max-w-[220px]">
+                  <p className="text-sm leading-relaxed text-muted-foreground lg:mx-auto lg:max-w-[220px]">
                     {step.description}
                   </p>
                 </div>

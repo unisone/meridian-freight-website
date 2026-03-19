@@ -110,8 +110,8 @@ export function ContactForm() {
               }}
             />
           </svg>
-          <h3 className="mt-4 text-2xl font-bold text-slate-900">Message Sent!</h3>
-          <p className="mt-2 text-slate-600">
+          <h3 className="mt-4 text-2xl font-bold text-foreground">Message Sent!</h3>
+          <p className="mt-2 text-muted-foreground">
             Thank you for reaching out. We&apos;ll get back to you within 24 hours.
           </p>
           <a
@@ -199,7 +199,7 @@ export function ContactForm() {
             type="submit"
             disabled={isSubmitting}
             size="lg"
-            className={`w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base ${error ? "animate-shake" : ""}`}
+            className={`w-full bg-primary hover:bg-primary/90 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base ${error ? "animate-shake" : ""}`}
           >
             {isSubmitting ? (
               <>

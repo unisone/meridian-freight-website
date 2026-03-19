@@ -16,13 +16,13 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="mb-12 sm:mb-16">
-          <p className="text-xs font-medium uppercase tracking-wider text-sky-500 sm:text-sm">
+          <p className="text-xs font-medium uppercase tracking-wider text-primary sm:text-sm">
             Our Work
           </p>
-          <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+          <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
             Recent Projects
           </h2>
-          <p className="mt-4 max-w-2xl text-base text-slate-600 lg:text-lg">
+          <p className="mt-4 max-w-2xl text-base text-muted-foreground lg:text-lg">
             Real projects, real results. See how we handle machinery export from
             start to finish.
           </p>
@@ -51,15 +51,15 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-semibold text-slate-900 leading-snug">
+                  <h3 className="text-lg font-semibold text-foreground leading-snug">
                     {project.title}
                   </h3>
-                  <p className="mt-1.5 text-sm text-slate-600 line-clamp-2">
+                  <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">
                     {project.description}
                   </p>
 
                   {/* Metadata */}
-                  <div className="mt-4 grid grid-cols-2 gap-2 bg-slate-50 -mx-5 px-5 py-3 rounded-b-xl">
+                  <div className="mt-4 grid grid-cols-2 gap-2 bg-muted -mx-5 px-5 py-3 rounded-b-xl">
                     <div className="flex items-center gap-1.5 text-xs text-slate-500">
                       <MapPin className="h-3.5 w-3.5" />
                       <span>{project.destination}</span>
@@ -88,7 +88,7 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
           <div className="mt-10 text-center">
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 text-sm font-medium text-sky-500 hover:text-sky-600 transition-colors link-underline"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors link-underline"
             >
               View all projects
               <ArrowRight className="h-4 w-4" />

@@ -69,7 +69,7 @@ export default function ProjectsPage() {
                   render={<Link href="/contact" />}
                   size="lg"
                   variant="outline"
-                  className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-slate-900 font-semibold"
+                  className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
                 >
                   Contact Us
                   <ArrowRight className="ml-2 h-4 w-4" />
