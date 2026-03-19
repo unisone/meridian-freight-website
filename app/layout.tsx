@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -24,6 +24,12 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#ffffff",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -85,6 +91,7 @@ function JsonLd() {
       longitude: -93.0015,
     },
     telephone: CONTACT.phoneRaw,
+    foundingDate: `${COMPANY.foundedYear}`,
     priceRange: "$$",
     areaServed: [
       { "@type": "Country", name: "United States" },
@@ -104,6 +111,8 @@ function JsonLd() {
     "@type": "WebSite",
     name: SITE.name,
     url: SITE.url,
+    description: COMPANY.description,
+    publisher: { "@type": "Organization", name: COMPANY.name },
   };
 
   return (

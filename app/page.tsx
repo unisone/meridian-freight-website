@@ -35,8 +35,22 @@ export const metadata = pageMetadata({
 });
 
 export default function HomePage() {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homepageFaq.map((e) => ({
+      "@type": "Question",
+      name: e.question,
+      acceptedAnswer: { "@type": "Answer", text: e.answer },
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Hero />
       <TrustBar />
 
