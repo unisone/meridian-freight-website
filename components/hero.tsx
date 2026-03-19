@@ -13,7 +13,7 @@ export function Hero() {
           <div>
             <p
               style={{ animationDelay: "0s" }}
-              className="animate-slide-up text-xs font-medium uppercase tracking-wider text-primary sm:text-sm"
+              className="animate-slide-up text-sm font-semibold uppercase tracking-wider text-primary"
             >
               All-In-One Machinery Export
             </p>
@@ -35,7 +35,7 @@ export function Hero() {
             </p>
             <p
               style={{ animationDelay: "0.35s" }}
-              className="animate-fade-in mt-2 text-sm text-slate-500"
+              className="animate-fade-in mt-2 text-sm text-muted-foreground"
             >
               Serving buyers in Latin America, Africa, the Middle East &amp; Central Asia
             </p>
@@ -56,7 +56,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-slate-300 text-slate-700 bg-transparent hover:bg-muted transition-all sm:w-auto"
+                className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-border text-foreground bg-transparent hover:bg-muted transition-all sm:w-auto"
                 render={<Link href="/pricing/calculator" />}
               >
                 Get Instant Estimate

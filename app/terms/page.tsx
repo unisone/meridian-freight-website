@@ -19,7 +19,7 @@ export default function TermsPage() {
       <article className="py-16 md:py-20">
         <div className="prose prose-slate mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h1>Terms of Service</h1>
-          <p className="text-sm text-slate-500">Last updated: March 2026</p>
+          <p className="text-sm text-muted-foreground">Last updated: March 2026</p>
 
           <h2>1. Services</h2>
           <p>

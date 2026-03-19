@@ -13,9 +13,9 @@ export function ContactInfo() {
             href={CONTACT.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-sky-50 group"
+            className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-primary/5 group"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100 group-hover:bg-sky-500 transition-colors">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary transition-colors">
               <Phone className="h-6 w-6 text-primary group-hover:text-white transition-colors" />
             </div>
             <div>
@@ -26,9 +26,9 @@ export function ContactInfo() {
 
           <a
             href={CONTACT.emailHref}
-            className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-sky-50 group"
+            className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-primary/5 group"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100 group-hover:bg-sky-500 transition-colors">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary transition-colors">
               <Mail className="h-6 w-6 text-primary group-hover:text-white transition-colors" />
             </div>
             <div>
@@ -38,7 +38,7 @@ export function ContactInfo() {
           </a>
 
           <div className="flex items-center gap-4 p-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10">
               <MapPin className="h-6 w-6 text-primary" />
             </div>
             <div>
@@ -48,7 +48,7 @@ export function ContactInfo() {
           </div>
 
           <div className="flex items-center gap-4 p-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10">
               <Clock className="h-6 w-6 text-primary" />
             </div>
             <div>
@@ -67,7 +67,7 @@ export function ContactInfo() {
             href={SOCIAL.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-500 text-white shadow-md transition-all hover:bg-sky-600 hover:scale-110"
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white shadow-md transition-all hover:bg-primary/90 hover:scale-110"
             aria-label="Facebook"
           >
             <Facebook className="h-5 w-5" />

@@ -30,10 +30,10 @@ export function ServicesGrid() {
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             What We Do
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
             Our Services
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             End-to-end machinery export solutions — from equipment pickup and
             dismantling to container packing and global shipping.
           </p>
@@ -51,10 +51,10 @@ export function ServicesGrid() {
                 >
                   <Card className="h-full border-0 shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
                     <CardContent className="p-6 sm:p-8">
-                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-primary transition-all duration-300 group-hover:bg-sky-200 group-hover:text-primary/80 group-hover:scale-110 group-hover:shadow-sm">
+                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary/20 group-hover:text-primary/80 group-hover:scale-110 group-hover:shadow-sm">
                         <Icon className="h-6 w-6" />
                       </div>
-                      <h3 className="text-xl font-bold text-foreground">
+                      <h3 className="text-lg font-bold text-foreground leading-snug">
                         {service.shortTitle}
                       </h3>
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">

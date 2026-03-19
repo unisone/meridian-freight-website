@@ -56,10 +56,10 @@ export function ProcessSteps() {
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             How It Works
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
             Simple 4-Step Process
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             From your first call to delivery at the destination port — we handle everything.
           </p>
         </motion.div>
@@ -69,7 +69,7 @@ export function ProcessSteps() {
           {/* Desktop connecting line — scroll-linked */}
           <motion.div
             style={{ scaleX: lineScale, transformOrigin: "left" }}
-            className="absolute left-0 right-0 top-16 hidden h-0.5 bg-sky-200 lg:block"
+            className="absolute left-0 right-0 top-16 hidden h-0.5 bg-primary/20 lg:block"
           />
 
           <div className="grid gap-8 sm:gap-10 lg:grid-cols-4 lg:gap-6">
@@ -96,7 +96,7 @@ export function ProcessSteps() {
                       ease: EASE.decelerate,
                     }}
                     style={{ transformOrigin: "top" }}
-                    className="absolute left-6 top-16 h-full w-0.5 bg-sky-200 lg:hidden"
+                    className="absolute left-6 top-16 h-full w-0.5 bg-primary/20 lg:hidden"
                   />
                 )}
 
@@ -109,7 +109,7 @@ export function ProcessSteps() {
                     delay: 0.15 + idx * 0.25,
                     ease: EASE.decelerate,
                   }}
-                  className="relative z-10 mr-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-900 text-lg font-bold text-white shadow-lg lg:mr-0 lg:mb-6"
+                  className="relative z-10 mr-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-900 font-mono text-lg font-bold text-white shadow-lg lg:mr-0 lg:mb-6"
                 >
                   {step.number}
                 </motion.div>

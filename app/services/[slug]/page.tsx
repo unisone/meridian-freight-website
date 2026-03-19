@@ -171,11 +171,11 @@ export default async function ServicePage({
                     <StaggerItem key={rs.slug} index={idx}><Link href={`/services/${rs.slug}`} className="group">
                       <Card className="h-full transition-all group-hover:shadow-lg group-hover:-translate-y-1">
                         <CardContent className="p-6">
-                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-primary group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                             <RsIcon className="h-5 w-5" />
                           </div>
-                          <h3 className="font-bold text-foreground">{rs.shortTitle}</h3>
-                          <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                          <h3 className="text-lg font-bold text-foreground leading-snug">{rs.shortTitle}</h3>
+                          <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
                             {rs.description}
                           </p>
                         </CardContent>

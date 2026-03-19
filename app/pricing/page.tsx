@@ -60,7 +60,7 @@ export default function PricingPage() {
 
           {/* Calculator CTA */}
           <ScrollReveal variant="fade">
-          <div className="mb-12 rounded-xl bg-sky-50 p-6 text-center shadow-sm sm:p-8">
+          <div className="mb-12 rounded-xl bg-primary/5 p-6 text-center shadow-sm sm:p-8">
             <Calculator className="mx-auto h-8 w-8 text-primary" />
             <h2 className="mt-3 text-xl font-bold text-foreground">
               Want an instant estimate?
@@ -68,7 +68,7 @@ export default function PricingPage() {
             <p className="mt-2 text-muted-foreground">
               Use our freight calculator to get an estimated cost for your equipment and destination.
             </p>
-            <Button render={<Link href="/pricing/calculator" />} className="mt-4 bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl">
+            <Button render={<Link href="/pricing/calculator" />} className="mt-4 bg-primary hover:bg-primary/90 text-white font-semibold rounded-xl">
                 Open Freight Calculator
                 <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

@@ -74,8 +74,8 @@ export function WhatsAppWidget() {
 
             {/* Body */}
             <div className="p-5">
-              <div className="mb-4 rounded-xl bg-slate-100 p-4">
-                <p className="text-sm text-slate-700">
+              <div className="mb-4 rounded-xl bg-muted p-4">
+                <p className="text-sm text-foreground">
                   Have questions about equipment pickup or export? We&apos;re here to help!
                 </p>
               </div>

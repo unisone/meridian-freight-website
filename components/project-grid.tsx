@@ -16,13 +16,13 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="mb-12 sm:mb-16">
-          <p className="text-xs font-medium uppercase tracking-wider text-primary sm:text-sm">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             Our Work
           </p>
-          <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
             Recent Projects
           </h2>
-          <p className="mt-4 max-w-2xl text-base text-muted-foreground lg:text-lg">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
             Real projects, real results. See how we handle machinery export from
             start to finish.
           </p>
@@ -51,7 +51,7 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-semibold text-foreground leading-snug">
+                  <h3 className="text-lg font-bold text-foreground leading-snug">
                     {project.title}
                   </h3>
                   <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">
@@ -60,21 +60,21 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
 
                   {/* Metadata */}
                   <div className="mt-4 grid grid-cols-2 gap-2 bg-muted -mx-5 px-5 py-3 rounded-b-xl">
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <MapPin className="h-3.5 w-3.5" />
-                      <span>{project.destination}</span>
+                      <span className="font-mono">{project.destination}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Container className="h-3.5 w-3.5" />
-                      <span>{project.containerType}</span>
+                      <span className="font-mono">{project.containerType}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Clock className="h-3.5 w-3.5" />
-                      <span>{project.transitTime}</span>
+                      <span className="font-mono">{project.transitTime}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Weight className="h-3.5 w-3.5" />
-                      <span>{project.weight}</span>
+                      <span className="font-mono">{project.weight}</span>
                     </div>
                   </div>
                 </div>

@@ -76,11 +76,11 @@ export default function AboutPage() {
             {differentiators.map((d, idx) => (
               <StaggerItem key={d.title} index={idx}><Card>
                 <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-primary">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <d.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground">{d.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{d.description}</p>
+                  <h3 className="text-lg font-bold text-foreground leading-snug">{d.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d.description}</p>
                 </CardContent>
               </Card></StaggerItem>
             ))}
@@ -101,16 +101,16 @@ export default function AboutPage() {
           </p>
 
           {/* Main facility */}
-          <div className="mt-8 rounded-xl bg-sky-50 p-5 shadow-sm">
+          <div className="mt-8 rounded-xl bg-primary/5 p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-500 text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
                 <Star className="h-5 w-5" />
               </div>
               <div>
                 <div className="font-semibold text-foreground">
                   {WAREHOUSE_MAIN.name}
                 </div>
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-muted-foreground">
                   {WAREHOUSE_MAIN.description}
                 </div>
               </div>
@@ -127,12 +127,12 @@ export default function AboutPage() {
                 key={loc.state}
                 className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
                   <div className="font-semibold text-foreground">{loc.name}</div>
-                  <div className="text-sm text-slate-500">{loc.state}</div>
+                  <div className="text-sm text-muted-foreground">{loc.state}</div>
                 </div>
               </div>
             ))}
@@ -156,7 +156,7 @@ export default function AboutPage() {
                 <MessageCircle className="mr-2 h-4 w-4" />
                 WhatsApp Us
             </Button>
-            <Button render={<Link href="/contact" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-slate-300 text-slate-700 font-semibold">
+            <Button render={<Link href="/contact" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-border text-foreground font-semibold">
                 Contact Us <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

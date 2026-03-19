@@ -18,10 +18,10 @@ export function VideoSection() {
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             See Us In Action
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
             See How We Pack &amp; Ship Machinery
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             See how we handle heavy machinery dismantling, packing, and container loading.
           </p>
         </div>
@@ -54,9 +54,9 @@ export function VideoSection() {
                 <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/20" />
 
                 {/* Play button */}
-                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-sky-500 shadow-xl transition-all group-hover:scale-110 group-hover:bg-sky-600">
-                  <span className="absolute inset-0 rounded-full bg-sky-400 animate-pulse-ring pointer-events-none" />
-                  <span className="absolute inset-0 rounded-full bg-sky-400 animate-pulse-ring-outer pointer-events-none" />
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-primary shadow-xl transition-all group-hover:scale-110 group-hover:bg-primary/90">
+                  <span className="absolute inset-0 rounded-full bg-primary/70 animate-pulse-ring pointer-events-none" />
+                  <span className="absolute inset-0 rounded-full bg-primary/70 animate-pulse-ring-outer pointer-events-none" />
                   <Play className="h-8 w-8 text-white ml-1" />
                 </div>
               </button>

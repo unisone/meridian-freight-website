@@ -254,7 +254,7 @@ export function CalculatorEstimateCard({
     <div className="rounded-2xl bg-slate-900 p-6 text-white" aria-live="polite">
       {/* Header */}
       <div className="mb-1 flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+        <span className="text-xs font-semibold uppercase tracking-wider text-primary">
           Estimated Freight
         </span>
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
@@ -284,9 +284,9 @@ export function CalculatorEstimateCard({
 
       {/* Detail rows */}
       <div className="space-y-3 mt-4 pt-4 bg-white/5 -mx-6 px-6 rounded-lg">
-        <DetailRow label="Transit Time" value={preview?.transitTimeDays ? `${preview.transitTimeDays} Days` : "—"} />
-        <DetailRow label="Container" value={containerLabel} />
-        <DetailRow label="Carrier" value={preview?.carrier ?? "—"} highlight />
+        <DetailRow label="Transit Time" value={preview?.transitTimeDays ? `${preview.transitTimeDays} Days` : "—"} mono />
+        <DetailRow label="Container" value={containerLabel} mono />
+        <DetailRow label="Carrier" value={preview?.carrier ?? "—"} highlight mono />
         <DetailRow
           label="Loading Type"
           value={selectedEquipment.container_type === "fortyhc" ? "Container" : "RoRo (Roll-on/Roll-off)"}
@@ -419,15 +419,17 @@ function DetailRow({
   label,
   value,
   highlight,
+  mono,
 }: {
   label: string;
   value: string;
   highlight?: boolean;
+  mono?: boolean;
 }) {
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="text-slate-400">{label}</span>
-      <span className={highlight ? "font-semibold text-primary" : "font-medium text-white"}>
+      <span className={`${highlight ? "font-semibold text-primary" : "font-medium text-white"}${mono ? " font-mono" : ""}`}>
         {value}
       </span>
     </div>

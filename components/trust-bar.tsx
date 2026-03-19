@@ -24,23 +24,24 @@ function StatItem({ item }: { item: (typeof items)[number] }) {
     enabled: isInView && item.value !== null,
   });
 
+  // Stat items (with numeric value): vertical stack — icon → big number → label
+  if (item.value !== null) {
+    return (
+      <div ref={ref} className="flex flex-col items-center gap-1 text-center">
+        <item.icon className="h-5 w-5 text-primary" />
+        <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
+          {count}{item.suffix}
+        </span>
+        <span className="text-xs text-muted-foreground">{item.label}</span>
+      </div>
+    );
+  }
+
+  // Non-stat items (no value): horizontal — icon + label
   return (
-    <div ref={ref} className="flex items-center gap-3">
+    <div ref={ref} className="flex items-center justify-center gap-2">
       <item.icon className="h-5 w-5 shrink-0 text-primary" />
-      <p
-        className={`text-sm font-medium text-slate-700 ${
-          item.value !== null ? "font-mono tabular-nums" : ""
-        }`}
-      >
-        {item.value !== null ? (
-          <>
-            {count}
-            {item.suffix} {item.label}
-          </>
-        ) : (
-          item.label
-        )}
-      </p>
+      <span className="text-sm font-medium text-muted-foreground">{item.label}</span>
     </div>
   );
 }

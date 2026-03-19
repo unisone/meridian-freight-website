@@ -58,7 +58,7 @@ export default function HomePage() {
             </Button>
             <Button
               variant="outline"
-              className="border-slate-300 text-slate-700 rounded-lg"
+              className="border-border text-foreground rounded-lg"
               render={<Link href="/contact" />}
             >
               Contact Us
@@ -107,13 +107,13 @@ export default function HomePage() {
         <section id="contact" className="py-16 md:py-28 bg-muted">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 sm:mb-16">
-              <p className="text-xs font-medium uppercase tracking-wider text-primary sm:text-sm">
+              <p className="text-sm font-semibold uppercase tracking-wider text-primary">
                 Get In Touch
               </p>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
                 Contact Us
               </h2>
-              <p className="mt-4 max-w-2xl text-base text-muted-foreground lg:text-lg">
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
                 Ready to ship your equipment? Get a free quote or ask us
                 anything about our services.
               </p>

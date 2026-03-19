@@ -46,7 +46,7 @@ export function PricingTable() {
         {/* Filters */}
         <div className="mt-6 flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search equipment type or model..."
               value={search}
@@ -61,8 +61,8 @@ export function PricingTable() {
                 onClick={() => setCategory(cat.id)}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                   category === cat.id
-                    ? "bg-sky-500 text-white"
-                    : "bg-muted text-slate-700 hover:bg-sky-100"
+                    ? "bg-primary text-white"
+                    : "bg-muted text-foreground hover:bg-primary/10"
                 }`}
               >
                 {cat.label}
@@ -95,7 +95,7 @@ export function PricingTable() {
               ))}
               {filtered.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center text-slate-500">
+                  <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
                     No equipment found matching your search.
                   </TableCell>
                 </TableRow>
