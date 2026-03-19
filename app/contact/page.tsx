@@ -1,4 +1,5 @@
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { pageMetadata } from "@/lib/metadata";
@@ -24,6 +25,7 @@ export default function ContactPage() {
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal variant="fade">
           <div className="mb-12 text-center">
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
               Contact Us
@@ -33,6 +35,7 @@ export default function ContactPage() {
               about our services. We respond within 24 hours.
             </p>
           </div>
+          </ScrollReveal>
 
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">

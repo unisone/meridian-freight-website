@@ -4,6 +4,7 @@ import { ProcessSteps } from "@/components/process-steps";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -29,6 +30,7 @@ export default function ServicesPage() {
       <ProcessSteps />
 
       {/* CTA */}
+      <ScrollReveal variant="fade">
       <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-2xl font-bold sm:text-3xl">
@@ -42,6 +44,7 @@ export default function ServicesPage() {
           </Button>
         </div>
       </section>
+      </ScrollReveal>
     </div>
   );
 }

@@ -1,4 +1,9 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { MessageSquare, Truck, Package, Globe } from "lucide-react";
+import { DURATION, EASE } from "@/lib/motion";
 
 const steps = [
   {
@@ -28,11 +33,26 @@ const steps = [
 ];
 
 export function ProcessSteps() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  // Scroll-linked line progress (desktop only — line is hidden on mobile via CSS)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 0.8", "end 0.6"],
+  });
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-12 text-center sm:mb-16">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : undefined}
+          transition={{ duration: DURATION.entrance, ease: EASE.decelerate }}
+          className="mb-12 text-center sm:mb-16"
+        >
           <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
             How It Works
           </p>
@@ -42,25 +62,57 @@ export function ProcessSteps() {
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
             From your first call to delivery at the destination port — we handle everything.
           </p>
-        </div>
+        </motion.div>
 
         {/* Steps — horizontal on desktop, vertical on mobile */}
-        <div className="relative">
-          {/* Desktop connecting line */}
-          <div className="absolute left-0 right-0 top-16 hidden h-0.5 bg-sky-200 lg:block" />
+        <div ref={sectionRef} className="relative">
+          {/* Desktop connecting line — scroll-linked */}
+          <motion.div
+            style={{ scaleX: lineScale, transformOrigin: "left" }}
+            className="absolute left-0 right-0 top-16 hidden h-0.5 bg-sky-200 lg:block"
+          />
 
           <div className="grid gap-8 sm:gap-10 lg:grid-cols-4 lg:gap-6">
-            {steps.map((step) => (
-              <div key={step.number} className="relative flex lg:flex-col lg:items-center lg:text-center">
+            {steps.map((step, idx) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 15 }}
+                animate={isInView ? { opacity: 1, y: 0 } : undefined}
+                transition={{
+                  duration: DURATION.entrance,
+                  delay: 0.2 + idx * 0.25,
+                  ease: EASE.decelerate,
+                }}
+                className="relative flex lg:flex-col lg:items-center lg:text-center"
+              >
                 {/* Mobile: vertical line between steps */}
                 {step.number < 4 && (
-                  <div className="absolute left-6 top-16 h-full w-0.5 bg-sky-200 lg:hidden" />
+                  <motion.div
+                    initial={{ scaleY: 0 }}
+                    animate={isInView ? { scaleY: 1 } : undefined}
+                    transition={{
+                      duration: DURATION.slow,
+                      delay: 0.4 + idx * 0.25,
+                      ease: EASE.decelerate,
+                    }}
+                    style={{ transformOrigin: "top" }}
+                    className="absolute left-6 top-16 h-full w-0.5 bg-sky-200 lg:hidden"
+                  />
                 )}
 
-                {/* Number circle */}
-                <div className="relative z-10 mr-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-900 text-lg font-bold text-white shadow-lg lg:mr-0 lg:mb-6">
+                {/* Number circle — scales in */}
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={isInView ? { scale: 1, opacity: 1 } : undefined}
+                  transition={{
+                    duration: DURATION.normal,
+                    delay: 0.15 + idx * 0.25,
+                    ease: EASE.decelerate,
+                  }}
+                  className="relative z-10 mr-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-900 text-lg font-bold text-white shadow-lg lg:mr-0 lg:mb-6"
+                >
                   {step.number}
-                </div>
+                </motion.div>
 
                 {/* Content */}
                 <div className="pb-8 lg:pb-0">
@@ -74,7 +126,7 @@ export function ProcessSteps() {
                     {step.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

@@ -9,6 +9,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { StaggerItem } from "@/components/scroll-reveal";
 import { services } from "@/content/services";
 
 const iconMap: Record<string, typeof Package> = {
@@ -40,32 +41,33 @@ export function ServicesGrid() {
 
         {/* Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => {
+          {services.map((service, idx) => {
             const Icon = iconMap[service.icon] ?? Package;
             return (
-              <Link
-                key={service.slug}
-                href={`/services/${service.slug}`}
-                className="group"
-              >
-                <Card className="h-full border-slate-200 transition-all duration-300 group-hover:border-sky-200 group-hover:shadow-lg group-hover:-translate-y-1">
-                  <CardContent className="p-6 sm:p-8">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-500 transition-colors group-hover:bg-sky-500 group-hover:text-white">
-                      <Icon className="h-6 w-6" />
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900">
-                      {service.shortTitle}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                      {service.description}
-                    </p>
-                    <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-sky-500 transition-colors group-hover:text-sky-600">
-                      Learn More
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+              <StaggerItem key={service.slug} index={idx}>
+                <Link
+                  href={`/services/${service.slug}`}
+                  className="group active:scale-[0.99]"
+                >
+                  <Card className="h-full border-slate-200 transition-all duration-300 group-hover:border-sky-200 group-hover:shadow-lg group-hover:-translate-y-1">
+                    <CardContent className="p-6 sm:p-8">
+                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-500 transition-all duration-300 group-hover:bg-sky-200 group-hover:text-sky-600 group-hover:scale-110 group-hover:shadow-sm">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900">
+                        {service.shortTitle}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                        {service.description}
+                      </p>
+                      <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-sky-500 transition-colors group-hover:text-sky-600 link-underline">
+                        Learn More
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </StaggerItem>
             );
           })}
         </div>

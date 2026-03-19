@@ -379,7 +379,7 @@ export function CalculatorWizard() {
                             setSelectedEquipment(eq);
                             setEquipmentSize(null);
                           }}
-                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
+                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-all duration-150 ${
                             isSelected
                               ? "bg-primary text-primary-foreground"
                               : "hover:bg-muted"
@@ -432,9 +432,9 @@ export function CalculatorWizard() {
           {/* ║ Section 02: Equipment Specs                   ║ */}
           {/* ╚═══════════════════════════════════════════════╝ */}
           <section
-            className={
-              !selectedEquipment ? "pointer-events-none opacity-40" : ""
-            }
+            className={`transition-all duration-300 ${
+              !selectedEquipment ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
+            }`}
           >
             <SectionHeader num={2} title="Equipment Specs" />
 
@@ -533,7 +533,9 @@ export function CalculatorWizard() {
           {/* ║ Section 03: Shipping Route                    ║ */}
           {/* ╚═══════════════════════════════════════════════╝ */}
           <section
-            className={!step2Done ? "pointer-events-none opacity-40" : ""}
+            className={`transition-all duration-300 ${
+              !step2Done ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
+            }`}
           >
             <SectionHeader num={3} title="Shipping Route" />
 

@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { services, getServiceBySlug, getRelatedServices } from "@/content/services";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 
@@ -141,15 +142,15 @@ export default async function ServicePage({
                 Equipment We Handle
               </h2>
               <div className="mt-6 flex flex-wrap gap-3">
-                {service.equipmentTypes.map((type) => (
-                  <Badge
+                {service.equipmentTypes.map((type, idx) => (
+                  <StaggerItem key={type} index={idx} variant="fade" className="inline-block"><Badge
                     key={type}
                     variant="secondary"
                     className="px-4 py-2 text-sm font-medium"
                   >
                     <CheckCircle className="mr-1.5 h-3.5 w-3.5 text-sky-500" />
                     {type}
-                  </Badge>
+                  </Badge></StaggerItem>
                 ))}
               </div>
             </div>
@@ -164,10 +165,10 @@ export default async function ServicePage({
                 Related Services
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {related.map((rs) => {
+                {related.map((rs, idx) => {
                   const RsIcon = iconMap[rs.icon] ?? Package;
                   return (
-                    <Link key={rs.slug} href={`/services/${rs.slug}`} className="group">
+                    <StaggerItem key={rs.slug} index={idx}><Link href={`/services/${rs.slug}`} className="group">
                       <Card className="h-full transition-all group-hover:shadow-lg group-hover:-translate-y-1">
                         <CardContent className="p-6">
                           <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors">
@@ -179,7 +180,7 @@ export default async function ServicePage({
                           </p>
                         </CardContent>
                       </Card>
-                    </Link>
+                    </Link></StaggerItem>
                   );
                 })}
               </div>
@@ -188,6 +189,7 @@ export default async function ServicePage({
         )}
 
         {/* CTA */}
+        <ScrollReveal variant="fade">
         <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
             <h2 className="text-2xl font-bold sm:text-3xl">
@@ -206,6 +208,7 @@ export default async function ServicePage({
             </div>
           </div>
         </section>
+        </ScrollReveal>
       </div>
     </>
   );

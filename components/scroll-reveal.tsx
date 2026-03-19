@@ -2,40 +2,63 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
+import { DURATION, EASE, STAGGER } from "@/lib/motion";
+
+type RevealVariant = "slide-up" | "slide-left" | "slide-right" | "fade" | "scale";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
   /** Delay in seconds */
   delay?: number;
-  /** Direction to animate from */
+  /** Legacy direction prop (backward compat) */
   direction?: "up" | "down" | "left" | "right";
+  /** Animation variant */
+  variant?: RevealVariant;
+  /** Viewport margin for triggering (default: "-60px") */
+  margin?: string;
 }
 
-const offsets = {
-  up: { y: 15, x: 0 },
-  down: { y: -15, x: 0 },
-  left: { x: 15, y: 0 },
-  right: { x: -15, y: 0 },
+const variantConfig = {
+  "slide-up":    { initial: { opacity: 0, y: 20 },       animate: { opacity: 1, y: 0 } },
+  "slide-left":  { initial: { opacity: 0, x: 20 },       animate: { opacity: 1, x: 0 } },
+  "slide-right": { initial: { opacity: 0, x: -20 },      animate: { opacity: 1, x: 0 } },
+  "fade":        { initial: { opacity: 0 },               animate: { opacity: 1 } },
+  "scale":       { initial: { opacity: 0, scale: 0.97 },  animate: { opacity: 1, scale: 1 } },
+} as const;
+
+const directionToVariant: Record<string, RevealVariant> = {
+  up: "slide-up",
+  down: "slide-up",
+  left: "slide-left",
+  right: "slide-right",
 };
 
 export function ScrollReveal({
   children,
   className,
   delay = 0,
-  direction = "up",
+  direction,
+  variant,
+  margin = "-60px",
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- motion's MarginType is not exported
+  const isInView = useInView(ref, { once: true, margin: margin as any });
 
-  const offset = offsets[direction];
+  const resolved = variant ?? (direction ? directionToVariant[direction] : "slide-up");
+  const config = variantConfig[resolved];
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, ...offset }}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : undefined}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      initial={config.initial}
+      animate={isInView ? config.animate : undefined}
+      transition={{
+        duration: DURATION.entrance,
+        delay,
+        ease: EASE.decelerate,
+      }}
       className={className}
     >
       {children}
@@ -51,13 +74,15 @@ export function StaggerItem({
   children,
   index,
   className,
+  variant = "slide-up",
 }: {
   children: React.ReactNode;
   index: number;
   className?: string;
+  variant?: RevealVariant;
 }) {
   return (
-    <ScrollReveal delay={index * 0.05} className={className}>
+    <ScrollReveal delay={index * STAGGER.grid} variant={variant} className={className}>
       {children}
     </ScrollReveal>
   );

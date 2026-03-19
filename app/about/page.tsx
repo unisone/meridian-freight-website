@@ -3,6 +3,7 @@ import { MapPin, ArrowRight, Clock, Globe, Shield, Star, MessageCircle } from "l
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { COMPANY, CONTACT, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -72,8 +73,8 @@ export default function AboutPage() {
             Why Choose Us
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
-            {differentiators.map((d) => (
-              <Card key={d.title}>
+            {differentiators.map((d, idx) => (
+              <StaggerItem key={d.title} index={idx}><Card>
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-500">
                     <d.icon className="h-6 w-6" />
@@ -81,13 +82,14 @@ export default function AboutPage() {
                   <h3 className="text-lg font-bold text-slate-900">{d.title}</h3>
                   <p className="mt-2 text-sm text-slate-600">{d.description}</p>
                 </CardContent>
-              </Card>
+              </Card></StaggerItem>
             ))}
           </div>
         </div>
       </section>
 
       {/* Warehouse locations */}
+      <ScrollReveal>
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
@@ -137,8 +139,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* CTA */}
+      <ScrollReveal variant="fade">
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
@@ -158,6 +162,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
     </div>
   );
 }

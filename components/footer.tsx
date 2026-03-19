@@ -110,7 +110,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm transition-colors hover:text-white"
+                    className="text-sm transition-colors hover:text-white link-underline"
                   >
                     {link.label}
                   </Link>
@@ -119,7 +119,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-sm transition-colors hover:text-white"
+                  className="text-sm transition-colors hover:text-white link-underline"
                 >
                   FAQ
                 </Link>
@@ -137,7 +137,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm transition-colors hover:text-white"
+                    className="text-sm transition-colors hover:text-white link-underline"
                   >
                     {link.label}
                   </Link>
@@ -156,7 +156,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm transition-colors hover:text-white"
+                    className="text-sm transition-colors hover:text-white link-underline"
                   >
                     {link.label}
                   </Link>

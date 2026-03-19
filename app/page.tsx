@@ -38,60 +38,61 @@ export default function HomePage() {
       <Hero />
       <TrustBar />
 
-      <ScrollReveal>
-        <ServicesGrid />
-      </ScrollReveal>
+      {/* ServicesGrid handles its own stagger internally */}
+      <ServicesGrid />
 
-      <ScrollReveal>
-        <ProcessSteps />
-      </ScrollReveal>
+      {/* ProcessSteps handles its own scroll-linked animation internally */}
+      <ProcessSteps />
 
       {/* Mid-page CTA */}
-      <div className="py-8 text-center">
-        <p className="text-slate-600">Need equipment shipped?</p>
-        <div className="mt-4 flex justify-center gap-4">
-          <Button
-            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
-            render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" />}
-          >
-            <MessageCircle className="mr-2 h-4 w-4" />
-            Chat on WhatsApp
-          </Button>
-          <Button
-            variant="outline"
-            className="border-slate-300 text-slate-700 rounded-lg"
-            render={<Link href="/contact" />}
-          >
-            Contact Us
-          </Button>
+      <ScrollReveal variant="fade">
+        <div className="py-8 text-center">
+          <p className="text-slate-600">Need equipment shipped?</p>
+          <div className="mt-4 flex justify-center gap-4">
+            <Button
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
+              render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" />}
+            >
+              <MessageCircle className="mr-2 h-4 w-4" />
+              Chat on WhatsApp
+            </Button>
+            <Button
+              variant="outline"
+              className="border-slate-300 text-slate-700 rounded-lg"
+              render={<Link href="/contact" />}
+            >
+              Contact Us
+            </Button>
+          </div>
         </div>
-      </div>
-
-      <ScrollReveal>
-        <ProjectGrid limit={6} />
       </ScrollReveal>
 
+      {/* ProjectGrid handles its own stagger internally */}
+      <ProjectGrid limit={6} />
+
       {/* Calculator CTA */}
-      <section className="bg-slate-900 py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <BarChart3 className="mx-auto h-8 w-8 text-sky-400" />
-          <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
-            Estimate Your Freight Cost in 60 Seconds
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-slate-300">
-            Select your equipment and destination — get an instant cost
-            estimate.
-          </p>
-          <Button
-            size="lg"
-            className="mt-6 h-12 px-8 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold shadow-lg"
-            render={<Link href="/pricing/calculator" />}
-          >
-            Open Calculator
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      </section>
+      <ScrollReveal variant="scale">
+        <section className="bg-slate-900 py-12 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+            <BarChart3 className="mx-auto h-8 w-8 text-sky-400" />
+            <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
+              Estimate Your Freight Cost in 60 Seconds
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-slate-300">
+              Select your equipment and destination — get an instant cost
+              estimate.
+            </p>
+            <Button
+              size="lg"
+              className="mt-6 h-12 px-8 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold shadow-lg"
+              render={<Link href="/pricing/calculator" />}
+            >
+              Open Calculator
+              <ArrowRight className="ml-2 h-4 w-4 animate-nudge-right" />
+            </Button>
+          </div>
+        </section>
+      </ScrollReveal>
 
       <ScrollReveal>
         <VideoSection />

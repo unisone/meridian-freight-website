@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin, Container, Clock, Weight } from "lucide-react";
+import { StaggerItem } from "@/components/scroll-reveal";
 import { projects } from "@/content/projects";
 
 interface ProjectGridProps {
@@ -29,55 +30,56 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
 
         {/* Grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {displayProjects.map((project) => (
-            <article
-              key={project.id}
-              className="group overflow-hidden rounded-xl border border-slate-200 bg-white transition-shadow hover:shadow-md"
-            >
-              {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <span className="absolute left-3 top-3 rounded-md bg-slate-900/80 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                  {project.category}
-                </span>
-              </div>
+          {displayProjects.map((project, idx) => (
+            <StaggerItem key={project.id} index={idx} variant="fade">
+              <article
+                className="group overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99]"
+              >
+                {/* Image */}
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <span className="absolute left-3 top-3 rounded-md bg-slate-900/80 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                    {project.category}
+                  </span>
+                </div>
 
-              {/* Content */}
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-slate-900 leading-snug">
-                  {project.title}
-                </h3>
-                <p className="mt-1.5 text-sm text-slate-600 line-clamp-2">
-                  {project.description}
-                </p>
+                {/* Content */}
+                <div className="p-5">
+                  <h3 className="text-lg font-semibold text-slate-900 leading-snug">
+                    {project.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm text-slate-600 line-clamp-2">
+                    {project.description}
+                  </p>
 
-                {/* Metadata */}
-                <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                    <MapPin className="h-3.5 w-3.5" />
-                    <span>{project.destination}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                    <Container className="h-3.5 w-3.5" />
-                    <span>{project.containerType}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                    <Clock className="h-3.5 w-3.5" />
-                    <span>{project.transitTime}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                    <Weight className="h-3.5 w-3.5" />
-                    <span>{project.weight}</span>
+                  {/* Metadata */}
+                  <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <MapPin className="h-3.5 w-3.5" />
+                      <span>{project.destination}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <Container className="h-3.5 w-3.5" />
+                      <span>{project.containerType}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <Clock className="h-3.5 w-3.5" />
+                      <span>{project.transitTime}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <Weight className="h-3.5 w-3.5" />
+                      <span>{project.weight}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </StaggerItem>
           ))}
         </div>
 
@@ -86,7 +88,7 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
           <div className="mt-10 text-center">
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 text-sm font-medium text-sky-500 hover:text-sky-600 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-sky-500 hover:text-sky-600 transition-colors link-underline"
             >
               View all projects
               <ArrowRight className="h-4 w-4" />

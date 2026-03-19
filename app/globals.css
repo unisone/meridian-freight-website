@@ -48,6 +48,18 @@
 }
 
 :root {
+  /* Motion tokens */
+  --duration-instant: 75ms;
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-entrance: 500ms;
+  --duration-slow: 800ms;
+  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  --ease-decelerate: cubic-bezier(0.0, 0.0, 0.15, 1.0);
+  --ease-accelerate: cubic-bezier(0.4, 0.0, 1.0, 1.0);
+  --ease-emphasis: cubic-bezier(0.16, 1.0, 0.3, 1.0);
+  --ease-interactive: cubic-bezier(0.25, 1.0, 0.5, 1.0);
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.15 0.03 260);
   --card: oklch(1 0 0);
@@ -125,5 +137,113 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* ─── Reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Keyframes ──────────────────────────────────────── */
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-left-fade {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-right-fade {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shadow-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  50%      { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.08); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes pulse-ring-outer {
+  0%   { transform: scale(1); opacity: 0.2; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+@keyframes nudge-right {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-3px); }
+  40%      { transform: translateX(3px); }
+  60%      { transform: translateX(-3px); }
+  80%      { transform: translateX(3px); }
+}
+
+@keyframes draw-check {
+  0%   { stroke-dashoffset: 24; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ─── Animation utility classes ──────────────────────── */
+@layer utilities {
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size var(--duration-normal) var(--ease-default);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
+  .animate-slide-up {
+    animation: slide-up-fade var(--duration-entrance) var(--ease-decelerate) both;
+  }
+  .animate-slide-left {
+    animation: slide-left-fade var(--duration-entrance) var(--ease-decelerate) both;
+  }
+  .animate-slide-right {
+    animation: slide-right-fade var(--duration-entrance) var(--ease-decelerate) both;
+  }
+  .animate-fade-in {
+    animation: fade-in var(--duration-entrance) var(--ease-decelerate) both;
+  }
+  .animate-shadow-breathe {
+    animation: shadow-breathe 5s ease-in-out infinite;
+  }
+  .animate-pulse-ring {
+    animation: pulse-ring 3s var(--ease-decelerate) infinite;
+  }
+  .animate-pulse-ring-outer {
+    animation: pulse-ring-outer 3s var(--ease-decelerate) 0.2s infinite;
+  }
+  .animate-nudge-right {
+    animation: nudge-right 3s var(--ease-decelerate) infinite;
+  }
+  .animate-shake {
+    animation: shake var(--duration-normal) var(--ease-default);
   }
 }

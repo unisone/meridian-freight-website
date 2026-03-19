@@ -1,6 +1,7 @@
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { faqEntries } from "@/content/faq";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT } from "@/lib/constants";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -46,6 +47,7 @@ export default function FaqPage() {
         <FaqAccordion entries={faqEntries} />
 
         {/* CTA */}
+        <ScrollReveal variant="fade">
         <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16 rounded-none">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
             <h2 className="text-2xl font-bold sm:text-3xl">
@@ -64,6 +66,7 @@ export default function FaqPage() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
       </div>
     </>
   );

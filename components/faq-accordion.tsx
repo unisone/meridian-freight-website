@@ -48,7 +48,7 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
             <div className="mt-8 text-center">
               <Link
                 href="/faq"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-sky-500 transition-colors hover:text-sky-600"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-sky-500 transition-colors hover:text-sky-600 link-underline"
               >
                 View All Questions
                 <ArrowRight className="h-4 w-4" />

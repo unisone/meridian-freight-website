@@ -28,10 +28,15 @@ export function CookieConsent() {
     setShow(false);
   }
 
-  if (!show) return null;
-
+  // Always render — CSS transition handles enter/exit animation
   return (
-    <div className="fixed bottom-16 left-0 right-0 z-[60] border-t border-slate-200 bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:bottom-4 sm:left-4 sm:right-auto sm:max-w-md sm:rounded-xl sm:border">
+    <div
+      className={`fixed bottom-16 left-0 right-0 z-[60] border-t border-slate-200 bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:bottom-4 sm:left-4 sm:right-auto sm:max-w-md sm:rounded-xl sm:border transition-all duration-300 ${
+        show
+          ? "translate-y-0 opacity-100"
+          : "translate-y-full opacity-0 pointer-events-none"
+      }`}
+    >
       <p className="text-sm text-slate-600">
         We use cookies to analyze site traffic and optimize your experience.
         By accepting, you consent to our use of analytics cookies.

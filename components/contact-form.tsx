@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle, Loader2, MessageCircle } from "lucide-react";
+import { Send, Loader2, MessageCircle } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/app/actions/contact";
 import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
 import { CONTACT } from "@/lib/constants";
+import { DURATION, EASE } from "@/lib/motion";
 import type { ContactFormData } from "@/lib/schemas";
 
 export function ContactForm() {
@@ -78,114 +80,155 @@ export function ContactForm() {
     }
   }
 
-  if (isSubmitted) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <CheckCircle className="h-16 w-16 text-green-500" />
-        <h3 className="mt-4 text-2xl font-bold text-slate-900">Message Sent!</h3>
-        <p className="mt-2 text-slate-600">
-          Thank you for reaching out. We&apos;ll get back to you within 24 hours.
-        </p>
-        <a
-          href={CONTACT.whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
-        >
-          <MessageCircle className="h-4 w-4" />
-          Can&apos;t wait? Chat with us now on WhatsApp
-        </a>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Honeypot */}
-      <div className="hidden" aria-hidden="true">
-        <label>
-          Website
-          <input type="text" name="website" autoComplete="off" tabIndex={-1} />
-        </label>
-      </div>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="name">Full Name *</Label>
-          <Input id="name" name="name" required placeholder="Your full name" className="mt-1.5" />
-        </div>
-        <div>
-          <Label htmlFor="email">Email *</Label>
-          <Input id="email" name="email" type="email" required placeholder="your@email.com" className="mt-1.5" />
-        </div>
-      </div>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="company">Company</Label>
-          <Input id="company" name="company" placeholder="Company name (optional)" className="mt-1.5" />
-        </div>
-        <div>
-          <Label htmlFor="phone">Phone</Label>
-          <Input id="phone" name="phone" type="tel" placeholder="Phone number (optional)" className="mt-1.5" />
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="equipmentType">Equipment Type</Label>
-        <select
-          id="equipmentType"
-          name="equipmentType"
-          className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          defaultValue=""
+    <AnimatePresence mode="wait">
+      {isSubmitted ? (
+        <motion.div
+          key="success"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: DURATION.entrance, ease: EASE.decelerate }}
+          className="flex flex-col items-center justify-center py-12 text-center"
         >
-          <option value="">Select equipment type (optional)</option>
-          <option value="Combine">Combine Harvester</option>
-          <option value="Tractor">Tractor</option>
-          <option value="Planter">Planter / Seeder</option>
-          <option value="Sprayer">Sprayer</option>
-          <option value="Header">Header / Platform</option>
-          <option value="Tillage">Tillage Equipment</option>
-          <option value="Excavator">Excavator</option>
-          <option value="Construction">Construction Equipment</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+          {/* SVG checkmark with draw animation */}
+          <svg
+            className="h-16 w-16 text-green-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <circle cx="12" cy="12" r="10" className="opacity-20" />
+            <path
+              d="M8 12l3 3 5-6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                strokeDasharray: 24,
+                strokeDashoffset: 0,
+                animation: "draw-check 0.8s ease-out forwards",
+              }}
+            />
+          </svg>
+          <h3 className="mt-4 text-2xl font-bold text-slate-900">Message Sent!</h3>
+          <p className="mt-2 text-slate-600">
+            Thank you for reaching out. We&apos;ll get back to you within 24 hours.
+          </p>
+          <a
+            href={CONTACT.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Can&apos;t wait? Chat with us now on WhatsApp
+          </a>
+        </motion.div>
+      ) : (
+        <motion.form
+          key="form"
+          exit={{ opacity: 0 }}
+          transition={{ duration: DURATION.fast }}
+          onSubmit={handleSubmit}
+          className={`space-y-5 transition-opacity ${isSubmitting ? "opacity-60 pointer-events-none" : ""}`}
+        >
+          {/* Honeypot */}
+          <div className="hidden" aria-hidden="true">
+            <label>
+              Website
+              <input type="text" name="website" autoComplete="off" tabIndex={-1} />
+            </label>
+          </div>
 
-      <div>
-        <Label htmlFor="message">Message *</Label>
-        <Textarea
-          id="message"
-          name="message"
-          required
-          rows={4}
-          placeholder="Tell us about your machinery logistics needs..."
-          className="mt-1.5 resize-y"
-        />
-      </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="name">Full Name *</Label>
+              <Input id="name" name="name" required placeholder="Your full name" className="mt-1.5" />
+            </div>
+            <div>
+              <Label htmlFor="email">Email *</Label>
+              <Input id="email" name="email" type="email" required placeholder="your@email.com" className="mt-1.5" />
+            </div>
+          </div>
 
-      <Button
-        type="submit"
-        disabled={isSubmitting}
-        size="lg"
-        className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base"
-      >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            Sending...
-          </>
-        ) : (
-          <>
-            <Send className="mr-2 h-5 w-5" />
-            Send Message
-          </>
-        )}
-      </Button>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="company">Company</Label>
+              <Input id="company" name="company" placeholder="Company name (optional)" className="mt-1.5" />
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone</Label>
+              <Input id="phone" name="phone" type="tel" placeholder="Phone number (optional)" className="mt-1.5" />
+            </div>
+          </div>
 
-      {error && (
-        <p className="mt-2 text-center text-sm text-red-600">{error}</p>
+          <div>
+            <Label htmlFor="equipmentType">Equipment Type</Label>
+            <select
+              id="equipmentType"
+              name="equipmentType"
+              className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              defaultValue=""
+            >
+              <option value="">Select equipment type (optional)</option>
+              <option value="Combine">Combine Harvester</option>
+              <option value="Tractor">Tractor</option>
+              <option value="Planter">Planter / Seeder</option>
+              <option value="Sprayer">Sprayer</option>
+              <option value="Header">Header / Platform</option>
+              <option value="Tillage">Tillage Equipment</option>
+              <option value="Excavator">Excavator</option>
+              <option value="Construction">Construction Equipment</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <Label htmlFor="message">Message *</Label>
+            <Textarea
+              id="message"
+              name="message"
+              required
+              rows={4}
+              placeholder="Tell us about your machinery logistics needs..."
+              className="mt-1.5 resize-y"
+            />
+          </div>
+
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            size="lg"
+            className={`w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base ${error ? "animate-shake" : ""}`}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="mr-2 h-5 w-5" />
+                Send Message
+              </>
+            )}
+          </Button>
+
+          <AnimatePresence>
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: DURATION.fast }}
+                className="mt-2 text-center text-sm text-red-600"
+              >
+                {error}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </motion.form>
       )}
-    </form>
+    </AnimatePresence>
   );
 }

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
@@ -131,6 +132,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-foreground antialiased">
         <TooltipProvider>
+          <ScrollProgress />
           <Header />
           <main className="pb-16 lg:pb-0">{children}</main>
           <Footer />

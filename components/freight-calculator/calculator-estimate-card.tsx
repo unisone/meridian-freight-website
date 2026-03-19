@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowRight, CheckCircle, Info, Loader2, Lock, Ship, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,6 +59,28 @@ export function CalculatorEstimateCard({
   const isEmailValid = EMAIL_RE.test(email);
   const hasResult = result?.success && result?.estimate;
   const estimate = result?.estimate;
+
+  // ─── Price morph animation ───────────────────────────────────────────
+  const [displayTotal, setDisplayTotal] = useState(0);
+  const prevTotal = useRef(0);
+
+  useEffect(() => {
+    if (!preview) { setDisplayTotal(0); prevTotal.current = 0; return; }
+    const target = preview.estimatedTotal;
+    if (target === prevTotal.current) return;
+    const from = prevTotal.current;
+    prevTotal.current = target;
+    const duration = 300;
+    const startTime = performance.now();
+
+    function tick(now: number) {
+      const t = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setDisplayTotal(Math.round(from + (target - from) * eased));
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }, [preview]);
 
   // ---------------------------------------------------------------------------
   // State: Results (after email submission)
@@ -244,8 +266,8 @@ export function CalculatorEstimateCard({
       {/* Price */}
       {preview ? (
         <>
-          <div className="mb-1 font-mono text-4xl font-bold tracking-tight text-white">
-            {formatDollar(preview.estimatedTotal)}
+          <div className="mb-1 font-mono tabular-nums text-4xl font-bold tracking-tight text-white">
+            {formatDollar(displayTotal)}
           </div>
           <p className="mb-5 text-xs font-semibold uppercase tracking-wider text-primary">
             {preview.totalExcludesInland ? "Excl. inland transport" : "Optimized route rate"}

@@ -3,6 +3,7 @@ import { Calculator, ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PricingTable } from "@/components/pricing-table";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, COMPANY, SITE } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -58,6 +59,7 @@ export default function PricingPage() {
           </div>
 
           {/* Calculator CTA */}
+          <ScrollReveal variant="fade">
           <div className="mb-12 rounded-xl border border-sky-200 bg-sky-50 p-6 text-center sm:p-8">
             <Calculator className="mx-auto h-8 w-8 text-sky-500" />
             <h2 className="mt-3 text-xl font-bold text-slate-900">
@@ -71,10 +73,12 @@ export default function PricingPage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
+          </ScrollReveal>
 
           <PricingTable />
 
           {/* Bottom CTA */}
+          <ScrollReveal variant="fade">
           <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
@@ -105,6 +109,7 @@ export default function PricingPage() {
               </div>
             </div>
           </section>
+          </ScrollReveal>
         </div>
       </section>
     </div>

@@ -55,6 +55,8 @@ export function VideoSection() {
 
                 {/* Play button */}
                 <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-sky-500 shadow-xl transition-all group-hover:scale-110 group-hover:bg-sky-600">
+                  <span className="absolute inset-0 rounded-full bg-sky-400 animate-pulse-ring pointer-events-none" />
+                  <span className="absolute inset-0 rounded-full bg-sky-400 animate-pulse-ring-outer pointer-events-none" />
                   <Play className="h-8 w-8 text-white ml-1" />
                 </div>
               </button>
@@ -77,7 +79,7 @@ export function VideoSection() {
             href={SOCIAL.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-500 transition-colors hover:text-sky-600"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-500 transition-colors hover:text-sky-600 link-underline"
           >
             Watch More Videos on YouTube
             <ExternalLink className="h-4 w-4" />

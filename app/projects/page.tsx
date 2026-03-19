@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ProjectGrid } from "@/components/project-grid";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { projects } from "@/content/projects";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -46,6 +47,7 @@ export default function ProjectsPage() {
         <ProjectGrid />
 
         {/* CTA */}
+        <ScrollReveal variant="fade">
         <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16 mb-16">
           <div className="mx-auto max-w-3xl px-4 text-center text-white">
             <h2 className="text-2xl font-bold sm:text-3xl">
@@ -75,6 +77,7 @@ export default function ProjectsPage() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
       </div>
     </>
   );
