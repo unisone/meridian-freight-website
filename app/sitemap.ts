@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/constants";
 import { services } from "@/content/services";
+import { equipmentTypes } from "@/content/equipment";
+import { destinations } from "@/content/destinations";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -10,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE.url}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE.url}/projects`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE.url}/destinations`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE.url}/pricing`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE.url}/pricing/calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE.url}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
@@ -25,5 +28,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...servicePages];
+  const equipmentPages: MetadataRoute.Sitemap = equipmentTypes.map((e) => ({
+    url: `${SITE.url}/equipment/${e.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  const destinationPages: MetadataRoute.Sitemap = destinations.map((d) => ({
+    url: `${SITE.url}/destinations/${d.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...servicePages, ...equipmentPages, ...destinationPages];
 }
