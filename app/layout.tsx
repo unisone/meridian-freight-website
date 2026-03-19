@@ -51,6 +51,14 @@ export const metadata: Metadata = {
   authors: [{ name: COMPANY.name }],
   alternates: { canonical: SITE.url },
   robots: { index: true, follow: true },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+        ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+        : {}),
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
