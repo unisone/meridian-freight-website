@@ -50,6 +50,7 @@ export function VideoSection() {
                   fill
                   className="object-cover"
                   sizes="(max-width: 896px) 100vw, 896px"
+                  quality={80}
                 />
                 <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/20" />
 

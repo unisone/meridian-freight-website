@@ -80,7 +80,10 @@ export default async function ServicePage({
       name: COMPANY.name,
       url: SITE.url,
     },
-    areaServed: ["United States", "Canada"],
+    areaServed: [
+      { "@type": "Country", name: "United States" },
+      { "@type": "Country", name: "Canada" },
+    ],
     url: `${SITE.url}/services/${slug}`,
   };
 
@@ -196,7 +199,9 @@ export default async function ServicePage({
               Need {service.shortTitle} Services?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sky-300">
-              Get a free quote for your project. We respond within 24 hours.
+              Get a free quote within 24 hours, or{" "}
+              <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">try our instant calculator</Link>{" "}
+              for a cost estimate right now.
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">

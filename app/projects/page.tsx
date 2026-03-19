@@ -46,6 +46,7 @@ export default function ProjectsPage() {
       <div className="pt-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "Projects" }]} />
+          <h1 className="sr-only">Completed Machinery Export Projects</h1>
         </div>
         <ProjectGrid />
 

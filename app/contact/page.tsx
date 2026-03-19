@@ -3,6 +3,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { pageMetadata } from "@/lib/metadata";
+import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 
 export const metadata = pageMetadata({
   title: "Contact Us — Get a Free Quote",
@@ -18,8 +19,28 @@ export const metadata = pageMetadata({
 });
 
 export default function ContactPage() {
+  const contactJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    mainEntity: {
+      "@type": "Organization",
+      name: COMPANY.name,
+      url: SITE.url,
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: CONTACT.phoneRaw,
+        contactType: "customer service",
+        availableLanguage: ["English", "Russian", "Spanish", "Arabic"],
+      },
+    },
+  };
+
   return (
     <div className="pt-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={[{ label: "Contact" }]} />
       </div>

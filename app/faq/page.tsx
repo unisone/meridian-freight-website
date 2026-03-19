@@ -43,6 +43,7 @@ export default function FaqPage() {
       <div className="pt-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "FAQ" }]} />
+          <h1 className="sr-only">Frequently Asked Questions About Machinery Export</h1>
         </div>
         <FaqAccordion entries={faqEntries} />
 
