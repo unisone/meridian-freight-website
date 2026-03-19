@@ -57,10 +57,11 @@ export function ProcessSteps() {
             How It Works
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            How Your Equipment Gets There
+            Four Steps. One Point of Contact.
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            From your first message to container arrival at destination — four steps, one point of contact.
+            Most exports involve a trucker, a dismantler, a packer, a broker, and a shipping line.
+            With us, you talk to one person from start to finish.
           </p>
         </motion.div>
 

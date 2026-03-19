@@ -19,10 +19,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Common Questions
+            Before You Ship
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            What Buyers Ask Us
+            Questions Every Buyer Asks
           </h2>
         </div>
 

@@ -92,11 +92,12 @@ export default function AboutPage() {
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-            Our Locations
+            Where We Operate
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Headquartered in Iowa with a partner warehouse network across the
-            US and Canada for efficient equipment handling.
+            Our main packing facility is in Iowa — central enough to keep
+            inland freight costs low. Six partner warehouses across the US
+            and Canada give us coverage wherever your equipment is.
           </p>
 
           {/* Main facility */}
@@ -145,10 +146,10 @@ export default function AboutPage() {
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-            Let&apos;s Ship Your Equipment
+            Ready? Send Us the Details.
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Tell us what you need shipped and where — we&apos;ll send a detailed quote within 24 hours.
+            Equipment type, pickup location, and destination — that&apos;s all we need for a detailed, itemized quote. No obligation.
           </p>
           <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a free quote" />} size="lg" className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg">

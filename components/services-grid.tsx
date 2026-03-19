@@ -31,11 +31,11 @@ export function ServicesGrid() {
             What We Do
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            Our Services
+            Everything Between Seller and Port
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            One company for the entire chain — equipment pickup, professional
-            dismantling, secure packing, export documentation, and worldwide shipping.
+            Each service below is something you&apos;d otherwise coordinate
+            separately. We bundle them into one project with one invoice.
           </p>
         </div>
 

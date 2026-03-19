@@ -11,37 +11,42 @@ export function Hero() {
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Text content */}
           <div>
+            {/* Eyebrow — social proof, not a category label */}
             <p
               style={{ animationDelay: "0s" }}
               className="animate-slide-up text-sm font-semibold uppercase tracking-wider text-primary"
             >
-              500+ Machines Shipped Worldwide
+              500+ Machines Shipped Since 2013
             </p>
 
+            {/* H1 — buyer scenario + outcome (PAS: Solution) */}
             <h1
               style={{ animationDelay: "0.15s" }}
               className="animate-slide-up mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-6xl leading-tight"
             >
-              Buy the Machine.{" "}
-              <span className="text-primary">We&apos;ll Get It to Your Port.</span>
+              One Company. Pickup to Port.{" "}
+              <span className="text-primary">Your Equipment, Delivered.</span>
             </h1>
 
+            {/* Body — PAS: Problem → Agitate → Solution (2 sentences max) */}
             <p
               style={{ animationDelay: "0.3s" }}
               className="animate-fade-in mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"
             >
-              Stop coordinating truckers, packers, and freight forwarders.
-              We pick up your equipment anywhere in the USA, dismantle and pack it,
-              handle all export docs, and ship it to your port. One company, one invoice.
-            </p>
-            <p
-              style={{ animationDelay: "0.35s" }}
-              className="animate-fade-in mt-2 text-sm font-medium text-muted-foreground"
-            >
-              Trusted by buyers in Latin America, Africa, the Middle East &amp; Central Asia since 2013
+              Coordinating a trucker, a packer, a customs broker, and a
+              freight line across borders is a full-time job. We replace
+              all four — one team, one invoice, zero handoffs.
             </p>
 
-            {/* CTAs — shadow-breathe on WhatsApp (not pulse rings) */}
+            {/* Authority + geo targeting */}
+            <p
+              style={{ animationDelay: "0.35s" }}
+              className="animate-fade-in mt-3 text-sm font-medium text-muted-foreground"
+            >
+              Shipping via Maersk, Hapag-Lloyd &amp; CMA CGM to Latin America, Africa, the Middle East &amp; Central Asia
+            </p>
+
+            {/* CTAs — primary is low-commitment (WhatsApp), secondary is self-serve */}
             <div
               style={{ animationDelay: "0.5s" }}
               className="animate-slide-up mt-8 flex flex-col gap-4 sm:flex-row sm:gap-4"
@@ -49,10 +54,10 @@ export function Hero() {
               <Button
                 size="lg"
                 className="h-13 w-full px-7 text-base font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all hover:shadow-lg animate-shadow-breathe sm:w-auto"
-                render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Get a quote on WhatsApp" />}
+                render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Get a free quote on WhatsApp" />}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
-                Get a Quote on WhatsApp
+                Get a Free Quote
               </Button>
               <Button
                 size="lg"
@@ -60,7 +65,7 @@ export function Hero() {
                 className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-border text-foreground bg-transparent hover:bg-muted transition-all sm:w-auto"
                 render={<Link href="/pricing/calculator" />}
               >
-                Get Instant Estimate
+                See What It Costs
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>

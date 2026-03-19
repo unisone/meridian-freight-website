@@ -88,11 +88,12 @@ export default function PricingPage() {
           <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Need an Exact Number?
+                Want the Exact Number?
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-slate-300">
-                The rates above are reference estimates. Tell us your equipment
-                and destination — we&apos;ll send a precise, itemized quote within 24 hours.
+                These are reference rates. Your actual quote depends on equipment
+                condition, pickup distance, and destination. Send us the details —
+                we quote within 24 hours, no obligation, no pressure.
               </p>
               <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Button

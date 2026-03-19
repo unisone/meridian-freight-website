@@ -29,11 +29,12 @@ export default function ContactPage() {
           <ScrollReveal variant="fade">
           <div className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              Get a Free Quote
+              Get Your Quote in 24 Hours
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              Tell us what you need shipped and where it&apos;s going. We send back a
-              detailed, itemized quote within 24 hours — no obligation.
+              Tell us the equipment, where it is, and where it&apos;s going.
+              We send back every line item — inland freight, packing, ocean
+              shipping — so you know exactly what you&apos;re paying for.
             </p>
           </div>
           </ScrollReveal>

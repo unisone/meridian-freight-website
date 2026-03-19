@@ -36,10 +36,10 @@ export default function ServicesPage() {
       <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-2xl font-bold sm:text-3xl">
-            Ready to Ship Your Machinery?
+            Have Equipment That Needs to Move?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sky-300">
-            Get a free, itemized quote for your machinery export — we respond within 24 hours.
+            Send us the make, model, and destination. You get a line-by-line quote within 24 hours — no obligation.
           </p>
           <Button render={<Link href="/contact" />} size="lg" className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
               Get a Quote <ArrowRight className="ml-2 h-4 w-4" />

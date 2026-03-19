@@ -20,11 +20,11 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
             Our Work
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            Recent Projects
+            Equipment We&apos;ve Shipped
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-            Real shipments, real results. See how we pack and ship heavy equipment
-            to ports worldwide.
+            Every project below went from seller&apos;s lot to ocean vessel.
+            Destination, container type, weight, and transit time included.
           </p>
         </div>
 

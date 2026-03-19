@@ -49,7 +49,7 @@ export default function HomePage() {
       {/* Mid-page CTA */}
       <ScrollReveal variant="fade">
         <div className="py-8 text-center">
-          <p className="text-muted-foreground">Ready to ship your equipment overseas?</p>
+          <p className="text-muted-foreground">Have equipment that needs to move?</p>
           <div className="mt-4 flex justify-center gap-4">
             <Button
               className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
@@ -78,11 +78,11 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <BarChart3 className="mx-auto h-8 w-8 text-sky-400" />
             <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
-              How Much Will It Cost? Find Out in 60 Seconds.
+              Know the Cost Before You Commit
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-slate-300">
-              Pick your equipment type and destination — our calculator gives
-              you a line-by-line estimate instantly.
+              Pick your equipment type and destination. Our calculator breaks down
+              every line item — inland freight, packing, ocean shipping — in 60 seconds.
             </p>
             <Button
               size="lg"
@@ -113,11 +113,11 @@ export default function HomePage() {
                 Get In Touch
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-                Get Your Free Quote
+                Tell Us What You Need Shipped
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-                Tell us what you need shipped and where — we send back a
-                detailed, itemized quote within 24 hours. No obligation.
+                Equipment type, location, and destination — that&apos;s all we need to
+                send you a detailed, line-by-line quote. No obligation, no follow-up spam.
               </p>
             </div>
             <div className="grid gap-12 lg:grid-cols-2">
