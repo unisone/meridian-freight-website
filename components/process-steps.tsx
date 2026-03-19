@@ -51,7 +51,7 @@ export function ProcessSteps() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : undefined}
           transition={{ duration: DURATION.entrance, ease: EASE.decelerate }}
-          className="mb-12 text-center sm:mb-16"
+          className="mb-12 sm:mb-16"
         >
           <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
             How It Works
@@ -59,7 +59,7 @@ export function ProcessSteps() {
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
             Simple 4-Step Process
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg text-slate-600">
             From your first call to delivery at the destination port — we handle everything.
           </p>
         </motion.div>

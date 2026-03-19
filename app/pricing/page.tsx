@@ -48,11 +48,11 @@ export default function PricingPage() {
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 text-center">
+          <div className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
               Equipment Pricing — Transparent &amp; Itemized
             </h1>
-            <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-600">
+            <p className="mt-4 max-w-2xl text-lg text-slate-600">
               Reference rates for 60+ equipment types and 20+ shipping routes.
               Every quote includes detailed line items — no hidden fees.
             </p>

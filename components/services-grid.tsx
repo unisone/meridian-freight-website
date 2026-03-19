@@ -25,15 +25,15 @@ export function ServicesGrid() {
   return (
     <section className="py-16 md:py-24 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-12 text-center sm:mb-16">
+        {/* Header — editorial left-aligned */}
+        <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
             What We Do
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
             Our Services
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg text-slate-600">
             End-to-end machinery export solutions — from equipment pickup and
             dismantling to container packing and global shipping.
           </p>
@@ -49,7 +49,7 @@ export function ServicesGrid() {
                   href={`/services/${service.slug}`}
                   className="group active:scale-[0.99]"
                 >
-                  <Card className="h-full border-slate-200 transition-all duration-300 group-hover:border-sky-200 group-hover:shadow-lg group-hover:-translate-y-1">
+                  <Card className="h-full border-0 shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
                     <CardContent className="p-6 sm:p-8">
                       <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-500 transition-all duration-300 group-hover:bg-sky-200 group-hover:text-sky-600 group-hover:scale-110 group-hover:shadow-sm">
                         <Icon className="h-6 w-6" />

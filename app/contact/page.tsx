@@ -26,11 +26,11 @@ export default function ContactPage() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="fade">
-          <div className="mb-12 text-center">
+          <div className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
               Contact Us
             </h1>
-            <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-600">
+            <p className="mt-4 max-w-2xl text-lg text-slate-600">
               Ready to ship your equipment? Get a free quote or ask us anything
               about our services. We respond within 24 hours.
             </p>

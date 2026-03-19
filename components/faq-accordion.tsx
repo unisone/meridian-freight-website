@@ -17,7 +17,7 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center sm:mb-16">
+        <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
             FAQ
           </p>
@@ -32,7 +32,7 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
               <AccordionItem
                 key={entry.question}
                 value={entry.question}
-                className="rounded-xl border border-slate-200 bg-white px-6 shadow-sm"
+                className="rounded-xl border-0 bg-white px-6 shadow-sm"
               >
                 <AccordionTrigger className="text-left text-base font-semibold text-slate-900 hover:text-sky-500 py-5">
                   {entry.question}

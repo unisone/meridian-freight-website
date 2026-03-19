@@ -14,14 +14,14 @@ export function VideoSection() {
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center sm:mb-16">
+        <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-sky-500">
             See Us In Action
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
             See How We Pack &amp; Ship Machinery
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg text-slate-600">
             See how we handle heavy machinery dismantling, packing, and container loading.
           </p>
         </div>

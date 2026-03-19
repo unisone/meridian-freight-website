@@ -60,29 +60,36 @@
   --ease-emphasis: cubic-bezier(0.16, 1.0, 0.3, 1.0);
   --ease-interactive: cubic-bezier(0.25, 1.0, 0.5, 1.0);
 
+  /*
+   * Meridian Horizon Design System — "Depth Without Lines"
+   * Primary:   #0EA5E9  sky-500    — brand identity
+   * Secondary: #10B981  emerald-500 — "Safety Green" — action/CTA energy
+   * Tertiary:  #1E293B  slate-800   — authoritative navy — depth anchor
+   * Neutral:   #F8FAFC  slate-50    — surface backgrounds
+   */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.15 0.03 260);
+  --foreground: oklch(0.208 0.042 265.755);     /* #1E293B — slate-800 navy as text anchor */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.03 260);
+  --card-foreground: oklch(0.208 0.042 265.755);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.03 260);
-  --primary: oklch(0.72 0.15 195);
+  --popover-foreground: oklch(0.208 0.042 265.755);
+  --primary: oklch(0.685 0.169 222.7);          /* #0EA5E9 — sky-500 */
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.98 0.002 250);
-  --secondary-foreground: oklch(0.15 0.03 260);
-  --muted: oklch(0.96 0.003 250);
-  --muted-foreground: oklch(0.55 0.015 260);
-  --accent: oklch(0.98 0.002 250);
-  --accent-foreground: oklch(0.15 0.03 260);
+  --secondary: oklch(0.98 0.002 250);            /* UI neutral (shadcn pattern) */
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --muted: oklch(0.984 0.003 247.858);          /* #F8FAFC — slate-50 */
+  --muted-foreground: oklch(0.554 0.022 257.417); /* #64748B — slate-500 */
+  --accent: oklch(0.984 0.003 247.858);          /* same as muted — neutral surface */
+  --accent-foreground: oklch(0.208 0.042 265.755);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 260);
-  --input: oklch(0.92 0.004 260);
-  --ring: oklch(0.72 0.15 195);
-  --chart-1: oklch(0.72 0.15 195);
-  --chart-2: oklch(0.65 0.16 200);
-  --chart-3: oklch(0.55 0.14 210);
+  --border: oklch(0.929 0.006 264.531);          /* #E2E8F0 — slate-200, subtle */
+  --input: oklch(0.929 0.006 264.531);
+  --ring: oklch(0.685 0.169 222.7);              /* matches primary */
+  --chart-1: oklch(0.685 0.169 222.7);
+  --chart-2: oklch(0.696 0.17 162.48);           /* #10B981 — emerald-500 */
+  --chart-3: oklch(0.554 0.135 217);
   --chart-4: oklch(0.45 0.12 220);
-  --chart-5: oklch(0.35 0.10 230);
+  --chart-5: oklch(0.208 0.042 265.755);         /* navy */
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.15 0.03 260);

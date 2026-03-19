@@ -15,14 +15,14 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
     <section className="bg-white py-16 sm:py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="mb-12 text-center sm:mb-16">
+        <div className="mb-12 sm:mb-16">
           <p className="text-xs font-medium uppercase tracking-wider text-sky-500 sm:text-sm">
             Our Work
           </p>
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
             Recent Projects
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600 lg:text-lg">
+          <p className="mt-4 max-w-2xl text-base text-slate-600 lg:text-lg">
             Real projects, real results. See how we handle machinery export from
             start to finish.
           </p>
@@ -33,7 +33,7 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
           {displayProjects.map((project, idx) => (
             <StaggerItem key={project.id} index={idx} variant="fade">
               <article
-                className="group overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99]"
+                className="group overflow-hidden rounded-xl border-0 bg-white shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99]"
               >
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden">

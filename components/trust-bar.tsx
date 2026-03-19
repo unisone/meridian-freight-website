@@ -47,7 +47,7 @@ function StatItem({ item }: { item: (typeof items)[number] }) {
 
 export function TrustBar() {
   return (
-    <section className="border-y border-slate-200 bg-slate-50 py-6">
+    <section className="bg-slate-50 py-6 shadow-[inset_0_1px_0_0_rgba(0,0,0,0.04),inset_0_-1px_0_0_rgba(0,0,0,0.04)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-8">
           {items.map((item) => (
