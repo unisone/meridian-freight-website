@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react"
 
 import { COMPANY, CONTACT, SOCIAL, NAV_ITEMS } from "@/lib/constants";
 import { equipmentTypes } from "@/content/equipment";
+import { destinations } from "@/content/destinations";
 
 const SERVICE_LINKS = [
   { label: "Machinery Dismantling & Packing", href: "/services/machinery-packing" },
@@ -23,6 +24,11 @@ const EQUIPMENT_LINKS = equipmentTypes.map((e) => ({
   href: `/equipment/${e.slug}`,
 }));
 
+const DESTINATION_LINKS = destinations.map((d) => ({
+  label: d.country,
+  href: `/destinations/${d.slug}`,
+}));
+
 const LEGAL_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Service", href: "/terms" },
@@ -34,7 +40,7 @@ export function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-6">
           {/* Column 1: Company info */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" aria-label="Meridian Freight Inc. — Home">
@@ -171,7 +177,26 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 5: Legal */}
+          {/* Column 5: Destinations */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+              Destinations
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {DESTINATION_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors hover:text-white link-underline"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 6: Legal */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
               Legal

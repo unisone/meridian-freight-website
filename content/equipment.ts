@@ -1,3 +1,5 @@
+import type { FaqEntry } from "@/content/faq";
+
 export interface EquipmentType {
   slug: string;
   title: string;
@@ -12,6 +14,7 @@ export interface EquipmentType {
   packingNotes: string;
   containerTypes: string[];
   relatedServiceSlugs: string[];
+  faqs?: FaqEntry[];
 }
 
 export const equipmentTypes: EquipmentType[] = [
@@ -45,6 +48,12 @@ export const equipmentTypes: EquipmentType[] = [
       "Combines require partial dismantling before export. We remove the header, unloading auger, and GPS dome, then secure the main body inside a 40ft high-cube container or on a flat rack depending on dimensions.",
     containerTypes: ["40ft High-Cube", "Flat Rack"],
     relatedServiceSlugs: ["machinery-packing", "agricultural", "container-loading"],
+    faqs: [
+      { question: "How much does it cost to ship a combine overseas?", answer: "Total export cost for a combine typically ranges from $12,000 to $25,000 depending on pickup location, destination port, and whether it ships in a 40ft high-cube container or on a flat rack. We provide itemized quotes within 24 hours.", category: "Combines" },
+      { question: "Do you remove the header before shipping a combine?", answer: "Yes. The header, unloading auger, GPS dome, and other protruding components are removed, labeled, and packed separately. The main body is then positioned inside a 40ft high-cube container or secured on a flat rack.", category: "Combines" },
+      { question: "Can a combine fit inside a standard 40ft container?", answer: "Most combines require a 40ft high-cube container after partial dismantling, or a flat rack for larger models. We measure your specific model and recommend the most cost-effective container option.", category: "Combines" },
+      { question: "What combine brands do you export most frequently?", answer: "John Deere S-Series, Case IH Axial-Flow, Claas Lexion, and AGCO Gleaner are our most commonly shipped combines. We know the disassembly specs for each brand and carry the right rigging equipment.", category: "Combines" },
+    ],
   },
   {
     slug: "tractors",
@@ -76,6 +85,12 @@ export const equipmentTypes: EquipmentType[] = [
       "Tractors are loaded into 40ft high-cube containers with custom wood blocking and heavy-duty ratchet straps. Dual wheels and cab mirrors are removed to fit container dimensions, and all fluids are drained to meet shipping regulations.",
     containerTypes: ["40ft High-Cube", "Flat Rack", "Standard 40ft"],
     relatedServiceSlugs: ["machinery-packing", "agricultural", "equipment-sales"],
+    faqs: [
+      { question: "How are tractors loaded into shipping containers?", answer: "Dual wheels and cab mirrors are removed to fit container width. The tractor is driven or winched into a 40ft high-cube container, then blocked with timber and secured with heavy-duty ratchet straps. All fluids are drained per shipping regulations.", category: "Tractors" },
+      { question: "Can you ship a tractor with attachments?", answer: "Yes. Loaders, three-point implements, and other attachments are removed and packed alongside or on top of the tractor inside the container. This maximizes space and keeps your shipping cost down.", category: "Tractors" },
+      { question: "What is the cheapest way to ship a tractor internationally?", answer: "A 40ft high-cube container is usually the most cost-effective option. If you are buying multiple smaller tractors, we can fit 2-3 compact or utility models in a single container to significantly reduce per-unit cost.", category: "Tractors" },
+      { question: "Do you ship both row-crop and utility tractors?", answer: "We ship everything from compact Kubota utility tractors to John Deere 9R four-wheel-drive row-crop machines. Each size class has different container and blocking requirements, and we handle them all.", category: "Tractors" },
+    ],
   },
   {
     slug: "excavators",
@@ -107,6 +122,11 @@ export const equipmentTypes: EquipmentType[] = [
       "Excavators typically ship on flat racks due to their height and weight. The boom is lowered and pinned, the bucket is removed and secured separately, and the tracks are chocked with heavy timber blocking to prevent movement during ocean transit.",
     containerTypes: ["Flat Rack", "Open Top"],
     relatedServiceSlugs: ["container-loading", "machinery-packing", "documentation"],
+    faqs: [
+      { question: "How do you ship an excavator that is too tall for a container?", answer: "Excavators ship on flat racks or in open-top containers. The boom is lowered and pinned, the bucket is removed and secured separately, and the tracks are chocked with heavy timber blocking to prevent movement during ocean transit.", category: "Excavators" },
+      { question: "What is the weight limit for shipping an excavator?", answer: "A standard flat rack supports up to 40 metric tons. Most mid-size excavators (20-35 ton class) fit within this limit. For larger machines, we use specialized heavy-lift services or breakbulk shipping.", category: "Excavators" },
+      { question: "Do you drain all fluids before shipping an excavator?", answer: "Yes. Hydraulic oil, engine oil, coolant, and diesel are drained to meet international shipping regulations and prevent environmental hazards. We also disconnect the battery and secure all hydraulic lines.", category: "Excavators" },
+    ],
   },
   {
     slug: "planters",
@@ -138,6 +158,11 @@ export const equipmentTypes: EquipmentType[] = [
       "Planters are folded and the row units are individually protected with foam wrap. Seed meters and precision components are removed and crated separately. The toolbar is secured inside a 40ft high-cube container with custom blocking to prevent lateral movement.",
     containerTypes: ["40ft High-Cube", "Flat Rack"],
     relatedServiceSlugs: ["agricultural", "machinery-packing", "container-loading"],
+    faqs: [
+      { question: "How do you protect precision planter components during shipping?", answer: "Seed meters, row-unit electronics, and GPS components are removed, wrapped in anti-static foam, and packed in separate wooden crates. All wiring harnesses are labeled for easy reinstallation at the destination.", category: "Planters" },
+      { question: "Can a 24-row planter fit in a container?", answer: "Yes. Large planters are folded into transport position and the row-unit wings are secured. A 24-row planter typically fits in a 40ft high-cube container or on a flat rack, depending on toolbar width and frame height.", category: "Planters" },
+      { question: "Do you ship precision planters with variable-rate technology?", answer: "Absolutely. We handle Kinze, John Deere ExactEmerge, and Case IH Early Riser planters with variable-rate drives, hydraulic down-force systems, and precision-ag controllers. All electronics are removed and packed separately.", category: "Planters" },
+    ],
   },
   {
     slug: "sprayers",
@@ -169,6 +194,11 @@ export const equipmentTypes: EquipmentType[] = [
       "Sprayer booms are folded and additionally secured with strapping to prevent deployment during transit. Chemical tanks are drained and triple-rinsed to meet international shipping and customs regulations. The high-clearance chassis often requires flat rack loading.",
     containerTypes: ["Flat Rack", "40ft High-Cube"],
     relatedServiceSlugs: ["agricultural", "machinery-packing", "documentation"],
+    faqs: [
+      { question: "Do you clean sprayer tanks before export?", answer: "Yes. All chemical tanks are drained and triple-rinsed to meet international shipping regulations and destination country customs requirements. We provide a tank-cleaning certificate with every sprayer shipment.", category: "Sprayers" },
+      { question: "How are sprayer booms secured for ocean shipping?", answer: "Booms are folded into transport position and additionally secured with heavy-duty strapping to prevent accidental deployment during transit. Nozzle tips and boom ends are protected with foam wrapping.", category: "Sprayers" },
+      { question: "Can a self-propelled sprayer fit in a container?", answer: "Smaller self-propelled sprayers can fit in a 40ft high-cube container after boom folding and mirror removal. Larger high-clearance models like the John Deere R4045 typically require flat rack shipping due to their height.", category: "Sprayers" },
+    ],
   },
   {
     slug: "headers",
@@ -200,6 +230,11 @@ export const equipmentTypes: EquipmentType[] = [
       "Headers are placed on custom-welded transport stands or wooden cradles inside 40ft high-cube containers. Knife sections are covered with protective guards, and draper belts are secured to prevent sagging. Multiple headers can sometimes be stacked in a single container to reduce shipping costs.",
     containerTypes: ["40ft High-Cube", "Flat Rack"],
     relatedServiceSlugs: ["agricultural", "machinery-packing", "container-loading"],
+    faqs: [
+      { question: "Can you ship multiple headers in one container?", answer: "Yes. Depending on width and type, we can often stack 2-3 headers in a single 40ft high-cube container using custom-built transport stands. This significantly reduces per-unit shipping cost.", category: "Headers" },
+      { question: "How do you protect knife sections during shipping?", answer: "Knife sections are covered with heavy-duty protective guards, and sickle bars are pinned in the retracted position. Draper belts are secured and tensioned to prevent sagging or damage during ocean transit.", category: "Headers" },
+      { question: "Do you ship stripper headers and corn heads?", answer: "We ship all header types: draper platforms, flex headers, rigid cutterbar headers, stripper headers, and corn heads. Each type has specific crating requirements that we handle based on the manufacturer specs.", category: "Headers" },
+    ],
   },
   {
     slug: "bulldozers",
@@ -231,6 +266,11 @@ export const equipmentTypes: EquipmentType[] = [
       "Bulldozers almost always ship on flat racks due to their weight and dimensions. The blade is lowered flat, ripper is pinned in transport position, and the tracks are chocked with heavy timber and chain binders. We calculate center of gravity to ensure the load meets container weight limits.",
     containerTypes: ["Flat Rack", "Open Top"],
     relatedServiceSlugs: ["container-loading", "machinery-packing", "documentation"],
+    faqs: [
+      { question: "How do you secure a bulldozer on a flat rack for ocean shipping?", answer: "The blade is lowered flat, the ripper is pinned in transport position, and the tracks are chocked with heavy timber. Chain binders rated for the machine's weight secure it to the flat rack tie-down points. We calculate center of gravity to ensure safe transit.", category: "Bulldozers" },
+      { question: "What size bulldozers can you ship?", answer: "We ship everything from small D3/D4 class dozers that fit in containers to large D8/D9 class machines that require flat rack or breakbulk shipping. Weight limits for flat racks are approximately 40 metric tons.", category: "Bulldozers" },
+      { question: "How long does it take to export a bulldozer?", answer: "From equipment pickup to port departure typically takes 7-14 days, including transport to our facility, securing on a flat rack, and documentation. Add 18-40 days of ocean transit depending on destination.", category: "Bulldozers" },
+    ],
   },
   {
     slug: "loaders",
@@ -262,8 +302,13 @@ export const equipmentTypes: EquipmentType[] = [
       "Smaller loaders and skid steers fit inside 40ft high-cube containers with the bucket removed and secured alongside. Larger wheel loaders ship on flat racks with the bucket detached and loaded separately. Articulation joints are locked and steering cylinders are pinned for transit.",
     containerTypes: ["40ft High-Cube", "Flat Rack", "Standard 40ft"],
     relatedServiceSlugs: ["container-loading", "machinery-packing", "equipment-sales"],
+    faqs: [
+      { question: "Can a wheel loader fit inside a shipping container?", answer: "Smaller loaders and skid steers fit inside 40ft high-cube containers with the bucket removed and secured alongside. Larger wheel loaders (5+ ton class) typically require flat rack shipping due to their height and weight.", category: "Loaders" },
+      { question: "Do you export skid steer loaders?", answer: "Yes. Compact skid steers like the CAT 262D or John Deere 332G are among the easiest machines to containerize. We can often fit 2 skid steers in a single 40ft container, reducing your per-unit cost.", category: "Loaders" },
+      { question: "How are loader buckets packed for shipping?", answer: "Buckets and attachments are removed, cleaned, and secured alongside the main machine inside the container or on the flat rack. Hydraulic quick-coupler lines are capped and protected from contamination.", category: "Loaders" },
+    ],
   },
-] as const;
+];
 
 export function getEquipmentBySlug(slug: string): EquipmentType | undefined {
   return equipmentTypes.find((e) => e.slug === slug);

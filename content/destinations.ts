@@ -1,3 +1,5 @@
+import type { FaqEntry } from "@/content/faq";
+
 export interface Destination {
   slug: string;
   country: string;
@@ -12,6 +14,7 @@ export interface Destination {
   commonEquipment: string[];
   shippingNotes: string;
   containerOptions: string[];
+  faqs?: FaqEntry[];
 }
 
 export const destinations: Destination[] = [
@@ -46,6 +49,11 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Brazil requires fumigation certificates for all wood packaging materials (ISPM-15 compliant). Import licenses may be required for certain equipment categories — we handle the documentation so your shipment clears Santos customs without delays.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
+    faqs: [
+      { question: "What documents do I need to import machinery into Brazil?", answer: "You need a Commercial Invoice, Packing List, Bill of Lading, ISPM-15 fumigation certificate for wood packaging, and potentially an import license depending on equipment category. We prepare all US export documents and coordinate with Brazilian customs brokers.", category: "Brazil" },
+      { question: "How long does shipping to Brazil take?", answer: "Ocean transit from US East and Gulf Coast ports to Santos averages 25-30 days. Total door-to-port timeline including pickup, packing, and documentation is typically 35-45 days.", category: "Brazil" },
+      { question: "Is farm equipment in high demand in Brazil?", answer: "Yes. Brazil is one of the world's largest agricultural producers. Used US equipment — especially John Deere and Case IH combines, tractors, and planters — is in strong demand because of quality, availability, and competitive pricing compared to new equipment.", category: "Brazil" },
+    ],
   },
   {
     slug: "uae",
@@ -78,6 +86,11 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Jebel Ali is a free-zone port with streamlined customs procedures. Equipment must be clean and free of soil or organic residue. We coordinate pre-shipment inspections to meet UAE import standards.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
+    faqs: [
+      { question: "What types of equipment are commonly shipped to the UAE?", answer: "Construction equipment dominates UAE imports — excavators, loaders, bulldozers, cranes, and generators. The UAE's booming infrastructure and real estate sectors drive strong demand for quality used US machinery.", category: "UAE" },
+      { question: "Does the UAE have special import requirements for used equipment?", answer: "Equipment must be clean and free of soil or organic residue. Pre-shipment inspections are coordinated to meet UAE import standards. Jebel Ali is a free-zone port with relatively streamlined customs procedures.", category: "UAE" },
+      { question: "Can you ship equipment from the UAE to other Gulf countries?", answer: "Yes. Jebel Ali serves as a major transshipment hub for the entire Gulf region. Equipment arriving in Jebel Ali can be forwarded to Oman, Bahrain, Qatar, and Kuwait. We coordinate the full logistics chain.", category: "UAE" },
+    ],
   },
   {
     slug: "turkey",
@@ -110,6 +123,11 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Turkey requires a conformity assessment (TAREKS) for certain machinery imports. All wood packaging must meet ISPM-15 standards. We prepare the full documentation package so your shipment clears Mersin without hold-ups.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
+    faqs: [
+      { question: "What is the TAREKS conformity assessment for Turkey?", answer: "TAREKS is Turkey's electronic tracking system for certain imported goods. Some machinery categories require a conformity assessment before import. We identify whether your equipment needs TAREKS clearance and prepare the documentation.", category: "Turkey" },
+      { question: "Why is Turkey one of the faster shipping routes?", answer: "Mersin port is accessible via the Mediterranean with shorter transit distances than Gulf or Asian ports. At 18-25 days from US East Coast, it is one of our fastest international routes with weekly sailings.", category: "Turkey" },
+      { question: "What farm equipment is most in demand in Turkey?", answer: "Turkey imports tractors, combines, planters, headers, and tillage equipment for its large agricultural sector. John Deere and Case IH are popular brands, and Turkish farmers value the quality and durability of US-made equipment.", category: "Turkey" },
+    ],
   },
   {
     slug: "saudi-arabia",
@@ -142,6 +160,11 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Saudi Arabia requires SABER conformity certificates for many equipment categories. All invoices and packing lists must be legalized. We handle the full compliance process to ensure smooth clearance at Jeddah port.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
+    faqs: [
+      { question: "What is the SABER conformity certificate for Saudi Arabia?", answer: "SABER is Saudi Arabia's online platform for product conformity certification. Many equipment categories require a SABER certificate and a shipment-specific certificate of conformity before clearing Jeddah port customs. We handle the full process.", category: "Saudi Arabia" },
+      { question: "Do invoices need to be legalized for Saudi imports?", answer: "Yes. Commercial invoices and packing lists for Saudi Arabia must be legalized through the Saudi Embassy or via the Fasah electronic system. We prepare all documentation in the required format for smooth customs clearance.", category: "Saudi Arabia" },
+      { question: "What construction equipment is in demand in Saudi Arabia?", answer: "Saudi Vision 2030 infrastructure projects drive strong demand for excavators, bulldozers, cranes, generators, loaders, and compressors. US-manufactured CAT and Komatsu equipment is especially popular.", category: "Saudi Arabia" },
+    ],
   },
   {
     slug: "colombia",
@@ -174,6 +197,11 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Colombia requires a pre-shipment inspection for used equipment imports. Fumigation certificates are mandatory for wood packaging. We coordinate all inspections and documentation before departure to prevent port delays.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
+    faqs: [
+      { question: "Does Colombia require a pre-shipment inspection?", answer: "Yes. Colombia requires a pre-shipment inspection for used equipment imports. We coordinate the inspection before departure and include the inspection certificate with your shipping documents to prevent port delays.", category: "Colombia" },
+      { question: "How fast can you ship to Colombia?", answer: "Cartagena is one of our fastest Latin American destinations at just 12-18 days ocean transit from US Gulf and East Coast ports. Total door-to-port timeline is typically 22-30 days including pickup and packing.", category: "Colombia" },
+      { question: "What equipment is commonly shipped to Colombia?", answer: "Tractors, excavators, combines, loaders, and sprayers are the most common exports to Colombia. The country's growing agricultural and construction sectors drive steady demand for quality used US machinery.", category: "Colombia" },
+    ],
   },
   {
     slug: "mexico",
@@ -206,6 +234,11 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Mexico allows duty-free import of certain agricultural equipment under USMCA provisions. All shipments require a pedimento (customs declaration). We prepare bilingual documentation and coordinate with Mexican customs brokers for seamless clearance.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard", "Open Top"],
+    faqs: [
+      { question: "Can agricultural equipment enter Mexico duty-free under USMCA?", answer: "Certain agricultural equipment qualifies for duty-free import under USMCA (formerly NAFTA) provisions. We identify whether your specific equipment qualifies and prepare the required USMCA certificate of origin.", category: "Mexico" },
+      { question: "How quickly can you ship to Mexico?", answer: "Veracruz is our fastest international destination at just 10-15 days ocean transit from US Gulf ports. Total door-to-port timeline is typically 20-25 days. For urgent shipments, we can also arrange overland trucking.", category: "Mexico" },
+      { question: "Do you provide bilingual documentation for Mexico shipments?", answer: "Yes. All customs documentation is prepared in both English and Spanish. We coordinate directly with Mexican customs brokers (agentes aduanales) to ensure your pedimento and import clearance go smoothly.", category: "Mexico" },
+    ],
   },
   {
     slug: "romania",
@@ -238,6 +271,11 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Romania is an EU member, so imports must comply with EU machinery directives and CE marking requirements. Phytosanitary certificates are required for wood packaging. We ensure all documentation meets EU customs standards.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
+    faqs: [
+      { question: "Does Romania follow EU import regulations for machinery?", answer: "Yes. As an EU member, Romania requires compliance with EU machinery directives. CE marking requirements may apply to certain equipment categories. All wood packaging must meet ISPM-15 standards for EU entry.", category: "Romania" },
+      { question: "What route do shipments to Romania take?", answer: "Shipments route through Mediterranean transshipment ports (typically Piraeus or Gioia Tauro) before final delivery to Constanta on the Black Sea. Total transit is 22-28 days from US East Coast ports.", category: "Romania" },
+      { question: "What agricultural equipment is popular in Romania?", answer: "Romania's large farming sector imports tractors, combines, planters, tillage equipment, headers, and sprayers. The country's fertile plains are ideal for large-scale agriculture, driving demand for US-made precision equipment.", category: "Romania" },
+    ],
   },
   {
     slug: "kazakhstan",
@@ -270,8 +308,13 @@ export const destinations: Destination[] = [
     shippingNotes:
       "Kazakhstan shipments route through a transshipment port (typically Poti, Georgia or Mersin, Turkey) before Caspian Sea feeder to Aktau. GOST certification may be required for certain equipment. We coordinate the full multimodal chain from your door to Aktau.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
+    faqs: [
+      { question: "Why does shipping to Kazakhstan take 40-50 days?", answer: "Kazakhstan is landlocked. Shipments travel by ocean to a transshipment port (typically Poti, Georgia or Mersin, Turkey), then transfer to a Caspian Sea feeder vessel to Aktau port. The multimodal routing adds transit time.", category: "Kazakhstan" },
+      { question: "Is GOST certification required for equipment imports to Kazakhstan?", answer: "GOST certification may be required for certain equipment categories under the Eurasian Economic Union (EAEU) technical regulations. We verify requirements for your specific equipment and coordinate certification when needed.", category: "Kazakhstan" },
+      { question: "What equipment is commonly exported to Kazakhstan?", answer: "Combines, tractors, excavators, bulldozers, planters, and headers are all in demand for Kazakhstan's agricultural and mining sectors. The country's vast farmland and mineral resources drive consistent equipment imports.", category: "Kazakhstan" },
+    ],
   },
-] as const;
+];
 
 export function getDestinationBySlug(slug: string): Destination | undefined {
   return destinations.find((d) => d.slug === slug);

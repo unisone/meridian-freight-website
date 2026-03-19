@@ -16,6 +16,8 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { equipmentTypes, getEquipmentBySlug } from "@/content/equipment";
 import { getServiceBySlug } from "@/content/services";
+import { destinations } from "@/content/destinations";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 
 export function generateStaticParams() {
@@ -59,6 +61,10 @@ export default async function EquipmentPage({
   const relatedServices = equipment.relatedServiceSlugs
     .map((s) => getServiceBySlug(s))
     .filter((s): s is NonNullable<typeof s> => s !== undefined);
+
+  const relatedDestinations = destinations.filter((d) =>
+    d.commonEquipment.includes(equipment.pluralName)
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -111,6 +117,20 @@ export default async function EquipmentPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {equipment.faqs && equipment.faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: equipment.faqs.map((e) => ({
+              "@type": "Question",
+              name: e.question,
+              acceptedAnswer: { "@type": "Answer", text: e.answer },
+            })),
+          })}}
+        />
+      )}
 
       <div className="pt-20">
         {/* Breadcrumbs */}
@@ -275,6 +295,40 @@ export default async function EquipmentPage({
               </div>
             </div>
           </section>
+        )}
+
+        {/* Where We Ship */}
+        {relatedDestinations.length > 0 && (
+          <section className="bg-muted py-16 md:py-20">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
+                Where We Ship {equipment.pluralName}
+              </h2>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {relatedDestinations.map((dest, idx) => (
+                  <StaggerItem key={dest.slug} index={idx}>
+                    <Link href={`/destinations/${dest.slug}`} className="group">
+                      <Card className="h-full transition-all group-hover:shadow-lg group-hover:-translate-y-1">
+                        <CardContent className="p-6">
+                          <h3 className="text-lg font-bold text-foreground leading-snug">
+                            {dest.country}
+                          </h3>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {dest.port} &middot; {dest.transitDays} days
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </StaggerItem>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* FAQ */}
+        {equipment.faqs && equipment.faqs.length > 0 && (
+          <FaqAccordion entries={equipment.faqs} />
         )}
 
         {/* CTA */}

@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { services, getServiceBySlug, getRelatedServices } from "@/content/services";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 
 const iconMap: Record<string, typeof Package> = {
@@ -93,6 +94,20 @@ export default async function ServicePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {service.faqs && service.faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: service.faqs.map((e) => ({
+              "@type": "Question",
+              name: e.question,
+              acceptedAnswer: { "@type": "Answer", text: e.answer },
+            })),
+          })}}
+        />
+      )}
 
       <div className="pt-20">
         {/* Breadcrumbs */}
@@ -189,6 +204,11 @@ export default async function ServicePage({
               </div>
             </div>
           </section>
+        )}
+
+        {/* FAQ */}
+        {service.faqs && service.faqs.length > 0 && (
+          <FaqAccordion entries={service.faqs} />
         )}
 
         {/* CTA */}

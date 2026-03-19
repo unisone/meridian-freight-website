@@ -17,7 +17,16 @@ import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { destinations, getDestinationBySlug } from "@/content/destinations";
+import { equipmentTypes } from "@/content/equipment";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
+
+function getEquipmentSlug(name: string): string | null {
+  const match = equipmentTypes.find(
+    (e) => e.pluralName.toLowerCase() === name.toLowerCase()
+  );
+  return match ? match.slug : null;
+}
 
 export function generateStaticParams() {
   return destinations.map((d) => ({ slug: d.slug }));
@@ -106,6 +115,20 @@ export default async function DestinationPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {dest.faqs && dest.faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: dest.faqs.map((e) => ({
+              "@type": "Question",
+              name: e.question,
+              acceptedAnswer: { "@type": "Answer", text: e.answer },
+            })),
+          })}}
+        />
+      )}
 
       <div className="pt-20">
         {/* Breadcrumbs */}
@@ -177,17 +200,24 @@ export default async function DestinationPage({
                 Equipment We Ship to {dest.country}
               </h2>
               <div className="mt-6 flex flex-wrap gap-3">
-                {dest.commonEquipment.map((type, idx) => (
-                  <StaggerItem key={type} index={idx} variant="fade" className="inline-block">
-                    <Badge
-                      variant="secondary"
-                      className="px-4 py-2 text-sm font-medium"
-                    >
+                {dest.commonEquipment.map((type, idx) => {
+                  const eqSlug = getEquipmentSlug(type);
+                  const badge = (
+                    <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">
                       <CheckCircle className="mr-1.5 h-3.5 w-3.5 text-primary" />
                       {type}
                     </Badge>
-                  </StaggerItem>
-                ))}
+                  );
+                  return (
+                    <StaggerItem key={type} index={idx} variant="fade" className="inline-block">
+                      {eqSlug ? (
+                        <Link href={`/equipment/${eqSlug}`} className="transition-opacity hover:opacity-80">
+                          {badge}
+                        </Link>
+                      ) : badge}
+                    </StaggerItem>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -237,6 +267,11 @@ export default async function DestinationPage({
             </div>
           </div>
         </section>
+
+        {/* FAQ */}
+        {dest.faqs && dest.faqs.length > 0 && (
+          <FaqAccordion entries={dest.faqs} />
+        )}
 
         {/* CTA */}
         <ScrollReveal variant="fade">
