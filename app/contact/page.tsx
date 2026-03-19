@@ -6,13 +6,14 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Contact Us — Get a Free Quote",
-  description: "Get a free machinery export quote — response within 24 hours. WhatsApp, phone, or email. Worldwide shipping from USA & Canada.",
+  description: "Get a free machinery export quote — we respond within 24 hours. Reach us via WhatsApp, phone, or email. 500+ equipment exports from USA & Canada.",
   path: "/contact",
   keywords: [
-    "contact machinery export",
+    "contact machinery export company",
     "get freight quote",
-    "equipment shipping quote",
-    "machinery logistics contact",
+    "free equipment shipping quote",
+    "machinery logistics contact USA",
+    "WhatsApp machinery export quote",
   ],
 });
 

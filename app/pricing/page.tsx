@@ -9,13 +9,16 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Pricing — Equipment Packing & Shipping Rates",
-  description: "Reference pricing for machinery packing, container loading, and international shipping. 60+ equipment types with transparent, itemized pricing.",
+  description: "Transparent machinery export pricing — 60+ equipment types, 20+ shipping routes. Itemized quotes with no hidden fees. Try our instant freight calculator.",
   path: "/pricing",
   keywords: [
     "equipment packing costs",
     "machinery shipping rates",
     "container loading pricing",
     "freight cost estimate",
+    "how much to ship machinery overseas",
+    "equipment export pricing no hidden fees",
+    "machinery packing cost per unit",
   ],
 });
 
@@ -56,6 +59,9 @@ export default function PricingPage() {
               Reference rates for 60+ equipment types and 20+ shipping routes.
               Every quote includes detailed line items — no hidden fees.
             </p>
+            <p className="mt-2 text-sm text-muted-foreground/70">
+              Rates updated quarterly. Last reviewed: Q1 2026.
+            </p>
           </div>
 
           {/* Calculator CTA */}
@@ -95,7 +101,7 @@ export default function PricingPage() {
                     className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
                   >
                     <MessageCircle className="mr-2 h-4 w-4" />
-                    WhatsApp Us
+                    Chat on WhatsApp
                 </Button>
                 <Button
                     render={<Link href="/contact" />}

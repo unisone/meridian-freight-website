@@ -6,7 +6,7 @@ export const COMPANY = {
   legalName: "Meridian Freight Inc.",
   tagline: "Professional Machinery Export & Logistics",
   description:
-    "Expert machinery packing and container loading services for agricultural, construction, mining, and road-building equipment. Professional dismantling and 40ft container packing across USA & Canada.",
+    "Full-service machinery export from USA & Canada — equipment pickup, professional dismantling, secure container packing, export documentation, and worldwide shipping. 500+ exports completed.",
   foundedYear: 2013,
 } as const;
 
@@ -51,7 +51,7 @@ export const TRACKING = {
 
 export const STATS = {
   projectsCompleted: 500,
-  yearsExperience: new Date().getFullYear() - 2015,
+  yearsExperience: new Date().getFullYear() - COMPANY.foundedYear,
 } as const;
 
 export const WAREHOUSE_MAIN = {

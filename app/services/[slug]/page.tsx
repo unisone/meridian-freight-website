@@ -203,7 +203,7 @@ export default async function ServicePage({
                   Get a Quote
               </Button>
               <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp about our services" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
-                  WhatsApp Us
+                  Chat on WhatsApp
               </Button>
             </div>
           </div>

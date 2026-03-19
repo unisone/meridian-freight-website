@@ -10,7 +10,7 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "FAQ — Frequently Asked Questions",
-  description: "Find answers to common questions about machinery export, container packing, shipping costs, documentation, and more.",
+  description: "Answers to common machinery export questions — shipping timelines, container sizes, pricing, customs documentation, insurance & payment options. Ask us anything.",
   path: "/faq",
   keywords: [
     "machinery export FAQ",
@@ -61,7 +61,7 @@ export default function FaqPage() {
                   <Mail className="mr-2 h-4 w-4" /> Contact Us
               </Button>
               <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp with our team" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
-                  <Phone className="mr-2 h-4 w-4" /> WhatsApp Us
+                  <Phone className="mr-2 h-4 w-4" /> Chat on WhatsApp
               </Button>
             </div>
           </div>

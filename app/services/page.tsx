@@ -9,14 +9,16 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Services — Machinery Export & Logistics",
-  description: "Complete machinery export services: dismantling, container packing, shipping, documentation, storage, and equipment procurement across USA & Canada.",
+  description: "Machinery export services: professional dismantling, container packing, global shipping, documentation & warehousing. One company, door to port. Free quotes.",
   path: "/services",
   keywords: [
-    "machinery export services",
-    "equipment dismantling",
-    "container loading",
-    "export documentation",
-    "warehousing services",
+    "machinery export services USA",
+    "equipment dismantling for shipping",
+    "container loading services",
+    "export documentation compliance",
+    "equipment warehousing USA Canada",
+    "door to port machinery shipping",
+    "heavy equipment packing company",
   ],
 });
 
@@ -34,10 +36,10 @@ export default function ServicesPage() {
       <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-2xl font-bold sm:text-3xl">
-            Ready to Get Started?
+            Ready to Ship Your Machinery?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sky-300">
-            Contact us for a free quote on your machinery export project.
+            Get a free, itemized quote for your machinery export — we respond within 24 hours.
           </p>
           <Button render={<Link href="/contact" />} size="lg" className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
               Get a Quote <ArrowRight className="ml-2 h-4 w-4" />

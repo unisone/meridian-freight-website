@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
-import { COMPANY, CONTACT, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
+import { COMPANY, CONTACT, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "About Us — Our Story & Locations",
-  description: `Meridian Freight — 500+ equipment exports worldwide. Iowa HQ with 6 partner warehouses across USA & Canada. Get a free machinery shipping quote.`,
+  description: `Meridian Freight — ${STATS.projectsCompleted}+ equipment exports since ${COMPANY.foundedYear}. Iowa HQ with 6 partner warehouses across USA & Canada. Get a free quote today.`,
   path: "/about",
   keywords: [
     "machinery export company",
@@ -33,7 +33,7 @@ const differentiators = [
   {
     icon: Clock,
     title: "Equipment Specialists",
-    description: "13+ years handling John Deere combines, Case IH headers, Kinze planters, and CAT machinery. We know the disassembly specs so your equipment reassembles correctly.",
+    description: `${STATS.yearsExperience}+ years handling John Deere combines, Case IH headers, Kinze planters, and CAT machinery. We know the disassembly specs so your equipment reassembles correctly.`,
   },
 ];
 
@@ -51,7 +51,7 @@ export default function AboutPage() {
             About {COMPANY.name}
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-            With over 13 years of experience and 500+ completed shipments,{" "}
+            With over {STATS.yearsExperience} years of experience and {STATS.projectsCompleted}+ completed shipments,{" "}
             {COMPANY.name} is a full-service machinery export company
             headquartered in Iowa. We specialize in the complete logistics
             chain — from equipment pickup and professional dismantling to
@@ -146,15 +146,15 @@ export default function AboutPage() {
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-            Ready to Work With Us?
+            Let&apos;s Ship Your Equipment
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Get a free quote for your machinery export project. We respond within 24 hours.
+            Tell us what you need shipped and where — we&apos;ll send a detailed quote within 24 hours.
           </p>
           <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a free quote" />} size="lg" className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg">
                 <MessageCircle className="mr-2 h-4 w-4" />
-                WhatsApp Us
+                Chat on WhatsApp
             </Button>
             <Button render={<Link href="/contact" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-border text-foreground font-semibold">
                 Contact Us <ArrowRight className="ml-2 h-4 w-4" />

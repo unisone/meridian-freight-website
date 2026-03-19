@@ -164,7 +164,7 @@ export function Header() {
               className="ml-4 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
             >
               <MessageCircle className="h-4 w-4" />
-              WhatsApp Us
+              Chat on WhatsApp
             </a>
           </div>
 

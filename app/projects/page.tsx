@@ -10,13 +10,16 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Projects — Completed Machinery Export Projects",
-  description: "Browse our portfolio of completed machinery export projects. From John Deere combines to CAT excavators — see real projects with real results.",
+  description: "500+ machinery exports completed. See our portfolio — John Deere combines, Case IH headers, CAT excavators shipped to Brazil, UAE, Turkey & beyond.",
   path: "/projects",
   keywords: [
     "machinery export projects",
     "equipment shipping portfolio",
     "container packing examples",
-    "heavy machinery export cases",
+    "heavy machinery export case studies",
+    "John Deere combine export",
+    "Case IH equipment shipping",
+    "flat rack machinery shipping",
   ],
 });
 
@@ -54,7 +57,7 @@ export default function ProjectsPage() {
               Ready to Ship Your Equipment?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-slate-300">
-              Get a free quote for your machinery export project.
+              Tell us about your equipment and destination — we&apos;ll send a detailed, itemized quote within 24 hours.
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button
@@ -63,7 +66,7 @@ export default function ProjectsPage() {
                   className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
                 >
                   <MessageCircle className="mr-2 h-4 w-4" />
-                  WhatsApp Us
+                  Chat on WhatsApp
               </Button>
               <Button
                   render={<Link href="/contact" />}

@@ -34,8 +34,8 @@ export function ServicesGrid() {
             Our Services
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            End-to-end machinery export solutions — from equipment pickup and
-            dismantling to container packing and global shipping.
+            One company for the entire chain — equipment pickup, professional
+            dismantling, secure packing, export documentation, and worldwide shipping.
           </p>
         </div>
 

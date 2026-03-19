@@ -23,8 +23,8 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
             Recent Projects
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-            Real projects, real results. See how we handle machinery export from
-            start to finish.
+            Real shipments, real results. See how we pack and ship heavy equipment
+            to ports worldwide.
           </p>
         </div>
 
@@ -39,7 +39,7 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={`${project.title} — ${project.containerType} to ${project.destination}`}
                     fill
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

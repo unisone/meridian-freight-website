@@ -15,7 +15,7 @@ export const projects: Project[] = [
   {
     id: 1,
     title: "John Deere 9650STS Combine Export",
-    description: "End-to-end export of a John Deere 9650STS combine — loaded on a UASC flat rack with tires secured alongside, ready for ocean transit.",
+    description: "We loaded a John Deere 9650STS combine onto a UASC flat rack, securing the tires alongside for safe ocean transit to Santos, Brazil.",
     image: "/images/project-jd-9650sts-combine.jpg",
     equipmentType: "Combine Harvester",
     destination: "Santos, Brazil",
@@ -27,7 +27,7 @@ export const projects: Project[] = [
   {
     id: 2,
     title: "John Deere W260 Windrower Export",
-    description: "End-to-end export of a John Deere W260 self-propelled windrower — loaded onto a Hapag-Lloyd flat rack with custom bracing and tie-downs at port.",
+    description: "We shipped a John Deere W260 windrower to the UAE on a Hapag-Lloyd flat rack with custom wood bracing and heavy-duty tie-downs at port.",
     image: "/images/project-jd-w260-windrower.jpg",
     equipmentType: "Windrower",
     destination: "Jebel Ali, UAE",
@@ -39,7 +39,7 @@ export const projects: Project[] = [
   {
     id: 3,
     title: "Case IH 9120 Combine to Middle East",
-    description: "End-to-end export of a Case IH 9120 combine with tires — secured on a Hapag-Lloyd flat rack with custom wood blocking and strapping for overseas shipping.",
+    description: "We secured a Case IH 9120 combine and tires on a Hapag-Lloyd flat rack using custom wood blocking and strapping for overseas shipping to Saudi Arabia.",
     image: "/images/project-case-ih-combine.jpg",
     equipmentType: "Combine Harvester",
     destination: "Jeddah, Saudi Arabia",
@@ -51,7 +51,7 @@ export const projects: Project[] = [
   {
     id: 4,
     title: "John Deere Combine Pair — Container Export",
-    description: "Two John Deere combines packed into side-by-side 40ft containers — dismantled and loaded rear-first with professional strapping for maximum space utilization.",
+    description: "We dismantled and packed two John Deere combines into side-by-side 40ft containers, loading rear-first with professional strapping to maximize space.",
     image: "/images/project-jd-tillage-containers.jpg",
     equipmentType: "Combine Harvesters",
     destination: "Novorossiysk, Russia",
@@ -63,7 +63,7 @@ export const projects: Project[] = [
   {
     id: 6,
     title: "Shelbourne Stripper Headers",
-    description: "End-to-end export of Shelbourne stripper headers — forklift-loaded into a shipping container at our packing facility with custom protective bracing.",
+    description: "We forklift-loaded Shelbourne stripper headers into shipping containers at our packing facility, adding custom protective bracing for transit to Romania.",
     image: "/images/project-shelbourne-loading.jpg",
     equipmentType: "Stripper Headers",
     destination: "Constanta, Romania",
@@ -75,7 +75,7 @@ export const projects: Project[] = [
   {
     id: 7,
     title: "John Deere Self-Propelled Sprayer",
-    description: "End-to-end export of a John Deere self-propelled sprayer — crane-lifted onto a Maersk flat rack with boom sections secured and crated separately.",
+    description: "We crane-lifted a John Deere self-propelled sprayer onto a Maersk flat rack, crating the boom sections separately for safe transit to Turkey.",
     image: "/images/project-jd-sprayer-crane.jpg",
     equipmentType: "Self-Propelled Sprayer",
     destination: "Mersin, Turkey",

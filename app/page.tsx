@@ -18,17 +18,19 @@ import { homepageFaq } from "@/content/faq";
 export const metadata = pageMetadata({
   title: "Machinery Export & Logistics — Packing & Shipping",
   description:
-    "Full-service machinery export from USA & Canada. Equipment pickup, dismantling, packing, documentation & worldwide shipping. 500+ exports completed.",
+    "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & worldwide shipping. 500+ exports. Free quote in 24 hrs.",
   path: "/",
   keywords: [
-    "machinery export",
+    "machinery export USA",
     "container packing services",
     "equipment shipping USA Canada",
     "agricultural equipment export",
     "heavy machinery dismantling",
     "40ft container loading",
     "export documentation services",
-    "equipment logistics worldwide",
+    "ship machinery overseas",
+    "farm equipment shipping worldwide",
+    "machinery logistics company",
   ],
 });
 
@@ -47,7 +49,7 @@ export default function HomePage() {
       {/* Mid-page CTA */}
       <ScrollReveal variant="fade">
         <div className="py-8 text-center">
-          <p className="text-muted-foreground">Need equipment shipped?</p>
+          <p className="text-muted-foreground">Ready to ship your equipment overseas?</p>
           <div className="mt-4 flex justify-center gap-4">
             <Button
               className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
@@ -114,8 +116,8 @@ export default function HomePage() {
                 Contact Us
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-                Ready to ship your equipment? Get a free quote or ask us
-                anything about our services.
+                Ready to ship your equipment? Get a free, itemized quote or
+                ask us anything — we respond within 24 hours.
               </p>
             </div>
             <div className="grid gap-12 lg:grid-cols-2">

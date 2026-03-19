@@ -22,7 +22,7 @@ export function VideoSection() {
             See How We Pack &amp; Ship Machinery
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            See how we handle heavy machinery dismantling, packing, and container loading.
+            Watch our team dismantle, pack, and load heavy equipment into shipping containers at our Iowa facility.
           </p>
         </div>
 
