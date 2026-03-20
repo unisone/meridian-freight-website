@@ -232,8 +232,12 @@ export function calculateFreightV2(
   let destinationPort = "";
 
   if (containerType === "fortyhc") {
-    // 40HC: always from Chicago
-    const bestRate = findBestOceanRate(oceanRates, "fortyhc", destinationCountry);
+    // 40HC: always from Chicago — filter out non-Chicago rates to prevent
+    // cheaper direct-port rates from being incorrectly selected
+    const chicagoRates = oceanRates.filter((r) =>
+      r.origin_port.toLowerCase().includes("chicago")
+    );
+    const bestRate = findBestOceanRate(chicagoRates, "fortyhc", destinationCountry);
     if (!bestRate) return null;
     oceanFreight = (bestRate.ocean_rate ?? 0) + (bestRate.drayage ?? 0);
     carrier = bestRate.carrier;

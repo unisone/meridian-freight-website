@@ -351,6 +351,35 @@ describe("calculateFreightV2 — 40HC", () => {
       oceanRates: mockOceanRates,
     })).toBeNull();
   });
+
+  it("40HC ignores non-Chicago rates even if they appear cheaper", () => {
+    // A Savannah rate with no drayage looks cheaper but shouldn't be used
+    const mixedRates: OceanFreightRate[] = [
+      {
+        id: "chi1", container_type: "fortyhc", origin_port: "Chicago, IL",
+        destination_port: "Montevideo", destination_country: "UY",
+        carrier: "HAPAG", ocean_rate: 2800, drayage: 2200,
+        packing_drayage: null, transit_time_days: "35-40",
+      },
+      {
+        id: "sav1", container_type: "fortyhc", origin_port: "Savannah, GA",
+        destination_port: "Montevideo", destination_country: "UY",
+        carrier: "HAPAG", ocean_rate: 1895, drayage: null,
+        packing_drayage: null, transit_time_days: null,
+      },
+    ];
+    const est = calculateFreightV2({
+      equipment: mockTractor,
+      equipmentSize: null,
+      destinationCountry: "UY",
+      zipCode: null,
+      oceanRates: mixedRates,
+    });
+    expect(est).not.toBeNull();
+    // Must use Chicago rate ($2800+$2200=$5000), NOT Savannah ($1895+$0=$1895)
+    expect(est!.oceanFreight).toBe(5000);
+    expect(est!.originPort).toBe("Chicago, IL");
+  });
 });
 
 // ---------------------------------------------------------------------------

@@ -114,7 +114,8 @@ Packing:
 
 Ocean:
   oceanFreight = bestRate.ocean_rate + bestRate.drayage
-  Rate selection: filter by container_type="fortyhc" + destination_country
+  Rate selection: filter by origin_port containing "Chicago" + container_type="fortyhc" + destination_country
+    → non-Chicago 40HC rates are excluded (they exist in DB but are not used)
     → sort by carrier preference (HAPAG > Maersk > CMA > others)
     → tiebreaker: cheapest (ocean_rate + drayage)
   originPort is always "Chicago, IL"
@@ -195,6 +196,29 @@ Ocean (Sea Freight & Loading):
 **Graceful degradation:** If `SUPABASE_URL` not configured, shows "Calculator unavailable" with contact CTAs. The `/pricing` static table (from `content/pricing.ts`) is unaffected.
 
 **Old engine (`lib/freight-engine.ts`) is deprecated** — kept only for the static pricing table page and its tests.
+
+#### DB Data Maintenance
+**Source of truth for flatrack rates:** PDF rate sheet "Mark Instructions - Shipping" (provides bundled "Sea Freight and loading" totals per route). In the DB, this is split into `ocean_rate` + `packing_drayage`.
+
+**Port-standard packing_drayage (flatrack only):**
+| US Port | packing_drayage | Notes |
+|---------|----------------|-------|
+| Houston, TX | $4,000 | Most common port |
+| Savannah, GA | $4,000 | East Coast |
+| Baltimore, MD | $5,295 | East Coast, higher due to handling |
+| Charleston, SC | $4,000 | East Coast |
+| Norfolk, VA | $5,295 | Same class as Baltimore |
+| Tacoma, WA | $4,000 | West Coast |
+
+**Non-Chicago 40HC rows (8 rows):** The DB contains 8 `fortyhc` rows from non-Chicago ports (Baltimore, Houston, Savannah, Tacoma) with null `drayage`. The engine filters these out — 40HC always routes through Chicago. These rows exist for potential future "direct-port" option but are NOT used by the current calculator.
+
+**Data completeness (as of 2026-03-20):**
+- `ocean_freight_rates`: 142 rows (102 flatrack + 40 40HC), 27 destination countries
+- All flatrack rows have: ocean_rate, packing_drayage, transit_time_days, carrier — zero nulls
+- All 40HC Chicago rows (32) have: ocean_rate, drayage, transit_time_days — zero nulls
+- `equipment_packing_rates`: 35 rows, zero nulls in any calculation field
+
+**When updating rates:** Ensure `packing_drayage` (flatrack) or `drayage` (40HC) is populated — null values produce $0 in the formula, underquoting the customer. Always add `transit_time_days` for new routes.
 
 #### Relationship to Chatbot KZ Calculator
 The website V2 engine was ported from `mf-chatbot-ui/lib/kz-calculator/calculate-freight.ts`. The chatbot KZ calculator is a **turnkey delivered-price tool** (US door → KZ city doorstep) while the website calculator covers **US door → ocean destination** only.
