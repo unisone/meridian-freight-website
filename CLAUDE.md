@@ -196,6 +196,31 @@ Ocean (Sea Freight & Loading):
 
 **Old engine (`lib/freight-engine.ts`) is deprecated** — kept only for the static pricing table page and its tests.
 
+#### Relationship to Chatbot KZ Calculator
+The website V2 engine was ported from `mf-chatbot-ui/lib/kz-calculator/calculate-freight.ts`. The chatbot KZ calculator is a **turnkey delivered-price tool** (US door → KZ city doorstep) while the website calculator covers **US door → ocean destination** only.
+
+**Shared infrastructure (must stay identical):**
+- Haversine function (`R = 3959`, same formula)
+- ZIP prefix → coordinate tables (35 three-digit + 10 one-digit region entries)
+- Road factor: `1.3` (haversine → estimated road miles)
+- Albion, IA coordinates: `42.1172, -92.9835`
+- Flatrack ports: Houston, Savannah, Baltimore, Charleston (same coordinates)
+- Chicago drayage: `$1,800`
+
+**Intentional divergences:**
+| Component | Website V2 | Chatbot KZ | Reason |
+|-----------|-----------|------------|--------|
+| Delivery rate | Per-equipment from DB (`2.5–10.0`) | Flat `$6.50/mi` all equipment | Website has richer Supabase data |
+| Ocean rates | Dynamic from `ocean_freight_rates` table | Hardcoded `$12K`/`$18K` for KZ only | Chatbot is KZ-specific; website serves all destinations |
+| Packing (40HC) | `packing_cost × size` from DB | Hardcoded `$3,500` | Same reason — dynamic vs fixed |
+| Packing (flatrack) | `$0` (bundled into `packing_drayage`) | `$2,500` as separate line | Different categorization, same net cost |
+| Carrier selection | HAPAG > Maersk > CMA preference sort | N/A (hardcoded rates) | Website has per-carrier rates |
+| KZ customs/inland | Not included | Duty + VAT + broker + Aktau→city delivery | Website scope ends at ocean |
+| Currency | USD only | USD + KZT (475 rate) | Chatbot serves KZ buyers directly |
+
+**Chatbot source:** `~/Documents/Projects/Active/mf-chatbot/lib/kz-calculator/calculate-freight.ts`
+**Chatbot spec:** `~/Documents/Projects/Active/mf-chatbot/docs/specs/2026-03-17-kz-freight-calculator-v3-spec.md`
+
 ### Styling
 - **No dark mode** — corporate marketing site, light theme only
 - **Design tokens** in `app/globals.css` `:root` block (oklch)
