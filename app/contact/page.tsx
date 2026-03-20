@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 
 export const metadata = pageMetadata({
-  title: "Contact Us — Get a Free Quote",
+  title: "Contact Us — Free Machinery Export Quote in 24 Hours",
   description: "Get a free machinery export quote — we respond within 24 hours. Reach us via WhatsApp, phone, or email. 500+ equipment exports from USA & Canada.",
   path: "/contact",
   keywords: [

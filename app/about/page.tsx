@@ -8,7 +8,7 @@ import { COMPANY, CONTACT, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/l
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "About Us — Our Story & Locations",
+  title: "About Meridian Freight — 500+ Exports Since 2013",
   description: `Meridian Freight — ${STATS.projectsCompleted}+ equipment exports since ${COMPANY.foundedYear}. Iowa HQ with 6 partner warehouses across USA & Canada. Get a free quote today.`,
   path: "/about",
   keywords: [

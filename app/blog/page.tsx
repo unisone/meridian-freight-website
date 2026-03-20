@@ -10,7 +10,7 @@ import { SITE, COMPANY } from "@/lib/constants";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Blog — Machinery Export Insights",
+  title: "Blog — Heavy Equipment Export Tips & Shipping Guides",
   description:
     "Expert guides, cost breakdowns, and destination insights for shipping heavy machinery and farm equipment from the USA. Published by the Meridian Freight team.",
   path: "/blog",

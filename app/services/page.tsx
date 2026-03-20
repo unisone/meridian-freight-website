@@ -8,7 +8,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Services — Machinery Export & Logistics",
+  title: "Services — Machinery Dismantling, Packing & Export",
   description: "Machinery export services: professional dismantling, container packing, global shipping, documentation & warehousing. One company, door to port. Free quotes.",
   path: "/services",
   keywords: [
