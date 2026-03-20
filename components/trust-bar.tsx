@@ -9,10 +9,10 @@ import { STATS } from "@/lib/constants";
 const items = [
   { icon: TrendingUp, label: "Machines Shipped", value: STATS.projectsCompleted, suffix: "+" },
   { icon: Clock, label: "Years in Business", value: STATS.yearsExperience, suffix: "+" },
-  { icon: Ship, label: "Any Port Worldwide", value: null, suffix: null },
-  { icon: Star, label: "5.0 Google Rating", value: null, suffix: null },
-  { icon: FileText, label: "Full Documentation", value: null, suffix: null },
-  { icon: Package, label: "Professional Packing", value: null, suffix: null },
+  { icon: Ship, label: "Air & Ocean Freight", value: null, suffix: null },
+  { icon: Star, label: "5.0 Google Rating (100+ Reviews)", value: null, suffix: null },
+  { icon: FileText, label: "Export Docs Included", value: null, suffix: null },
+  { icon: Package, label: "Fully Insured Shipments", value: null, suffix: null },
 ];
 
 function StatItem({ item }: { item: (typeof items)[number] }) {

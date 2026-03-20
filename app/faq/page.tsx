@@ -43,13 +43,14 @@ export default function FaqPage() {
       <div className="pt-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "FAQ" }]} />
-          <h1 className="sr-only">Frequently Asked Questions About Machinery Export</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">Frequently Asked Questions</h1>
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Everything you need to know about exporting machinery from the USA and Canada — timelines, pricing, documentation, and more.</p>
         </div>
         <FaqAccordion entries={faqEntries} />
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16 rounded-none">
+        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
             <h2 className="text-2xl font-bold sm:text-3xl">
               Still Have Questions?

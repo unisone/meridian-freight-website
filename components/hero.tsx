@@ -19,13 +19,13 @@ export function Hero() {
               500+ Machines Shipped Since 2013
             </p>
 
-            {/* H1 — buyer scenario + outcome (PAS: Solution) */}
+            {/* H1 — differentiator + scope + outcome (no jargon) */}
             <h1
               style={{ animationDelay: "0.15s" }}
               className="animate-slide-up mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-6xl leading-tight"
             >
-              One Company. Pickup to Port.{" "}
-              <span className="text-primary">Your Equipment, Delivered.</span>
+              One Company. Every Step Handled.{" "}
+              <span className="text-primary">Your Machinery, Exported Worldwide.</span>
             </h1>
 
             {/* Body — PAS: Problem → Agitate → Solution (2 sentences max) */}
@@ -43,7 +43,7 @@ export function Hero() {
               style={{ animationDelay: "0.35s" }}
               className="animate-fade-in mt-3 text-sm font-medium text-muted-foreground"
             >
-              Shipping via Maersk, Hapag-Lloyd &amp; CMA CGM to Latin America, Africa, the Middle East &amp; Central Asia
+              Air &amp; ocean freight via Maersk, Hapag-Lloyd &amp; CMA CGM to Latin America, the Middle East, Africa, Eastern Europe &amp; beyond
             </p>
 
             {/* CTAs — primary is low-commitment (WhatsApp), secondary is self-serve */}
@@ -65,7 +65,7 @@ export function Hero() {
                 className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-border text-foreground bg-transparent hover:bg-muted transition-all sm:w-auto"
                 render={<Link href="/pricing/calculator" />}
               >
-                See What It Costs
+                Estimate Your Cost
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>

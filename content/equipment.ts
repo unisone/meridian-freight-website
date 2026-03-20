@@ -45,7 +45,7 @@ export const equipmentTypes: EquipmentType[] = [
       "AGCO Gleaner S98",
     ],
     packingNotes:
-      "Combines require partial dismantling before export. We remove the header, unloading auger, and GPS dome, then secure the main body inside a 40ft high-cube container or on a flat rack depending on dimensions.",
+      "Combines require partial dismantling before export. We remove the header, unloading auger, and GPS dome, then secure the main body inside a 40ft high-cube container or on a flat rack depending on dimensions. All components are blocked with #2 grade kiln-dried lumber and secured with grade-43 chain binders rated for the machine's weight. Every removed part is tagged, photographed, and packed with a reassembly guide for the buyer's team.",
     containerTypes: ["40ft High-Cube", "Flat Rack"],
     relatedServiceSlugs: ["machinery-packing", "agricultural", "container-loading"],
     faqs: [
@@ -82,7 +82,7 @@ export const equipmentTypes: EquipmentType[] = [
       "New Holland T7.315",
     ],
     packingNotes:
-      "Tractors are loaded into 40ft high-cube containers with custom wood blocking and heavy-duty ratchet straps. Dual wheels and cab mirrors are removed to fit container dimensions, and all fluids are drained to meet shipping regulations.",
+      "Tractors are loaded into 40ft high-cube containers with custom wood blocking and heavy-duty ratchet straps. Dual wheels and cab mirrors are removed to fit container dimensions, and all fluids are drained to meet shipping regulations. We use 4x6 hardwood timbers for wheel chocking and minimum 5,000 lb-rated winch straps at four tie-down points. Hydraulic lines are capped and protected with anti-contamination covers to ensure the tractor arrives ready to work.",
     containerTypes: ["40ft High-Cube", "Flat Rack", "Standard 40ft"],
     relatedServiceSlugs: ["machinery-packing", "agricultural", "equipment-sales"],
     faqs: [
@@ -119,7 +119,7 @@ export const equipmentTypes: EquipmentType[] = [
       "Volvo EC300E",
     ],
     packingNotes:
-      "Excavators typically ship on flat racks due to their height and weight. The boom is lowered and pinned, the bucket is removed and secured separately, and the tracks are chocked with heavy timber blocking to prevent movement during ocean transit.",
+      "Excavators typically ship on flat racks due to their height and weight. The boom is lowered and pinned, the bucket is removed and secured separately, and the tracks are chocked with heavy timber blocking to prevent movement during ocean transit. We use grade-70 transport chains with load binders at all four corners, and position the machine to distribute weight evenly across the flat rack. All hydraulic lines are capped, batteries disconnected, and fluids drained per IMDG code requirements.",
     containerTypes: ["Flat Rack", "Open Top"],
     relatedServiceSlugs: ["container-loading", "machinery-packing", "documentation"],
     faqs: [
@@ -155,7 +155,7 @@ export const equipmentTypes: EquipmentType[] = [
       "Great Plains YP-2425A",
     ],
     packingNotes:
-      "Planters are folded and the row units are individually protected with foam wrap. Seed meters and precision components are removed and crated separately. The toolbar is secured inside a 40ft high-cube container with custom blocking to prevent lateral movement.",
+      "Planters are folded and the row units are individually protected with closed-cell foam wrap to prevent seed tube and closing wheel damage. Seed meters, precision-ag controllers, and hydraulic components are removed and crated separately in anti-static packaging. The toolbar is secured inside a 40ft high-cube container with 4x6 hardwood blocking to prevent lateral movement. All wiring harnesses are labeled with matching assembly point tags for straightforward reassembly.",
     containerTypes: ["40ft High-Cube", "Flat Rack"],
     relatedServiceSlugs: ["agricultural", "machinery-packing", "container-loading"],
     faqs: [
@@ -191,7 +191,7 @@ export const equipmentTypes: EquipmentType[] = [
       "Hagie STS16",
     ],
     packingNotes:
-      "Sprayer booms are folded and additionally secured with strapping to prevent deployment during transit. Chemical tanks are drained and triple-rinsed to meet international shipping and customs regulations. The high-clearance chassis often requires flat rack loading.",
+      "Sprayer booms are folded and additionally secured with 2-inch polyester strapping rated to 6,000 lbs to prevent deployment during transit. Chemical tanks are drained, triple-rinsed with neutralizing solution, and certified clean per IMO and destination country customs regulations. The high-clearance chassis often requires flat rack loading due to overall height. Nozzle tips and boom ends are individually wrapped in protective foam, and all electronics are removed and packed in moisture-sealed crates.",
     containerTypes: ["Flat Rack", "40ft High-Cube"],
     relatedServiceSlugs: ["agricultural", "machinery-packing", "documentation"],
     faqs: [
@@ -227,7 +227,7 @@ export const equipmentTypes: EquipmentType[] = [
       "MacDon D145",
     ],
     packingNotes:
-      "Headers are placed on custom-welded transport stands or wooden cradles inside 40ft high-cube containers. Knife sections are covered with protective guards, and draper belts are secured to prevent sagging. Multiple headers can sometimes be stacked in a single container to reduce shipping costs.",
+      "Headers are placed on custom-welded transport stands or wooden cradles inside 40ft high-cube containers. Knife sections are covered with heavy-gauge steel protective guards, and draper belts are tensioned and pinned to prevent sagging during transit. Multiple headers can sometimes be stacked in a single container using tiered cradle systems to reduce per-unit shipping costs. All auger fingers and reel tines are individually protected with foam sleeves and secured with cable ties.",
     containerTypes: ["40ft High-Cube", "Flat Rack"],
     relatedServiceSlugs: ["agricultural", "machinery-packing", "container-loading"],
     faqs: [
@@ -263,7 +263,7 @@ export const equipmentTypes: EquipmentType[] = [
       "Case 2050M",
     ],
     packingNotes:
-      "Bulldozers almost always ship on flat racks due to their weight and dimensions. The blade is lowered flat, ripper is pinned in transport position, and the tracks are chocked with heavy timber and chain binders. We calculate center of gravity to ensure the load meets container weight limits.",
+      "Bulldozers almost always ship on flat racks due to their weight and dimensions. The blade is lowered flat, ripper is pinned in transport position, and the tracks are chocked with heavy timber and grade-70 chain binders rated for loads up to 47,700 lbs. We calculate center of gravity for each machine to ensure the load meets flat rack corner-post weight limits and prevent shifting in heavy seas. All fluids are drained per IMDG code, and batteries are disconnected and terminals capped.",
     containerTypes: ["Flat Rack", "Open Top"],
     relatedServiceSlugs: ["container-loading", "machinery-packing", "documentation"],
     faqs: [
@@ -299,7 +299,7 @@ export const equipmentTypes: EquipmentType[] = [
       "Komatsu WA380-8",
     ],
     packingNotes:
-      "Smaller loaders and skid steers fit inside 40ft high-cube containers with the bucket removed and secured alongside. Larger wheel loaders ship on flat racks with the bucket detached and loaded separately. Articulation joints are locked and steering cylinders are pinned for transit.",
+      "Smaller loaders and skid steers fit inside 40ft high-cube containers with the bucket removed and secured alongside. Larger wheel loaders ship on flat racks with the bucket detached and loaded separately on the deck. Articulation joints are locked, steering cylinders are pinned, and all hydraulic quick-coupler lines are capped to prevent contamination during ocean transit. We use 4x6 hardwood blocking at all four wheels and minimum grade-43 chain binders to secure the machine.",
     containerTypes: ["40ft High-Cube", "Flat Rack", "Standard 40ft"],
     relatedServiceSlugs: ["container-loading", "machinery-packing", "equipment-sales"],
     faqs: [

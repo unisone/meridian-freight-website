@@ -133,7 +133,7 @@ export default async function BlogPostPage({
           <article className="py-16 md:py-20">
             <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
               <div
-                className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:leading-relaxed prose-p:text-muted-foreground prose-li:text-muted-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-ul:my-4 prose-li:my-1"
+                className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:leading-relaxed prose-p:text-muted-foreground prose-li:text-muted-foreground prose-a:text-primary prose-a:underline hover:prose-a:text-primary/80 prose-strong:text-foreground prose-ul:my-4 prose-li:my-1"
                 dangerouslySetInnerHTML={{ __html: contentHtml }}
               />
             </div>
@@ -156,7 +156,7 @@ export default async function BlogPostPage({
           <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Get a Free Quote
+                Get a Quote
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sky-300">
                 Ready to ship your equipment? Tell us what you need to export and where
@@ -167,7 +167,7 @@ export default async function BlogPostPage({
                 size="lg"
                 className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
               >
-                Get a Free Quote <ArrowRight className="ml-2 h-4 w-4" />
+                Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </section>

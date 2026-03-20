@@ -92,7 +92,7 @@ export function ContactForm() {
         >
           {/* SVG checkmark with draw animation */}
           <svg
-            className="h-16 w-16 text-green-500"
+            className="h-16 w-16 text-emerald-500"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -112,7 +112,11 @@ export function ContactForm() {
           </svg>
           <h3 className="mt-4 text-2xl font-bold text-foreground">Message Sent!</h3>
           <p className="mt-2 text-muted-foreground">
-            Thank you for reaching out. We&apos;ll get back to you within 24 hours.
+            Thank you for reaching out. We&apos;ll get back to you within 24 hours
+            with a detailed, itemized quote — no hidden fees.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground/80">
+            Every shipment is fully insured and documented from pickup to port.
           </p>
           <a
             href={CONTACT.whatsappUrl}

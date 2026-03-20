@@ -144,7 +144,7 @@ export default async function ServicePage({
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-              What We Do
+              How We Handle Your Shipment
             </h2>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
               {service.longDescription}
@@ -159,6 +159,7 @@ export default async function ServicePage({
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
                 Equipment We Handle
               </h2>
+              <p className="mt-2 text-muted-foreground">Every type listed below ships with brand-specific disassembly, custom blocking, and full documentation.</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 {service.equipmentTypes.map((type, idx) => (
                   <StaggerItem key={type} index={idx} variant="fade" className="inline-block"><Badge
@@ -180,7 +181,7 @@ export default async function ServicePage({
           <section className="py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                Related Services
+                Complete Your Export — Add These Services
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((rs, idx) => {

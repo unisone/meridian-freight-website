@@ -6,7 +6,7 @@ export const COMPANY = {
   legalName: "Meridian Freight Inc.",
   tagline: "Professional Machinery Export & Logistics",
   description:
-    "Full-service machinery export from USA & Canada — equipment pickup, professional dismantling, secure container packing, export documentation, and worldwide shipping. 500+ exports completed.",
+    "Full-service machinery export from USA & Canada — equipment pickup, professional dismantling, secure container packing, export documentation, and air or ocean shipping worldwide. 500+ exports completed.",
   foundedYear: 2013,
 } as const;
 
@@ -16,6 +16,8 @@ export const CONTACT = {
   phoneHref: "tel:+16415161616",
   email: "info@meridianexport.com",
   emailHref: "mailto:info@meridianexport.com",
+  partsEmail: "parts@meridianexport.com",
+  partsEmailHref: "mailto:parts@meridianexport.com",
   notificationEmail: "alex.z@meridianexport.com",
   fromEmail: "Meridian Freight <contact@meridianexport.com>",
   whatsappUrl: "https://wa.me/16415161616",

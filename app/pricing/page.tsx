@@ -53,14 +53,24 @@ export default function PricingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              What It Costs — No Hidden Fees
+              Transparent Pricing — Every Line Item Visible
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              Reference rates for 60+ equipment types and 20+ shipping routes.
-              Every quote includes detailed line items — no hidden fees.
+              We believe you should see exactly where every dollar goes before you commit.
+              Reference rates for 60+ equipment types and 20+ shipping routes — every quote
+              is itemized, with no hidden fees.
             </p>
-            <p className="mt-2 text-sm text-muted-foreground/70">
-              Rates updated quarterly. Last reviewed: Q1 2026.
+            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Warehouse staging</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Customs documentation</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Packing materials</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Inland freight</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Ocean shipping</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Air freight (urgent)</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Port drayage</li>
+            </ul>
+            <p className="mt-3 text-sm text-muted-foreground/70">
+              Rates updated quarterly. Last reviewed: Q1 2026. Request your custom quote for exact pricing.
             </p>
           </div>
 

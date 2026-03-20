@@ -1,5 +1,9 @@
 "use client";
 
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { CONTACT } from "@/lib/constants";
+
 export default function Error({
   error,
   reset,
@@ -12,15 +16,44 @@ export default function Error({
       <h1 className="text-4xl font-bold tracking-tight text-foreground">
         Something went wrong
       </h1>
-      <p className="mt-4 text-muted-foreground">
-        {error.message || "An unexpected error occurred."}
+      <p className="mt-4 max-w-md text-muted-foreground">
+        We hit an unexpected error loading this page. Try again, or reach out
+        directly — we&apos;re here to help.
       </p>
-      <button
-        onClick={reset}
-        className="mt-8 inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
-      >
-        Try again
-      </button>
+
+      <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
+        <Button
+          onClick={reset}
+          className="bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg"
+        >
+          Try again
+        </Button>
+        <Button
+          variant="outline"
+          className="rounded-lg"
+          render={<Link href="/" />}
+        >
+          Back to Home
+        </Button>
+      </div>
+
+      {/* Contact fallback */}
+      <div className="mt-10 rounded-xl bg-muted p-6 text-center max-w-md">
+        <p className="text-sm text-muted-foreground">
+          If this keeps happening, contact us directly:
+        </p>
+        <div className="mt-3 flex flex-col items-center gap-2 text-sm">
+          <a href={CONTACT.phoneHref} className="font-medium text-primary hover:underline">
+            {CONTACT.phone}
+          </a>
+          <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-emerald-600 hover:underline">
+            Chat on WhatsApp
+          </a>
+          <a href={CONTACT.emailHref} className="font-medium text-primary hover:underline">
+            {CONTACT.email}
+          </a>
+        </div>
+      </div>
     </main>
   );
 }

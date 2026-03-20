@@ -46,7 +46,8 @@ export default function ProjectsPage() {
       <div className="pt-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "Projects" }]} />
-          <h1 className="sr-only">Completed Machinery Export Projects</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">Completed Export Projects</h1>
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Real shipments, real equipment, real destinations. Browse our portfolio of machinery exports across six continents.</p>
         </div>
         <ProjectGrid />
 

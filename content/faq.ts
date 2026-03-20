@@ -17,7 +17,7 @@ export const faqEntries: FaqEntry[] = [
   },
   {
     question: "How long does the entire process take?",
-    answer: "Equipment pickup to container loading typically takes 5–14 days depending on complexity. Ocean transit is 18–35 days for most routes. Every quote includes a detailed timeline so you know exactly when to expect delivery.",
+    answer: "Equipment pickup to container loading typically takes 5–14 days depending on complexity. Ocean transit is 18–35 days for most routes. For urgent parts or time-sensitive shipments, air freight delivers in 7–14 days. Every quote includes a detailed timeline so you know exactly when to expect delivery.",
     category: "Shipping",
   },
   {
@@ -67,7 +67,7 @@ export const faqEntries: FaqEntry[] = [
   },
   {
     question: "What happens if my equipment is damaged in transit?",
-    answer: "All transportation and storage is insured. We photograph and document every piece before packing, establishing a clear condition baseline. If damage occurs during transit, we work with the carrier and insurance to resolve claims promptly. Marine cargo insurance is also available for the ocean leg.",
+    answer: "All transportation and storage is fully insured. We photograph and document every component before packing, establishing a clear condition baseline. If damage occurs during transit, we file claims with the carrier and insurance provider on your behalf. We also offer marine cargo insurance for the ocean shipping leg — ask us about coverage options when you request a quote.",
     category: "General",
   },
   {
@@ -79,6 +79,31 @@ export const faqEntries: FaqEntry[] = [
     question: "What countries have you shipped to?",
     answer: "Anywhere with a seaport or airport. Our most active markets are Latin America (Brazil, Colombia, Mexico), the Middle East (UAE, Turkey, Saudi Arabia), Africa, Central Asia, and Eastern Europe. We work with Maersk, Hapag-Lloyd, and CMA CGM for reliable transit.",
     category: "Shipping",
+  },
+  {
+    question: "Why can't I use FedEx or DHL for heavy machinery?",
+    answer: "Parcel carriers like FedEx, UPS, and DHL have strict weight and dimension limits — typically under 150 lbs per package. Heavy machinery weighing thousands of pounds requires specialized freight logistics: flatbed trucking for inland transport, professional dismantling and container packing, and ocean freight on cargo vessels. That is exactly what we do — full-service export logistics for equipment that parcel carriers cannot handle.",
+    category: "Shipping",
+  },
+  {
+    question: "What about import duties and tariffs at the destination?",
+    answer: "Import duties vary by country and equipment type — they can range from 0% (free-zone ports like Jebel Ali, UAE) to 20%+ in some markets. We provide duty estimates for your specific destination as part of your quote so there are no surprises. Some countries offer duty exemptions for agricultural equipment under trade agreements like USMCA for Mexico.",
+    category: "Pricing",
+  },
+  {
+    question: "Do you ship parts and components, not just whole machines?",
+    answer: "Yes. We source and ship OEM John Deere parts, aftermarket replacement components, and used parts worldwide. We consolidate multiple items into single shipments so you save 30-50% on per-item freight. Parts can ship via air freight (7-14 days) or ocean for larger orders. No minimum order — contact parts@meridianexport.com for a quote within 1 hour.",
+    category: "Shipping",
+  },
+  {
+    question: "Can you ship by air instead of ocean?",
+    answer: "Yes. We offer air freight for time-sensitive shipments — parts typically arrive in 7-14 days via air. Air freight is ideal for urgently needed components, seasonal farming deadlines, or smaller items where speed matters more than cost. Most complete machines ship by ocean, but we arrange air transport when the timeline demands it.",
+    category: "Shipping",
+  },
+  {
+    question: "Do I need an export license to ship machinery from the USA?",
+    answer: "Most commercial and agricultural machinery does not require a specific export license from the USA. However, certain equipment with dual-use technology or controlled components may need a Bureau of Industry and Security (BIS) license. We check your equipment against the Export Administration Regulations (EAR) and handle all required filings as part of our documentation service.",
+    category: "Documentation",
   },
 ];
 

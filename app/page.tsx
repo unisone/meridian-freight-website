@@ -18,7 +18,7 @@ import { homepageFaq } from "@/content/faq";
 export const metadata = pageMetadata({
   title: "Machinery Export & Logistics — Packing & Shipping",
   description:
-    "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & worldwide shipping. 500+ exports. Free quote in 24 hrs.",
+    "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & air or ocean shipping worldwide. 500+ exports. Free quote in 24 hrs.",
   path: "/",
   keywords: [
     "machinery export USA",
@@ -31,6 +31,8 @@ export const metadata = pageMetadata({
     "ship machinery overseas",
     "farm equipment shipping worldwide",
     "machinery logistics company",
+    "air freight machinery",
+    "John Deere parts export",
   ],
 });
 
@@ -63,7 +65,7 @@ export default function HomePage() {
       {/* Mid-page CTA */}
       <ScrollReveal variant="fade">
         <div className="py-8 text-center">
-          <p className="text-muted-foreground">Have equipment that needs to move?</p>
+          <p className="text-lg font-medium text-foreground">Ready to Ship? Get Your Quote in 24 Hours</p>
           <div className="mt-4 flex justify-center gap-4">
             <Button
               className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
@@ -88,11 +90,11 @@ export default function HomePage() {
 
       {/* Calculator CTA */}
       <ScrollReveal variant="scale">
-        <section className="bg-slate-900 py-12 sm:py-16">
+        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <BarChart3 className="mx-auto h-8 w-8 text-sky-400" />
             <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
-              Know the Cost Before You Commit
+              Calculate Your Export Cost in 60 Seconds
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-slate-300">
               Pick your equipment type and destination. Our calculator breaks down
@@ -127,11 +129,11 @@ export default function HomePage() {
                 Get In Touch
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-                Tell Us What You Need Shipped
+                Get Your Detailed Quote — No Hidden Fees
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
                 Equipment type, location, and destination — that&apos;s all we need to
-                send you a detailed, line-by-line quote. No obligation, no follow-up spam.
+                send you an itemized, line-by-line quote within 24 hours.
               </p>
             </div>
             <div className="grid gap-12 lg:grid-cols-2">

@@ -76,17 +76,18 @@ export const services: Service[] = [
     title: "Equipment Sourcing & Procurement",
     shortTitle: "Equipment Sourcing",
     description:
-      "We help international buyers find and inspect quality used machinery from dealers, auctions, and private sellers across the USA and Canada.",
+      "We help international buyers find quality used machinery, OEM parts, and aftermarket components from dealers, auctions, and sellers across the USA and Canada.",
     longDescription:
-      "Need a specific machine? Tell us the make, model, and year — we search our network of dealers, auctions, and private sellers across the USA and Canada. Every piece is inspected on-site and documented with photos and a condition report before you commit. All equipment is sold as-is, but you get full transparency to make an informed decision. Once you buy, we handle the complete export.",
+      "Need a specific machine or part? Tell us the make, model, and year — we search our network of dealers, auctions, and private sellers across the USA and Canada. We source complete machines, OEM John Deere parts from authorized dealers, and aftermarket replacement components at competitive prices. Every piece is inspected and documented with photos and a condition report before you commit. We consolidate multiple parts orders into single shipments to reduce your per-item freight cost — most buyers save 30-50% versus shipping items individually. Once you buy, we handle the complete export via air or ocean freight.",
     icon: "Search",
-    keywords: ["used farm equipment sourcing USA Canada", "equipment procurement services", "buy machinery for export", "international equipment sourcing agent"],
-    equipmentTypes: ["Any agricultural equipment", "Construction machinery", "Industrial equipment"],
+    keywords: ["used farm equipment sourcing USA Canada", "equipment procurement services", "buy machinery for export", "international equipment sourcing agent", "John Deere parts export", "aftermarket parts international shipping"],
+    equipmentTypes: ["Any agricultural equipment", "Construction machinery", "Industrial equipment", "OEM & aftermarket parts", "John Deere components"],
     relatedSlugs: ["agricultural", "documentation"],
     faqs: [
       { question: "Can you find a specific make and model of equipment?", answer: "Yes. Tell us the make, model, year range, and condition you need — we search our network of dealers, auction houses, and private sellers across the USA and Canada. Most requests get matched within 1-2 weeks.", category: "Equipment Sourcing" },
       { question: "Do you inspect equipment before purchase?", answer: "Every machine is inspected on-site by our team. You receive a detailed condition report with photos, hour meter readings, and notes on any issues. All equipment is sold as-is, but you get full transparency before committing.", category: "Equipment Sourcing" },
       { question: "Can you attend auctions like Ritchie Bros on my behalf?", answer: "Yes. We regularly attend Ritchie Bros, Purple Wave, BigIron, and AuctionTime sales. We inspect lots before the auction, bid on your behalf, and handle all post-sale logistics from pickup to export.", category: "Equipment Sourcing" },
+      { question: "Do you source and ship John Deere parts internationally?", answer: "Yes. We source OEM John Deere parts from authorized US and European dealers, plus aftermarket replacement components at lower prices. We consolidate multiple parts into single shipments to reduce freight costs — most buyers save 30-50% per item. Parts ship via air freight (7-14 days) or ocean freight for larger orders. Contact us at parts@meridianexport.com for a quote within 1 hour.", category: "Equipment Sourcing" },
     ],
   },
   {

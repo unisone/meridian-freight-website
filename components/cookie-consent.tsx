@@ -31,7 +31,7 @@ export function CookieConsent() {
   // Always render — CSS transition handles enter/exit animation
   return (
     <div
-      className={`fixed bottom-16 left-0 right-0 z-[60] bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:bottom-4 sm:left-4 sm:right-auto sm:max-w-md sm:rounded-xl transition-all duration-300 ${
+      className={`fixed bottom-20 left-0 right-0 z-[60] bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:bottom-4 sm:left-4 sm:right-auto sm:max-w-md sm:rounded-xl transition-all duration-300 ${
         show
           ? "translate-y-0 opacity-100"
           : "translate-y-full opacity-0 pointer-events-none"
@@ -39,7 +39,10 @@ export function CookieConsent() {
     >
       <p className="text-sm text-muted-foreground">
         We use cookies to analyze site traffic and optimize your experience.
-        By accepting, you consent to our use of analytics cookies.
+        By accepting, you consent to our use of analytics cookies.{" "}
+        <a href="/privacy" className="underline hover:text-foreground">
+          Privacy Policy
+        </a>
       </p>
       <div className="mt-3 flex gap-3">
         <Button
@@ -53,6 +56,7 @@ export function CookieConsent() {
           onClick={decline}
           size="sm"
           variant="outline"
+          className="border-border text-foreground"
         >
           Decline
         </Button>

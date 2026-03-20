@@ -42,7 +42,7 @@ export function MobileBottomBar() {
           className="flex flex-col items-center gap-1 py-3 text-primary transition-colors hover:bg-primary/5"
         >
           <Phone className="h-5 w-5" />
-          <span className="text-xs font-medium">Call</span>
+          <span className="text-xs font-medium">{CONTACT.phone}</span>
         </a>
         <Link
           href="/contact"

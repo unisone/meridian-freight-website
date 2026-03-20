@@ -27,7 +27,7 @@ const steps = [
   {
     number: 4,
     title: "It Ships to Your Port",
-    description: "The container goes on a vessel — you get tracking, documentation, and arrival confirmation.",
+    description: "We book your container on the next available vessel — you get real-time tracking, customs docs, and arrival confirmation.",
     icon: Globe,
   },
 ];

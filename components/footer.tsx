@@ -233,6 +233,11 @@ export function Footer() {
 
         <div className="my-10 h-px bg-slate-800/50" />
 
+        {/* Trust signals */}
+        <p className="text-center text-sm font-medium text-slate-400 mb-6">
+          Fully Insured &middot; 500+ Exports Completed &middot; Licensed Freight Forwarder
+        </p>
+
         {/* Copyright */}
         <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
           <p className="text-sm text-slate-500">

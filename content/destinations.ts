@@ -47,7 +47,7 @@ export const destinations: Destination[] = [
       "Tillage Equipment",
     ],
     shippingNotes:
-      "Brazil requires fumigation certificates for all wood packaging materials (ISPM-15 compliant). Import licenses may be required for certain equipment categories — we handle the documentation so your shipment clears Santos customs without delays.",
+      "Brazil requires fumigation certificates for all wood packaging materials (ISPM-15 compliant). Import licenses may be required for certain equipment categories — we handle the documentation so your shipment clears Santos customs without delays. Budget an additional $800–$1,200 for fumigation and phytosanitary certification. Allow 35–45 days total door-to-port including pickup, packing, documentation, and 25–30 days of ocean transit. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
     faqs: [
       { question: "What documents do I need to import machinery into Brazil?", answer: "You need a Commercial Invoice, Packing List, Bill of Lading, ISPM-15 fumigation certificate for wood packaging, and potentially an import license depending on equipment category. We prepare all US export documents and coordinate with Brazilian customs brokers.", category: "Brazil" },
@@ -84,7 +84,7 @@ export const destinations: Destination[] = [
       "Compressors",
     ],
     shippingNotes:
-      "Jebel Ali is a free-zone port with streamlined customs procedures. Equipment must be clean and free of soil or organic residue. We coordinate pre-shipment inspections to meet UAE import standards.",
+      "Jebel Ali is a free-zone port with streamlined customs procedures. Equipment must be clean and free of soil or organic residue — expect a $300–$500 pre-shipment cleaning fee for earth-moving machinery. We coordinate pre-shipment inspections to meet UAE import standards. No import duty applies to most used machinery entering the Jebel Ali Free Zone, making the UAE one of the most cost-effective Middle East destinations. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
     faqs: [
       { question: "What types of equipment are commonly shipped to the UAE?", answer: "Construction equipment dominates UAE imports — excavators, loaders, bulldozers, cranes, and generators. The UAE's booming infrastructure and real estate sectors drive strong demand for quality used US machinery.", category: "UAE" },
@@ -121,7 +121,7 @@ export const destinations: Destination[] = [
       "Headers",
     ],
     shippingNotes:
-      "Turkey requires a conformity assessment (TAREKS) for certain machinery imports. All wood packaging must meet ISPM-15 standards. We prepare the full documentation package so your shipment clears Mersin without hold-ups.",
+      "Turkey requires a conformity assessment (TAREKS) for certain machinery imports, which adds 5–10 business days and approximately $500–$800 to the documentation process. All wood packaging must meet ISPM-15 standards. We prepare the full documentation package so your shipment clears Mersin without hold-ups. Turkey is one of our fastest routes at 18–25 days ocean transit from the US East Coast. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
     faqs: [
       { question: "What is the TAREKS conformity assessment for Turkey?", answer: "TAREKS is Turkey's electronic tracking system for certain imported goods. Some machinery categories require a conformity assessment before import. We identify whether your equipment needs TAREKS clearance and prepare the documentation.", category: "Turkey" },
@@ -158,7 +158,7 @@ export const destinations: Destination[] = [
       "Compressors",
     ],
     shippingNotes:
-      "Saudi Arabia requires SABER conformity certificates for many equipment categories. All invoices and packing lists must be legalized. We handle the full compliance process to ensure smooth clearance at Jeddah port.",
+      "Saudi Arabia requires SABER conformity certificates for many equipment categories, adding $600–$1,000 and 7–14 days to the documentation timeline. All invoices and packing lists must be legalized through the Saudi Embassy or Fasah electronic system. We handle the full compliance process to ensure smooth clearance at Jeddah port. Plan for 40–50 days total from equipment pickup to port arrival. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
     faqs: [
       { question: "What is the SABER conformity certificate for Saudi Arabia?", answer: "SABER is Saudi Arabia's online platform for product conformity certification. Many equipment categories require a SABER certificate and a shipment-specific certificate of conformity before clearing Jeddah port customs. We handle the full process.", category: "Saudi Arabia" },
@@ -195,7 +195,7 @@ export const destinations: Destination[] = [
       "Tillage Equipment",
     ],
     shippingNotes:
-      "Colombia requires a pre-shipment inspection for used equipment imports. Fumigation certificates are mandatory for wood packaging. We coordinate all inspections and documentation before departure to prevent port delays.",
+      "Colombia requires a pre-shipment inspection for used equipment imports. Fumigation certificates are mandatory for wood packaging. We coordinate all inspections and documentation before departure to prevent port delays. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
     faqs: [
       { question: "Does Colombia require a pre-shipment inspection?", answer: "Yes. Colombia requires a pre-shipment inspection for used equipment imports. We coordinate the inspection before departure and include the inspection certificate with your shipping documents to prevent port delays.", category: "Colombia" },
@@ -232,7 +232,7 @@ export const destinations: Destination[] = [
       "Headers",
     ],
     shippingNotes:
-      "Mexico allows duty-free import of certain agricultural equipment under USMCA provisions. All shipments require a pedimento (customs declaration). We prepare bilingual documentation and coordinate with Mexican customs brokers for seamless clearance.",
+      "Mexico allows duty-free import of certain agricultural equipment under USMCA provisions. All shipments require a pedimento (customs declaration). We prepare bilingual documentation and coordinate with Mexican customs brokers for seamless clearance. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard", "Open Top"],
     faqs: [
       { question: "Can agricultural equipment enter Mexico duty-free under USMCA?", answer: "Certain agricultural equipment qualifies for duty-free import under USMCA (formerly NAFTA) provisions. We identify whether your specific equipment qualifies and prepare the required USMCA certificate of origin.", category: "Mexico" },
@@ -269,7 +269,7 @@ export const destinations: Destination[] = [
       "Sprayers",
     ],
     shippingNotes:
-      "Romania is an EU member, so imports must comply with EU machinery directives and CE marking requirements. Phytosanitary certificates are required for wood packaging. We ensure all documentation meets EU customs standards.",
+      "Romania is an EU member, so imports must comply with EU machinery directives and CE marking requirements. Phytosanitary certificates are required for wood packaging. We ensure all documentation meets EU customs standards. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
     faqs: [
       { question: "Does Romania follow EU import regulations for machinery?", answer: "Yes. As an EU member, Romania requires compliance with EU machinery directives. CE marking requirements may apply to certain equipment categories. All wood packaging must meet ISPM-15 standards for EU entry.", category: "Romania" },
@@ -306,7 +306,7 @@ export const destinations: Destination[] = [
       "Headers",
     ],
     shippingNotes:
-      "Kazakhstan shipments route through a transshipment port (typically Poti, Georgia or Mersin, Turkey) before Caspian Sea feeder to Aktau. GOST certification may be required for certain equipment. We coordinate the full multimodal chain from your door to Aktau.",
+      "Kazakhstan shipments route through a transshipment port (typically Poti, Georgia or Mersin, Turkey) before Caspian Sea feeder to Aktau. GOST certification may be required for certain equipment. We coordinate the full multimodal chain from your door to Aktau. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
     faqs: [
       { question: "Why does shipping to Kazakhstan take 40-50 days?", answer: "Kazakhstan is landlocked. Shipments travel by ocean to a transshipment port (typically Poti, Georgia or Mersin, Turkey), then transfer to a Caspian Sea feeder vessel to Aktau port. The multimodal routing adds transit time.", category: "Kazakhstan" },

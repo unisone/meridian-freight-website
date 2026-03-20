@@ -127,7 +127,7 @@ export default function BlogPage() {
                 size="lg"
                 className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
               >
-                Get a Free Quote <ArrowRight className="ml-2 h-4 w-4" />
+                Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </section>

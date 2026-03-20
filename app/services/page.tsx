@@ -27,7 +27,8 @@ export default function ServicesPage() {
     <div className="pt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={[{ label: "Services" }]} />
-        <h1 className="sr-only">Machinery Export Services — USA &amp; Canada</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">Machinery Export Services — USA &amp; Canada</h1>
+        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">One company for the entire chain — pickup, dismantling, packing, documentation, and air or ocean shipping from any location in the USA or Canada.</p>
       </div>
       <ServicesGrid />
       <ProcessSteps />
