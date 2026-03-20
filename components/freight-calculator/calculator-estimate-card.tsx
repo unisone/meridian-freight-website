@@ -120,21 +120,25 @@ export function CalculatorEstimateCard({
             </div>
           )}
 
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="text-sm text-slate-300">Packing & Loading</div>
-              {estimate.packingBreakdown && (
-                <div className="text-xs text-slate-500">{estimate.packingBreakdown}</div>
-              )}
+          {estimate.packingAndLoading > 0 && (
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-sm text-slate-300">Packing & Loading</div>
+                {estimate.packingBreakdown && (
+                  <div className="text-xs text-slate-500">{estimate.packingBreakdown}</div>
+                )}
+              </div>
+              <span className="font-mono font-bold text-white">
+                {formatDollar(estimate.packingAndLoading)}
+              </span>
             </div>
-            <span className="font-mono font-bold text-white">
-              {formatDollar(estimate.packingAndLoading)}
-            </span>
-          </div>
+          )}
 
           <div className="flex items-start justify-between">
             <div>
-              <div className="text-sm text-slate-300">Ocean Freight</div>
+              <div className="text-sm text-slate-300">
+                {estimate.containerType === "flatrack" ? "Sea Freight & Loading" : "Ocean Freight"}
+              </div>
               <div className="text-xs text-slate-500">
                 {estimate.carrier} &bull; {estimate.originPort} → {estimate.destinationPort}
                 {estimate.transitTimeDays && ` • ${estimate.transitTimeDays} days`}

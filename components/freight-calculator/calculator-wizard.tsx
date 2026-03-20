@@ -126,6 +126,7 @@ export function CalculatorWizard() {
     : null;
   const needsSize =
     selectedEquipment !== null && selectedEquipment.packing_unit !== "flat";
+  const isFlatrack = selectedEquipment?.container_type === "flatrack";
   const containerLabel =
     selectedEquipment?.container_type === "fortyhc"
       ? "40' High Cube Container"
@@ -478,38 +479,55 @@ export function CalculatorWizard() {
 
                 {/* Packing cost preview */}
                 <div className="rounded-xl bg-muted p-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      Estimated packing cost:
-                    </span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Info className="h-4 w-4 text-muted-foreground" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          Cost to pack and load your equipment into a{" "}
-                          {containerLabel.toLowerCase()} at our Albion, IA
-                          facility.
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                  <div className="font-mono text-xl font-bold text-primary">
-                    {needsSize && equipmentSize && equipmentSize > 0
-                      ? formatDollar(
-                          selectedEquipment.packing_cost * equipmentSize
-                        )
-                      : needsSize
-                        ? `${formatDollar(selectedEquipment.packing_cost)}/${unitLabel ? unitLabel.slice(0, -1) : "unit"}`
-                        : formatDollar(selectedEquipment.packing_cost)}
-                  </div>
-                  {needsSize && equipmentSize && equipmentSize > 0 && (
-                    <div className="mt-0.5 text-xs text-muted-foreground">
-                      {formatDollar(selectedEquipment.packing_cost)}/
-                      {unitLabel ? unitLabel.slice(0, -1) : "unit"} ×{" "}
-                      {equipmentSize} {unitLabel}
-                    </div>
+                  {isFlatrack ? (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <Info className="h-4 w-4 text-primary" />
+                        <span className="text-sm font-medium text-foreground">
+                          Packing &amp; loading included in sea freight
+                        </span>
+                      </div>
+                      <p className="mt-1.5 text-xs text-muted-foreground">
+                        Flat rack equipment is packed and loaded at the departure
+                        port. This cost is bundled into your sea freight rate.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                          Estimated packing cost:
+                        </span>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Info className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              Cost to pack and load your equipment into a{" "}
+                              {containerLabel.toLowerCase()} at our Albion, IA
+                              facility.
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <div className="font-mono text-xl font-bold text-primary">
+                        {needsSize && equipmentSize && equipmentSize > 0
+                          ? formatDollar(
+                              selectedEquipment.packing_cost * equipmentSize
+                            )
+                          : needsSize
+                            ? `${formatDollar(selectedEquipment.packing_cost)}/${unitLabel ? unitLabel.slice(0, -1) : "unit"}`
+                            : formatDollar(selectedEquipment.packing_cost)}
+                      </div>
+                      {needsSize && equipmentSize && equipmentSize > 0 && (
+                        <div className="mt-0.5 text-xs text-muted-foreground">
+                          {formatDollar(selectedEquipment.packing_cost)}/
+                          {unitLabel ? unitLabel.slice(0, -1) : "unit"} ×{" "}
+                          {equipmentSize} {unitLabel}
+                        </div>
+                      )}
+                    </>
                   )}
                   <div className="mt-2">
                     <Badge variant="secondary" className="text-xs">

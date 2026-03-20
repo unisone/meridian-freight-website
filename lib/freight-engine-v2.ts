@@ -24,7 +24,6 @@ import type {
 // Constants (mirrored from mf-chatbot-ui/lib/kz-calculator/calculate-freight.ts)
 // ---------------------------------------------------------------------------
 
-export const DELIVERY_PER_MILE = 6.5;
 const ROAD_FACTOR = 1.3;
 export const DRAYAGE_CHICAGO = 1_800;
 
@@ -173,14 +172,14 @@ export function findBestOceanRate(
 
   if (matching.length === 0) return null;
 
-  // Sort: carrier preference first, then cheapest (ocean_rate + drayage)
-  // Note: packing_drayage is NOT included in comparison — matches chatbot behavior
+  // Sort: carrier preference first, then cheapest effective cost.
+  // 40HC uses ocean_rate + drayage; flatrack uses ocean_rate + packing_drayage.
   matching.sort((a, b) => {
     const rankDiff = carrierRank(a.carrier) - carrierRank(b.carrier);
     if (rankDiff !== 0) return rankDiff;
-    const totalA = (a.ocean_rate ?? 0) + (a.drayage ?? 0);
-    const totalB = (b.ocean_rate ?? 0) + (b.drayage ?? 0);
-    return totalA - totalB;
+    const costA = (a.ocean_rate ?? 0) + (containerType === "flatrack" ? (a.packing_drayage ?? 0) : (a.drayage ?? 0));
+    const costB = (b.ocean_rate ?? 0) + (containerType === "flatrack" ? (b.packing_drayage ?? 0) : (b.drayage ?? 0));
+    return costA - costB;
   });
 
   return matching[0];
@@ -248,6 +247,7 @@ export function calculateFreightV2(
       let bestRate: OceanFreightRate | null = null;
       let bestPortName = "";
       let bestDistance = 0;
+      let bestCarrierRank = Infinity;
 
       for (const [portName, portCoord] of Object.entries(FLATRACK_PORTS)) {
         const portRates = oceanRates.filter(
@@ -262,11 +262,14 @@ export function calculateFreightV2(
           const localCost = miles * equipment.delivery_per_mile;
           const seaCost = (rate.ocean_rate ?? 0) + (rate.packing_drayage ?? 0);
           const total = localCost + seaCost;
-          if (total < bestTotal) {
+          const rank = carrierRank(rate.carrier);
+          // Cheapest total wins; carrier preference breaks ties
+          if (total < bestTotal || (total === bestTotal && rank < bestCarrierRank)) {
             bestTotal = total;
             bestRate = rate;
             bestPortName = portName;
             bestDistance = miles;
+            bestCarrierRank = rank;
           }
         }
       }
