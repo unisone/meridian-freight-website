@@ -139,7 +139,7 @@ export default function HomePage() {
             <div className="grid gap-12 lg:grid-cols-2">
               <div className="rounded-xl bg-white p-6 shadow-md sm:p-8">
                 <h3 className="mb-6 text-2xl font-bold text-foreground">
-                  Send us a Message
+                  Request Your Quote
                 </h3>
                 <ContactForm />
               </div>

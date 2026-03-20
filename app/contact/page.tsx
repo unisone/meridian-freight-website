@@ -45,7 +45,7 @@ export default function ContactPage() {
         <Breadcrumbs items={[{ label: "Contact" }]} />
       </div>
 
-      <section className="py-16 md:py-24">
+      <section className="bg-muted py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal variant="fade">
           <div className="mb-12">
@@ -63,7 +63,7 @@ export default function ContactPage() {
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="rounded-xl bg-white p-6 shadow-md sm:p-8">
               <h2 className="mb-6 text-2xl font-bold text-foreground">
-                Send us a Message
+                Request Your Quote
               </h2>
               <ContactForm />
             </div>
