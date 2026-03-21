@@ -259,6 +259,36 @@ Content lives in typed TypeScript files in `content/`:
 - `content/pricing.ts` — Static pricing for `/pricing` table page (deprecated for calculator; DO NOT use for calculations)
 - `content/faq.ts` — categorized FAQ entries
 
+### Analytics (GA4 + Meta Pixel)
+
+Two separate GA4 properties under the same Google Analytics account (`Meridian Freight Inc`):
+
+| Property | Stream | Domain | Measurement ID |
+|----------|--------|--------|---------------|
+| Meridian Export Main Site | Meridian Export Main Site | `meridianexport.com` | `G-W661JN5ED4` |
+| Meridian Export LP | Meridian LP | `lp.meridianexport.com` | `G-26XR0YQLK5` |
+
+**Consent Mode v2** (`components/google-analytics.tsx`):
+- gtag.js always loads; default consent is `denied` for all storage types
+- When user clicks "Accept" on cookie banner → consent updates to `granted`
+- When `denied`: GA fires cookieless pings for behavioral modeling (GDPR-safe)
+- Cookie consent stored in `localStorage['cookie-consent']` as `"accepted"` or `"declined"`
+- Meta Pixel (`components/meta-pixel.tsx`) uses separate consent gating — only loads after acceptance
+
+**Content Grouping** (set in `gtag('config', ...)` call):
+Homepage, Services, Equipment, Destinations, Calculator, Pricing, Projects, About, Contact, FAQ, Blog, Legal
+
+**Custom GA4 Events** (fired via `trackGA4Event()` in `lib/tracking.ts`):
+| Event | Component | Trigger |
+|-------|-----------|---------|
+| `generate_lead` | `contact-form.tsx` | Contact form submission |
+| `generate_lead` | `calculator-wizard.tsx` | Calculator email submission |
+| `contact_whatsapp` | `whatsapp-widget.tsx` | WhatsApp widget click |
+| `contact_whatsapp` | `mobile-bottom-bar.tsx` | Mobile bar WhatsApp click |
+| `contact_phone` | `mobile-bottom-bar.tsx` | Mobile bar phone click |
+
+**Enhanced Measurement** (enabled in GA4 stream): page views, scrolls, outbound clicks, site search, video engagement, file downloads, form interactions
+
 ### Environment Variables
 
 See `.env.example` for the full list. Required in `.env.local`:
