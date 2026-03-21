@@ -12,13 +12,13 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { CONTACT } from "@/lib/constants";
+import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 import { homepageFaq } from "@/content/faq";
 
 export const metadata = pageMetadata({
   title: "Machinery Export & Logistics — Packing & Shipping",
   description:
-    "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & air or ocean shipping worldwide. 500+ exports. Free quote in 24 hrs.",
+    "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & ocean shipping. 500+ exports. Free quote in 24 hrs.",
   path: "/",
   keywords: [
     "machinery export USA",
@@ -47,11 +47,32 @@ export default function HomePage() {
     })),
   };
 
+  const videoJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "Meridian Freight — Machinery Dismantling, Packing & Container Loading",
+    description:
+      "Watch our team dismantle, pack, and load heavy equipment into shipping containers at our Iowa facility. Full-service machinery export from USA & Canada.",
+    thumbnailUrl: "https://img.youtube.com/vi/SrjUBSD2_5Q/maxresdefault.jpg",
+    uploadDate: "2024-01-15",
+    contentUrl: "https://www.youtube.com/watch?v=SrjUBSD2_5Q",
+    embedUrl: "https://www.youtube-nocookie.com/embed/SrjUBSD2_5Q",
+    publisher: {
+      "@type": "Organization",
+      name: COMPANY.name,
+      logo: { "@type": "ImageObject", url: `${SITE.url}/logos/MF Logos White/meridianFreight-logo-mobile-w-150.png` },
+    },
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
       />
       <Hero />
       <TrustBar />

@@ -5,7 +5,7 @@ import { COMPANY, SITE } from "@/lib/constants";
 
 export const metadata = pageMetadata({
   title: "Freight Cost Calculator — Instant Estimate",
-  description: "Free freight cost calculator — get an instant estimate for machinery export. Select equipment type, ZIP code & destination. Packing + shipping costs in 60 seconds.",
+  description: "Free freight calculator — instant estimate for machinery export. Select equipment, ZIP code & destination. Packing + shipping costs in 60 seconds.",
   path: "/pricing/calculator",
   keywords: ["freight cost calculator heavy equipment", "machinery shipping cost estimator", "container loading cost calculator", "equipment export shipping rates"],
 });

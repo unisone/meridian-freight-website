@@ -18,6 +18,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        // IndexNow key verification file: /{key}.txt → API route
+        source: "/:key.txt",
+        destination: "/api/indexnow-verify?key=:key",
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

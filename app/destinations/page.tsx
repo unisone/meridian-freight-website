@@ -13,7 +13,7 @@ import { pageMetadata } from "@/lib/metadata";
 export const metadata = pageMetadata({
   title: "Shipping Destinations — Worldwide Machinery Export",
   description:
-    "We ship heavy machinery from the USA and Canada to any port worldwide — 40+ countries across Latin America, Middle East, Africa, Eastern Europe, and Central Asia.",
+    "Heavy machinery shipping from the USA and Canada to 40+ countries — Latin America, Middle East, Africa, Eastern Europe, and Central Asia.",
   path: "/destinations",
   keywords: [
     "machinery shipping destinations",

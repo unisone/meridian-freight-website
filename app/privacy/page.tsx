@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
-  description: `Privacy policy for ${SITE.domain}. How we collect, use, and protect your information.`,
+  description: `Privacy policy for Meridian Freight Inc. (${SITE.domain}). How we collect, use, and protect your data when you use our machinery export services.`,
   path: "/privacy",
   keywords: ["privacy policy", "data protection", "privacy notice"],
 });

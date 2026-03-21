@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/constants";
 
 export default function Error({
-  error,
+  error: _error,
   reset,
 }: {
   error: Error & { digest?: string };
@@ -37,8 +37,27 @@ export default function Error({
         </Button>
       </div>
 
+      {/* Suggested pages */}
+      <div className="mt-10 flex flex-wrap justify-center gap-2">
+        {[
+          { href: "/services", label: "Services" },
+          { href: "/pricing", label: "Pricing" },
+          { href: "/pricing/calculator", label: "Freight Calculator" },
+          { href: "/projects", label: "Projects" },
+          { href: "/contact", label: "Contact" },
+        ].map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className="rounded-full border border-border px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
+
       {/* Contact fallback */}
-      <div className="mt-10 rounded-xl bg-muted p-6 text-center max-w-md">
+      <div className="mt-6 rounded-xl bg-muted p-6 text-center max-w-md">
         <p className="text-sm text-muted-foreground">
           If this keeps happening, contact us directly:
         </p>

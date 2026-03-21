@@ -10,7 +10,7 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "FAQ — Machinery Export & Shipping Questions Answered",
-  description: "Answers to common machinery export questions — shipping timelines, container sizes, pricing, customs documentation, insurance & payment options. Ask us anything.",
+  description: "Answers to common machinery export questions — shipping timelines, container sizes, pricing, customs documentation, insurance & payment options.",
   path: "/faq",
   keywords: [
     "machinery export FAQ",

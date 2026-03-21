@@ -171,7 +171,7 @@ export const equipmentTypes: EquipmentType[] = [
     singularName: "Sprayer",
     metaTitle: "Sprayer Export & Shipping | Meridian Export",
     metaDescription:
-      "Export self-propelled and pull-type sprayers worldwide. Professional boom folding, tank cleaning, and secure shipping for John Deere, Case IH, and Apache sprayers.",
+      "Export self-propelled and pull-type sprayers worldwide. Boom folding, tank cleaning, and secure shipping for John Deere, Case IH, and Apache sprayers.",
     keywords: [
       "sprayer export shipping",
       "self-propelled sprayer export",

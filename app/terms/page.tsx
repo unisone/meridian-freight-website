@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   title: "Terms of Service",
-  description: `Terms of service for ${SITE.domain}.`,
+  description: `Terms of service for Meridian Freight Inc. (${SITE.domain}). Conditions governing machinery export, freight services, and use of our website.`,
   path: "/terms",
   keywords: ["terms of service", "terms and conditions", "service agreement"],
 });

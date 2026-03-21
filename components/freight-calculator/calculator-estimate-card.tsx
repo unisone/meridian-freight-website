@@ -65,21 +65,27 @@ export function CalculatorEstimateCard({
   const prevTotal = useRef(0);
 
   useEffect(() => {
-    if (!preview) { setDisplayTotal(0); prevTotal.current = 0; return; }
+    if (!preview) {
+      prevTotal.current = 0;
+      const id = requestAnimationFrame(() => setDisplayTotal(0));
+      return () => cancelAnimationFrame(id);
+    }
     const target = preview.estimatedTotal;
     if (target === prevTotal.current) return;
     const from = prevTotal.current;
     prevTotal.current = target;
     const duration = 300;
     const startTime = performance.now();
+    let rafId: number;
 
     function tick(now: number) {
       const t = Math.min((now - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - t, 3);
       setDisplayTotal(Math.round(from + (target - from) * eased));
-      if (t < 1) requestAnimationFrame(tick);
+      if (t < 1) rafId = requestAnimationFrame(tick);
     }
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, [preview]);
 
   // ---------------------------------------------------------------------------
