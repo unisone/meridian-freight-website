@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/constants";
+import { trackContactClick } from "@/lib/tracking";
 
 export function Hero() {
   return (
@@ -54,7 +57,7 @@ export function Hero() {
               <Button
                 size="lg"
                 className="h-13 w-full px-7 text-base font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all hover:shadow-lg animate-shadow-breathe sm:w-auto"
-                render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Get a free quote on WhatsApp" />}
+                render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Get a free quote on WhatsApp" onClick={() => trackContactClick("whatsapp", "hero")} />}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
                 Get a Free Quote

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/app/actions/contact";
-import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
+import { trackGA4Event, trackPixelEvent, trackContactClick } from "@/lib/tracking";
 import { CONTACT } from "@/lib/constants";
 import { DURATION, EASE } from "@/lib/motion";
 import type { ContactFormData } from "@/lib/schemas";
@@ -65,6 +65,8 @@ export function ContactForm() {
         trackGA4Event("generate_lead", {
           event_category: "contact",
           event_label: "corporate_contact_form",
+          value: 500,
+          currency: "USD",
         });
         // Fire Pixel event with same eventId as CAPI for deduplication
         if (result.eventId) {
@@ -122,6 +124,7 @@ export function ContactForm() {
             href={CONTACT.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackContactClick("whatsapp", "contact_form_success")}
             className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
           >
             <MessageCircle className="h-4 w-4" />

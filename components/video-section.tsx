@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Play, ExternalLink, MessageCircle } from "lucide-react";
 import { SOCIAL, CONTACT } from "@/lib/constants";
+import { trackGA4Event, trackContactClick } from "@/lib/tracking";
 
 const VIDEO_ID = "SrjUBSD2_5Q";
 const THUMBNAIL = `https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`;
@@ -39,7 +40,10 @@ export function VideoSection() {
               />
             ) : (
               <button
-                onClick={() => setIsPlaying(true)}
+                onClick={() => {
+                  setIsPlaying(true);
+                  trackGA4Event("video_play", { video_title: "Meridian Freight Operations" });
+                }}
                 className="group absolute inset-0 flex items-center justify-center"
                 aria-label="Play operations video"
               >
@@ -71,6 +75,7 @@ export function VideoSection() {
             href={CONTACT.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackContactClick("whatsapp", "video_section")}
             className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
           >
             <MessageCircle className="h-4 w-4" />

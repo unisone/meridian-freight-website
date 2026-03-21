@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 
 import { COMPANY, CONTACT, SOCIAL, NAV_ITEMS } from "@/lib/constants";
+import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { equipmentTypes } from "@/content/equipment";
 import { destinations } from "@/content/destinations";
 
@@ -60,20 +61,24 @@ export function Footer() {
 
             {/* Contact details */}
             <div className="mt-6 space-y-3">
-              <a
+              <TrackedContactLink
                 href={CONTACT.phoneHref}
+                type="phone"
+                location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
                 <Phone className="h-4 w-4 text-sky-400" />
                 {CONTACT.phone}
-              </a>
-              <a
+              </TrackedContactLink>
+              <TrackedContactLink
                 href={CONTACT.emailHref}
+                type="email"
+                location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
                 <Mail className="h-4 w-4 text-sky-400" />
                 {CONTACT.email}
-              </a>
+              </TrackedContactLink>
               <div className="flex items-center gap-3 text-sm">
                 <MapPin className="h-4 w-4 shrink-0 text-sky-400" />
                 {CONTACT.address.full}

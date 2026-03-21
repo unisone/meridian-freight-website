@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Youtube } from "lucide-react";
 import { CONTACT, SOCIAL } from "@/lib/constants";
+import { TrackedContactLink } from "@/components/tracked-contact-link";
 
 export function ContactInfo() {
   return (
@@ -9,8 +10,10 @@ export function ContactInfo() {
           Contact Information
         </h3>
         <div className="mt-6 space-y-4">
-          <a
+          <TrackedContactLink
             href={CONTACT.whatsappUrl}
+            type="whatsapp"
+            location="contact_info"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-primary/5 group"
@@ -22,10 +25,12 @@ export function ContactInfo() {
               <div className="font-semibold text-foreground">Phone / WhatsApp</div>
               <div className="text-sm text-muted-foreground">{CONTACT.phone}</div>
             </div>
-          </a>
+          </TrackedContactLink>
 
-          <a
+          <TrackedContactLink
             href={CONTACT.emailHref}
+            type="email"
+            location="contact_info"
             className="flex items-center gap-4 rounded-xl p-3 transition-colors hover:bg-primary/5 group"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary transition-colors">
@@ -35,7 +40,7 @@ export function ContactInfo() {
               <div className="font-semibold text-foreground">Email</div>
               <div className="text-sm text-muted-foreground">{CONTACT.email}</div>
             </div>
-          </a>
+          </TrackedContactLink>
 
           <div className="flex items-center gap-4 p-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">

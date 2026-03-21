@@ -11,6 +11,7 @@ import type { FreightEstimateV2, EquipmentPackingRate } from "@/lib/types/calcul
 import type { CalculatorResult } from "@/app/actions/calculator";
 
 import { CONTACT } from "@/lib/constants";
+import { trackContactClick } from "@/lib/tracking";
 import Link from "next/link";
 
 interface EstimateCardProps {
@@ -215,6 +216,7 @@ export function CalculatorEstimateCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat on WhatsApp for a detailed quote"
+                onClick={() => trackContactClick("whatsapp", "calculator_estimate")}
               />
             }
             variant="outline"

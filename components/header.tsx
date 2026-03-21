@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { CONTACT, NAV_ITEMS } from "@/lib/constants";
 import { DURATION, EASE } from "@/lib/motion";
+import { trackContactClick } from "@/lib/tracking";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -161,6 +162,7 @@ export function Header() {
               href={CONTACT.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackContactClick("whatsapp", "header_desktop")}
               className="ml-4 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
             >
               <MessageCircle className="h-4 w-4" />
@@ -241,7 +243,7 @@ export function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-3.5 text-center text-base font-semibold text-white transition-colors hover:bg-emerald-700"
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => { setMobileOpen(false); trackContactClick("whatsapp", "header_mobile_menu"); }}
                   >
                     <MessageCircle className="h-5 w-5" />
                     Chat on WhatsApp
@@ -261,6 +263,7 @@ export function Header() {
                 >
                   <a
                     href={CONTACT.phoneHref}
+                    onClick={() => trackContactClick("phone", "header_mobile")}
                     className="flex items-center gap-3 rounded-lg bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
                   >
                     <Phone className="h-5 w-5 text-emerald-600" />
@@ -277,6 +280,7 @@ export function Header() {
                     href={CONTACT.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackContactClick("whatsapp", "header_mobile_card")}
                     className="flex items-center gap-3 rounded-lg bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
                   >
                     <MessageCircle className="h-5 w-5 text-emerald-600" />

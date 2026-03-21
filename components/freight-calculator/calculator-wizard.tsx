@@ -30,7 +30,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
+import { trackGA4Event, trackPixelEvent, trackCalcFunnel, trackContactClick } from "@/lib/tracking";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
 import { getCalculatorData } from "@/app/actions/calculator-data";
 import { calculateFreightV2, formatDollar } from "@/lib/freight-engine-v2";
@@ -189,6 +189,8 @@ export function CalculatorWizard() {
         trackGA4Event("generate_lead", {
           event_category: "calculator",
           lead_source: "freight_calculator_v2",
+          value: 300,
+          currency: "USD",
         });
         if (res.eventId) {
           trackPixelEvent(
@@ -260,6 +262,7 @@ export function CalculatorWizard() {
                   href={CONTACT.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackContactClick("whatsapp", "calculator_unavailable")}
                 />
               }
               variant="outline"
@@ -379,6 +382,10 @@ export function CalculatorWizard() {
                           onClick={() => {
                             setSelectedEquipment(eq);
                             setEquipmentSize(null);
+                            trackCalcFunnel("start", {
+                              equipment_type: eq.display_name_en,
+                              container_type: eq.container_type,
+                            });
                           }}
                           className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-all duration-150 ${
                             isSelected
@@ -576,7 +583,22 @@ export function CalculatorWizard() {
                     <select
                       id="dest-country"
                       value={destinationCountry}
-                      onChange={(e) => setDestinationCountry(e.target.value)}
+                      onChange={(e) => {
+                        const country = e.target.value;
+                        setDestinationCountry(country);
+                        if (country && selectedEquipment) {
+                          trackCalcFunnel("step", {
+                            step_number: "3",
+                            step_name: "destination",
+                            destination_country: country,
+                          });
+                          trackCalcFunnel("complete", {
+                            equipment_type: selectedEquipment.display_name_en,
+                            destination_country: country,
+                            container_type: selectedEquipment.container_type,
+                          });
+                        }
+                      }}
                       className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     >
                       <option value="">Select a country...</option>

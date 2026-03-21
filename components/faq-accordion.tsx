@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Accordion,
@@ -6,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ArrowRight } from "lucide-react";
+import { trackGA4Event } from "@/lib/tracking";
 import type { FaqEntry } from "@/content/faq";
 
 interface FaqAccordionProps {
@@ -14,6 +17,13 @@ interface FaqAccordionProps {
 }
 
 export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps) {
+  function handleValueChange(value: string | string[]) {
+    const expanded = Array.isArray(value) ? value : value ? [value] : [];
+    if (expanded.length > 0) {
+      trackGA4Event("faq_expand", { faq_question: expanded[expanded.length - 1] });
+    }
+  }
+
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -27,7 +37,7 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
         </div>
 
         <div className="mx-auto max-w-3xl">
-          <Accordion className="space-y-3">
+          <Accordion className="space-y-3" onValueChange={handleValueChange}>
             {entries.map((entry) => (
               <AccordionItem
                 key={entry.question}

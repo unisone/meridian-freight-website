@@ -57,13 +57,28 @@ export function GoogleAnalytics() {
         strategy="afterInteractive"
       />
 
-      {/* Initialize GA4 + optional Google Ads */}
+      {/* Initialize GA4 + optional Google Ads + content grouping */}
       <Script id="gtag-init" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           if (!window.gtag) { function gtag(){dataLayer.push(arguments);} window.gtag = gtag; }
           gtag('js', new Date());
-          gtag('config', '${gaId}');
+          var cg = (function(p) {
+            if (p === '/') return 'Homepage';
+            if (p.startsWith('/services')) return 'Services';
+            if (p.startsWith('/equipment')) return 'Equipment';
+            if (p.startsWith('/destinations')) return 'Destinations';
+            if (p === '/pricing/calculator') return 'Calculator';
+            if (p.startsWith('/pricing')) return 'Pricing';
+            if (p.startsWith('/projects')) return 'Projects';
+            if (p === '/about') return 'About';
+            if (p === '/contact') return 'Contact';
+            if (p === '/faq') return 'FAQ';
+            if (p.startsWith('/blog')) return 'Blog';
+            if (p === '/privacy' || p === '/terms') return 'Legal';
+            return 'Other';
+          })(window.location.pathname);
+          gtag('config', '${gaId}', { content_group: cg });
           ${adsId ? `gtag('config', '${adsId}');` : ""}
         `}
       </Script>
