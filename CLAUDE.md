@@ -259,7 +259,25 @@ Content lives in typed TypeScript files in `content/`:
 - `content/pricing.ts` — Static pricing for `/pricing` table page (deprecated for calculator; DO NOT use for calculations)
 - `content/faq.ts` — categorized FAQ entries
 
-### Analytics (GA4 + Meta Pixel)
+### SEO
+
+**Score: 10/10** — fully optimized as of 2026-03-21.
+
+Key features:
+- **Sitemap** (`app/sitemap.ts`) — all 40+ pages with priorities + change frequencies
+- **Robots.txt** (`app/robots.ts`) — allows all, references sitemap
+- **JSON-LD schemas** — LocalBusiness, WebSite, FAQPage, Article, ContactPage, WebApplication, AggregateOffer, VideoObject, BreadcrumbList
+- **Open Graph** — 1200x630 static image (`public/og.jpg`), per-page OG title/description
+- **Canonical URLs** — absolute URLs on all pages via `pageMetadata()` helper (`lib/metadata.ts`)
+- **Meta descriptions** — all pages in 120-160 char range (verified)
+- **Security headers** — HSTS, X-Frame-Options, Referrer-Policy, etc. in `next.config.ts`
+- **IndexNow** — key verification route (`app/api/indexnow-verify/route.ts`) + rewrite in `next.config.ts` + bulk submit script (`scripts/submit-indexnow.ts`). Requires `INDEXNOW_KEY` env var.
+- **Search Console** — Google (`public/google06d7c7c3dca85c23.html`) + Bing (`public/ff99b5ecadb7c3f6bb03c81244f831f3.txt`) verification files
+- **llms.txt** — `public/llms.txt` for model training opt-out
+
+### Analytics & Tracking (GA4 + Meta Pixel + CAPI)
+
+Full spec: `docs/GA4-DASHBOARD-SPEC.md`
 
 Two separate GA4 properties under the same Google Analytics account (`Meridian Freight Inc`):
 
@@ -268,26 +286,73 @@ Two separate GA4 properties under the same Google Analytics account (`Meridian F
 | Meridian Export Main Site | Meridian Export Main Site | `meridianexport.com` | `G-W661JN5ED4` |
 | Meridian Export LP | Meridian LP | `lp.meridianexport.com` | `G-26XR0YQLK5` |
 
-**Consent Mode v2** (`components/google-analytics.tsx`):
-- gtag.js always loads; default consent is `denied` for all storage types
-- When user clicks "Accept" on cookie banner → consent updates to `granted`
-- When `denied`: GA fires cookieless pings for behavioral modeling (GDPR-safe)
-- Cookie consent stored in `localStorage['cookie-consent']` as `"accepted"` or `"declined"`
-- Meta Pixel (`components/meta-pixel.tsx`) uses separate consent gating — only loads after acceptance
+#### Consent Architecture
+Both GA4 and Meta Pixel use consent mode — scripts ALWAYS load, but default to cookieless/restricted mode:
 
-**Content Grouping** (set in `gtag('config', ...)` call):
+- **GA4** (`components/google-analytics.tsx`): Consent Mode v2 — default `denied`, upgrades to `granted` on accept
+- **Meta Pixel** (`components/meta-pixel.tsx`): `fbq('consent', 'revoke')` by default, upgrades to `fbq('consent', 'grant')` on accept
+- **Meta CAPI** (`lib/meta-capi.ts`): Server-side, no consent needed — fires on form/calculator submission
+- Cookie consent stored in `localStorage['cookie-consent']` as `"accepted"` or `"declined"`
+
+**IMPORTANT**: The Meta Pixel MUST always load (not be consent-gated). A previous implementation that only loaded the pixel after consent caused $811 in wasted ad spend with zero PageView tracking. The current `fbq('consent', 'revoke')` pattern is the correct approach — it mirrors GA4's Consent Mode.
+
+#### Content Grouping
+Set in `gtag('config', ...)` call in `google-analytics.tsx`:
 Homepage, Services, Equipment, Destinations, Calculator, Pricing, Projects, About, Contact, FAQ, Blog, Legal
 
-**Custom GA4 Events** (fired via `trackGA4Event()` in `lib/tracking.ts`):
+#### Tracking Helpers (`lib/tracking.ts`)
+| Function | Purpose |
+|----------|---------|
+| `trackGA4Event(name, params)` | Fire GA4 custom event |
+| `trackPixelEvent(name, params, eventId)` | Fire Meta Pixel event with dedup ID |
+| `trackContactClick(type, location)` | Track WhatsApp/phone/email click (GA4 + Pixel) |
+| `trackCtaClick(location, text, destination)` | Track CTA button click |
+| `trackCalcFunnel(step, params)` | Track calculator funnel step |
+| `getGA4ClientId()` | Get GA4 client_id for offline conversion matching |
+| `captureAttribution()` | Capture UTM params + click IDs from URL |
+| `getAttribution()` | Read stored attribution (cookie → sessionStorage fallback) |
+| `generateEventId()` | Unique ID for Pixel/CAPI deduplication |
+
+**UTM storage**: 30-day first-party cookie (`mf_attribution`), with sessionStorage fallback for backward compat.
+
+#### Custom GA4 Events
+
+**Key Events (Conversions):**
+| Event | Components | Trigger | Value |
+|-------|-----------|---------|-------|
+| `generate_lead` | `contact-form.tsx` | Contact form submit | $500 |
+| `generate_lead` | `calculator-wizard.tsx` | Calculator email submit | $300 |
+| `contact_whatsapp` | All 15 WA link locations | WhatsApp link click | — |
+| `contact_phone` | Header, footer, mobile bar, etc. | Phone link click | — |
+| `contact_email` | Footer, contact-info, etc. | Email link click | — |
+
+**Micro-Conversion Events:**
 | Event | Component | Trigger |
 |-------|-----------|---------|
-| `generate_lead` | `contact-form.tsx` | Contact form submission |
-| `generate_lead` | `calculator-wizard.tsx` | Calculator email submission |
-| `contact_whatsapp` | `whatsapp-widget.tsx` | WhatsApp widget click |
-| `contact_whatsapp` | `mobile-bottom-bar.tsx` | Mobile bar WhatsApp click |
-| `contact_phone` | `mobile-bottom-bar.tsx` | Mobile bar phone click |
+| `calculator_start` | `calculator-wizard.tsx` | Equipment selected |
+| `calculator_step` | `calculator-wizard.tsx` | Wizard step advance |
+| `calculator_complete` | `calculator-wizard.tsx` | Destination selected (ready for email gate) |
+| `video_play` | `video-section.tsx` | Homepage video play button click |
+| `faq_expand` | `faq-accordion.tsx` | FAQ accordion item opened |
+| `cta_click` | Various | CTA button click (with location param) |
 
-**Enhanced Measurement** (enabled in GA4 stream): page views, scrolls, outbound clicks, site search, video engagement, file downloads, form interactions
+**Meta Pixel Events:**
+| Event | Trigger | Consent Required |
+|-------|---------|-----------------|
+| `PageView` | Every page load | No (fires in revoked mode) |
+| `Lead` | Contact/Calculator submit | No (dedup with CAPI) |
+| `Contact` | WhatsApp/phone/email clicks | No (fires in revoked mode) |
+
+**Meta CAPI Events (Server-side):**
+| Event | Trigger | Data Sent |
+|-------|---------|-----------|
+| `Lead` | Contact form submit | Hashed email + phone, `lead_source: "corporate_contact_form"` |
+| `Lead` | Calculator submit | Hashed email, equipment_type, destination_country, container_type |
+
+#### TrackedContactLink Component
+`components/tracked-contact-link.tsx` — "use client" wrapper for `<a>` tags in Server Components (footer, contact-info, hero). Renders an anchor with `onClick` tracking via `trackContactClick()`. Use this when adding tracked links in Server Components where direct `onClick` handlers aren't available.
+
+**Enhanced Measurement** (enabled in GA4 stream): page views, scrolls, outbound clicks, video engagement, file downloads, form interactions
 
 ### Environment Variables
 
@@ -300,8 +365,16 @@ See `.env.example` for the full list. Required in `.env.local`:
 | `SLACK_BOT_TOKEN` | Slack notifications | No (graceful skip) |
 | `SLACK_FORM_INTAKE_CHANNEL_ID` | Slack notifications | No (graceful skip) |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 | No |
-| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel | No |
-| `META_ACCESS_TOKEN` | Meta CAPI (server) | No |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel (client-side) | No |
+| `META_PIXEL_ID` | Meta CAPI (server-side pixel ID) | No |
+| `META_ACCESS_TOKEN` | Meta CAPI (server-side auth) | No |
+| `NEXT_PUBLIC_GOOGLE_ADS_ID` | Google Ads tag | No |
+| `INDEXNOW_KEY` | IndexNow key for Bing/Yandex | No |
+| `INDEXNOW_SECRET` | IndexNow API auth secret | No |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console | No |
+| `NEXT_PUBLIC_BING_SITE_VERIFICATION` | Bing Webmaster | No |
+
+**IMPORTANT when adding env vars via CLI**: Use `printf 'value' | vercel env add NAME environment` — NOT `echo`. The `echo` command appends a newline (`\n`) that gets embedded in the value and breaks inline JavaScript template literals.
 
 ## Deployment
 
