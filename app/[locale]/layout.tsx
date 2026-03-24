@@ -64,6 +64,7 @@ export const metadata: Metadata = {
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    yandex: "6a04fca73120c14d",
     other: {
       ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
         ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
