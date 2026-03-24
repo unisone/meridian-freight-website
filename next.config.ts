@@ -3,6 +3,26 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
+// ── Build-time env var safety check ──────────────────────────────────────────
+// Catches newline-contaminated values BEFORE they break inline <Script> tags.
+// Root cause: `echo 'val' | vercel env add` embeds a trailing \n.
+const INLINE_SCRIPT_VARS = [
+  "NEXT_PUBLIC_GA_MEASUREMENT_ID",
+  "NEXT_PUBLIC_META_PIXEL_ID",
+  "NEXT_PUBLIC_GOOGLE_ADS_ID",
+] as const;
+
+for (const name of INLINE_SCRIPT_VARS) {
+  const val = process.env[name];
+  if (val && val !== val.trim()) {
+    throw new Error(
+      `\n\n  ENV VAR ERROR: ${name} contains whitespace/newline characters.\n` +
+      `  Value: ${JSON.stringify(val)}\n` +
+      `  Fix: vercel env rm ${name} production && printf '${val.trim()}' | vercel env add ${name} production\n\n`
+    );
+  }
+}
+
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
