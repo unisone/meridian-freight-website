@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, MapPin, Clock, Anchor, MessageCircle, Ship, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -51,10 +51,11 @@ export async function generateMetadata({
 /**
  * Additional countries served beyond the 8 featured destination pages.
  * Derived from the 60+ ports in our freight calculator database.
+ * Region keys map to translation keys in DestinationsPage namespace.
  */
 const ADDITIONAL_REGIONS = [
   {
-    region: "Latin America & Caribbean",
+    regionKey: "regionLatinAmerica" as const,
     countries: [
       "Argentina",
       "Chile",
@@ -84,7 +85,7 @@ const ADDITIONAL_REGIONS = [
     ],
   },
   {
-    region: "Africa",
+    regionKey: "regionAfrica" as const,
     countries: [
       "South Africa",
       "Kenya",
@@ -110,11 +111,11 @@ const ADDITIONAL_REGIONS = [
     ],
   },
   {
-    region: "Europe & Central Asia",
+    regionKey: "regionEuropeCentralAsia" as const,
     countries: ["Russia", "Ukraine", "Georgia", "Bulgaria"],
   },
   {
-    region: "Asia & Oceania",
+    regionKey: "regionAsiaOceania" as const,
     countries: ["Australia", "South Korea", "China", "Hong Kong"],
   },
 ];
@@ -123,6 +124,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations("DestinationsPage");
   const destinations = getAllDestinations(locale);
   // Group destinations by region — same pattern as original page
   const regions = Array.from(new Set(destinations.map((d) => d.region)));
@@ -152,7 +154,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
       <div className="pt-20">
         {/* Breadcrumbs */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: "Destinations" }]} />
+          <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
         </div>
 
         {/* ─── Hero with Globe ─────────────────────────────────────────── */}
@@ -162,27 +164,25 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
               {/* Left — Text */}
               <div className="text-white">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl leading-[1.1]">
-                  We Ship to Any Port Worldwide
+                  {t("heroHeading")}
                 </h1>
                 <p className="mt-5 max-w-lg text-lg text-sky-300 leading-relaxed">
-                  {COMPANY.name} exports machinery from the USA and Canada to
-                  40+ countries across six continents. If it has a seaport, we
-                  can get your equipment there.
+                  {t("heroDescription", { company: COMPANY.name })}
                 </p>
 
                 {/* Stats row */}
                 <div className="mt-8 flex flex-wrap gap-6 text-sm">
                   <div>
                     <span className="font-mono text-2xl font-bold tabular-nums text-white">500+</span>
-                    <p className="mt-0.5 text-slate-400">Exports Completed</p>
+                    <p className="mt-0.5 text-slate-400">{t("exportsCompleted")}</p>
                   </div>
                   <div>
                     <span className="font-mono text-2xl font-bold tabular-nums text-white">40+</span>
-                    <p className="mt-0.5 text-slate-400">Countries Served</p>
+                    <p className="mt-0.5 text-slate-400">{t("countriesServed")}</p>
                   </div>
                   <div>
                     <span className="font-mono text-2xl font-bold tabular-nums text-white">6</span>
-                    <p className="mt-0.5 text-slate-400">Continents Reached</p>
+                    <p className="mt-0.5 text-slate-400">{t("continentsReached")}</p>
                   </div>
                 </div>
 
@@ -192,7 +192,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                     size="lg"
                     className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
                   >
-                    Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+                    {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                   <Button
                     render={
@@ -200,7 +200,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                         href={CONTACT.whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label="Chat on WhatsApp"
+                        aria-label={t("chatOnWhatsAppAriaLabel")}
                       />
                     }
                     size="lg"
@@ -208,7 +208,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                     className="h-12 px-8 rounded-xl border-2 border-white/30 text-white bg-transparent hover:bg-white/10 font-semibold"
                   >
                     <MessageCircle className="mr-2 h-4 w-4" />
-                    Chat on WhatsApp
+                    {t("chatOnWhatsApp")}
                   </Button>
                 </div>
               </div>
@@ -221,9 +221,9 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
               {/* Mobile: visual stats grid instead of heavy WebGL globe */}
               <div className="grid grid-cols-3 gap-3 lg:hidden">
                 {[
-                  { icon: Globe, label: "Any Port\nWorldwide", accent: "text-sky-400 bg-sky-500/15" },
-                  { icon: Ship, label: "Weekly\nSailings", accent: "text-teal-400 bg-teal-500/15" },
-                  { icon: MapPin, label: "40+ Countries\nServed", accent: "text-emerald-400 bg-emerald-500/15" },
+                  { icon: Globe, label: t("mobileAnyPort"), accent: "text-sky-400 bg-sky-500/15" },
+                  { icon: Ship, label: t("mobileWeeklySailings"), accent: "text-teal-400 bg-teal-500/15" },
+                  { icon: MapPin, label: t("mobileCountriesServed"), accent: "text-emerald-400 bg-emerald-500/15" },
                 ].map((item) => (
                   <div key={item.label} className="flex flex-col items-center gap-2 rounded-xl bg-white/5 p-4 text-center">
                     <div className={`flex h-10 w-10 items-center justify-center rounded-full ${item.accent}`}>
@@ -267,7 +267,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                               </p>
                               <p className="flex items-center gap-1.5">
                                 <Clock className="h-3.5 w-3.5 text-primary" />
-                                {dest.transitDays} days transit
+                                {t("daysTransit", { days: dest.transitDays })}
                               </p>
                               <p className="flex items-center gap-1.5">
                                 <Ship className="h-3.5 w-3.5 text-primary" />
@@ -275,7 +275,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                               </p>
                             </div>
                             <p className="mt-3 text-sm font-medium text-primary flex items-center gap-1 group-hover:underline">
-                              View route details <ArrowRight className="h-3.5 w-3.5" />
+                              {t("viewRouteDetails")} <ArrowRight className="h-3.5 w-3.5" />
                             </p>
                           </CardContent>
                         </Card>
@@ -293,20 +293,19 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-10">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                More Countries We Serve
+                {t("moreCountriesHeading")}
               </h2>
               <p className="mt-4 max-w-2xl text-muted-foreground">
-                The routes above have dedicated guides, but we regularly ship to
-                every country listed below — and anywhere else with a seaport.
+                {t("moreCountriesDescription")}
               </p>
             </div>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {ADDITIONAL_REGIONS.map((region) => (
-                <div key={region.region}>
+                <div key={region.regionKey}>
                   <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-foreground">
                     <MapPin className="h-4 w-4 text-primary" />
-                    {region.region}
+                    {t(region.regionKey)}
                   </h3>
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {region.countries.map((country) => (
@@ -324,9 +323,9 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
             </div>
 
             <p className="mt-10 text-center text-sm text-muted-foreground">
-              Don&apos;t see your country? We still ship there.{" "}
+              {t("dontSeeCountry")}{" "}
               <Link href="/contact" className="font-medium text-primary hover:underline">
-                Tell us where your equipment needs to go
+                {t("tellUsDestination")}
               </Link>
               .
             </p>
@@ -338,11 +337,10 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
           <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Ready to Ship Your Equipment?
+                {t("ctaHeading")}
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                Tell us the equipment type, location, and destination. You get
-                a detailed, itemized quote within 24 hours — any country, any port.
+                {t("ctaDescription")}
               </p>
               <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Button
@@ -350,7 +348,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                   size="lg"
                   className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
                 >
-                  Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+                  {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button
                   render={<Link href="/pricing/calculator" />}
@@ -358,7 +356,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                   variant="outline"
                   className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
                 >
-                  Try Freight Calculator
+                  {t("tryFreightCalculator")}
                 </Button>
               </div>
             </div>

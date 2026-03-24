@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Calculator, ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -49,6 +49,8 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations("PricingPage");
+
   const pricingJsonLd = {
     "@context": "https://schema.org",
     "@type": "AggregateOffer",
@@ -72,31 +74,29 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }}
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: "Pricing" }]} />
+        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
       </div>
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              Transparent Pricing — Every Line Item Visible
+              {t("heading")}
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              We believe you should see exactly where every dollar goes before you commit.
-              Reference rates for 60+ equipment types and 20+ shipping routes — every quote
-              is itemized, with no hidden fees.
+              {t("description")}
             </p>
             <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Warehouse staging</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Customs documentation</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Packing materials</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Inland freight</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Ocean shipping</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Air freight (urgent)</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Port drayage</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkWarehouse")}</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkCustoms")}</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkPacking")}</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkInland")}</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkOcean")}</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkAir")}</li>
+              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkDrayage")}</li>
             </ul>
             <p className="mt-3 text-sm text-muted-foreground/70">
-              Rates updated quarterly. Last reviewed: Q1 2026. Request your custom quote for exact pricing.
+              {t("ratesUpdated")}
             </p>
           </div>
 
@@ -105,13 +105,13 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
           <div className="mb-12 rounded-xl bg-primary/5 p-6 text-center shadow-sm sm:p-8">
             <Calculator className="mx-auto h-8 w-8 text-primary" />
             <h2 className="mt-3 text-xl font-bold text-foreground">
-              Want an instant estimate?
+              {t("calcHeading")}
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Use our freight calculator to get an estimated cost for your equipment and destination.
+              {t("calcDescription")}
             </p>
             <Button render={<Link href="/pricing/calculator" />} className="mt-4 bg-primary hover:bg-primary/90 text-white font-semibold rounded-xl">
-                Open Freight Calculator
+                {t("openFreightCalculator")}
                 <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -124,21 +124,19 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
           <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16">
             <div className="mx-auto max-w-3xl px-4 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Want the Exact Number?
+                {t("ctaHeading")}
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-slate-300">
-                These are reference rates. Your actual quote depends on equipment
-                condition, pickup distance, and destination. Send us the details —
-                we quote within 24 hours, no obligation, no pressure.
+                {t("ctaDescription")}
               </p>
               <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Button
-                    render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a pricing quote" />}
+                    render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={t("chatOnWhatsAppAriaLabel")} />}
                     size="lg"
                     className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
                   >
                     <MessageCircle className="mr-2 h-4 w-4" />
-                    Chat on WhatsApp
+                    {t("chatOnWhatsApp")}
                 </Button>
                 <Button
                     render={<Link href="/contact" />}
@@ -146,7 +144,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
                     variant="outline"
                     className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
                   >
-                    Contact Us
+                    {t("contactUs")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
