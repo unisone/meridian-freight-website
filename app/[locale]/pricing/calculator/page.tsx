@@ -64,6 +64,8 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
     },
   };
 
+  const t = await getTranslations("CalculatorPage");
+
   return (
     <div className="pt-20">
       <script
@@ -73,8 +75,8 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
-            { label: "Pricing", href: "/pricing" },
-            { label: "Freight Calculator" },
+            { label: t("breadcrumbPricing"), href: "/pricing" },
+            { label: t("breadcrumbCalculator") },
           ]}
         />
       </div>
@@ -83,11 +85,10 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
       <div className="bg-gradient-to-b from-primary/5 to-transparent py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-            Freight Cost Calculator
+            {t("heading")}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Get an instant estimate for your machinery export. Select your
-            equipment and destination — we&apos;ll calculate packing and shipping costs.
+            {t("description")}
           </p>
         </div>
       </div>

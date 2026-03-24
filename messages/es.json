@@ -480,5 +480,11 @@
     "planting": "Siembra",
     "largeEquipment": "Equipo Grande",
     "miscellaneous": "Varios"
+  },
+  "CalculatorPage": {
+    "breadcrumbPricing": "Precios",
+    "breadcrumbCalculator": "Calculadora de Flete",
+    "heading": "Calculadora de Costos de Flete",
+    "description": "Obtenga una cotizacion instantanea para su exportacion de maquinaria. Seleccione su equipo y destino — calcularemos los costos de embalaje y envio."
   }
 }

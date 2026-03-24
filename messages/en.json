@@ -480,5 +480,11 @@
     "planting": "Planting",
     "largeEquipment": "Large Equipment",
     "miscellaneous": "Miscellaneous"
+  },
+  "CalculatorPage": {
+    "breadcrumbPricing": "Pricing",
+    "breadcrumbCalculator": "Freight Calculator",
+    "heading": "Freight Cost Calculator",
+    "description": "Get an instant estimate for your machinery export. Select your equipment and destination — we will calculate packing and shipping costs."
   }
 }
