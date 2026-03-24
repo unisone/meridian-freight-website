@@ -5,13 +5,15 @@ import Script from "next/script";
 import { TRACKING } from "@/lib/constants";
 
 /**
- * Google Analytics 4 with Consent Mode v2.
+ * Google Analytics 4 with Consent Mode v2 (region-aware).
  *
  * How it works:
  * 1. gtag.js always loads (needed to manage consent state)
- * 2. Default consent is "denied" — GA fires cookieless pings only (GDPR-safe)
- * 3. When user accepts cookies, consent updates to "granted" — full tracking enabled
- * 4. If user declines, GA continues with anonymized behavioral modeling only
+ * 2. Global default: analytics_storage "granted" (tracks all non-EU visitors immediately)
+ * 3. EEA/UK override: analytics_storage "denied" (GDPR — requires cookie consent)
+ * 4. Ad storage always defaults to "denied" everywhere until cookie consent
+ * 5. When user accepts cookies, all consent upgrades to "granted"
+ * 6. Google auto-detects visitor region and applies the correct default
  */
 export function GoogleAnalytics() {
   const gaId = TRACKING.gaId;
@@ -42,11 +44,18 @@ export function GoogleAnalytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('consent', 'default', {
-            'analytics_storage': 'denied',
+            'analytics_storage': 'granted',
             'ad_storage': 'denied',
             'ad_user_data': 'denied',
             'ad_personalization': 'denied',
             'wait_for_update': 500
+          });
+          gtag('consent', 'default', {
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']
           });
         `}
       </Script>
