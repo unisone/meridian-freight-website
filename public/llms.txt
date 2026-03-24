@@ -35,6 +35,13 @@ Combines (John Deere, Case IH, Claas), Tractors (John Deere, Case IH, Kubota), E
 
 Latin America (Brazil, Colombia, Mexico, Argentina), Middle East (UAE, Turkey, Saudi Arabia, Iraq), Africa (Nigeria, Kenya, South Africa, Ghana), Central Asia (Kazakhstan, Uzbekistan), Eastern Europe (Romania, Ukraine, Georgia), and anywhere with a seaport.
 
+## Languages
+
+This website is available in three languages:
+- English (default): https://meridianexport.com
+- Spanish (Latin America): https://meridianexport.com/es
+- Russian (Kazakhstan/CIS): https://meridianexport.com/ru
+
 ## Contact
 
 - Phone/WhatsApp: +1 (641) 516-1616

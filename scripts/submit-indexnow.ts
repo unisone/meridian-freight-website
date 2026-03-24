@@ -20,30 +20,34 @@ if (!INDEXNOW_KEY) {
   process.exit(1);
 }
 
-// Build URL list — mirrors app/sitemap.ts
-const urls: string[] = [
-  // Static pages
-  SITE_URL,
-  `${SITE_URL}/about`,
-  `${SITE_URL}/services`,
-  `${SITE_URL}/projects`,
-  `${SITE_URL}/destinations`,
-  `${SITE_URL}/pricing`,
-  `${SITE_URL}/pricing/calculator`,
-  `${SITE_URL}/faq`,
-  `${SITE_URL}/contact`,
-  `${SITE_URL}/privacy`,
-  `${SITE_URL}/terms`,
+// Build URL list — mirrors app/sitemap.ts, all 3 locales
+const LOCALES = ["", "/es", "/ru"]; // "" = English (no prefix)
 
-  // Service pages
-  ...(services.en ?? []).map((s) => `${SITE_URL}/services/${s.slug}`),
-
-  // Equipment pages
-  ...(equipmentTypes.en ?? []).map((e) => `${SITE_URL}/equipment/${e.slug}`),
-
-  // Destination pages
-  ...(destinations.en ?? []).map((d) => `${SITE_URL}/destinations/${d.slug}`),
+const staticPaths = [
+  "",
+  "/about",
+  "/services",
+  "/projects",
+  "/destinations",
+  "/pricing",
+  "/pricing/calculator",
+  "/faq",
+  "/contact",
+  "/privacy",
+  "/terms",
 ];
+
+const dynamicPaths = [
+  ...(services.en ?? []).map((s) => `/services/${s.slug}`),
+  ...(equipmentTypes.en ?? []).map((e) => `/equipment/${e.slug}`),
+  ...(destinations.en ?? []).map((d) => `/destinations/${d.slug}`),
+];
+
+const allPaths = [...staticPaths, ...dynamicPaths];
+
+const urls: string[] = LOCALES.flatMap((locale) =>
+  allPaths.map((path) => `${SITE_URL}${locale}${path}`)
+);
 
 async function submit() {
   console.log(`Submitting ${urls.length} URLs to IndexNow...`);
