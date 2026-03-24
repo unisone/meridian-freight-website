@@ -3,8 +3,8 @@
  * Sends events from Server Actions for accurate attribution.
  */
 
-const PIXEL_ID = process.env.META_PIXEL_ID ?? process.env.NEXT_PUBLIC_META_PIXEL_ID;
-const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
+const PIXEL_ID = (process.env.META_PIXEL_ID ?? process.env.NEXT_PUBLIC_META_PIXEL_ID)?.trim();
+const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN?.trim();
 const API_VERSION = "v21.0";
 
 interface CAPIEvent {

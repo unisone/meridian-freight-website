@@ -2,8 +2,8 @@
  * Send a message to Slack via Bot API. Best-effort — fails silently.
  */
 export async function notifySlack(text: string): Promise<{ ok: boolean }> {
-  const token = process.env.SLACK_BOT_TOKEN;
-  const channel = process.env.SLACK_FORM_INTAKE_CHANNEL_ID;
+  const token = process.env.SLACK_BOT_TOKEN?.trim();
+  const channel = (process.env.SLACK_FORM_INTAKE_CHANNEL_ID ?? process.env.SLACK_CHANNEL_ID)?.trim();
   if (!token || !channel) return { ok: false };
 
   try {

@@ -46,9 +46,9 @@ export const SITE = {
 } as const;
 
 export const TRACKING = {
-  gaId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "",
-  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "",
-  googleAdsId: process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "",
+  gaId: (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "").trim(),
+  metaPixelId: (process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "").trim(),
+  googleAdsId: (process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "").trim(),
 } as const;
 
 export const STATS = {
