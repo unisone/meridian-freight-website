@@ -1,6 +1,7 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ChevronRight, Home } from "lucide-react";
 import { SITE } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 
 interface BreadcrumbItem {
   label: string;
@@ -12,6 +13,8 @@ interface BreadcrumbsProps {
 }
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
+  const t = useTranslations("Breadcrumbs");
+
   // Build JSON-LD BreadcrumbList
   const jsonLd = {
     "@context": "https://schema.org",
@@ -20,7 +23,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
       {
         "@type": "ListItem",
         position: 1,
-        name: "Home",
+        name: t("home"),
         item: SITE.url,
       },
       ...items.map((item, i) => ({
@@ -38,12 +41,12 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav aria-label="Breadcrumb" className="py-4">
+      <nav aria-label={t("breadcrumbLabel")} className="py-4">
         <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
           <li>
             <Link href="/" className="flex items-center gap-1 transition-colors hover:text-primary">
               <Home className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only">Home</span>
+              <span className="sr-only sm:not-sr-only">{t("home")}</span>
             </Link>
           </li>
           {items.map((item) => (

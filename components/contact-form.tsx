@@ -11,12 +11,14 @@ import { submitContactForm } from "@/app/actions/contact";
 import { trackGA4Event, trackPixelEvent, trackContactClick } from "@/lib/tracking";
 import { CONTACT } from "@/lib/constants";
 import { DURATION, EASE } from "@/lib/motion";
+import { useTranslations } from "next-intl";
 import type { ContactFormData } from "@/lib/schemas";
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const t = useTranslations("ContactForm");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -73,10 +75,10 @@ export function ContactForm() {
           trackPixelEvent("Lead", { content_name: "corporate_contact_form" }, result.eventId);
         }
       } else {
-        setError(result.error || "Failed to send message. Please try again.");
+        setError(result.error || t("errorDefault"));
       }
     } catch {
-      setError("Failed to send message. Please try again.");
+      setError(t("errorDefault"));
     } finally {
       setIsSubmitting(false);
     }
@@ -112,13 +114,12 @@ export function ContactForm() {
               }}
             />
           </svg>
-          <h3 className="mt-4 text-2xl font-bold text-foreground">Message Sent!</h3>
+          <h3 className="mt-4 text-2xl font-bold text-foreground">{t("messageSent")}</h3>
           <p className="mt-2 text-muted-foreground">
-            Thank you for reaching out. We&apos;ll get back to you within 24 hours
-            with a detailed, itemized quote — no hidden fees.
+            {t("successMessage")}
           </p>
           <p className="mt-2 text-sm text-muted-foreground/80">
-            Every shipment is fully insured and documented from pickup to port.
+            {t("successSubtext")}
           </p>
           <a
             href={CONTACT.whatsappUrl}
@@ -128,7 +129,7 @@ export function ContactForm() {
             className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
           >
             <MessageCircle className="h-4 w-4" />
-            Can&apos;t wait? Chat with us now on WhatsApp
+            {t("whatsappPrompt")}
           </a>
         </motion.div>
       ) : (
@@ -149,55 +150,55 @@ export function ContactForm() {
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <Label htmlFor="name">Full Name *</Label>
-              <Input id="name" name="name" required placeholder="Your full name" className="mt-1.5" />
+              <Label htmlFor="name">{t("fullName")}</Label>
+              <Input id="name" name="name" required placeholder={t("fullNamePlaceholder")} className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="email">Email *</Label>
-              <Input id="email" name="email" type="email" required placeholder="your@email.com" className="mt-1.5" />
+              <Label htmlFor="email">{t("email")}</Label>
+              <Input id="email" name="email" type="email" required placeholder={t("emailPlaceholder")} className="mt-1.5" />
             </div>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <Label htmlFor="company">Company</Label>
-              <Input id="company" name="company" placeholder="Company name (optional)" className="mt-1.5" />
+              <Label htmlFor="company">{t("company")}</Label>
+              <Input id="company" name="company" placeholder={t("companyPlaceholder")} className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="phone">Phone</Label>
-              <Input id="phone" name="phone" type="tel" placeholder="Phone number (optional)" className="mt-1.5" />
+              <Label htmlFor="phone">{t("phone")}</Label>
+              <Input id="phone" name="phone" type="tel" placeholder={t("phonePlaceholder")} className="mt-1.5" />
             </div>
           </div>
 
           <div>
-            <Label htmlFor="equipmentType">Equipment Type</Label>
+            <Label htmlFor="equipmentType">{t("equipmentType")}</Label>
             <select
               id="equipmentType"
               name="equipmentType"
               className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               defaultValue=""
             >
-              <option value="">Select equipment type (optional)</option>
-              <option value="Combine">Combine Harvester</option>
-              <option value="Tractor">Tractor</option>
-              <option value="Planter">Planter / Seeder</option>
-              <option value="Sprayer">Sprayer</option>
-              <option value="Header">Header / Platform</option>
-              <option value="Tillage">Tillage Equipment</option>
-              <option value="Excavator">Excavator</option>
-              <option value="Construction">Construction Equipment</option>
-              <option value="Other">Other</option>
+              <option value="">{t("selectEquipmentType")}</option>
+              <option value="Combine">{t("combineHarvester")}</option>
+              <option value="Tractor">{t("tractor")}</option>
+              <option value="Planter">{t("planterSeeder")}</option>
+              <option value="Sprayer">{t("sprayer")}</option>
+              <option value="Header">{t("headerPlatform")}</option>
+              <option value="Tillage">{t("tillageEquipment")}</option>
+              <option value="Excavator">{t("excavator")}</option>
+              <option value="Construction">{t("constructionEquipment")}</option>
+              <option value="Other">{t("other")}</option>
             </select>
           </div>
 
           <div>
-            <Label htmlFor="message">Message *</Label>
+            <Label htmlFor="message">{t("message")}</Label>
             <Textarea
               id="message"
               name="message"
               required
               rows={4}
-              placeholder="What equipment do you need shipped, and where is it going?"
+              placeholder={t("messagePlaceholder")}
               className="mt-1.5 resize-y"
             />
           </div>
@@ -211,12 +212,12 @@ export function ContactForm() {
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Sending...
+                {t("sending")}
               </>
             ) : (
               <>
                 <Send className="mr-2 h-5 w-5" />
-                Send Message
+                {t("sendMessage")}
               </>
             )}
           </Button>

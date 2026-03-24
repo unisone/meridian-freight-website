@@ -1,15 +1,19 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, MapPin, Container, Clock, Weight } from "lucide-react";
 import { StaggerItem } from "@/components/scroll-reveal";
-import { projects } from "@/content/projects";
+import { getAllProjects } from "@/content/projects";
+import { useTranslations, useLocale } from "next-intl";
 
 interface ProjectGridProps {
   limit?: number;
 }
 
 export function ProjectGrid({ limit }: ProjectGridProps) {
+  const locale = useLocale();
+  const projects = getAllProjects(locale);
   const displayProjects = limit ? projects.slice(0, limit) : projects;
+  const t = useTranslations("ProjectGrid");
 
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-28">
@@ -17,14 +21,13 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
         {/* Section header */}
         <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Our Work
+            {t("eyebrow")}
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            Equipment We&apos;ve Shipped
+            {t("heading")}
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-            Every project below went from seller&apos;s lot to ocean vessel.
-            Destination, container type, weight, and transit time included.
+            {t("description")}
           </p>
         </div>
 
@@ -91,7 +94,7 @@ export function ProjectGrid({ limit }: ProjectGridProps) {
               href="/projects"
               className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors link-underline"
             >
-              View all projects
+              {t("viewAllProjects")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

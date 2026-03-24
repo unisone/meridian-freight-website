@@ -5,17 +5,16 @@ import { useInView } from "motion/react";
 import { TrendingUp, Clock, Ship, Star, FileText, Package } from "lucide-react";
 import { useCountUp } from "@/hooks/use-count-up";
 import { STATS } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 
-const items = [
-  { icon: TrendingUp, label: "Machines Shipped", value: STATS.projectsCompleted, suffix: "+" },
-  { icon: Clock, label: "Years in Business", value: STATS.yearsExperience, suffix: "+" },
-  { icon: Ship, label: "Air & Ocean Freight", value: null, suffix: null },
-  { icon: Star, label: "5.0 Google Rating (100+ Reviews)", value: null, suffix: null },
-  { icon: FileText, label: "Export Docs Included", value: null, suffix: null },
-  { icon: Package, label: "Fully Insured Shipments", value: null, suffix: null },
-];
+type TrustItem = {
+  icon: typeof TrendingUp;
+  labelKey: string;
+  value: number | null;
+  suffix: string | null;
+};
 
-function StatItem({ item }: { item: (typeof items)[number] }) {
+function StatItem({ item, label }: { item: TrustItem; label: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   const count = useCountUp({
@@ -32,7 +31,7 @@ function StatItem({ item }: { item: (typeof items)[number] }) {
         <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
           {count}{item.suffix}
         </span>
-        <span className="text-xs text-muted-foreground">{item.label}</span>
+        <span className="text-xs text-muted-foreground">{label}</span>
       </div>
     );
   }
@@ -41,18 +40,29 @@ function StatItem({ item }: { item: (typeof items)[number] }) {
   return (
     <div ref={ref} className="flex items-center justify-center gap-2">
       <item.icon className="h-5 w-5 shrink-0 text-primary" />
-      <span className="text-sm font-medium text-muted-foreground">{item.label}</span>
+      <span className="text-sm font-medium text-muted-foreground">{label}</span>
     </div>
   );
 }
 
 export function TrustBar() {
+  const t = useTranslations("TrustBar");
+
+  const items: TrustItem[] = [
+    { icon: TrendingUp, labelKey: "machinesShipped", value: STATS.projectsCompleted, suffix: "+" },
+    { icon: Clock, labelKey: "yearsInBusiness", value: STATS.yearsExperience, suffix: "+" },
+    { icon: Ship, labelKey: "airOceanFreight", value: null, suffix: null },
+    { icon: Star, labelKey: "googleRating", value: null, suffix: null },
+    { icon: FileText, labelKey: "exportDocs", value: null, suffix: null },
+    { icon: Package, labelKey: "fullyInsured", value: null, suffix: null },
+  ];
+
   return (
     <section className="bg-muted py-6 shadow-[inset_0_1px_0_0_rgba(0,0,0,0.04),inset_0_-1px_0_0_rgba(0,0,0,0.04)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-8">
           {items.map((item) => (
-            <StatItem key={item.label} item={item} />
+            <StatItem key={item.labelKey} item={item} label={t(item.labelKey)} />
           ))}
         </div>
       </div>

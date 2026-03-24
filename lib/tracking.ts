@@ -112,6 +112,13 @@ export function trackPixelEvent(
 
 // ─── High-level tracking helpers ────────────────────────────────────────────
 
+/** Get current locale from URL path. */
+function getLocaleFromPath(): string {
+  if (typeof window === "undefined") return "en";
+  const match = window.location.pathname.match(/^\/(es|ru)(\/|$)/);
+  return match ? match[1] : "en";
+}
+
 /** Track a contact link click (WhatsApp / phone / email) with GA4 + Pixel. */
 export function trackContactClick(
   type: "whatsapp" | "phone" | "email",
@@ -121,6 +128,7 @@ export function trackContactClick(
   trackGA4Event(`contact_${type}`, {
     event_category: "contact",
     cta_location: location,
+    locale: getLocaleFromPath(),
   });
   trackPixelEvent("Contact", { content_name: `${location}_${type}` }, eventId);
 }

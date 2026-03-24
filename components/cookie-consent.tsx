@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 const CONSENT_KEY = "cookie-consent";
 
 export function CookieConsent() {
   const [show, setShow] = useState(false);
+  const t = useTranslations("CookieConsent");
 
   useEffect(() => {
     // Only show if no consent decision has been made yet
@@ -38,10 +40,9 @@ export function CookieConsent() {
       }`}
     >
       <p className="text-sm text-muted-foreground">
-        We use cookies to analyze site traffic and optimize your experience.
-        By accepting, you consent to our use of analytics cookies.{" "}
+        {t("message")}{" "}
         <a href="/privacy" className="underline hover:text-foreground">
-          Privacy Policy
+          {t("privacyPolicy")}
         </a>
       </p>
       <div className="mt-3 flex gap-3">
@@ -50,7 +51,7 @@ export function CookieConsent() {
           size="sm"
           className="bg-primary hover:bg-primary/90 text-white"
         >
-          Accept
+          {t("accept")}
         </Button>
         <Button
           onClick={decline}
@@ -58,7 +59,7 @@ export function CookieConsent() {
           variant="outline"
           className="border-border text-foreground"
         >
-          Decline
+          {t("decline")}
         </Button>
       </div>
     </div>

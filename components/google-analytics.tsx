@@ -63,6 +63,11 @@ export function GoogleAnalytics() {
           window.dataLayer = window.dataLayer || [];
           if (!window.gtag) { function gtag(){dataLayer.push(arguments);} window.gtag = gtag; }
           gtag('js', new Date());
+          var rawPath = window.location.pathname;
+          // Strip locale prefix for content grouping (/es/services → /services)
+          var localeMatch = rawPath.match(/^\/(es|ru)(\/|$)/);
+          var locale = localeMatch ? localeMatch[1] : 'en';
+          var p = localeMatch ? rawPath.replace(/^\/(es|ru)/, '') || '/' : rawPath;
           var cg = (function(p) {
             if (p === '/') return 'Homepage';
             if (p.startsWith('/services')) return 'Services';
@@ -77,8 +82,8 @@ export function GoogleAnalytics() {
             if (p.startsWith('/blog')) return 'Blog';
             if (p === '/privacy' || p === '/terms') return 'Legal';
             return 'Other';
-          })(window.location.pathname);
-          gtag('config', '${gaId}', { content_group: cg });
+          })(p);
+          gtag('config', '${gaId}', { content_group: cg, locale: locale });
           ${adsId ? `gtag('config', '${adsId}');` : ""}
         `}
       </Script>

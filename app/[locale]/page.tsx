@@ -1,0 +1,184 @@
+import { Link } from "@/i18n/navigation";
+import { ArrowRight, MessageCircle, BarChart3 } from "lucide-react";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { pageMetadata } from "@/lib/metadata";
+import { Button } from "@/components/ui/button";
+import { Hero } from "@/components/hero";
+import { TrustBar } from "@/components/trust-bar";
+import { ServicesGrid } from "@/components/services-grid";
+import { ProcessSteps } from "@/components/process-steps";
+import { ProjectGrid } from "@/components/project-grid";
+import { VideoSection } from "@/components/video-section";
+import { FaqAccordion } from "@/components/faq-accordion";
+import { ContactForm } from "@/components/contact-form";
+import { ContactInfo } from "@/components/contact-info";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { COMPANY, CONTACT, SITE } from "@/lib/constants";
+import { getHomepageFaq } from "@/content/faq";
+
+export const metadata = pageMetadata({
+  title: "Machinery Export & Logistics — Packing & Shipping",
+  description:
+    "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & ocean shipping. 500+ exports. Free quote in 24 hrs.",
+  path: "/",
+  keywords: [
+    "machinery export USA",
+    "container packing services",
+    "equipment shipping USA Canada",
+    "agricultural equipment export",
+    "heavy machinery dismantling",
+    "40ft container loading",
+    "export documentation services",
+    "ship machinery overseas",
+    "farm equipment shipping worldwide",
+    "machinery logistics company",
+    "air freight machinery",
+    "John Deere parts export",
+  ],
+});
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("HomePage");
+  const tc = await getTranslations("Common");
+
+  const homepageFaq = getHomepageFaq(locale);
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homepageFaq.map((e) => ({
+      "@type": "Question",
+      name: e.question,
+      acceptedAnswer: { "@type": "Answer", text: e.answer },
+    })),
+  };
+
+  const videoJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "Meridian Freight — Machinery Dismantling, Packing & Container Loading",
+    description:
+      "Watch our team dismantle, pack, and load heavy equipment into shipping containers at our Iowa facility. Full-service machinery export from USA & Canada.",
+    thumbnailUrl: "https://img.youtube.com/vi/SrjUBSD2_5Q/maxresdefault.jpg",
+    uploadDate: "2024-01-15",
+    contentUrl: "https://www.youtube.com/watch?v=SrjUBSD2_5Q",
+    embedUrl: "https://www.youtube-nocookie.com/embed/SrjUBSD2_5Q",
+    publisher: {
+      "@type": "Organization",
+      name: COMPANY.name,
+      logo: { "@type": "ImageObject", url: `${SITE.url}/logos/MF Logos White/meridianFreight-logo-mobile-w-150.png` },
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
+      />
+      <Hero />
+      <TrustBar />
+
+      {/* ServicesGrid handles its own stagger internally */}
+      <ServicesGrid />
+
+      {/* ProcessSteps handles its own scroll-linked animation internally */}
+      <ProcessSteps />
+
+      {/* Mid-page CTA */}
+      <ScrollReveal variant="fade">
+        <div className="py-8 text-center">
+          <p className="text-lg font-medium text-foreground">{t("readyToShip")}</p>
+          <div className="mt-4 flex justify-center gap-4">
+            <Button
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
+              render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={tc("chatOnWhatsApp")} />}
+            >
+              <MessageCircle className="mr-2 h-4 w-4" />
+              {tc("chatOnWhatsApp")}
+            </Button>
+            <Button
+              variant="outline"
+              className="border-border text-foreground rounded-lg"
+              render={<Link href="/contact" />}
+            >
+              {tc("contactUs")}
+            </Button>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      {/* ProjectGrid handles its own stagger internally */}
+      <ProjectGrid limit={6} />
+
+      {/* Calculator CTA */}
+      <ScrollReveal variant="scale">
+        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+            <BarChart3 className="mx-auto h-8 w-8 text-sky-400" />
+            <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
+              {t("calcHeading")}
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-slate-300">
+              {t("calcDescription")}
+            </p>
+            <Button
+              size="lg"
+              className="mt-6 h-12 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg"
+              render={<Link href="/pricing/calculator" />}
+            >
+              {t("openCalculator")}
+              <ArrowRight className="ml-2 h-4 w-4 animate-nudge-right" />
+            </Button>
+          </div>
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <VideoSection />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <FaqAccordion entries={homepageFaq} showViewAll />
+      </ScrollReveal>
+
+      {/* Contact section */}
+      <ScrollReveal>
+        <section id="contact" className="py-16 md:py-28 bg-muted">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 sm:mb-16">
+              <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+                {t("contactEyebrow")}
+              </p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
+                {t("contactHeading")}
+              </h2>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
+                {t("contactDescription")}
+              </p>
+            </div>
+            <div className="grid gap-12 lg:grid-cols-2">
+              <div className="rounded-xl bg-white p-6 shadow-md sm:p-8">
+                <h3 className="mb-6 text-2xl font-bold text-foreground">
+                  {t("requestYourQuote")}
+                </h3>
+                <ContactForm />
+              </div>
+              <ContactInfo />
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+    </>
+  );
+}

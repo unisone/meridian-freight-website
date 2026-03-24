@@ -1,13 +1,16 @@
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Youtube } from "lucide-react";
 import { CONTACT, SOCIAL } from "@/lib/constants";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
+import { useTranslations } from "next-intl";
 
 export function ContactInfo() {
+  const t = useTranslations("ContactInfo");
+
   return (
     <div className="rounded-xl bg-white p-6 shadow-md sm:p-8 space-y-8">
       <div>
         <h3 className="text-2xl font-bold text-foreground">
-          Contact Information
+          {t("title")}
         </h3>
         <div className="mt-6 space-y-4">
           <TrackedContactLink
@@ -22,7 +25,7 @@ export function ContactInfo() {
               <Phone className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
             </div>
             <div>
-              <div className="font-semibold text-foreground">Phone / WhatsApp</div>
+              <div className="font-semibold text-foreground">{t("phoneWhatsApp")}</div>
               <div className="text-sm text-muted-foreground">{CONTACT.phone}</div>
             </div>
           </TrackedContactLink>
@@ -37,7 +40,7 @@ export function ContactInfo() {
               <Mail className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
             </div>
             <div>
-              <div className="font-semibold text-foreground">Email</div>
+              <div className="font-semibold text-foreground">{t("email")}</div>
               <div className="text-sm text-muted-foreground">{CONTACT.email}</div>
             </div>
           </TrackedContactLink>
@@ -47,7 +50,7 @@ export function ContactInfo() {
               <MapPin className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <div className="font-semibold text-foreground">Address</div>
+              <div className="font-semibold text-foreground">{t("address")}</div>
               <div className="text-sm text-muted-foreground">{CONTACT.address.full}</div>
             </div>
           </div>
@@ -57,7 +60,7 @@ export function ContactInfo() {
               <Clock className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <div className="font-semibold text-foreground">Hours</div>
+              <div className="font-semibold text-foreground">{t("hours")}</div>
               <div className="text-sm text-muted-foreground">{CONTACT.hours}</div>
             </div>
           </div>
@@ -66,14 +69,14 @@ export function ContactInfo() {
 
       {/* Social */}
       <div>
-        <h3 className="text-lg font-bold text-foreground">Follow Us</h3>
+        <h3 className="text-lg font-bold text-foreground">{t("followUs")}</h3>
         <div className="mt-3 flex gap-3">
           <a
             href={SOCIAL.facebook}
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
-            aria-label="Facebook"
+            aria-label={t("facebook")}
           >
             <Facebook className="h-4 w-4" />
           </a>
@@ -82,7 +85,7 @@ export function ContactInfo() {
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
-            aria-label="Instagram"
+            aria-label={t("instagram")}
           >
             <Instagram className="h-4 w-4" />
           </a>
@@ -91,7 +94,7 @@ export function ContactInfo() {
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
-            aria-label="YouTube"
+            aria-label={t("youtube")}
           >
             <Youtube className="h-4 w-4" />
           </a>

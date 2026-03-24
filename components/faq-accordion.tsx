@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { ArrowRight } from "lucide-react";
 import { trackGA4Event } from "@/lib/tracking";
+import { useTranslations } from "next-intl";
 import type { FaqEntry } from "@/content/faq";
 
 interface FaqAccordionProps {
@@ -17,6 +18,8 @@ interface FaqAccordionProps {
 }
 
 export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps) {
+  const t = useTranslations("FaqAccordion");
+
   function handleValueChange(value: string | string[]) {
     const expanded = Array.isArray(value) ? value : value ? [value] : [];
     if (expanded.length > 0) {
@@ -29,10 +32,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Before You Ship
+            {t("eyebrow")}
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            Questions Every Buyer Asks
+            {t("heading")}
           </h2>
         </div>
 
@@ -60,7 +63,7 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
                 href="/faq"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 link-underline"
               >
-                View All Questions
+                {t("viewAllQuestions")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

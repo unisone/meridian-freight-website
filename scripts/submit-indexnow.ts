@@ -36,13 +36,13 @@ const urls: string[] = [
   `${SITE_URL}/terms`,
 
   // Service pages
-  ...services.map((s) => `${SITE_URL}/services/${s.slug}`),
+  ...(services.en ?? []).map((s) => `${SITE_URL}/services/${s.slug}`),
 
   // Equipment pages
-  ...equipmentTypes.map((e) => `${SITE_URL}/equipment/${e.slug}`),
+  ...(equipmentTypes.en ?? []).map((e) => `${SITE_URL}/equipment/${e.slug}`),
 
   // Destination pages
-  ...destinations.map((d) => `${SITE_URL}/destinations/${d.slug}`),
+  ...(destinations.en ?? []).map((d) => `${SITE_URL}/destinations/${d.slug}`),
 ];
 
 async function submit() {

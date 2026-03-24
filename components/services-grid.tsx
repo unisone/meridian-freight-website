@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import {
   Package,
   Truck,
@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { StaggerItem } from "@/components/scroll-reveal";
-import { services } from "@/content/services";
+import { getAllServices } from "@/content/services";
+import { useTranslations, useLocale } from "next-intl";
 
 const iconMap: Record<string, typeof Package> = {
   Package,
@@ -22,20 +23,24 @@ const iconMap: Record<string, typeof Package> = {
 };
 
 export function ServicesGrid() {
+  const t = useTranslations("ServicesGrid");
+  const tc = useTranslations("Common");
+  const locale = useLocale();
+  const services = getAllServices(locale);
+
   return (
     <section className="py-16 md:py-24 bg-muted">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header — editorial left-aligned */}
         <div className="mb-12 sm:mb-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            What We Do
+            {t("eyebrow")}
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            Everything Between Seller and Port
+            {t("heading")}
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Each service below is something you&apos;d otherwise coordinate
-            separately. We bundle them into one project with one invoice.
+            {t("description")}
           </p>
         </div>
 
@@ -61,7 +66,7 @@ export function ServicesGrid() {
                         {service.description}
                       </p>
                       <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-primary transition-colors group-hover:text-primary/80 link-underline">
-                        Learn More
+                        {tc("learnMore")}
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     </CardContent>

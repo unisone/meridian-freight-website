@@ -50,8 +50,27 @@ export type CalculatorResult = {
   eventId?: string;
 };
 
+const CALC_REPLY_SUBJECTS: Record<string, string> = {
+  en: `Your Freight Estimate — ${COMPANY.name}`,
+  es: `Su Cotizacion de Flete — ${COMPANY.name}`,
+  ru: `Ваш расчет стоимости доставки — ${COMPANY.name}`,
+};
+
+const CALC_REPLY_INTRO: Record<string, (name: string) => string> = {
+  en: (name) => `<p>Hi${name ? ` ${name}` : ""},</p><p>Thanks for using the ${COMPANY.name} freight calculator. Here&rsquo;s your estimate:</p>`,
+  es: (name) => `<p>Hola${name ? ` ${name}` : ""},</p><p>Gracias por usar la calculadora de flete de ${COMPANY.name}. Aqui tiene su cotizacion:</p>`,
+  ru: (name) => `<p>Здравствуйте${name ? `, ${name}` : ""},</p><p>Спасибо за использование калькулятора доставки ${COMPANY.name}. Вот ваш расчет:</p>`,
+};
+
+const CALC_REPLY_FOOTER: Record<string, string> = {
+  en: `<p style="font-size:13px;color:#6b7280">This estimate covers packing, loading, and ocean freight. Customs duties, import taxes, insurance, and destination inland transport are not included.</p><p>Ready for a detailed quote? Reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">WhatsApp us</a>.</p>`,
+  es: `<p style="font-size:13px;color:#6b7280">Esta cotizacion cubre embalaje, carga y flete maritimo. Aranceles aduaneros, impuestos de importacion, seguro y transporte terrestre en destino no estan incluidos.</p><p>Listo para una cotizacion detallada? Responda a este correo o <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">escribanos por WhatsApp</a>.</p>`,
+  ru: `<p style="font-size:13px;color:#6b7280">Данный расчет включает упаковку, погрузку и морской фрахт. Таможенные пошлины, импортные налоги, страхование и доставка по стране назначения не включены.</p><p>Готовы к детальному расчету? Ответьте на это письмо или <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">напишите нам в WhatsApp</a>.</p>`,
+};
+
 export async function submitCalculator(
-  raw: CalculatorV2Data
+  raw: CalculatorV2Data,
+  locale: string = "en"
 ): Promise<CalculatorResult> {
   // 1. Validate
   const parsed = calculatorV2Schema.safeParse(raw);
@@ -126,7 +145,7 @@ export async function submitCalculator(
       from: CONTACT.fromEmail,
       to: CONTACT.notificationEmail,
       replyTo: data.email,
-      subject: `Calculator Lead: ${estimate.equipmentDisplayName} → ${countryName}`,
+      subject: `Calculator Lead: ${estimate.equipmentDisplayName} → ${countryName}${locale !== "en" ? ` [${locale.toUpperCase()}]` : ""}`,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto">
           <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;padding:24px;border-radius:8px 8px 0 0">
@@ -170,17 +189,19 @@ export async function submitCalculator(
     return { success: false, error: "An unexpected error occurred." };
   }
 
-  // 7. Auto-reply to visitor with estimate (best-effort)
+  // 7. Auto-reply to visitor with estimate in their language (best-effort)
   try {
+    const calcSubject = CALC_REPLY_SUBJECTS[locale] ?? CALC_REPLY_SUBJECTS.en;
+    const calcIntro = (CALC_REPLY_INTRO[locale] ?? CALC_REPLY_INTRO.en)(data.name ? escapeHtml(data.name) : "");
+    const calcFooter = CALC_REPLY_FOOTER[locale] ?? CALC_REPLY_FOOTER.en;
     await resend.emails.send({
       from: CONTACT.fromEmail,
       to: data.email,
       replyTo: CONTACT.notificationEmail,
-      subject: `Your Freight Estimate — ${COMPANY.name}`,
+      subject: calcSubject,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
-          <p>Hi${data.name ? ` ${escapeHtml(data.name)}` : ""},</p>
-          <p>Thanks for using the ${COMPANY.name} freight calculator. Here&rsquo;s your estimate:</p>
+          ${calcIntro}
           <table style="width:100%;border-collapse:collapse;margin:16px 0">
             <tr style="background:#f0f9ff">
               <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Equipment</strong></td>
@@ -213,8 +234,7 @@ export async function submitCalculator(
               <td style="padding:10px 14px;border:1px solid #e0e7ef;font-size:18px"><strong>${formatDollar(estimate.estimatedTotal)}</strong>${estimate.totalExcludesInland ? " <span style='color:#6b7280;font-size:12px'>(excludes US inland)</span>" : ""}</td>
             </tr>
           </table>
-          <p style="font-size:13px;color:#6b7280">This estimate covers packing, loading, and ocean freight. Customs duties, import taxes, insurance, and destination inland transport are not included.</p>
-          <p>Ready for a detailed quote? Reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">WhatsApp us</a>.</p>
+          ${calcFooter}
           <p style="margin-top:20px;color:#6b7280;font-size:13px">&mdash; ${COMPANY.name}</p>
         </div>
       `,
@@ -225,7 +245,7 @@ export async function submitCalculator(
 
   // 8. Slack notification (best-effort)
   const slackLines = [
-    `*New calculator lead (V2):* ${data.name || "Anonymous"} <${data.email}>`,
+    `*New calculator lead (V2${locale !== "en" ? ` — ${locale.toUpperCase()}` : ""}):* ${data.name || "Anonymous"} <${data.email}>`,
     data.company ? `Company: ${data.company}` : null,
     `Equipment: ${estimate.equipmentDisplayName} (${containerLabel})`,
     `Route: ${estimate.originPort} → ${estimate.destinationPort}, ${countryName}`,

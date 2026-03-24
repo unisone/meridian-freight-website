@@ -8,9 +8,11 @@ import { COMPANY } from "@/lib/constants";
 import { generateRefCode, buildWhatsAppUrl } from "@/lib/wa-attribution";
 import { trackGA4Event, trackPixelEvent, generateEventId } from "@/lib/tracking";
 import { DURATION, EASE } from "@/lib/motion";
+import { useTranslations } from "next-intl";
 
 export function WhatsAppWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslations("WhatsApp");
 
   // Generate a unique ref code per session for attribution
   const refCode = useMemo(() => generateRefCode(), []);
@@ -60,13 +62,13 @@ export function WhatsAppWidget() {
                 </div>
                 <div>
                   <div className="font-semibold">{COMPANY.name}</div>
-                  <div className="text-sm opacity-90">Typically replies within minutes</div>
+                  <div className="text-sm opacity-90">{t("replyTime")}</div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
                 className="rounded-lg p-2 transition-colors hover:bg-white/20"
-                aria-label="Close chat"
+                aria-label={t("closeChat")}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -76,7 +78,7 @@ export function WhatsAppWidget() {
             <div className="p-5">
               <div className="mb-4 rounded-xl bg-muted p-4">
                 <p className="text-sm text-foreground">
-                  Have questions about equipment pickup or export? We&apos;re here to help!
+                  {t("chatMessage")}
                 </p>
               </div>
               <a
@@ -87,7 +89,7 @@ export function WhatsAppWidget() {
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 font-semibold text-white shadow-md transition-all hover:bg-emerald-700 hover:shadow-lg"
               >
                 <Send className="h-5 w-5" />
-                Contact Us on WhatsApp
+                {t("contactButton")}
               </a>
             </div>
           </motion.div>
@@ -101,7 +103,7 @@ export function WhatsAppWidget() {
         transition={{ duration: DURATION.entrance, delay: 0.8, ease: EASE.decelerate }}
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xl transition-all hover:bg-emerald-700 hover:scale-110 active:scale-95 lg:bottom-6 lg:right-6 sm:h-16 sm:w-16"
-        aria-label="Open WhatsApp chat"
+        aria-label={t("openChat")}
       >
         <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />
       </motion.button>

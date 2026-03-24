@@ -12,7 +12,8 @@ import type { CalculatorResult } from "@/app/actions/calculator";
 
 import { CONTACT } from "@/lib/constants";
 import { trackContactClick } from "@/lib/tracking";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 interface EstimateCardProps {
   preview: FreightEstimateV2 | null;
@@ -56,6 +57,8 @@ export function CalculatorEstimateCard({
   onSubmit,
   onReset,
 }: EstimateCardProps) {
+  const t = useTranslations("CalculatorEstimate");
+  const tc = useTranslations("Common");
   const [emailGateOpen, setEmailGateOpen] = useState(false);
   const isEmailValid = EMAIL_RE.test(email);
   const hasResult = result?.success && result?.estimate;
@@ -98,7 +101,7 @@ export function CalculatorEstimateCard({
         <div className="mb-4 flex items-center gap-2">
           <CheckCircle className="h-5 w-5 text-emerald-500" />
           <span className="text-sm font-medium text-emerald-500">
-            Estimate sent to {email}
+            {t("estimateSentTo", { email })}
           </span>
         </div>
 
@@ -107,7 +110,7 @@ export function CalculatorEstimateCard({
           {estimate.usInlandTransport !== null && (
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-sm text-slate-300">US Inland Transport</div>
+                <div className="text-sm text-slate-300">{t("usInlandTransport")}</div>
                 {estimate.distanceMiles !== null && (
                   <div className="text-xs text-slate-500">
                     {estimate.distanceMiles} mi × ${estimate.deliveryRatePerMile}/mi
@@ -122,15 +125,15 @@ export function CalculatorEstimateCard({
           )}
           {estimate.usInlandTransport === null && (
             <div className="flex items-start justify-between">
-              <span className="text-sm text-slate-500">US Inland Transport</span>
-              <span className="text-xs italic text-slate-500">Enter ZIP for estimate</span>
+              <span className="text-sm text-slate-500">{t("usInlandTransport")}</span>
+              <span className="text-xs italic text-slate-500">{t("enterZipForEstimate")}</span>
             </div>
           )}
 
           {estimate.packingAndLoading > 0 && (
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-sm text-slate-300">Packing & Loading</div>
+                <div className="text-sm text-slate-300">{t("packingAndLoading")}</div>
                 {estimate.packingBreakdown && (
                   <div className="text-xs text-slate-500">{estimate.packingBreakdown}</div>
                 )}
@@ -144,7 +147,7 @@ export function CalculatorEstimateCard({
           <div className="flex items-start justify-between">
             <div>
               <div className="text-sm text-slate-300">
-                {estimate.containerType === "flatrack" ? "Sea Freight & Loading" : "Ocean Freight"}
+                {estimate.containerType === "flatrack" ? t("seaFreightAndLoading") : t("oceanFreight")}
               </div>
               <div className="text-xs text-slate-500">
                 {estimate.carrier} &bull; {estimate.originPort} → {estimate.destinationPort}
@@ -158,7 +161,7 @@ export function CalculatorEstimateCard({
 
           <div className="mt-3 rounded-lg bg-white/5 p-3">
             <div className="flex items-baseline justify-between">
-              <span className="font-semibold text-white">Estimated Total</span>
+              <span className="font-semibold text-white">{t("estimatedTotal")}</span>
               <span className="font-mono text-3xl font-bold text-white">
                 {formatDollar(estimate.estimatedTotal)}
               </span>
@@ -180,7 +183,7 @@ export function CalculatorEstimateCard({
           </Badge>
           {estimate.totalExcludesInland && (
             <Badge className="border-amber-600/30 bg-amber-900/30 text-xs text-amber-500">
-              Excludes US inland
+              {t("excludesUSInland")}
             </Badge>
           )}
         </div>
@@ -197,8 +200,7 @@ export function CalculatorEstimateCard({
         )}
 
         <p className="mt-4 text-xs text-slate-500">
-          Covers packing, loading, and ocean freight. Customs duties, import taxes,
-          insurance, and destination transport not included.
+          {t("coversNote")}
         </p>
 
         {/* CTAs */}
@@ -207,7 +209,7 @@ export function CalculatorEstimateCard({
             render={<Link href="/contact" />}
             className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            Get Detailed Quote <ArrowRight className="ml-2 h-4 w-4" />
+            {t("getDetailedQuote")} <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
           <Button
             render={
@@ -215,21 +217,21 @@ export function CalculatorEstimateCard({
                 href={CONTACT.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Chat on WhatsApp for a detailed quote"
+                aria-label={t("whatsAppChatAriaLabel")}
                 onClick={() => trackContactClick("whatsapp", "calculator_estimate")}
               />
             }
             variant="outline"
             className="w-full border-emerald-600/50 py-5 font-semibold text-emerald-500 hover:bg-emerald-600/10"
           >
-            WhatsApp Us
+            {tc("whatsAppUs")}
           </Button>
           <Button
             variant="ghost"
             onClick={onReset}
             className="w-full text-slate-300 hover:text-white"
           >
-            Calculate Another
+            {t("calculateAnother")}
           </Button>
         </div>
       </div>
@@ -247,7 +249,7 @@ export function CalculatorEstimateCard({
             <Ship className="h-6 w-6 text-muted-foreground" />
           </div>
           <p className="text-sm text-muted-foreground">
-            Select your equipment and destination to see a live freight estimate
+            {t("emptyStateText")}
           </p>
         </div>
       </div>
@@ -259,21 +261,21 @@ export function CalculatorEstimateCard({
   // ---------------------------------------------------------------------------
   const containerLabel =
     selectedEquipment.container_type === "fortyhc"
-      ? "40' High Cube"
-      : "Flat Rack";
+      ? t("fortyHCShort")
+      : t("flatRack");
 
   return (
     <div className="rounded-2xl bg-slate-900 p-6 text-white" aria-live="polite">
       {/* Header */}
       <div className="mb-1 flex items-center justify-between">
         <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-          Estimated Freight
+          {t("estimatedFreight")}
         </span>
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
           <Ship className="h-4 w-4 text-primary" />
         </div>
       </div>
-      <p className="mb-4 text-xs text-slate-500">Based on industrial rates</p>
+      <p className="mb-4 text-xs text-slate-500">{t("basedOnRates")}</p>
 
       {/* Price */}
       {preview ? (
@@ -282,7 +284,7 @@ export function CalculatorEstimateCard({
             {formatDollar(displayTotal)}
           </div>
           <p className="mb-5 text-xs font-semibold uppercase tracking-wider text-primary">
-            {preview.totalExcludesInland ? "Excl. inland transport" : "Optimized route rate"}
+            {preview.totalExcludesInland ? t("exclInlandTransport") : t("optimizedRouteRate")}
           </p>
         </>
       ) : (
@@ -290,22 +292,22 @@ export function CalculatorEstimateCard({
           <div className="mb-1 font-mono text-4xl font-bold tracking-tight text-slate-600">
             $—,———
           </div>
-          <p className="mb-5 text-xs text-slate-600">Select destination for estimate</p>
+          <p className="mb-5 text-xs text-slate-600">{t("selectDestination")}</p>
         </>
       )}
 
       {/* Detail rows */}
       <div className="space-y-3 mt-4 pt-4 bg-white/5 -mx-6 px-6 rounded-lg">
-        <DetailRow label="Transit Time" value={preview?.transitTimeDays ? `${preview.transitTimeDays} Days` : "—"} mono />
-        <DetailRow label="Container" value={containerLabel} mono />
-        <DetailRow label="Carrier" value={preview?.carrier ?? "—"} highlight mono />
+        <DetailRow label={t("transitTime")} value={preview?.transitTimeDays ? `${preview.transitTimeDays} ${tc("days")}` : "—"} mono />
+        <DetailRow label={t("container")} value={containerLabel} mono />
+        <DetailRow label={t("carrier")} value={preview?.carrier ?? "—"} highlight mono />
         <DetailRow
-          label="Loading Type"
-          value={selectedEquipment.container_type === "fortyhc" ? "Container" : "RoRo (Roll-on/Roll-off)"}
+          label={t("loadingType")}
+          value={selectedEquipment.container_type === "fortyhc" ? t("containerLoading") : t("roroLoading")}
         />
         {destinationCountry && (
           <DetailRow
-            label="Route"
+            label={t("route")}
             value={preview ? `${preview.originPort} → ${preview.destinationPort}` : "—"}
           />
         )}
@@ -315,49 +317,49 @@ export function CalculatorEstimateCard({
       {emailGateOpen && !hasResult ? (
         <div className="mt-5 space-y-3 bg-white/5 -mx-6 px-6 py-5 rounded-lg">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Get Your Detailed Estimate
+            {t("getYourDetailedEstimate")}
           </p>
 
           <div>
             <Label htmlFor="est-email" className="text-xs text-slate-400">
-              Email *
+              {t("emailLabel")}
             </Label>
             <Input
               id="est-email"
               type="email"
               value={email}
               onChange={(e) => onEmailChange(e.target.value)}
-              placeholder="your@email.com"
+              placeholder={t("emailPlaceholder")}
               required
               className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-600 focus:border-primary"
             />
             {email && !isEmailValid && (
-              <p className="mt-1 text-xs text-red-500">Please enter a valid email</p>
+              <p className="mt-1 text-xs text-red-500">{t("validEmailError")}</p>
             )}
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
               <Label htmlFor="est-name" className="text-xs text-slate-400">
-                Name
+                {t("nameLabel")}
               </Label>
               <Input
                 id="est-name"
                 value={name}
                 onChange={(e) => onNameChange(e.target.value)}
-                placeholder="Optional"
+                placeholder={t("optionalPlaceholder")}
                 className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-600"
               />
             </div>
             <div>
               <Label htmlFor="est-company" className="text-xs text-slate-400">
-                Company
+                {t("companyLabel")}
               </Label>
               <Input
                 id="est-company"
                 value={company}
                 onChange={(e) => onCompanyChange(e.target.value)}
-                placeholder="Optional"
+                placeholder={t("optionalPlaceholder")}
                 className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-600"
               />
             </div>
@@ -388,17 +390,17 @@ export function CalculatorEstimateCard({
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Calculating...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t("calculating")}
               </>
             ) : (
               <>
-                Calculate & Send Estimate <ArrowRight className="ml-2 h-4 w-4" />
+                {t("calculateAndSend")} <ArrowRight className="ml-2 h-4 w-4" />
               </>
             )}
           </Button>
 
           <p className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
-            <Lock className="h-3 w-3" /> We&apos;ll email you a detailed breakdown
+            <Lock className="h-3 w-3" /> {t("emailBreakdownNote")}
           </p>
         </div>
       ) : !hasResult ? (
@@ -409,14 +411,14 @@ export function CalculatorEstimateCard({
             disabled={!isComplete}
             className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            Book This Freight <ArrowRight className="ml-2 h-4 w-4" />
+            {t("bookThisFreight")} <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
             className="w-full text-slate-300 hover:text-white"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            Refine Quote Parameters
+            {t("refineQuote")}
           </Button>
         </div>
       ) : null}

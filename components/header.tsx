@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import {
   Phone,
@@ -17,13 +17,17 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { CONTACT, NAV_ITEMS } from "@/lib/constants";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { DURATION, EASE } from "@/lib/motion";
 import { trackContactClick } from "@/lib/tracking";
+import { useTranslations } from "next-intl";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const t = useTranslations("Header");
+  const tc = useTranslations("Common");
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50);
@@ -48,7 +52,7 @@ export function Header() {
           ? "glass-heavy shadow-sm ghost-border"
           : "bg-white"
       }`}
-      aria-label="Main navigation"
+      aria-label={t("mainNavLabel")}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-4">
@@ -56,7 +60,7 @@ export function Header() {
           <Link
             href="/"
             className="flex items-center rounded-lg py-1 px-1 transition-all"
-            aria-label="Meridian Freight Inc. — Go to homepage"
+            aria-label={t("logoAlt")}
           >
             <Image
               src="/logos/MF Logos White/meridianFreight-logo-W-250.png"
@@ -89,7 +93,7 @@ export function Header() {
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
                     >
-                      <span>{item.label}</span>
+                      <span>{t(`nav.${item.label}`)}</span>
                       <ChevronDown
                         className={`h-3.5 w-3.5 transition-transform duration-300 ${
                           openDropdown === item.label ? "rotate-180" : ""
@@ -128,7 +132,7 @@ export function Header() {
                                   className="block px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/5 hover:text-primary/80"
                                   onClick={() => setOpenDropdown(null)}
                                 >
-                                  {child.label}
+                                  {t(`nav.${child.label}`)}
                                 </Link>
                               </motion.div>
                             ))}
@@ -139,7 +143,7 @@ export function Header() {
                               className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary/90"
                               onClick={() => setOpenDropdown(null)}
                             >
-                              Get Free Quote
+                              {tc("getFreeQuote")}
                             </Link>
                           </div>
                         </motion.div>
@@ -151,11 +155,13 @@ export function Header() {
                     href={item.href}
                     className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline"
                   >
-                    {item.label}
+                    {t(`nav.${item.label}`)}
                   </Link>
                 )}
               </div>
             ))}
+
+            <LanguageSwitcher />
 
             {/* CTA — WhatsApp primary */}
             <a
@@ -166,7 +172,7 @@ export function Header() {
               className="ml-4 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
             >
               <MessageCircle className="h-4 w-4" />
-              Chat on WhatsApp
+              {tc("chatOnWhatsApp")}
             </a>
           </div>
 
@@ -174,15 +180,18 @@ export function Header() {
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
               className="lg:hidden p-2.5 rounded-lg transition-colors hover:bg-muted"
-              aria-label="Open menu"
+              aria-label={t("openMenu")}
             >
               <Menu
                 className="h-6 w-6 text-foreground"
               />
             </SheetTrigger>
             <SheetContent side="right" className="w-80 overflow-y-auto">
-              <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+              <SheetTitle className="sr-only">{t("mobileMenuTitle")}</SheetTitle>
               <div className="flex flex-col gap-1 pt-8">
+                <div className="mb-2 px-4">
+                  <LanguageSwitcher />
+                </div>
                 {NAV_ITEMS.map((item, idx) => (
                   <motion.div
                     key={item.label}
@@ -201,7 +210,7 @@ export function Header() {
                           className="block py-3 px-4 text-lg font-medium text-foreground hover:text-primary/80 transition-colors rounded-lg hover:bg-muted"
                           onClick={() => setMobileOpen(false)}
                         >
-                          {item.label}
+                          {t(`nav.${item.label}`)}
                         </Link>
                         <div className="pl-4">
                           {item.children.map((child) => (
@@ -211,7 +220,7 @@ export function Header() {
                               className="block py-2.5 px-4 text-sm text-muted-foreground hover:text-primary/80 transition-colors rounded-lg hover:bg-muted"
                               onClick={() => setMobileOpen(false)}
                             >
-                              {child.label}
+                              {t(`nav.${child.label}`)}
                             </Link>
                           ))}
                         </div>
@@ -222,7 +231,7 @@ export function Header() {
                         className="block py-3 px-4 text-lg font-medium text-foreground hover:text-primary/80 transition-colors rounded-lg hover:bg-muted"
                         onClick={() => setMobileOpen(false)}
                       >
-                        {item.label}
+                        {t(`nav.${item.label}`)}
                       </Link>
                     )}
                   </motion.div>
@@ -246,7 +255,7 @@ export function Header() {
                     onClick={() => { setMobileOpen(false); trackContactClick("whatsapp", "header_mobile_menu"); }}
                   >
                     <MessageCircle className="h-5 w-5" />
-                    Chat on WhatsApp
+                    {tc("chatOnWhatsApp")}
                   </a>
                 </motion.div>
 
@@ -269,7 +278,7 @@ export function Header() {
                     <Phone className="h-5 w-5 text-emerald-600" />
                     <div>
                       <div className="font-medium text-foreground">
-                        Call Now
+                        {tc("callNow")}
                       </div>
                       <div className="text-sm text-muted-foreground">
                         {CONTACT.phone}
@@ -289,7 +298,7 @@ export function Header() {
                         WhatsApp
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        Quick Response
+                        {tc("quickResponse")}
                       </div>
                     </div>
                   </a>

@@ -4,37 +4,39 @@ import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { MessageSquare, Truck, Package, Globe } from "lucide-react";
 import { DURATION, EASE } from "@/lib/motion";
-
-const steps = [
-  {
-    number: 1,
-    title: "Tell Us What You Need",
-    description: "Send us the equipment details and destination. You get a detailed, itemized quote within 24 hours.",
-    icon: MessageSquare,
-  },
-  {
-    number: 2,
-    title: "We Pick It Up",
-    description: "Our team collects the equipment from anywhere in the USA or Canada and brings it to our facility.",
-    icon: Truck,
-  },
-  {
-    number: 3,
-    title: "Dismantle, Pack & Load",
-    description: "We take it apart, tag every component, pack it into the container, and prepare all export paperwork.",
-    icon: Package,
-  },
-  {
-    number: 4,
-    title: "It Ships to Your Port",
-    description: "We book your container on the next available vessel — you get real-time tracking, customs docs, and arrival confirmation.",
-    icon: Globe,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function ProcessSteps() {
+  const t = useTranslations("ProcessSteps");
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  const steps = [
+    {
+      number: 1,
+      title: t("step1Title"),
+      description: t("step1Description"),
+      icon: MessageSquare,
+    },
+    {
+      number: 2,
+      title: t("step2Title"),
+      description: t("step2Description"),
+      icon: Truck,
+    },
+    {
+      number: 3,
+      title: t("step3Title"),
+      description: t("step3Description"),
+      icon: Package,
+    },
+    {
+      number: 4,
+      title: t("step4Title"),
+      description: t("step4Description"),
+      icon: Globe,
+    },
+  ];
 
   // Scroll-linked line progress (desktop only — line is hidden on mobile via CSS)
   const { scrollYProgress } = useScroll({
@@ -54,14 +56,13 @@ export function ProcessSteps() {
           className="mb-12 sm:mb-16"
         >
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            How It Works
+            {t("eyebrow")}
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-            Four Steps. One Point of Contact.
+            {t("heading")}
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Most exports involve a trucker, a dismantler, a packer, a broker, and a shipping line.
-            With us, you talk to one person from start to finish.
+            {t("description")}
           </p>
         </motion.div>
 

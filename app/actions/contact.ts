@@ -47,8 +47,36 @@ export type ContactActionResult = {
   eventId?: string;
 };
 
+const AUTO_REPLY_SUBJECTS: Record<string, string> = {
+  en: `We received your message — ${COMPANY.name}`,
+  es: `Hemos recibido su mensaje — ${COMPANY.name}`,
+  ru: `Мы получили ваше сообщение — ${COMPANY.name}`,
+};
+
+const AUTO_REPLY_BODY: Record<string, (name: string, message: string) => string> = {
+  en: (name, message) => `
+    <p>Hi ${name},</p>
+    <p>Thanks for reaching out to ${COMPANY.name}. We received your message and will respond within <strong>24 hours</strong>.</p>
+    <p style="margin-top:16px;color:#374151"><strong>Your message:</strong><br/>${message}</p>
+    <p style="margin-top:20px;color:#6b7280;font-size:13px">If you need to add anything, just reply to this email.</p>
+  `,
+  es: (name, message) => `
+    <p>Hola ${name},</p>
+    <p>Gracias por comunicarse con ${COMPANY.name}. Hemos recibido su mensaje y le responderemos dentro de las proximas <strong>24 horas</strong>.</p>
+    <p style="margin-top:16px;color:#374151"><strong>Su mensaje:</strong><br/>${message}</p>
+    <p style="margin-top:20px;color:#6b7280;font-size:13px">Si necesita agregar algo, simplemente responda a este correo.</p>
+  `,
+  ru: (name, message) => `
+    <p>Здравствуйте, ${name},</p>
+    <p>Спасибо за обращение в ${COMPANY.name}. Мы получили ваше сообщение и ответим в течение <strong>24 часов</strong>.</p>
+    <p style="margin-top:16px;color:#374151"><strong>Ваше сообщение:</strong><br/>${message}</p>
+    <p style="margin-top:20px;color:#6b7280;font-size:13px">Если вам нужно что-то добавить, просто ответьте на это письмо.</p>
+  `,
+};
+
 export async function submitContactForm(
-  raw: ContactFormData
+  raw: ContactFormData,
+  locale: string = "en"
 ): Promise<ContactActionResult> {
   // 1. Validate
   const parsed = contactFormSchema.safeParse(raw);
@@ -102,7 +130,7 @@ export async function submitContactForm(
       from: CONTACT.fromEmail,
       to: CONTACT.notificationEmail,
       replyTo: email,
-      subject: `New Contact Form: ${name}`,
+      subject: `New Contact Form: ${name}${locale !== "en" ? ` [${locale.toUpperCase()}]` : ""}`,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto">
           <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;padding:24px;border-radius:8px 8px 0 0">
@@ -137,19 +165,18 @@ export async function submitContactForm(
     return { success: false, error: "An unexpected error occurred." };
   }
 
-  // 5. Auto-reply to visitor (best-effort)
+  // 5. Auto-reply to visitor in their language (best-effort)
   try {
+    const replySubject = AUTO_REPLY_SUBJECTS[locale] ?? AUTO_REPLY_SUBJECTS.en;
+    const replyBodyFn = AUTO_REPLY_BODY[locale] ?? AUTO_REPLY_BODY.en;
     await resend.emails.send({
       from: CONTACT.fromEmail,
       to: email,
       replyTo: CONTACT.notificationEmail,
-      subject: `We received your message — ${COMPANY.name}`,
+      subject: replySubject,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
-          <p>Hi ${safeName},</p>
-          <p>Thanks for reaching out to ${COMPANY.name}. We received your message and will respond within <strong>24 hours</strong>.</p>
-          <p style="margin-top:16px;color:#374151"><strong>Your message:</strong><br/>${safeMessage.replace(/\n/g, "<br/>")}</p>
-          <p style="margin-top:20px;color:#6b7280;font-size:13px">If you need to add anything, just reply to this email.</p>
+          ${replyBodyFn(safeName, safeMessage.replace(/\n/g, "<br/>"))}
         </div>
       `,
     });
@@ -159,7 +186,7 @@ export async function submitContactForm(
 
   // 6. Slack notify (best-effort)
   const slackLines = [
-    `*New lead (corporate site):* ${name} <${email}>`,
+    `*New lead (corporate site${locale !== "en" ? ` — ${locale.toUpperCase()}` : ""}):* ${name} <${email}>`,
     company ? `Company: ${company}` : null,
     phone ? `Phone: ${phone}` : null,
     equipmentType ? `Equipment: ${equipmentType}` : null,

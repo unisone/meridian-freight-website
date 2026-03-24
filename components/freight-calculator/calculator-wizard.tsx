@@ -45,7 +45,8 @@ import {
   COUNTRY_NAMES,
 } from "@/lib/types/calculator";
 import { CONTACT } from "@/lib/constants";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 import { CalculatorProgressBar } from "./calculator-progress-bar";
 import { RouteGlobe } from "./route-globe";
@@ -55,6 +56,9 @@ import { CATEGORY_ICONS } from "./category-icons";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function CalculatorWizard() {
+  const t = useTranslations("Calculator");
+  const tc = useTranslations("Common");
+
   // ─── Data ──────────────────────────────────────────────────────────────
   const [data, setData] = useState<CalculatorData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -129,8 +133,8 @@ export function CalculatorWizard() {
   const isFlatrack = selectedEquipment?.container_type === "flatrack";
   const containerLabel =
     selectedEquipment?.container_type === "fortyhc"
-      ? "40' High Cube Container"
-      : "Flat Rack";
+      ? t("fortyHC")
+      : t("flatRack");
 
   // Progress: how many steps are complete?
   const step1Done = selectedEquipment !== null;
@@ -232,7 +236,7 @@ export function CalculatorWizard() {
     return (
       <div className="flex items-center justify-center py-24">
         <Loader2 className="mr-3 h-6 w-6 animate-spin text-primary" />
-        <span className="text-muted-foreground">Loading freight rates...</span>
+        <span className="text-muted-foreground">{t("loadingRates")}</span>
       </div>
     );
   }
@@ -243,18 +247,17 @@ export function CalculatorWizard() {
       <Card className="mx-auto max-w-2xl border-primary/20 shadow-xl">
         <CardContent className="space-y-4 p-8 text-center">
           <h3 className="text-lg font-bold text-foreground">
-            Calculator Temporarily Unavailable
+            {t("unavailableTitle")}
           </h3>
           <p className="text-sm text-muted-foreground">
-            We&apos;re unable to load current freight rates. Please contact us
-            directly for a quote.
+            {t("unavailableDescription")}
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Button
               render={<Link href="/contact" />}
               className="bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
             >
-              Contact Us
+              {tc("contactUs")}
             </Button>
             <Button
               render={
@@ -268,7 +271,7 @@ export function CalculatorWizard() {
               variant="outline"
               className="border-emerald-600 py-5 font-semibold text-emerald-600 hover:bg-emerald-50"
             >
-              WhatsApp Us
+              {tc("whatsAppUs")}
             </Button>
           </div>
         </CardContent>
@@ -313,7 +316,7 @@ export function CalculatorWizard() {
           {/* ║ Section 01: Select Equipment                  ║ */}
           {/* ╚═══════════════════════════════════════════════╝ */}
           <section>
-            <SectionHeader num={1} title="Select Equipment Category" />
+            <SectionHeader num={1} title={t("selectEquipmentCategory")} />
 
             {/* Category cards grid */}
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -361,7 +364,7 @@ export function CalculatorWizard() {
                 onClick={() => setShowAllCategories(true)}
                 className="mt-2 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
               >
-                Show all {data.categories.length} categories{" "}
+                {t("showAllCategories", { count: data.categories.length })}{" "}
                 <ChevronDown className="h-3 w-3" />
               </button>
             )}
@@ -370,7 +373,7 @@ export function CalculatorWizard() {
             {category && (
               <div className="mt-4">
                 <Label className="text-sm text-muted-foreground">
-                  Equipment Type
+                  {t("equipmentType")}
                 </Label>
                 <ScrollArea className="mt-2 max-h-64 rounded-xl shadow-sm bg-muted/30">
                   <div className="space-y-1 p-2">
@@ -444,11 +447,11 @@ export function CalculatorWizard() {
               !selectedEquipment ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
-            <SectionHeader num={2} title="Equipment Specs" />
+            <SectionHeader num={2} title={t("equipmentSpecs")} />
 
             {!selectedEquipment ? (
               <p className="mt-3 text-sm text-muted-foreground">
-                Select equipment above to see specifications.
+                {t("selectEquipmentHint")}
               </p>
             ) : (
               <div className="mt-4 space-y-4">
@@ -457,13 +460,13 @@ export function CalculatorWizard() {
                   <div>
                     <Label htmlFor="equipment-size" className="text-sm">
                       {selectedEquipment.packing_unit === "per_row" &&
-                        "Number of Rows"}
+                        t("numberOfRows")}
                       {selectedEquipment.packing_unit === "per_foot" &&
-                        "Width in Feet"}
+                        t("widthInFeet")}
                       {selectedEquipment.packing_unit === "per_shank" &&
-                        "Number of Shanks"}
+                        t("numberOfShanks")}
                       {selectedEquipment.packing_unit === "per_bottom" &&
-                        "Number of Bottoms"}
+                        t("numberOfBottoms")}
                     </Label>
                     <Input
                       id="equipment-size"
@@ -478,7 +481,7 @@ export function CalculatorWizard() {
                             : e.target.value ? null : null
                         );
                       }}
-                      placeholder="Enter size"
+                      placeholder={t("enterSize")}
                       className="mt-1.5 max-w-40"
                     />
                   </div>
@@ -491,19 +494,18 @@ export function CalculatorWizard() {
                       <div className="flex items-center gap-2">
                         <Info className="h-4 w-4 text-primary" />
                         <span className="text-sm font-medium text-foreground">
-                          Packing &amp; loading included in sea freight
+                          {t("packingIncludedInSea")}
                         </span>
                       </div>
                       <p className="mt-1.5 text-xs text-muted-foreground">
-                        Flat rack equipment is packed and loaded at the departure
-                        port. This cost is bundled into your sea freight rate.
+                        {t("flatrackPackingNote")}
                       </p>
                     </>
                   ) : (
                     <>
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">
-                          Estimated packing cost:
+                          {t("estimatedPackingCost")}
                         </span>
                         <TooltipProvider>
                           <Tooltip>
@@ -511,9 +513,7 @@ export function CalculatorWizard() {
                               <Info className="h-4 w-4 text-muted-foreground" />
                             </TooltipTrigger>
                             <TooltipContent>
-                              Cost to pack and load your equipment into a{" "}
-                              {containerLabel.toLowerCase()} at our Albion, IA
-                              facility.
+                              {t("packingTooltip", { container: containerLabel.toLowerCase() })}
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -562,11 +562,11 @@ export function CalculatorWizard() {
               !step2Done ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
-            <SectionHeader num={3} title="Shipping Route" />
+            <SectionHeader num={3} title={t("shippingRoute")} />
 
             {!step2Done ? (
               <p className="mt-3 text-sm text-muted-foreground">
-                Complete equipment selection to configure routing.
+                {t("completeEquipmentHint")}
               </p>
             ) : (
               <div className="mt-4 space-y-4">
@@ -578,7 +578,7 @@ export function CalculatorWizard() {
                       className="flex items-center gap-1.5 text-sm"
                     >
                       <Globe className="h-3.5 w-3.5 text-primary" />
-                      Destination Country *
+                      {t("destinationCountry")}
                     </Label>
                     <select
                       id="dest-country"
@@ -601,7 +601,7 @@ export function CalculatorWizard() {
                       }}
                       className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     >
-                      <option value="">Select a country...</option>
+                      <option value="">{t("selectCountry")}</option>
                       {data.countries.map((code) => (
                         <option key={code} value={code}>
                           {COUNTRY_NAMES[code] ?? code}
@@ -617,9 +617,9 @@ export function CalculatorWizard() {
                       className="flex items-center gap-1.5 text-sm"
                     >
                       <Package className="h-3.5 w-3.5 text-primary" />
-                      US Pickup ZIP Code
+                      {t("usPickupZip")}
                       <span className="text-xs text-muted-foreground">
-                        (optional)
+                        {tc("optional")}
                       </span>
                     </Label>
                     <Input
@@ -633,11 +633,11 @@ export function CalculatorWizard() {
                           e.target.value.replace(/\D/g, "").slice(0, 5)
                         )
                       }
-                      placeholder="e.g. 50005"
+                      placeholder={t("zipPlaceholder")}
                       className="mt-1.5"
                     />
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Enter ZIP to include US inland transport in your estimate.
+                      {t("zipHint")}
                     </p>
                   </div>
                 </div>
@@ -646,20 +646,20 @@ export function CalculatorWizard() {
                 {destinationCountry && selectedEquipment && (
                   <div className="rounded-xl bg-muted p-4 text-sm">
                     <div className="font-semibold text-foreground">
-                      Shipping route:
+                      {t("shippingRouteLabel")}
                     </div>
                     <div className="mt-1 text-muted-foreground">
                       {selectedEquipment.container_type === "fortyhc" ? (
                         <>
-                          {zipCode ? `ZIP ${zipCode}` : "Pickup location"} →
-                          Albion, IA (packing) → Chicago, IL (rail) →{" "}
+                          {zipCode ? `ZIP ${zipCode}` : t("pickupLocation")} →
+                          Albion, IA {t("packingLabel")} → Chicago, IL {t("railLabel")} →{" "}
                           {COUNTRY_NAMES[destinationCountry] ??
                             destinationCountry}
                         </>
                       ) : (
                         <>
-                          {zipCode ? `ZIP ${zipCode}` : "Pickup location"} →
-                          Nearest US port →{" "}
+                          {zipCode ? `ZIP ${zipCode}` : t("pickupLocation")} →
+                          {t("nearestUSPort")} →{" "}
                           {COUNTRY_NAMES[destinationCountry] ??
                             destinationCountry}
                         </>
@@ -667,10 +667,10 @@ export function CalculatorWizard() {
                     </div>
                     {preview && (
                       <div className="mt-2 font-mono text-lg font-bold text-primary">
-                        Est. {formatDollar(preview.estimatedTotal)}
+                        {t("est")} {formatDollar(preview.estimatedTotal)}
                         {preview.totalExcludesInland && (
                           <span className="ml-1 text-xs font-normal text-muted-foreground">
-                            (excl. inland)
+                            {t("exclInland")}
                           </span>
                         )}
                       </div>
@@ -693,9 +693,7 @@ export function CalculatorWizard() {
 
           {/* Disclaimer */}
           <p className="text-xs text-muted-foreground">
-            Estimates cover packing, loading, and ocean freight. Customs duties,
-            import taxes, insurance, and destination inland transport are not
-            included. Contact us for a comprehensive quote.
+            {t("disclaimer")}
           </p>
         </div>
 
@@ -717,18 +715,18 @@ export function CalculatorWizard() {
             >
               {preview ? (
                 <>
-                  <span className="text-xs text-slate-400">Est.</span>
+                  <span className="text-xs text-slate-400">{t("est")}</span>
                   <span className="font-mono text-lg font-bold">
                     {formatDollar(preview.estimatedTotal)}
                   </span>
                 </>
               ) : selectedEquipment ? (
                 <span className="text-sm text-slate-400">
-                  Select destination for estimate
+                  {t("selectDestinationForEstimate")}
                 </span>
               ) : (
                 <span className="text-sm text-slate-400">
-                  Select equipment to begin
+                  {t("selectEquipmentToBegin")}
                 </span>
               )}
             </SheetTrigger>
@@ -738,7 +736,7 @@ export function CalculatorWizard() {
               disabled={!isComplete}
               onClick={() => setMobileSheetOpen(true)}
             >
-              {result?.success ? "View Estimate" : "Book This Freight"}
+              {result?.success ? t("viewEstimate") : t("bookThisFreight")}
               <ArrowRight className="ml-1 h-3.5 w-3.5" />
             </Button>
           </div>
@@ -750,7 +748,7 @@ export function CalculatorWizard() {
             showCloseButton={true}
           >
             <SheetHeader className="bg-muted px-5 py-4">
-              <SheetTitle>Your Freight Estimate</SheetTitle>
+              <SheetTitle>{t("yourFreightEstimate")}</SheetTitle>
             </SheetHeader>
             <div className="p-5">
               <CalculatorEstimateCard {...estimateCardProps} />
