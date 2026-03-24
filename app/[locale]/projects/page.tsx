@@ -49,6 +49,7 @@ export async function generateMetadata({
 export default async function ProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "ProjectsPage" });
 
   const projects = getAllProjects(locale);
 
@@ -73,9 +74,9 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
       />
       <div className="pt-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: "Projects" }]} />
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">Completed Export Projects</h1>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Real shipments, real equipment, real destinations. Browse our portfolio of machinery exports across six continents.</p>
+          <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">{t("heading")}</h1>
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("description")}</p>
         </div>
         <ProjectGrid />
 
@@ -84,19 +85,19 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
         <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16 mb-16">
           <div className="mx-auto max-w-3xl px-4 text-center text-white">
             <h2 className="text-2xl font-bold sm:text-3xl">
-              Ready to Ship Your Equipment?
+              {t("ctaHeading")}
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-slate-300">
-              Tell us about your equipment and destination — we&apos;ll send a detailed, itemized quote within 24 hours.
+              {t("ctaDescription")}
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button
-                  render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp for a free quote" />}
+                  render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={t("ctaWhatsAppAriaLabel")} />}
                   size="lg"
                   className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
                 >
                   <MessageCircle className="mr-2 h-4 w-4" />
-                  Chat on WhatsApp
+                  {t("ctaWhatsApp")}
               </Button>
               <Button
                   render={<Link href="/contact" />}
@@ -104,7 +105,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
                   variant="outline"
                   className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
                 >
-                  Contact Us
+                  {t("ctaContact")}
                   <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>

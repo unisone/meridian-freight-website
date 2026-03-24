@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -18,9 +19,20 @@ import {
   equipmentCategories,
 } from "@/content/pricing";
 
+const categoryKeyMap: Record<string, string> = {
+  all: "allEquipment",
+  harvesting: "harvesting",
+  tillage: "tillage",
+  spraying: "spraying",
+  planting: "planting",
+  large: "largeEquipment",
+  misc: "miscellaneous",
+};
+
 export function PricingTable() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const t = useTranslations("PricingTable");
 
   const filtered = equipmentPricing.filter((item) => {
     const matchesSearch =
@@ -37,10 +49,10 @@ export function PricingTable() {
       {/* Equipment Pricing */}
       <div>
         <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-          Equipment Pricing
+          {t("equipmentPricing")}
         </h2>
         <p className="mt-2 text-muted-foreground">
-          Reference pricing for packing and container loading services. Final quotes provided upon request.
+          {t("equipmentPricingDescription")}
         </p>
 
         {/* Filters */}
@@ -48,7 +60,7 @@ export function PricingTable() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search equipment type or model..."
+              placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-10"
@@ -65,7 +77,7 @@ export function PricingTable() {
                     : "bg-muted text-foreground hover:bg-primary/10"
                 }`}
               >
-                {cat.label}
+                {t(categoryKeyMap[cat.id] ?? cat.id)}
               </button>
             ))}
           </div>
@@ -76,11 +88,11 @@ export function PricingTable() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead className="font-semibold">Equipment Type</TableHead>
-                <TableHead className="font-semibold">Models</TableHead>
-                <TableHead className="font-semibold text-right">Delivery</TableHead>
-                <TableHead className="font-semibold text-right">Containerized</TableHead>
-                <TableHead className="font-semibold text-right">Container %</TableHead>
+                <TableHead className="font-semibold">{t("equipmentType")}</TableHead>
+                <TableHead className="font-semibold">{t("models")}</TableHead>
+                <TableHead className="font-semibold text-right">{t("delivery")}</TableHead>
+                <TableHead className="font-semibold text-right">{t("containerized")}</TableHead>
+                <TableHead className="font-semibold text-right">{t("containerPercent")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -96,7 +108,7 @@ export function PricingTable() {
               {filtered.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
-                    No equipment found matching your search.
+                    {t("noResults")}
                   </TableCell>
                 </TableRow>
               )}
@@ -108,14 +120,14 @@ export function PricingTable() {
       {/* Miscellaneous */}
       <div>
         <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-          Miscellaneous Items
+          {t("miscItems")}
         </h2>
         <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead className="font-semibold">Item</TableHead>
-                <TableHead className="font-semibold text-right">Price</TableHead>
+                <TableHead className="font-semibold">{t("item")}</TableHead>
+                <TableHead className="font-semibold text-right">{t("price")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -133,18 +145,18 @@ export function PricingTable() {
       {/* Delivery Rates */}
       <div>
         <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-          Container Delivery Rates
+          {t("containerDeliveryRates")}
         </h2>
         <p className="mt-2 text-muted-foreground">
-          40ft container rates. Line&apos;s = shipping line container. SOC = shipper-owned container.
+          {t("containerDeliveryDescription")}
         </p>
         <div className="mt-6 overflow-x-auto rounded-xl shadow-sm">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead className="font-semibold">Route</TableHead>
-                <TableHead className="font-semibold text-right">Line&apos;s Container</TableHead>
-                <TableHead className="font-semibold text-right">SOC Container</TableHead>
+                <TableHead className="font-semibold">{t("route")}</TableHead>
+                <TableHead className="font-semibold text-right">{t("linesContainer")}</TableHead>
+                <TableHead className="font-semibold text-right">{t("socContainer")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

@@ -35,64 +35,50 @@ export async function generateMetadata({
 export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "TermsPage" });
 
   return (
     <div className="pt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: "Terms of Service" }]} />
+        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
       </div>
 
       <article className="py-16 md:py-20">
         <div className="prose prose-slate mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h1>Terms of Service</h1>
-          <p className="text-sm text-muted-foreground">Last updated: March 2026</p>
+          <h1>{t("heading")}</h1>
+          <p className="text-sm text-muted-foreground">{t("lastUpdated")}</p>
 
-          <h2>1. Services</h2>
+          <h2>{t("section1Title")}</h2>
           <p>
-            {COMPANY.name} provides machinery dismantling, container packing,
-            storage, export documentation, and shipping coordination services.
-            All services are subject to individual project agreements and quotes.
+            {t("section1Description", { company: COMPANY.name })}
           </p>
 
-          <h2>2. Quotes and Pricing</h2>
+          <h2>{t("section2Title")}</h2>
           <p>
-            All quotes are estimates and may be subject to change based on
-            actual equipment condition, accessibility, and market conditions.
-            Final pricing is confirmed in writing before work begins. Prices
-            displayed on the website are for reference and may not reflect
-            current rates.
+            {t("section2Description")}
           </p>
 
-          <h2>3. Payment Terms</h2>
+          <h2>{t("section3Title")}</h2>
           <p>
-            Payment terms are established in individual project agreements.
-            Standard terms require a deposit before work begins with the
-            balance due upon completion.
+            {t("section3Description")}
           </p>
 
-          <h2>4. Liability</h2>
+          <h2>{t("section4Title")}</h2>
           <p>
-            While we take every precaution to protect your equipment, our
-            liability is limited to the coverage provided by our insurance
-            policies. We carry comprehensive coverage for equipment in our
-            care, custody, and control.
+            {t("section4Description")}
           </p>
 
-          <h2>5. Cancellation</h2>
+          <h2>{t("section5Title")}</h2>
           <p>
-            Projects may be cancelled with written notice. Cancellation fees
-            may apply if work has already commenced. Deposits for completed
-            work are non-refundable.
+            {t("section5Description")}
           </p>
 
-          <h2>6. Website Use</h2>
+          <h2>{t("section6Title")}</h2>
           <p>
-            The freight calculator and pricing information on this website are
-            provided for estimation purposes only and do not constitute a
-            binding offer. Actual costs may vary.
+            {t("section6Description")}
           </p>
 
-          <h2>7. Contact</h2>
+          <h2>{t("section7Title")}</h2>
           <p>
             {COMPANY.name}<br />
             {CONTACT.address.full}<br />

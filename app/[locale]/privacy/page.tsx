@@ -35,62 +35,60 @@ export async function generateMetadata({
 export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "PrivacyPage" });
 
   return (
     <div className="pt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
+        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
       </div>
 
       <article className="py-16 md:py-20">
         <div className="prose prose-slate mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h1>Privacy Policy</h1>
-          <p className="text-sm text-muted-foreground">Last updated: March 2026</p>
+          <h1>{t("heading")}</h1>
+          <p className="text-sm text-muted-foreground">{t("lastUpdated")}</p>
 
-          <h2>Information We Collect</h2>
+          <h2>{t("infoWeCollect")}</h2>
           <p>
-            When you use our website or contact forms, we may collect the following information:
+            {t("infoWeCollectDescription")}
           </p>
           <ul>
-            <li>Name, email address, phone number, and company name (when you submit a form)</li>
-            <li>Equipment and shipping details you provide in quote requests</li>
-            <li>Usage data collected through Google Analytics 4 and Vercel Analytics</li>
-            <li>Cookies for analytics purposes (with your consent)</li>
+            <li>{t("infoItem1")}</li>
+            <li>{t("infoItem2")}</li>
+            <li>{t("infoItem3")}</li>
+            <li>{t("infoItem4")}</li>
           </ul>
 
-          <h2>How We Use Your Information</h2>
+          <h2>{t("howWeUse")}</h2>
           <ul>
-            <li>To respond to your inquiries and provide quotes</li>
-            <li>To send you relevant communications about your inquiry</li>
-            <li>To improve our website and services through analytics</li>
-            <li>To run targeted advertising campaigns (with consent)</li>
+            <li>{t("useItem1")}</li>
+            <li>{t("useItem2")}</li>
+            <li>{t("useItem3")}</li>
+            <li>{t("useItem4")}</li>
           </ul>
 
-          <h2>Third-Party Services</h2>
-          <p>We use the following third-party services:</p>
+          <h2>{t("thirdPartyServices")}</h2>
+          <p>{t("thirdPartyDescription")}</p>
           <ul>
-            <li><strong>Google Analytics 4</strong> — website traffic analysis</li>
-            <li><strong>Meta Pixel</strong> — advertising measurement (consent-gated)</li>
-            <li><strong>Vercel Analytics</strong> — performance monitoring</li>
-            <li><strong>Supabase</strong> — secure lead data storage</li>
-            <li><strong>Resend</strong> — transactional email delivery</li>
+            <li><strong>Google Analytics 4</strong> — {t("thirdPartyGA4")}</li>
+            <li><strong>Meta Pixel</strong> — {t("thirdPartyMeta")}</li>
+            <li><strong>Vercel Analytics</strong> — {t("thirdPartyVercel")}</li>
+            <li><strong>Supabase</strong> — {t("thirdPartySupabase")}</li>
+            <li><strong>Resend</strong> — {t("thirdPartyResend")}</li>
           </ul>
 
-          <h2>Data Retention</h2>
+          <h2>{t("dataRetention")}</h2>
           <p>
-            We retain your contact information for as long as necessary to
-            fulfill the purpose for which it was collected, typically up to 3
-            years after your last interaction.
+            {t("dataRetentionDescription")}
           </p>
 
-          <h2>Your Rights</h2>
+          <h2>{t("yourRights")}</h2>
           <p>
-            You may request access to, correction of, or deletion of your
-            personal data by contacting us at{" "}
+            {t("yourRightsDescription")}{" "}
             <a href={CONTACT.emailHref}>{CONTACT.email}</a>.
           </p>
 
-          <h2>Contact</h2>
+          <h2>{t("contact")}</h2>
           <p>
             {COMPANY.name}<br />
             {CONTACT.address.full}<br />

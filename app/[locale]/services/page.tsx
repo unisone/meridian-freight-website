@@ -49,13 +49,14 @@ export async function generateMetadata({
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "ServicesPage" });
 
   return (
     <div className="pt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: "Services" }]} />
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">Machinery Export Services — USA &amp; Canada</h1>
-        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">One company for the entire chain — pickup, dismantling, packing, documentation, and air or ocean shipping from any location in the USA or Canada.</p>
+        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">{t("heading")}</h1>
+        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("description")}</p>
       </div>
       <ServicesGrid />
       <ProcessSteps />
@@ -65,13 +66,13 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
       <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-2xl font-bold sm:text-3xl">
-            Have Equipment That Needs to Move?
+            {t("ctaHeading")}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sky-300">
-            Send us the make, model, and destination. You get a line-by-line quote within 24 hours — no obligation.
+            {t("ctaDescription")}
           </p>
           <Button render={<Link href="/contact" />} size="lg" className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-              Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+              {t("ctaButton")} <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </section>
