@@ -287,9 +287,9 @@ Two separate GA4 properties under the same Google Analytics account (`Meridian F
 | Meridian Export LP | Meridian LP | `lp.meridianexport.com` | `G-26XR0YQLK5` |
 
 #### Consent Architecture
-Both GA4 and Meta Pixel use consent mode — scripts ALWAYS load, but default to cookieless/restricted mode:
+Both GA4 and Meta Pixel use consent mode — scripts ALWAYS load, with region-aware defaults:
 
-- **GA4** (`components/google-analytics.tsx`): Consent Mode v2 — default `denied`, upgrades to `granted` on accept
+- **GA4** (`components/google-analytics.tsx`): Consent Mode v2 with region-aware defaults — `analytics_storage` defaults to `granted` globally (tracks all non-EU visitors), overridden to `denied` for 31 EEA/UK/CH countries (GDPR). `ad_storage` defaults to `denied` everywhere until cookie acceptance. Google auto-detects visitor region via the `region` parameter. Upgrades all consent to `granted` on accept
 - **Meta Pixel** (`components/meta-pixel.tsx`): `fbq('consent', 'revoke')` by default, upgrades to `fbq('consent', 'grant')` on accept
 - **Meta CAPI** (`lib/meta-capi.ts`): Server-side, no consent needed — fires on form/calculator submission
 - Cookie consent stored in `localStorage['cookie-consent']` as `"accepted"` or `"declined"`
