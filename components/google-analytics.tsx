@@ -64,7 +64,6 @@ export function GoogleAnalytics() {
           if (!window.gtag) { function gtag(){dataLayer.push(arguments);} window.gtag = gtag; }
           gtag('js', new Date());
           var rawPath = window.location.pathname;
-          // Strip locale prefix for content grouping (/es/services → /services)
           var locale = 'en';
           var p = rawPath;
           if (rawPath.indexOf('/es') === 0 && (rawPath.length === 3 || rawPath.charAt(3) === '/')) {
