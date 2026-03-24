@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,22 +8,42 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { blogPosts } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
-import { pageMetadata } from "@/lib/metadata";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Blog — Heavy Equipment Export Tips & Shipping Guides",
-  description:
-    "Expert guides, cost breakdowns, and destination insights for shipping heavy machinery and farm equipment from the USA. Published by the Meridian Freight team.",
-  path: "/blog",
-  keywords: [
-    "machinery export blog",
-    "farm equipment shipping guides",
-    "heavy machinery export tips",
-    "freight shipping insights",
-    "equipment export costs",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("blogTitle"),
+    description: t("blogDescription"),
+    keywords: [
+      "machinery export blog",
+      "farm equipment shipping guides",
+      "heavy machinery export tips",
+      "freight shipping insights",
+      "equipment export costs",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/blog`,
+      languages: {
+        en: `${SITE.url}/blog`,
+        es: `${SITE.url}/es/blog`,
+        ru: `${SITE.url}/ru/blog`,
+      },
+    },
+    openGraph: {
+      title: `${t("blogTitle")} | ${SITE.name}`,
+      description: t("blogDescription"),
+      url: `${SITE.url}${localePath}/blog`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("blogTitle") }],
+    },
+  };
+}
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

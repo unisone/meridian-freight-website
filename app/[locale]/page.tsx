@@ -1,7 +1,7 @@
+import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight, MessageCircle, BarChart3 } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { pageMetadata } from "@/lib/metadata";
 import { Button } from "@/components/ui/button";
 import { Hero } from "@/components/hero";
 import { TrustBar } from "@/components/trust-bar";
@@ -16,26 +16,40 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 import { getHomepageFaq } from "@/content/faq";
 
-export const metadata = pageMetadata({
-  title: "Machinery Export & Logistics — Packing & Shipping",
-  description:
-    "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & ocean shipping. 500+ exports. Free quote in 24 hrs.",
-  path: "/",
-  keywords: [
-    "machinery export USA",
-    "container packing services",
-    "equipment shipping USA Canada",
-    "agricultural equipment export",
-    "heavy machinery dismantling",
-    "40ft container loading",
-    "export documentation services",
-    "ship machinery overseas",
-    "farm equipment shipping worldwide",
-    "machinery logistics company",
-    "air freight machinery",
-    "John Deere parts export",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("homeTitle"),
+    description: t("homeDescription"),
+    keywords: [
+      "machinery export USA",
+      "container packing services",
+      "equipment shipping USA Canada",
+      "agricultural equipment export",
+      "heavy machinery dismantling",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}`,
+      languages: {
+        en: SITE.url,
+        es: `${SITE.url}/es`,
+        ru: `${SITE.url}/ru`,
+      },
+    },
+    openGraph: {
+      title: `${t("homeTitle")} | ${SITE.name}`,
+      description: t("homeDescription"),
+      url: `${SITE.url}${localePath}`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: COMPANY.name }],
+    },
+  };
+}
 
 export default async function HomePage({
   params,

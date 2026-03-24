@@ -1,24 +1,46 @@
+import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { MapPin, ArrowRight, Clock, Globe, Shield, Star, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
-import { COMPANY, CONTACT, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
-import { pageMetadata } from "@/lib/metadata";
+import { COMPANY, CONTACT, SITE, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "About Meridian Freight — 500+ Exports Since 2013",
-  description: `Meridian Freight — ${STATS.projectsCompleted}+ equipment exports since ${COMPANY.foundedYear}. Iowa HQ with 6 partner warehouses across USA & Canada. Get a free quote today.`,
-  path: "/about",
-  keywords: [
-    "machinery export company",
-    "equipment logistics USA Canada",
-    "warehouse storage services",
-    "about meridian freight",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("aboutTitle"),
+    description: t("aboutDescription"),
+    keywords: [
+      "machinery export company",
+      "equipment logistics USA Canada",
+      "warehouse storage services",
+      "about meridian freight",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/about`,
+      languages: {
+        en: `${SITE.url}/about`,
+        es: `${SITE.url}/es/about`,
+        ru: `${SITE.url}/ru/about`,
+      },
+    },
+    openGraph: {
+      title: `${t("aboutTitle")} | ${SITE.name}`,
+      description: t("aboutDescription"),
+      url: `${SITE.url}${localePath}/about`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("aboutTitle") }],
+    },
+  };
+}
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

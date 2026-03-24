@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MapPin, Clock, Anchor, MessageCircle, Ship, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,24 +9,44 @@ import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { DestinationsGlobe } from "@/components/destinations-globe";
 import { getAllDestinations } from "@/content/destinations";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
-import { pageMetadata } from "@/lib/metadata";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Shipping Destinations — Worldwide Machinery Export",
-  description:
-    "Heavy machinery shipping from the USA and Canada to 40+ countries — Latin America, Middle East, Africa, Eastern Europe, and Central Asia.",
-  path: "/destinations",
-  keywords: [
-    "machinery shipping destinations",
-    "international equipment export routes",
-    "heavy equipment shipping worldwide",
-    "machinery export countries",
-    "ocean freight destinations",
-    "ship equipment overseas",
-    "worldwide machinery shipping",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("destinationsTitle"),
+    description: t("destinationsDescription"),
+    keywords: [
+      "machinery shipping destinations",
+      "international equipment export routes",
+      "heavy equipment shipping worldwide",
+      "machinery export countries",
+      "ocean freight destinations",
+      "ship equipment overseas",
+      "worldwide machinery shipping",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/destinations`,
+      languages: {
+        en: `${SITE.url}/destinations`,
+        es: `${SITE.url}/es/destinations`,
+        ru: `${SITE.url}/ru/destinations`,
+      },
+    },
+    openGraph: {
+      title: `${t("destinationsTitle")} | ${SITE.name}`,
+      description: t("destinationsDescription"),
+      url: `${SITE.url}${localePath}/destinations`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("destinationsTitle") }],
+    },
+  };
+}
 
 /**
  * Additional countries served beyond the 8 featured destination pages.

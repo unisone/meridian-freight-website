@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ServicesGrid } from "@/components/services-grid";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProcessSteps } from "@/components/process-steps";
@@ -5,23 +6,45 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { pageMetadata } from "@/lib/metadata";
-import { setRequestLocale } from "next-intl/server";
+import { SITE } from "@/lib/constants";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Services — Machinery Dismantling, Packing & Export",
-  description: "Machinery export services: professional dismantling, container packing, global shipping, documentation & warehousing. One company, door to port. Free quotes.",
-  path: "/services",
-  keywords: [
-    "machinery export services USA",
-    "equipment dismantling for shipping",
-    "container loading services",
-    "export documentation compliance",
-    "equipment warehousing USA Canada",
-    "door to port machinery shipping",
-    "heavy equipment packing company",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("servicesTitle"),
+    description: t("servicesDescription"),
+    keywords: [
+      "machinery export services USA",
+      "equipment dismantling for shipping",
+      "container loading services",
+      "export documentation compliance",
+      "equipment warehousing USA Canada",
+      "door to port machinery shipping",
+      "heavy equipment packing company",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/services`,
+      languages: {
+        en: `${SITE.url}/services`,
+        es: `${SITE.url}/es/services`,
+        ru: `${SITE.url}/ru/services`,
+      },
+    },
+    openGraph: {
+      title: `${t("servicesTitle")} | ${SITE.name}`,
+      description: t("servicesDescription"),
+      url: `${SITE.url}${localePath}/services`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("servicesTitle") }],
+    },
+  };
+}
 
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

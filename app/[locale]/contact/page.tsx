@@ -1,23 +1,45 @@
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
-import { pageMetadata } from "@/lib/metadata";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 
-export const metadata = pageMetadata({
-  title: "Contact Us — Free Machinery Export Quote in 24 Hours",
-  description: "Get a free machinery export quote — we respond within 24 hours. Reach us via WhatsApp, phone, or email. 500+ equipment exports from USA & Canada.",
-  path: "/contact",
-  keywords: [
-    "contact machinery export company",
-    "get freight quote",
-    "free equipment shipping quote",
-    "machinery logistics contact USA",
-    "WhatsApp machinery export quote",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("contactTitle"),
+    description: t("contactDescription"),
+    keywords: [
+      "contact machinery export company",
+      "get freight quote",
+      "free equipment shipping quote",
+      "machinery logistics contact USA",
+      "WhatsApp machinery export quote",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/contact`,
+      languages: {
+        en: `${SITE.url}/contact`,
+        es: `${SITE.url}/es/contact`,
+        ru: `${SITE.url}/ru/contact`,
+      },
+    },
+    openGraph: {
+      title: `${t("contactTitle")} | ${SITE.name}`,
+      description: t("contactDescription"),
+      url: `${SITE.url}${localePath}/contact`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("contactTitle") }],
+    },
+  };
+}
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

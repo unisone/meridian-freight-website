@@ -65,9 +65,13 @@ export function GoogleAnalytics() {
           gtag('js', new Date());
           var rawPath = window.location.pathname;
           // Strip locale prefix for content grouping (/es/services → /services)
-          var localeMatch = rawPath.match(/^\/(es|ru)(\/|$)/);
-          var locale = localeMatch ? localeMatch[1] : 'en';
-          var p = localeMatch ? rawPath.replace(/^\/(es|ru)/, '') || '/' : rawPath;
+          var locale = 'en';
+          var p = rawPath;
+          if (rawPath.indexOf('/es') === 0 && (rawPath.length === 3 || rawPath.charAt(3) === '/')) {
+            locale = 'es'; p = rawPath.substring(3) || '/';
+          } else if (rawPath.indexOf('/ru') === 0 && (rawPath.length === 3 || rawPath.charAt(3) === '/')) {
+            locale = 'ru'; p = rawPath.substring(3) || '/';
+          }
           var cg = (function(p) {
             if (p === '/') return 'Homepage';
             if (p.startsWith('/services')) return 'Services';

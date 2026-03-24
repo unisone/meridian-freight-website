@@ -1,15 +1,42 @@
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CalculatorWizard } from "@/components/freight-calculator/calculator-wizard";
-import { pageMetadata } from "@/lib/metadata";
 import { COMPANY, SITE } from "@/lib/constants";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Freight Cost Calculator — Instant Estimate",
-  description: "Free freight calculator — instant estimate for machinery export. Select equipment, ZIP code & destination. Packing + shipping costs in 60 seconds.",
-  path: "/pricing/calculator",
-  keywords: ["freight cost calculator heavy equipment", "machinery shipping cost estimator", "container loading cost calculator", "equipment export shipping rates"],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("calculatorTitle"),
+    description: t("calculatorDescription"),
+    keywords: [
+      "freight cost calculator heavy equipment",
+      "machinery shipping cost estimator",
+      "container loading cost calculator",
+      "equipment export shipping rates",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/pricing/calculator`,
+      languages: {
+        en: `${SITE.url}/pricing/calculator`,
+        es: `${SITE.url}/es/pricing/calculator`,
+        ru: `${SITE.url}/ru/pricing/calculator`,
+      },
+    },
+    openGraph: {
+      title: `${t("calculatorTitle")} | ${SITE.name}`,
+      description: t("calculatorDescription"),
+      url: `${SITE.url}${localePath}/pricing/calculator`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("calculatorTitle") }],
+    },
+  };
+}
 
 export default async function CalculatorPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

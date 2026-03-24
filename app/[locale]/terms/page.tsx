@@ -1,14 +1,36 @@
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
-import { pageMetadata } from "@/lib/metadata";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Terms of Service",
-  description: `Terms of service for Meridian Freight Inc. (${SITE.domain}). Conditions governing machinery export, freight services, and use of our website.`,
-  path: "/terms",
-  keywords: ["terms of service", "terms and conditions", "service agreement"],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("termsTitle"),
+    description: t("termsDescription"),
+    keywords: ["terms of service", "terms and conditions", "service agreement"],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/terms`,
+      languages: {
+        en: `${SITE.url}/terms`,
+        es: `${SITE.url}/es/terms`,
+        ru: `${SITE.url}/ru/terms`,
+      },
+    },
+    openGraph: {
+      title: `${t("termsTitle")} | ${SITE.name}`,
+      description: t("termsDescription"),
+      url: `${SITE.url}${localePath}/terms`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("termsTitle") }],
+    },
+  };
+}
 
 export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

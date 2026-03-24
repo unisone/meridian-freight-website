@@ -1,14 +1,36 @@
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
-import { pageMetadata } from "@/lib/metadata";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Privacy Policy",
-  description: `Privacy policy for Meridian Freight Inc. (${SITE.domain}). How we collect, use, and protect your data when you use our machinery export services.`,
-  path: "/privacy",
-  keywords: ["privacy policy", "data protection", "privacy notice"],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("privacyTitle"),
+    description: t("privacyDescription"),
+    keywords: ["privacy policy", "data protection", "privacy notice"],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/privacy`,
+      languages: {
+        en: `${SITE.url}/privacy`,
+        es: `${SITE.url}/es/privacy`,
+        ru: `${SITE.url}/ru/privacy`,
+      },
+    },
+    openGraph: {
+      title: `${t("privacyTitle")} | ${SITE.name}`,
+      description: t("privacyDescription"),
+      url: `${SITE.url}${localePath}/privacy`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("privacyTitle") }],
+    },
+  };
+}
 
 export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

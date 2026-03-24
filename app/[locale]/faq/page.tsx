@@ -1,25 +1,47 @@
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { getAllFaqEntries } from "@/content/faq";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { CONTACT } from "@/lib/constants";
+import { CONTACT, SITE } from "@/lib/constants";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "FAQ — Machinery Export & Shipping Questions Answered",
-  description: "Answers to common machinery export questions — shipping timelines, container sizes, pricing, customs documentation, insurance & payment options.",
-  path: "/faq",
-  keywords: [
-    "machinery export FAQ",
-    "equipment shipping questions",
-    "container packing guide",
-    "export documentation help",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("faqTitle"),
+    description: t("faqDescription"),
+    keywords: [
+      "machinery export FAQ",
+      "equipment shipping questions",
+      "container packing guide",
+      "export documentation help",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/faq`,
+      languages: {
+        en: `${SITE.url}/faq`,
+        es: `${SITE.url}/es/faq`,
+        ru: `${SITE.url}/ru/faq`,
+      },
+    },
+    openGraph: {
+      title: `${t("faqTitle")} | ${SITE.name}`,
+      description: t("faqDescription"),
+      url: `${SITE.url}${localePath}/faq`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("faqTitle") }],
+    },
+  };
+}
 
 export default async function FaqPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

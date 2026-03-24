@@ -30,19 +30,27 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const equipment = getEquipmentBySlug(slug);
+  const { locale, slug } = await params;
+  const equipment = getEquipmentBySlug(slug, locale);
   if (!equipment) return {};
+  const localePath = locale === "en" ? "" : `/${locale}`;
 
   return {
     title: equipment.metaTitle,
     description: equipment.metaDescription,
     keywords: equipment.keywords,
-    alternates: { canonical: `${SITE.url}/equipment/${slug}` },
+    alternates: {
+      canonical: `${SITE.url}${localePath}/equipment/${slug}`,
+      languages: {
+        en: `${SITE.url}/equipment/${slug}`,
+        es: `${SITE.url}/es/equipment/${slug}`,
+        ru: `${SITE.url}/ru/equipment/${slug}`,
+      },
+    },
     openGraph: {
       title: equipment.metaTitle,
       description: equipment.metaDescription,
-      url: `${SITE.url}/equipment/${slug}`,
+      url: `${SITE.url}${localePath}/equipment/${slug}`,
       images: [
         { url: SITE.ogImage, width: 1200, height: 630, alt: equipment.title },
       ],

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,24 +6,45 @@ import { ProjectGrid } from "@/components/project-grid";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getAllProjects } from "@/content/projects";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { CONTACT } from "@/lib/constants";
-import { pageMetadata } from "@/lib/metadata";
-import { setRequestLocale } from "next-intl/server";
+import { CONTACT, SITE } from "@/lib/constants";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Projects — Completed Machinery Export Projects",
-  description: "500+ machinery exports completed. See our portfolio — John Deere combines, Case IH headers, CAT excavators shipped to Brazil, UAE, Turkey & beyond.",
-  path: "/projects",
-  keywords: [
-    "machinery export projects",
-    "equipment shipping portfolio",
-    "container packing examples",
-    "heavy machinery export case studies",
-    "John Deere combine export",
-    "Case IH equipment shipping",
-    "flat rack machinery shipping",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("projectsTitle"),
+    description: t("projectsDescription"),
+    keywords: [
+      "machinery export projects",
+      "equipment shipping portfolio",
+      "container packing examples",
+      "heavy machinery export case studies",
+      "John Deere combine export",
+      "Case IH equipment shipping",
+      "flat rack machinery shipping",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/projects`,
+      languages: {
+        en: `${SITE.url}/projects`,
+        es: `${SITE.url}/es/projects`,
+        ru: `${SITE.url}/ru/projects`,
+      },
+    },
+    openGraph: {
+      title: `${t("projectsTitle")} | ${SITE.name}`,
+      description: t("projectsDescription"),
+      url: `${SITE.url}${localePath}/projects`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("projectsTitle") }],
+    },
+  };
+}
 
 export default async function ProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

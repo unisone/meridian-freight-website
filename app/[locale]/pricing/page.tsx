@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Calculator, ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,23 +6,44 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PricingTable } from "@/components/pricing-table";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, COMPANY, SITE } from "@/lib/constants";
-import { pageMetadata } from "@/lib/metadata";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export const metadata = pageMetadata({
-  title: "Pricing — Equipment Packing & Shipping Rates",
-  description: "Transparent machinery export pricing — 60+ equipment types, 20+ shipping routes. Itemized quotes with no hidden fees. Try our instant freight calculator.",
-  path: "/pricing",
-  keywords: [
-    "equipment packing costs",
-    "machinery shipping rates",
-    "container loading pricing",
-    "freight cost estimate",
-    "how much to ship machinery overseas",
-    "equipment export pricing no hidden fees",
-    "machinery packing cost per unit",
-  ],
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  return {
+    title: t("pricingTitle"),
+    description: t("pricingDescription"),
+    keywords: [
+      "equipment packing costs",
+      "machinery shipping rates",
+      "container loading pricing",
+      "freight cost estimate",
+      "how much to ship machinery overseas",
+      "equipment export pricing no hidden fees",
+      "machinery packing cost per unit",
+    ],
+    alternates: {
+      canonical: `${SITE.url}${localePath}/pricing`,
+      languages: {
+        en: `${SITE.url}/pricing`,
+        es: `${SITE.url}/es/pricing`,
+        ru: `${SITE.url}/ru/pricing`,
+      },
+    },
+    openGraph: {
+      title: `${t("pricingTitle")} | ${SITE.name}`,
+      description: t("pricingDescription"),
+      url: `${SITE.url}${localePath}/pricing`,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("pricingTitle") }],
+    },
+  };
+}
 
 export default async function PricingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

@@ -39,19 +39,27 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const dest = getDestinationBySlug(slug);
+  const { locale, slug } = await params;
+  const dest = getDestinationBySlug(slug, locale);
   if (!dest) return {};
+  const localePath = locale === "en" ? "" : `/${locale}`;
 
   return {
     title: dest.metaTitle,
     description: dest.metaDescription,
     keywords: dest.keywords,
-    alternates: { canonical: `${SITE.url}/destinations/${slug}` },
+    alternates: {
+      canonical: `${SITE.url}${localePath}/destinations/${slug}`,
+      languages: {
+        en: `${SITE.url}/destinations/${slug}`,
+        es: `${SITE.url}/es/destinations/${slug}`,
+        ru: `${SITE.url}/ru/destinations/${slug}`,
+      },
+    },
     openGraph: {
       title: `${dest.metaTitle} | ${SITE.name}`,
       description: dest.metaDescription,
-      url: `${SITE.url}/destinations/${slug}`,
+      url: `${SITE.url}${localePath}/destinations/${slug}`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: dest.metaTitle }],
     },
   };
