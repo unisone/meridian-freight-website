@@ -20,6 +20,7 @@ import { getDestinationBySlug, getAllDestinations } from "@/content/destinations
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale } from "next-intl/server";
 
 function getEquipmentSlug(name: string, locale: string): string | null {
@@ -57,6 +58,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${dest.metaTitle} | ${SITE.name}`,
       description: dest.metaDescription,
       url: `${SITE.url}${localePath}/destinations/${slug}`,
@@ -78,6 +80,7 @@ export default async function DestinationPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
+    inLanguage: locale,
     name: `Machinery Shipping to ${dest.country}`,
     description: dest.heroDescription,
     image: `${SITE.url}${SITE.ogImage}`,
@@ -132,6 +135,7 @@ export default async function DestinationPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
+            inLanguage: locale,
             mainEntity: dest.faqs.map((e) => ({
               "@type": "Question",
               name: e.question,

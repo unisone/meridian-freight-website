@@ -19,6 +19,7 @@ import { getServiceBySlug } from "@/content/services";
 import { getAllDestinations } from "@/content/destinations";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale } from "next-intl/server";
 
 export function generateStaticParams() {
@@ -48,6 +49,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: equipment.metaTitle,
       description: equipment.metaDescription,
       url: `${SITE.url}${localePath}/equipment/${slug}`,
@@ -79,6 +81,7 @@ export default async function EquipmentPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemPage",
+    inLanguage: locale,
     name: equipment.title,
     description: equipment.metaDescription,
     image: `${SITE.url}${SITE.ogImage}`,
@@ -133,6 +136,7 @@ export default async function EquipmentPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
+            inLanguage: locale,
             mainEntity: equipment.faqs.map((e) => ({
               "@type": "Question",
               name: e.question,

@@ -4,6 +4,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { getAllFaqEntries } from "@/content/faq";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, SITE } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone } from "lucide-react";
@@ -35,6 +36,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("faqTitle")} | ${SITE.name}`,
       description: t("faqDescription"),
       url: `${SITE.url}${localePath}/faq`,
@@ -54,6 +56,7 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: locale,
     mainEntity: faqEntries.map((e) => ({
       "@type": "Question",
       name: e.question,

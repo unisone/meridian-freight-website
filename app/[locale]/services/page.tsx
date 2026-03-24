@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SITE } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -38,6 +39,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("servicesTitle")} | ${SITE.name}`,
       description: t("servicesDescription"),
       url: `${SITE.url}${localePath}/services`,

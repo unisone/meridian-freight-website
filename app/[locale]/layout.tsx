@@ -88,10 +88,11 @@ export const metadata: Metadata = {
 };
 
 // JSON-LD structured data for Organization + WebSite
-function JsonLd() {
+function JsonLd({ locale }: { locale: string }) {
   const org = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    inLanguage: locale,
     name: COMPANY.name,
     url: SITE.url,
     logo: `${SITE.url}/logos/MF Logos White/meridianFreight-logo-w-500.png`,
@@ -128,6 +129,7 @@ function JsonLd() {
   const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    inLanguage: locale,
     name: SITE.name,
     url: SITE.url,
     description: COMPANY.description,
@@ -170,7 +172,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        <JsonLd />
+        <JsonLd locale={locale} />
       </head>
       <body className="bg-background text-foreground antialiased">
         <NextIntlClientProvider>

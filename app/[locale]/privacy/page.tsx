@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -24,6 +25,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("privacyTitle")} | ${SITE.name}`,
       description: t("privacyDescription"),
       url: `${SITE.url}${localePath}/privacy`,

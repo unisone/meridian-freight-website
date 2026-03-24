@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { blogPosts } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -37,6 +38,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("blogTitle")} | ${SITE.name}`,
       description: t("blogDescription"),
       url: `${SITE.url}${localePath}/blog`,
@@ -52,6 +54,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     name: "Machinery Export Blog",
     description:
       "Expert articles on shipping and exporting heavy machinery from the USA and Canada.",

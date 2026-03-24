@@ -14,6 +14,7 @@ import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { getHomepageFaq } from "@/content/faq";
 
 export async function generateMetadata({
@@ -43,6 +44,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("homeTitle")} | ${SITE.name}`,
       description: t("homeDescription"),
       url: `${SITE.url}${localePath}`,
@@ -66,6 +68,7 @@ export default async function HomePage({
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: locale,
     mainEntity: homepageFaq.map((e) => ({
       "@type": "Question",
       name: e.question,
@@ -76,6 +79,7 @@ export default async function HomePage({
   const videoJsonLd = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
+    inLanguage: locale,
     name: "Meridian Freight — Machinery Dismantling, Packing & Container Loading",
     description:
       "Watch our team dismantle, pack, and load heavy equipment into shipping containers at our Iowa facility. Full-service machinery export from USA & Canada.",

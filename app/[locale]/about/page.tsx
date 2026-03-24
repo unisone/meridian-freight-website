@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { COMPANY, CONTACT, SITE, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -34,6 +35,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("aboutTitle")} | ${SITE.name}`,
       description: t("aboutDescription"),
       url: `${SITE.url}${localePath}/about`,

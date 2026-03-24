@@ -19,6 +19,7 @@ import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { getServiceBySlug, getRelatedServices, getAllServices } from "@/content/services";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale } from "next-intl/server";
 
 const iconMap: Record<string, typeof Package> = {
@@ -57,6 +58,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${service.title} | ${SITE.name}`,
       description: service.description,
       url: `${SITE.url}${localePath}/services/${slug}`,
@@ -81,6 +83,7 @@ export default async function ServicePage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
+    inLanguage: locale,
     name: service.title,
     description: service.longDescription,
     image: `${SITE.url}${SITE.ogImage}`,
@@ -110,6 +113,7 @@ export default async function ServicePage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
+            inLanguage: locale,
             mainEntity: service.faqs.map((e) => ({
               "@type": "Question",
               name: e.question,

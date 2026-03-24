@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PricingTable } from "@/components/pricing-table";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, COMPANY, SITE } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -37,6 +38,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("pricingTitle")} | ${SITE.name}`,
       description: t("pricingDescription"),
       url: `${SITE.url}${localePath}/pricing`,
@@ -54,6 +56,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
   const pricingJsonLd = {
     "@context": "https://schema.org",
     "@type": "AggregateOffer",
+    inLanguage: locale,
     priceCurrency: "USD",
     offerCount: 40,
     lowPrice: "1500",

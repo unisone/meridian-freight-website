@@ -9,6 +9,7 @@ import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { DestinationsGlobe } from "@/components/destinations-globe";
 import { getAllDestinations } from "@/content/destinations";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -40,6 +41,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("destinationsTitle")} | ${SITE.name}`,
       description: t("destinationsDescription"),
       url: `${SITE.url}${localePath}/destinations`,
@@ -132,6 +134,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     name: "Machinery Shipping Destinations",
     description:
       "Countries and ports served by Meridian Freight for machinery export from the USA and Canada.",

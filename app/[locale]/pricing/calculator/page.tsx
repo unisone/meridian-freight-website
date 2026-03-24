@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CalculatorWizard } from "@/components/freight-calculator/calculator-wizard";
 import { COMPANY, SITE } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -30,6 +31,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("calculatorTitle")} | ${SITE.name}`,
       description: t("calculatorDescription"),
       url: `${SITE.url}${localePath}/pricing/calculator`,
@@ -45,6 +47,7 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
   const calculatorJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
+    inLanguage: locale,
     name: "Freight Cost Calculator",
     description: "Free online calculator for estimating machinery export costs including inland freight, packing, and ocean shipping.",
     applicationCategory: "BusinessApplication",

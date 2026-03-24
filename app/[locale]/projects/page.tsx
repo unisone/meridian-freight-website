@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getAllProjects } from "@/content/projects";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, SITE } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -38,6 +39,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: `${t("projectsTitle")} | ${SITE.name}`,
       description: t("projectsDescription"),
       url: `${SITE.url}${localePath}/projects`,
@@ -56,6 +58,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    inLanguage: locale,
     name: "Meridian Freight Export Projects",
     numberOfItems: projects.length,
     itemListElement: projects.map((p, i) => ({

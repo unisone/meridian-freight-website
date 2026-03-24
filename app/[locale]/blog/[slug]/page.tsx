@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { blogPosts, getBlogPostBySlug } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
+import { getOgLocale } from "@/lib/i18n-utils";
 import { renderMarkdown } from "@/lib/markdown";
 import { setRequestLocale } from "next-intl/server";
 
@@ -38,6 +39,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
+      locale: getOgLocale(locale),
       title: post.metaTitle,
       description: post.metaDescription,
       url: `${SITE.url}${localePath}/blog/${slug}`,
@@ -66,6 +68,7 @@ export default async function BlogPostPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
+    inLanguage: locale,
     headline: post.title,
     description: post.metaDescription,
     datePublished: post.publishedAt,
