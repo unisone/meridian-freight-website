@@ -17,7 +17,9 @@ import {
   miscPricing,
   deliveryRates,
   equipmentCategories,
+  translateType,
 } from "@/content/pricing";
+import { useLocale } from "next-intl";
 
 const categoryKeyMap: Record<string, string> = {
   all: "allEquipment",
@@ -33,10 +35,13 @@ export function PricingTable() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const t = useTranslations("PricingTable");
+  const locale = useLocale();
 
   const filtered = equipmentPricing.filter((item) => {
+    const translatedType = translateType(item.type, locale);
     const matchesSearch =
       !search ||
+      translatedType.toLowerCase().includes(search.toLowerCase()) ||
       item.type.toLowerCase().includes(search.toLowerCase()) ||
       item.model.toLowerCase().includes(search.toLowerCase());
     const matchesCategory =
@@ -98,7 +103,7 @@ export function PricingTable() {
             <TableBody>
               {filtered.map((item) => (
                 <TableRow key={item.type}>
-                  <TableCell className="font-medium">{item.type}</TableCell>
+                  <TableCell className="font-medium">{translateType(item.type, locale)}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{item.model}</TableCell>
                   <TableCell className="text-right font-mono text-sm">{item.delivery}</TableCell>
                   <TableCell className="text-right font-mono text-sm font-semibold">{item.containerized}</TableCell>
@@ -133,7 +138,7 @@ export function PricingTable() {
             <TableBody>
               {miscPricing.map((item) => (
                 <TableRow key={item.item}>
-                  <TableCell className="font-medium">{item.item}</TableCell>
+                  <TableCell className="font-medium">{translateType(item.item, locale)}</TableCell>
                   <TableCell className="text-right font-mono font-semibold">{item.price}</TableCell>
                 </TableRow>
               ))}
