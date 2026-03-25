@@ -31,6 +31,21 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://www.facebook.com https://www.googletagmanager.com",
+      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://*.sentry.io https://graph.facebook.com https://*.supabase.co",
+      "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com",
+      "font-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join("; "),
+  },
 ];
 
 const nextConfig: NextConfig = {
