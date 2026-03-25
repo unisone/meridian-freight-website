@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ServicesGrid } from "@/components/services-grid";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProcessSteps } from "@/components/process-steps";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";

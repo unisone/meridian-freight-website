@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, MessageCircle, Package, Globe, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY, CONTACT } from "@/lib/constants";

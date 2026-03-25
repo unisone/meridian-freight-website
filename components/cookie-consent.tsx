@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
@@ -41,9 +42,9 @@ export function CookieConsent() {
     >
       <p className="text-sm text-muted-foreground">
         {t("message")}{" "}
-        <a href="/privacy" className="underline hover:text-foreground">
+        <Link href="/privacy" className="underline hover:text-foreground">
           {t("privacyPolicy")}
-        </a>
+        </Link>
       </p>
       <div className="mt-3 flex gap-3">
         <Button
