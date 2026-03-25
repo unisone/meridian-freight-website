@@ -50,6 +50,32 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const t = await getTranslations("AboutPage");
   const tc = await getTranslations("Common");
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    inLanguage: locale,
+    name: COMPANY.name,
+    legalName: COMPANY.legalName,
+    url: SITE.url,
+    logo: `${SITE.url}/logos/MF Logos White/meridianFreight-logo-w-500.png`,
+    description: COMPANY.description,
+    foundingDate: `${COMPANY.foundedYear}`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: CONTACT.address.street,
+      addressLocality: CONTACT.address.city,
+      addressRegion: CONTACT.address.state,
+      postalCode: CONTACT.address.zip,
+      addressCountry: CONTACT.address.country,
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: CONTACT.phoneRaw,
+      contactType: "customer service",
+      availableLanguage: ["English", "Russian", "Spanish", "Arabic"],
+    },
+  };
+
   const differentiators = [
     {
       icon: Shield,
@@ -69,6 +95,11 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   ];
 
   return (
+    <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="pt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
@@ -186,5 +217,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </section>
       </ScrollReveal>
     </div>
+    </>
   );
 }

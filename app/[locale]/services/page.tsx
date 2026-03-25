@@ -6,9 +6,10 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { SITE } from "@/lib/constants";
+import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { getAllServices } from "@/content/services";
 
 export async function generateMetadata({
   params,
@@ -52,8 +53,29 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "ServicesPage" });
+  const services = getAllServices(locale);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    inLanguage: locale,
+    name: t("heading"),
+    description: t("description"),
+    numberOfItems: services.length,
+    itemListElement: services.map((s, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      name: s.title,
+      url: `${SITE.url}/services/${s.slug}`,
+    })),
+  };
 
   return (
+    <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="pt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
@@ -80,5 +102,6 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
       </section>
       </ScrollReveal>
     </div>
+    </>
   );
 }
