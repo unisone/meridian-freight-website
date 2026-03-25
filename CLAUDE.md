@@ -30,6 +30,8 @@ npm run test:watch # Vitest watch mode
 - **Supabase** (REST API) for lead storage + freight rate tables
 - **Vitest** for unit testing
 - **Slack Bot API** for notifications
+- **Sentry** (`@sentry/nextjs`) for error tracking + performance monitoring
+- **Structured logging** (`lib/logger.ts`) for JSON-formatted server-side logs
 
 ## Architecture
 
@@ -75,9 +77,13 @@ Contact form and calculator both use Server Actions (not API routes):
 2. Honeypot check
 3. Supabase INSERT → `leads` table (best-effort)
 4. Resend email to owner (must succeed)
-5. Resend auto-reply to visitor (best-effort)
-6. Slack notification (best-effort)
-7. Meta CAPI Lead event (best-effort)
+5. **Return response to user** — steps below run in `after()` (background)
+6. Resend auto-reply to visitor (best-effort, background)
+7. Slack notification (best-effort, background)
+8. Meta CAPI Lead event (best-effort, background)
+9. Vercel Analytics server-side `track()` (best-effort, background)
+
+**Background processing:** Steps 6-9 use Next.js `after()` from `next/server` to run after the response is sent. This saves ~700-1300ms of perceived latency. The `after()` callback has the same timeout as the function itself.
 
 ### Freight Calculator V2 (Supabase-powered)
 The calculator at `/pricing/calculator` uses real freight rates from the shared Supabase database (same as `mf-chatbot-ui`). Key files:
@@ -275,9 +281,9 @@ Key features:
 - **Search Console** — Google (`public/google06d7c7c3dca85c23.html`) + Bing (`public/ff99b5ecadb7c3f6bb03c81244f831f3.txt`) verification files
 - **llms.txt** — `public/llms.txt` for model training opt-out
 
-### Analytics & Tracking (GA4 + Meta Pixel + CAPI)
+### Analytics & Tracking (GA4 + Meta Pixel + CAPI + Vercel Analytics + Sentry)
 
-Full spec: `docs/GA4-DASHBOARD-SPEC.md`
+Full spec: `docs/GA4-DASHBOARD-SPEC.md` | Elite analytics spec: `docs/specs/2026-03-25-vercel-analytics-elite-spec.md`
 
 Two separate GA4 properties under the same Google Analytics account (`Meridian Freight Inc`):
 
@@ -305,9 +311,9 @@ Homepage, Services, Equipment, Destinations, Calculator, Pricing, Projects, Abou
 |----------|---------|
 | `trackGA4Event(name, params)` | Fire GA4 custom event |
 | `trackPixelEvent(name, params, eventId)` | Fire Meta Pixel event with dedup ID |
-| `trackContactClick(type, location)` | Track WhatsApp/phone/email click (GA4 + Pixel) |
-| `trackCtaClick(location, text, destination)` | Track CTA button click |
-| `trackCalcFunnel(step, params)` | Track calculator funnel step |
+| `trackContactClick(type, location)` | Track WhatsApp/phone/email click (GA4 + Pixel + Vercel Analytics) |
+| `trackCtaClick(location, text, destination)` | Track CTA button click (GA4 + Vercel Analytics) |
+| `trackCalcFunnel(step, params)` | Track calculator funnel step (GA4 + Vercel Analytics) |
 | `getGA4ClientId()` | Get GA4 client_id for offline conversion matching |
 | `captureAttribution()` | Capture UTM params + click IDs from URL |
 | `getAttribution()` | Read stored attribution (cookie → sessionStorage fallback) |
@@ -349,6 +355,39 @@ Homepage, Services, Equipment, Destinations, Calculator, Pricing, Projects, Abou
 | `Lead` | Contact form submit | Hashed email + phone, `lead_source: "corporate_contact_form"` |
 | `Lead` | Calculator submit | Hashed email, equipment_type, destination_country, container_type |
 
+#### Vercel Analytics Custom Events
+`components/vercel-analytics.tsx` wraps `<Analytics>` from `@vercel/analytics/next` with `beforeSend` locale normalization (strips `/es/` and `/ru/` prefixes so all locales aggregate under the same page).
+
+**Client-side events** (via `track()` from `@vercel/analytics`):
+| Event | Component | Trigger |
+|-------|-----------|---------|
+| `generate_lead` | `contact-form.tsx`, `calculator-wizard.tsx` | Form/calculator submit |
+| `contact_click` | via `trackContactClick()` | WhatsApp/phone/email click |
+| `cta_click` | via `trackCtaClick()` | CTA button click |
+| `calculator_start/step/complete` | via `trackCalcFunnel()` | Calculator funnel steps |
+
+**Server-side events** (via `track()` from `@vercel/analytics/server`):
+| Event | Action | Trigger |
+|-------|--------|---------|
+| `lead_submitted` | `contact.ts` | Contact form submit (in `after()` block) |
+| `lead_submitted` | `calculator.ts` | Calculator submit (in `after()` block) |
+
+Only revenue-driving events are mirrored to Vercel Analytics. Micro-events (`video_play`, `faq_expand`) stay in GA4 only.
+
+#### Structured Logging (`lib/logger.ts`)
+Server actions use structured JSON logging for Vercel Runtime Logs:
+- `startTimer(route)` → returns `{ done(), error() }` with automatic duration measurement
+- `log({ level, msg, route, ... })` → outputs `JSON.stringify()` for filtering by level/route/duration
+- All server action errors include route, step, and duration in structured format
+
+#### Sentry Error Tracking
+- `instrumentation-client.ts` — Client-side init (replays on error, 10% trace sampling)
+- `instrumentation.ts` — Server-side init (imports `sentry.server.config.ts` / `sentry.edge.config.ts`)
+- `app/global-error.tsx` — Root error boundary with `Sentry.captureException`
+- `app/[locale]/error.tsx` — Locale error boundary with `Sentry.captureException`
+- `next.config.ts` — Wrapped with `withSentryConfig` for source map upload
+- Sentry is dormant if `NEXT_PUBLIC_SENTRY_DSN` is not set
+
 #### TrackedContactLink Component
 `components/tracked-contact-link.tsx` — "use client" wrapper for `<a>` tags in Server Components (footer, contact-info, hero). Renders an anchor with `onClick` tracking via `trackContactClick()`. Use this when adding tracked links in Server Components where direct `onClick` handlers aren't available.
 
@@ -373,6 +412,10 @@ See `.env.example` for the full list. Required in `.env.local`:
 | `INDEXNOW_SECRET` | IndexNow API auth secret | No |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console | No |
 | `NEXT_PUBLIC_BING_SITE_VERIFICATION` | Bing Webmaster | No |
+| `NEXT_PUBLIC_SENTRY_DSN` | Sentry error tracking (client + server) | No (Sentry dormant if unset) |
+| `SENTRY_ORG` | Sentry source map upload | No (build-time only) |
+| `SENTRY_PROJECT` | Sentry source map upload | No (build-time only) |
+| `SENTRY_AUTH_TOKEN` | Sentry source map upload | No (build-time only) |
 
 **IMPORTANT when adding env vars via CLI**: Use `printf 'value' | vercel env add NAME environment` — NOT `echo`. The `echo` command appends a newline (`\n`) that gets embedded in the value and breaks inline JavaScript template literals.
 
