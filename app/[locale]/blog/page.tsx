@@ -10,6 +10,7 @@ import { blogPosts } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
   params,
@@ -50,6 +51,7 @@ export async function generateMetadata({
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const tb = await getTranslations({ locale: locale as Locale, namespace: "BlogPage" });
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -84,12 +86,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Machinery Export Insights
+              {tb("heroHeading")}
             </h1>
             <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
-              Expert guides, cost breakdowns, and destination-specific advice from the{" "}
-              {COMPANY.name} team. Everything you need to know about shipping heavy
-              equipment from the USA and Canada.
+              {tb("heroDescription", { company: COMPANY.name })}
             </p>
           </div>
         </section>
@@ -128,7 +128,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
                           </span>
                         </div>
                         <p className="mt-3 text-sm font-medium text-primary flex items-center gap-1 group-hover:underline">
-                          Read article <ArrowRight className="h-3.5 w-3.5" />
+                          {tb("readArticle")} <ArrowRight className="h-3.5 w-3.5" />
                         </p>
                       </CardContent>
                     </Card>
@@ -144,18 +144,17 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
           <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Ready to Ship Your Equipment?
+                {tb("ctaHeading")}
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                Get a free, no-obligation quote within 24 hours. Tell us what you are
-                shipping and where it needs to go.
+                {tb("ctaDescription")}
               </p>
               <Button
                 render={<Link href="/contact" />}
                 size="lg"
                 className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
               >
-                Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+                {tb("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </section>

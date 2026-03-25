@@ -21,7 +21,7 @@ import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
 function getEquipmentSlug(name: string, locale: string): string | null {
   const types = getAllEquipmentTypes(locale);
@@ -74,6 +74,7 @@ export default async function DestinationPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const td = await getTranslations("DestinationDetailPage");
   const dest = getDestinationBySlug(slug, locale);
   if (!dest) notFound();
 
@@ -99,27 +100,27 @@ export default async function DestinationPage({
   };
 
   const routeDetails = [
-    { icon: Clock, label: "Transit Time", value: `${dest.transitDays} days` },
-    { icon: Anchor, label: "Destination Port", value: dest.port },
-    { icon: Ship, label: "Carriers", value: dest.carriers.join(", ") },
-    { icon: Box, label: "Container Options", value: dest.containerOptions.join(", ") },
+    { icon: Clock, label: td("transitTime"), value: td("days", { count: dest.transitDays }) },
+    { icon: Anchor, label: td("destinationPort"), value: dest.port },
+    { icon: Ship, label: td("carriers"), value: dest.carriers.join(", ") },
+    { icon: Box, label: td("containerOptions"), value: dest.containerOptions.join(", ") },
   ];
 
   const processSteps = [
     {
       step: "1",
-      title: "Get a Quote",
-      description: "Send us your equipment details and destination. You receive a line-by-line quote within 24 hours.",
+      title: td("step1Title"),
+      description: td("step1Description"),
     },
     {
       step: "2",
-      title: "We Pack & Load",
-      description: "Our team dismantles, labels, and packs your machinery into secure containers at our facility.",
+      title: td("step2Title"),
+      description: td("step2Description"),
     },
     {
       step: "3",
-      title: "Ship & Track",
-      description: `Your shipment sails to ${dest.port} with full documentation. You get tracking updates until delivery.`,
+      title: td("step3Title"),
+      description: td("step3DescriptionTemplate", { port: dest.port }),
     },
   ];
 
@@ -165,13 +166,13 @@ export default async function DestinationPage({
               </div>
             </div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Ship Machinery to {dest.country}
+              {td("heroHeading", { country: dest.country })}
             </h1>
             <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
               {dest.heroDescription}
             </p>
             <Button render={<Link href="/contact" />} size="lg" className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-              Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+              {td("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </section>
@@ -180,7 +181,7 @@ export default async function DestinationPage({
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-              Route Details
+              {td("routeDetails")}
             </h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {routeDetails.map((detail, idx) => {
@@ -212,7 +213,7 @@ export default async function DestinationPage({
           <section className="bg-muted py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                Equipment We Ship to {dest.country}
+                {td("equipmentWeShipTo", { country: dest.country })}
               </h2>
               <div className="mt-6 flex flex-wrap gap-3">
                 {dest.commonEquipment.map((type, idx) => {
@@ -246,7 +247,7 @@ export default async function DestinationPage({
                 <FileText className="h-5 w-5" />
               </div>
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                What You Need to Know
+                {td("whatYouNeedToKnow")}
               </h2>
             </div>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
@@ -259,7 +260,7 @@ export default async function DestinationPage({
         <section className="bg-muted py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-              How It Works
+              {td("howItWorks")}
             </h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-3">
               {processSteps.map((step, idx) => (
@@ -293,21 +294,23 @@ export default async function DestinationPage({
           <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Ready to Ship to {dest.country}?
+                {td("readyToShipTo", { country: dest.country })}
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                Get a free quote within 24 hours, or{" "}
-                <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">
-                  try our instant calculator
-                </Link>{" "}
-                for a cost estimate right now.
+                {td.rich("ctaDescription", {
+                  calculatorLink: (chunks) => (
+                    <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">
+                      {chunks}
+                    </Link>
+                  ),
+                })}
               </p>
               <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                  Get a Quote
+                  {td("getAQuote")}
                 </Button>
-                <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping machinery to ${dest.country}.`)}`} target="_blank" rel="noopener noreferrer" aria-label={`Chat on WhatsApp about shipping to ${dest.country}`} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
-                  <Phone className="mr-2 h-4 w-4" /> Chat on WhatsApp
+                <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping machinery to ${dest.country}.`)}`} target="_blank" rel="noopener noreferrer" aria-label={td("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
+                  <Phone className="mr-2 h-4 w-4" /> {td("chatOnWhatsApp")}
                 </Button>
               </div>
             </div>

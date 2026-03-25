@@ -10,7 +10,7 @@ import { blogPosts, getBlogPostBySlug } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { renderMarkdown } from "@/lib/markdown";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));
@@ -60,6 +60,7 @@ export default async function BlogPostPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const tb = await getTranslations("BlogPostPage");
   const post = getBlogPostBySlug(slug);
   if (!post) notFound();
 
@@ -160,7 +161,7 @@ export default async function BlogPostPage({
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back to all articles
+            {tb("backToAllArticles")}
           </Link>
         </div>
 
@@ -169,18 +170,17 @@ export default async function BlogPostPage({
           <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Get a Quote
+                {tb("ctaHeading")}
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                Ready to ship your equipment? Tell us what you need to export and where
-                it is going — we will send you a detailed quote within 24 hours.
+                {tb("ctaDescription")}
               </p>
               <Button
                 render={<Link href="/contact" />}
                 size="lg"
                 className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
               >
-                Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+                {tb("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </section>

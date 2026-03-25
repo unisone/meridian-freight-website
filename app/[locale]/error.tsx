@@ -5,6 +5,7 @@ import * as Sentry from "@sentry/nextjs";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 
 export default function Error({
   error,
@@ -13,17 +14,18 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const t = useTranslations("ErrorPage");
+
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
       <h1 className="text-4xl font-bold tracking-tight text-foreground">
-        Something went wrong
+        {t("heading")}
       </h1>
       <p className="mt-4 max-w-md text-muted-foreground">
-        We hit an unexpected error loading this page. Try again, or reach out
-        directly — we&apos;re here to help.
+        {t("description")}
       </p>
 
       <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
@@ -31,32 +33,32 @@ export default function Error({
           onClick={reset}
           className="bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg"
         >
-          Try again
+          {t("tryAgain")}
         </Button>
         <Button
           variant="outline"
           className="rounded-lg"
           render={<Link href="/" />}
         >
-          Back to Home
+          {t("backToHome")}
         </Button>
       </div>
 
       {/* Suggested pages */}
       <div className="mt-10 flex flex-wrap justify-center gap-2">
-        {[
-          { href: "/services", label: "Services" },
-          { href: "/pricing", label: "Pricing" },
-          { href: "/pricing/calculator", label: "Freight Calculator" },
-          { href: "/projects", label: "Projects" },
-          { href: "/contact", label: "Contact" },
-        ].map(({ href, label }) => (
+        {([
+          { href: "/services", labelKey: "services" },
+          { href: "/pricing", labelKey: "pricing" },
+          { href: "/pricing/calculator", labelKey: "freightCalculator" },
+          { href: "/projects", labelKey: "projects" },
+          { href: "/contact", labelKey: "contact" },
+        ] as const).map(({ href, labelKey }) => (
           <Link
             key={href}
             href={href}
             className="rounded-full border border-border px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
-            {label}
+            {t(labelKey)}
           </Link>
         ))}
       </div>
@@ -64,14 +66,14 @@ export default function Error({
       {/* Contact fallback */}
       <div className="mt-6 rounded-xl bg-muted p-6 text-center max-w-md">
         <p className="text-sm text-muted-foreground">
-          If this keeps happening, contact us directly:
+          {t("persistentError")}
         </p>
         <div className="mt-3 flex flex-col items-center gap-2 text-sm">
           <a href={CONTACT.phoneHref} className="font-medium text-primary hover:underline">
             {CONTACT.phone}
           </a>
           <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-emerald-600 hover:underline">
-            Chat on WhatsApp
+            {t("chatOnWhatsApp")}
           </a>
           <a href={CONTACT.emailHref} className="font-medium text-primary hover:underline">
             {CONTACT.email}

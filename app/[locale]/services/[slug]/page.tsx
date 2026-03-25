@@ -20,7 +20,7 @@ import { getServiceBySlug, getRelatedServices, getAllServices } from "@/content/
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
 const iconMap: Record<string, typeof Package> = {
   Package,
@@ -74,6 +74,7 @@ export default async function ServicePage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const ts = await getTranslations("ServiceDetailPage");
   const service = getServiceBySlug(slug, locale);
   if (!service) notFound();
 
@@ -149,7 +150,7 @@ export default async function ServicePage({
               {service.description}
             </p>
             <Button render={<Link href="/contact" />} size="lg" className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+                {ts("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </section>
@@ -158,7 +159,7 @@ export default async function ServicePage({
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-              How We Handle Your Shipment
+              {ts("howWeHandle")}
             </h2>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
               {service.longDescription}
@@ -171,9 +172,9 @@ export default async function ServicePage({
           <section className="bg-muted py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                Equipment We Handle
+                {ts("equipmentWeHandle")}
               </h2>
-              <p className="mt-2 text-muted-foreground">Every type listed below ships with brand-specific disassembly, custom blocking, and full documentation.</p>
+              <p className="mt-2 text-muted-foreground">{ts("equipmentWeHandleDescription")}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 {service.equipmentTypes.map((type, idx) => (
                   <StaggerItem key={type} index={idx} variant="fade" className="inline-block"><Badge
@@ -195,7 +196,7 @@ export default async function ServicePage({
           <section className="py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                Complete Your Export — Add These Services
+                {ts("addTheseServices")}
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((rs, idx) => {
@@ -231,19 +232,21 @@ export default async function ServicePage({
         <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
             <h2 className="text-2xl font-bold sm:text-3xl">
-              Need {service.shortTitle} Services?
+              {ts("needServices", { service: service.shortTitle })}
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sky-300">
-              Get a free quote within 24 hours, or{" "}
-              <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">try our instant calculator</Link>{" "}
-              for a cost estimate right now.
+              {ts.rich("ctaDescription", {
+                calculatorLink: (chunks) => (
+                  <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">{chunks}</Link>
+                ),
+              })}
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                  Get a Quote
+                  {ts("getAQuote")}
               </Button>
-              <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp about our services" />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
-                  Chat on WhatsApp
+              <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label={ts("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
+                  {ts("chatOnWhatsApp")}
               </Button>
             </div>
           </div>

@@ -20,7 +20,7 @@ import { getAllDestinations } from "@/content/destinations";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export function generateStaticParams() {
   return getAllEquipmentTypes('en').map((e) => ({ slug: e.slug }));
@@ -67,6 +67,7 @@ export default async function EquipmentPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const te = await getTranslations("EquipmentDetailPage");
   const equipment = getEquipmentBySlug(slug, locale);
   if (!equipment) notFound();
 
@@ -171,7 +172,7 @@ export default async function EquipmentPage({
               size="lg"
               className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
             >
-              Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+              {te("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </section>
@@ -180,11 +181,10 @@ export default async function EquipmentPage({
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-              Brands We Handle
+              {te("brandsWeHandle")}
             </h2>
             <p className="mt-3 max-w-2xl text-muted-foreground">
-              We have hands-on experience exporting these {equipment.pluralName.toLowerCase()} brands.
-              No matter the model or year, we know how to disassemble, pack, and ship it.
+              {te("brandsDescription", { equipment: equipment.pluralName.toLowerCase() })}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {equipment.brands.map((brand, idx) => (
@@ -206,11 +206,10 @@ export default async function EquipmentPage({
         <section className="bg-muted py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-              Common Models We Ship
+              {te("commonModels")}
             </h2>
             <p className="mt-3 max-w-2xl text-muted-foreground">
-              These are some of the most popular models our clients export. We handle any
-              model and year — if it rolls, tracks, or tows, we can ship it.
+              {te("commonModelsDescription")}
             </p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {equipment.commonModels.map((model, idx) => (
@@ -238,7 +237,7 @@ export default async function EquipmentPage({
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                  How We Pack {equipment.pluralName}
+                  {te("howWePack", { equipment: equipment.pluralName })}
                 </h2>
                 <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
                   {equipment.packingNotes}
@@ -257,12 +256,10 @@ export default async function EquipmentPage({
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                  Container Options
+                  {te("containerOptions")}
                 </h2>
                 <p className="mt-3 max-w-2xl text-muted-foreground">
-                  Depending on size, weight, and destination, your {equipment.singularName.toLowerCase()} may
-                  ship in one of these container types. We choose the most cost-effective option
-                  for every shipment.
+                  {te("containerOptionsDescription", { equipment: equipment.singularName.toLowerCase() })}
                 </p>
               </div>
             </div>
@@ -287,7 +284,7 @@ export default async function EquipmentPage({
           <section className="py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                Related Services
+                {te("relatedServices")}
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedServices.map((rs, idx) => (
@@ -316,7 +313,7 @@ export default async function EquipmentPage({
           <section className="bg-muted py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                Where We Ship {equipment.pluralName}
+                {te("whereWeShip", { equipment: equipment.pluralName })}
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {relatedDestinations.map((dest, idx) => (
@@ -328,7 +325,7 @@ export default async function EquipmentPage({
                             {dest.country}
                           </h3>
                           <p className="mt-1 text-sm text-muted-foreground">
-                            {dest.port} &middot; {dest.transitDays} days
+                            {dest.port} &middot; {te("transitDays", { days: dest.transitDays })}
                           </p>
                         </CardContent>
                       </Card>
@@ -350,17 +347,19 @@ export default async function EquipmentPage({
           <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
               <h2 className="text-2xl font-bold sm:text-3xl">
-                Ready to Ship Your {equipment.singularName}?
+                {te("readyToShip", { equipment: equipment.singularName })}
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                Get a free quote within 24 hours, or{" "}
-                <Link
-                  href="/pricing/calculator"
-                  className="underline hover:text-white transition-colors"
-                >
-                  try our instant calculator
-                </Link>{" "}
-                for a cost estimate right now.
+                {te.rich("ctaDescription", {
+                  calculatorLink: (chunks) => (
+                    <Link
+                      href="/pricing/calculator"
+                      className="underline hover:text-white transition-colors"
+                    >
+                      {chunks}
+                    </Link>
+                  ),
+                })}
               </p>
               <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Button
@@ -368,7 +367,7 @@ export default async function EquipmentPage({
                   size="lg"
                   className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
                 >
-                  Get a Quote
+                  {te("getAQuote")}
                 </Button>
                 <Button
                   render={
@@ -376,14 +375,14 @@ export default async function EquipmentPage({
                       href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`Chat on WhatsApp about ${equipment.singularName.toLowerCase()} export`}
+                      aria-label={te("chatOnWhatsApp")}
                     />
                   }
                   size="lg"
                   variant="outline"
                   className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
                 >
-                  Chat on WhatsApp
+                  {te("chatOnWhatsApp")}
                 </Button>
               </div>
             </div>
