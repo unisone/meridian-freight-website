@@ -30,6 +30,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { track as vercelTrack } from "@vercel/analytics";
 import { trackGA4Event, trackPixelEvent, trackCalcFunnel, trackContactClick } from "@/lib/tracking";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
 import { getCalculatorData } from "@/app/actions/calculator-data";
@@ -196,6 +197,7 @@ export function CalculatorWizard() {
           value: 300,
           currency: "USD",
         });
+        vercelTrack("generate_lead", { source: "calculator", value: 300 });
         if (res.eventId) {
           trackPixelEvent(
             "Lead",

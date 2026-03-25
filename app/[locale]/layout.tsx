@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Analytics } from "@vercel/analytics/react";
+import { VercelAnalytics } from "@/components/vercel-analytics";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollProgress } from "@/components/scroll-progress";
@@ -188,7 +188,7 @@ export default async function LocaleLayout({
           <AttributionCapture />
           <GoogleAnalytics />
           <MetaPixel />
-          <Analytics />
+          <VercelAnalytics />
           <SpeedInsights />
         </NextIntlClientProvider>
       </body>

@@ -1,10 +1,13 @@
 "use server";
 
+import { after } from "next/server";
 import { Resend } from "resend";
 import { contactFormSchema, type ContactFormData } from "@/lib/schemas";
 import { CONTACT, COMPANY } from "@/lib/constants";
+import { track } from "@vercel/analytics/server";
 import { notifySlack } from "@/lib/slack";
 import { sendCAPIEvent } from "@/lib/meta-capi";
+import { startTimer, log } from "@/lib/logger";
 
 function escapeHtml(input: string): string {
   return String(input)
@@ -34,10 +37,10 @@ async function insertLeadToSupabase(lead: Record<string, unknown>) {
 
     if (!resp.ok) {
       const text = await resp.text().catch(() => "");
-      console.error("Supabase insert failed:", resp.status, text);
+      log({ level: "error", msg: "supabase_insert_failed", route: "action:contact-form", status: resp.status, body: text });
     }
   } catch (e) {
-    console.error("Supabase insert exception:", e);
+    log({ level: "error", msg: "supabase_insert_exception", route: "action:contact-form", error: String(e) });
   }
 }
 
@@ -78,6 +81,8 @@ export async function submitContactForm(
   raw: ContactFormData,
   locale: string = "en"
 ): Promise<ContactActionResult> {
+  const timer = startTimer("action:contact-form");
+
   // 1. Validate
   const parsed = contactFormSchema.safeParse(raw);
   if (!parsed.success) {
@@ -96,7 +101,7 @@ export async function submitContactForm(
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured");
+    timer.error("RESEND_API_KEY is not configured");
     return { success: false, error: "Email service is not configured." };
   }
 
@@ -154,59 +159,69 @@ export async function submitContactForm(
     });
 
     if (error) {
-      console.error("Resend error (admin notify):", error);
+      timer.error(error, { step: "owner_email" });
       return {
         success: false,
         error: (error as { message?: string })?.message || "Failed to send email.",
       };
     }
   } catch (err) {
-    console.error("Contact API error:", err);
+    timer.error(err, { step: "owner_email" });
     return { success: false, error: "An unexpected error occurred." };
   }
 
-  // 5. Auto-reply to visitor in their language (best-effort)
-  try {
-    const replySubject = AUTO_REPLY_SUBJECTS[locale] ?? AUTO_REPLY_SUBJECTS.en;
-    const replyBodyFn = AUTO_REPLY_BODY[locale] ?? AUTO_REPLY_BODY.en;
-    await resend.emails.send({
-      from: CONTACT.fromEmail,
-      to: email,
-      replyTo: CONTACT.notificationEmail,
-      subject: replySubject,
-      html: `
-        <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
-          ${replyBodyFn(safeName, safeMessage.replace(/\n/g, "<br/>"))}
-        </div>
-      `,
-    });
-  } catch (e) {
-    console.error("Auto-reply failed:", e);
-  }
-
-  // 6. Slack notify (best-effort)
-  const slackLines = [
-    `*New lead (corporate site${locale !== "en" ? ` — ${locale.toUpperCase()}` : ""}):* ${name} <${email}>`,
-    company ? `Company: ${company}` : null,
-    phone ? `Phone: ${phone}` : null,
-    equipmentType ? `Equipment: ${equipmentType}` : null,
-    `Message: ${message.length > 280 ? message.slice(0, 280) + "…" : message}`,
-  ]
-    .filter(Boolean)
-    .join("\n");
-
-  await notifySlack(slackLines);
-
-  // 7. Meta CAPI Lead event (best-effort, server-side)
+  // Generate event ID before returning (needed for Pixel/CAPI dedup)
   const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-  await sendCAPIEvent({
-    eventName: "Lead",
-    eventId,
-    email,
-    phone: phone || undefined,
-    sourceUrl: data.source_page || undefined,
-    customData: { lead_source: "corporate_contact_form" },
+
+  // 5-8. Best-effort work runs AFTER the response is sent to the user.
+  // This saves ~700-1300ms of perceived latency.
+  after(async () => {
+    // 5. Auto-reply to visitor in their language
+    try {
+      const replySubject = AUTO_REPLY_SUBJECTS[locale] ?? AUTO_REPLY_SUBJECTS.en;
+      const replyBodyFn = AUTO_REPLY_BODY[locale] ?? AUTO_REPLY_BODY.en;
+      await resend.emails.send({
+        from: CONTACT.fromEmail,
+        to: email,
+        replyTo: CONTACT.notificationEmail,
+        subject: replySubject,
+        html: `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
+            ${replyBodyFn(safeName, safeMessage.replace(/\n/g, "<br/>"))}
+          </div>
+        `,
+      });
+    } catch (e) {
+      log({ level: "error", msg: "auto_reply_failed", route: "action:contact-form", error: String(e) });
+    }
+
+    // 6. Slack notify
+    const slackLines = [
+      `*New lead (corporate site${locale !== "en" ? ` — ${locale.toUpperCase()}` : ""}):* ${name} <${email}>`,
+      company ? `Company: ${company}` : null,
+      phone ? `Phone: ${phone}` : null,
+      equipmentType ? `Equipment: ${equipmentType}` : null,
+      `Message: ${message.length > 280 ? message.slice(0, 280) + "…" : message}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    await notifySlack(slackLines);
+
+    // 7. Meta CAPI Lead event
+    await sendCAPIEvent({
+      eventName: "Lead",
+      eventId,
+      email,
+      phone: phone || undefined,
+      sourceUrl: data.source_page || undefined,
+      customData: { lead_source: "corporate_contact_form" },
+    });
+
+    // 8. Vercel Analytics server-side event
+    await track("lead_submitted", { source: "contact_form", locale }).catch(() => {});
   });
 
+  timer.done({ email, locale });
   return { success: true, eventId };
 }

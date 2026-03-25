@@ -2,7 +2,11 @@
  * Client-side tracking helpers.
  * Captures UTM params and click IDs (gclid/fbclid) to a 30-day first-party cookie
  * (with sessionStorage fallback).
+ *
+ * Fires events to both GA4 (via gtag) and Vercel Analytics (via track()).
  */
+
+import { track as vercelTrack } from "@vercel/analytics";
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
 const CLICK_IDS = ["gclid", "fbclid", "msclkid"] as const;
@@ -119,7 +123,7 @@ function getLocaleFromPath(): string {
   return match ? match[1] : "en";
 }
 
-/** Track a contact link click (WhatsApp / phone / email) with GA4 + Pixel. */
+/** Track a contact link click (WhatsApp / phone / email) with GA4 + Pixel + Vercel Analytics. */
 export function trackContactClick(
   type: "whatsapp" | "phone" | "email",
   location: string,
@@ -131,9 +135,10 @@ export function trackContactClick(
     locale: getLocaleFromPath(),
   });
   trackPixelEvent("Contact", { content_name: `${location}_${type}` }, eventId);
+  vercelTrack("contact_click", { type, location });
 }
 
-/** Track a CTA button click. */
+/** Track a CTA button click with GA4 + Vercel Analytics. */
 export function trackCtaClick(
   location: string,
   text: string,
@@ -145,14 +150,16 @@ export function trackCtaClick(
     cta_text: text,
     cta_destination: destination,
   });
+  vercelTrack("cta_click", { location, text: text.slice(0, 100), destination });
 }
 
-/** Track a calculator funnel step. */
+/** Track a calculator funnel step with GA4 + Vercel Analytics. */
 export function trackCalcFunnel(
   step: "start" | "step" | "complete",
   params: Record<string, string>,
 ): void {
   trackGA4Event(`calculator_${step}`, params);
+  vercelTrack(`calculator_${step}`, params);
 }
 
 /** Get the GA4 client_id for offline conversion matching. */

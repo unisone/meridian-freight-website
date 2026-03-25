@@ -6,9 +6,12 @@ import { calculateFreightV2, formatDollar } from "@/lib/freight-engine-v2";
 import { fetchEquipmentRates, fetchOceanRates } from "@/lib/supabase-rates";
 import type { FreightEstimateV2 } from "@/lib/types/calculator";
 import { COUNTRY_NAMES } from "@/lib/types/calculator";
+import { after } from "next/server";
 import { CONTACT, COMPANY } from "@/lib/constants";
+import { track } from "@vercel/analytics/server";
 import { notifySlack } from "@/lib/slack";
 import { sendCAPIEvent } from "@/lib/meta-capi";
+import { startTimer, log } from "@/lib/logger";
 
 function escapeHtml(input: string): string {
   return String(input)
@@ -36,10 +39,10 @@ async function insertCalculatorLead(data: Record<string, unknown>) {
       body: JSON.stringify(data),
     });
     if (!resp.ok) {
-      console.error("Calculator lead insert failed:", resp.status, await resp.text());
+      log({ level: "error", msg: "supabase_insert_failed", route: "action:calculator", status: resp.status, body: await resp.text() });
     }
   } catch (e) {
-    console.error("Calculator lead insert failed:", e);
+    log({ level: "error", msg: "supabase_insert_exception", route: "action:calculator", error: String(e) });
   }
 }
 
@@ -72,6 +75,8 @@ export async function submitCalculator(
   raw: CalculatorV2Data,
   locale: string = "en"
 ): Promise<CalculatorResult> {
+  const timer = startTimer("action:calculator");
+
   // 1. Validate
   const parsed = calculatorV2Schema.safeParse(raw);
   if (!parsed.success) {
@@ -132,7 +137,7 @@ export async function submitCalculator(
   // 5. Enforce Resend
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured");
+    timer.error("RESEND_API_KEY is not configured");
     return { success: false, error: "Email service not configured." };
   }
 
@@ -178,97 +183,112 @@ export async function submitCalculator(
     });
 
     if (error) {
-      console.error("Resend error (calculator admin notify):", error);
+      timer.error(error, { step: "owner_email" });
       return {
         success: false,
         error: (error as { message?: string })?.message || "Failed to send email.",
       };
     }
   } catch (err) {
-    console.error("Calculator notification failed:", err);
+    timer.error(err, { step: "owner_email" });
     return { success: false, error: "An unexpected error occurred." };
   }
 
-  // 7. Auto-reply to visitor with estimate in their language (best-effort)
-  try {
-    const calcSubject = CALC_REPLY_SUBJECTS[locale] ?? CALC_REPLY_SUBJECTS.en;
-    const calcIntro = (CALC_REPLY_INTRO[locale] ?? CALC_REPLY_INTRO.en)(data.name ? escapeHtml(data.name) : "");
-    const calcFooter = CALC_REPLY_FOOTER[locale] ?? CALC_REPLY_FOOTER.en;
-    await resend.emails.send({
-      from: CONTACT.fromEmail,
-      to: data.email,
-      replyTo: CONTACT.notificationEmail,
-      subject: calcSubject,
-      html: `
-        <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
-          ${calcIntro}
-          <table style="width:100%;border-collapse:collapse;margin:16px 0">
-            <tr style="background:#f0f9ff">
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Equipment</strong></td>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef">${escapeHtml(estimate.equipmentDisplayName)}</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Container Type</strong></td>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef">${containerLabel}</td>
-            </tr>
-            <tr style="background:#f0f9ff">
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Route</strong></td>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef">${escapeHtml(estimate.originPort)} &rarr; ${escapeHtml(estimate.destinationPort)}, ${escapeHtml(countryName)}</td>
-            </tr>
-            ${estimate.usInlandTransport !== null ? `
-            <tr>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>US Inland Transport</strong></td>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.usInlandTransport)}</td>
-            </tr>` : ""}
-            ${estimate.packingAndLoading > 0 ? `
-            <tr style="background:#f0f9ff">
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Packing &amp; Loading</strong></td>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.packingAndLoading)}${estimate.packingBreakdown ? ` <span style="color:#6b7280;font-size:12px">(${escapeHtml(estimate.packingBreakdown)})</span>` : ""}</td>
-            </tr>` : ""}
-            <tr${estimate.packingAndLoading > 0 ? "" : ' style="background:#f0f9ff"'}>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>${estimate.containerType === "flatrack" ? "Sea Freight &amp; Loading" : "Ocean Freight"}</strong></td>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.oceanFreight)} (${escapeHtml(estimate.carrier)}${estimate.transitTimeDays ? `, ${escapeHtml(estimate.transitTimeDays)} days` : ""})</td>
-            </tr>
-            <tr style="background:#eff6ff">
-              <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Estimated Total</strong></td>
-              <td style="padding:10px 14px;border:1px solid #e0e7ef;font-size:18px"><strong>${formatDollar(estimate.estimatedTotal)}</strong>${estimate.totalExcludesInland ? " <span style='color:#6b7280;font-size:12px'>(excludes US inland)</span>" : ""}</td>
-            </tr>
-          </table>
-          ${calcFooter}
-          <p style="margin-top:20px;color:#6b7280;font-size:13px">&mdash; ${COMPANY.name}</p>
-        </div>
-      `,
-    });
-  } catch (e) {
-    console.error("Calculator auto-reply failed:", e);
-  }
-
-  // 8. Slack notification (best-effort)
-  const slackLines = [
-    `*New calculator lead (V2${locale !== "en" ? ` — ${locale.toUpperCase()}` : ""}):* ${data.name || "Anonymous"} <${data.email}>`,
-    data.company ? `Company: ${data.company}` : null,
-    `Equipment: ${estimate.equipmentDisplayName} (${containerLabel})`,
-    `Route: ${estimate.originPort} → ${estimate.destinationPort}, ${countryName}`,
-    `Estimate: ${formatDollar(estimate.estimatedTotal)} (Inland: ${estimate.usInlandTransport !== null ? formatDollar(estimate.usInlandTransport) : "N/A"} + Packing: ${formatDollar(estimate.packingAndLoading)} + Ocean: ${formatDollar(estimate.oceanFreight)})`,
-  ]
-    .filter(Boolean)
-    .join("\n");
-
-  await notifySlack(slackLines);
-
-  // 9. Meta CAPI Lead event (best-effort)
+  // Generate event ID before returning (needed for Pixel/CAPI dedup)
   const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-  await sendCAPIEvent({
-    eventName: "Lead",
-    eventId,
-    email: data.email,
-    customData: {
-      lead_source: "freight_calculator_v2",
-      equipment_type: data.equipmentType,
-      destination_country: data.destinationCountry,
-      container_type: data.containerType,
-    },
+
+  // 7-10. Best-effort work runs AFTER the response is sent to the user.
+  // This saves ~700-1300ms of perceived latency.
+  after(async () => {
+    // 7. Auto-reply to visitor with estimate in their language
+    try {
+      const calcSubject = CALC_REPLY_SUBJECTS[locale] ?? CALC_REPLY_SUBJECTS.en;
+      const calcIntro = (CALC_REPLY_INTRO[locale] ?? CALC_REPLY_INTRO.en)(data.name ? escapeHtml(data.name) : "");
+      const calcFooter = CALC_REPLY_FOOTER[locale] ?? CALC_REPLY_FOOTER.en;
+      await resend.emails.send({
+        from: CONTACT.fromEmail,
+        to: data.email,
+        replyTo: CONTACT.notificationEmail,
+        subject: calcSubject,
+        html: `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
+            ${calcIntro}
+            <table style="width:100%;border-collapse:collapse;margin:16px 0">
+              <tr style="background:#f0f9ff">
+                <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Equipment</strong></td>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef">${escapeHtml(estimate.equipmentDisplayName)}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Container Type</strong></td>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef">${containerLabel}</td>
+              </tr>
+              <tr style="background:#f0f9ff">
+                <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Route</strong></td>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef">${escapeHtml(estimate.originPort)} &rarr; ${escapeHtml(estimate.destinationPort)}, ${escapeHtml(countryName)}</td>
+              </tr>
+              ${estimate.usInlandTransport !== null ? `
+              <tr>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>US Inland Transport</strong></td>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.usInlandTransport)}</td>
+              </tr>` : ""}
+              ${estimate.packingAndLoading > 0 ? `
+              <tr style="background:#f0f9ff">
+                <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Packing &amp; Loading</strong></td>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.packingAndLoading)}${estimate.packingBreakdown ? ` <span style="color:#6b7280;font-size:12px">(${escapeHtml(estimate.packingBreakdown)})</span>` : ""}</td>
+              </tr>` : ""}
+              <tr${estimate.packingAndLoading > 0 ? "" : ' style="background:#f0f9ff"'}>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>${estimate.containerType === "flatrack" ? "Sea Freight &amp; Loading" : "Ocean Freight"}</strong></td>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef">${formatDollar(estimate.oceanFreight)} (${escapeHtml(estimate.carrier)}${estimate.transitTimeDays ? `, ${escapeHtml(estimate.transitTimeDays)} days` : ""})</td>
+              </tr>
+              <tr style="background:#eff6ff">
+                <td style="padding:10px 14px;border:1px solid #e0e7ef"><strong>Estimated Total</strong></td>
+                <td style="padding:10px 14px;border:1px solid #e0e7ef;font-size:18px"><strong>${formatDollar(estimate.estimatedTotal)}</strong>${estimate.totalExcludesInland ? " <span style='color:#6b7280;font-size:12px'>(excludes US inland)</span>" : ""}</td>
+              </tr>
+            </table>
+            ${calcFooter}
+            <p style="margin-top:20px;color:#6b7280;font-size:13px">&mdash; ${COMPANY.name}</p>
+          </div>
+        `,
+      });
+    } catch (e) {
+      log({ level: "error", msg: "auto_reply_failed", route: "action:calculator", error: String(e) });
+    }
+
+    // 8. Slack notification
+    const slackLines = [
+      `*New calculator lead (V2${locale !== "en" ? ` — ${locale.toUpperCase()}` : ""}):* ${data.name || "Anonymous"} <${data.email}>`,
+      data.company ? `Company: ${data.company}` : null,
+      `Equipment: ${estimate.equipmentDisplayName} (${containerLabel})`,
+      `Route: ${estimate.originPort} → ${estimate.destinationPort}, ${countryName}`,
+      `Estimate: ${formatDollar(estimate.estimatedTotal)} (Inland: ${estimate.usInlandTransport !== null ? formatDollar(estimate.usInlandTransport) : "N/A"} + Packing: ${formatDollar(estimate.packingAndLoading)} + Ocean: ${formatDollar(estimate.oceanFreight)})`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    await notifySlack(slackLines);
+
+    // 9. Meta CAPI Lead event
+    await sendCAPIEvent({
+      eventName: "Lead",
+      eventId,
+      email: data.email,
+      customData: {
+        lead_source: "freight_calculator_v2",
+        equipment_type: data.equipmentType,
+        destination_country: data.destinationCountry,
+        container_type: data.containerType,
+      },
+    });
+
+    // 10. Vercel Analytics server-side event
+    await track("lead_submitted", {
+      source: "calculator",
+      equipment: data.equipmentType,
+      destination: data.destinationCountry,
+      container: data.containerType,
+    }).catch(() => {});
   });
 
+  timer.done({ email: data.email, equipment: data.equipmentType, destination: data.destinationCountry });
   return { success: true, estimate, eventId };
 }

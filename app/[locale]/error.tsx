@@ -1,16 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/constants";
 
 export default function Error({
-  error: _error,
+  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
       <h1 className="text-4xl font-bold tracking-tight text-foreground">
