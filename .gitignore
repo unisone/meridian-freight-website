@@ -48,3 +48,4 @@ next-env.d.ts
 audit-*.png
 *-page.png
 *-mobile.png
+.env*.local

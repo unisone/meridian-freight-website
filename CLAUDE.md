@@ -412,6 +412,7 @@ See `.env.example` for the full list. Required in `.env.local`:
 | `INDEXNOW_SECRET` | IndexNow API auth secret | No |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console | No |
 | `NEXT_PUBLIC_BING_SITE_VERIFICATION` | Bing Webmaster | No |
+| `CRON_SECRET` | Cron job authentication | No (cron endpoint returns 401 if unset) |
 | `NEXT_PUBLIC_SENTRY_DSN` | Sentry error tracking (client + server) | No (Sentry dormant if unset) |
 | `SENTRY_ORG` | Sentry source map upload | No (build-time only) |
 | `SENTRY_PROJECT` | Sentry source map upload | No (build-time only) |
