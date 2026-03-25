@@ -231,6 +231,7 @@ export function ContactForm() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: DURATION.fast }}
+                role="alert"
                 className="mt-2 text-center text-sm text-red-600"
               >
                 {error}

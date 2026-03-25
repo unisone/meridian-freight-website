@@ -23,7 +23,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
   function handleValueChange(value: string | string[]) {
     const expanded = Array.isArray(value) ? value : value ? [value] : [];
     if (expanded.length > 0) {
-      trackGA4Event("faq_expand", { faq_question: expanded[expanded.length - 1] });
+      const lastValue = expanded[expanded.length - 1];
+      const idx = parseInt(lastValue.replace("faq-", ""), 10);
+      const question = entries[idx]?.question ?? lastValue;
+      trackGA4Event("faq_expand", { faq_question: question });
     }
   }
 
@@ -41,10 +44,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
 
         <div className="mx-auto max-w-3xl">
           <Accordion className="space-y-3" onValueChange={handleValueChange}>
-            {entries.map((entry) => (
+            {entries.map((entry, idx) => (
               <AccordionItem
-                key={entry.question}
-                value={entry.question}
+                key={`faq-${idx}`}
+                value={`faq-${idx}`}
                 className="rounded-xl border-0 bg-white px-6 shadow-sm"
               >
                 <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:text-primary py-5">

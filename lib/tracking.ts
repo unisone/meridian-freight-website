@@ -28,7 +28,7 @@ export interface Attribution {
 // ─── Cookie helpers ─────────────────────────────────────────────────────────
 
 function setCookie(name: string, value: string, maxAge: number): void {
-  document.cookie = `${name}=${encodeURIComponent(value)};max-age=${maxAge};path=/;SameSite=Lax`;
+  document.cookie = `${name}=${encodeURIComponent(value)};max-age=${maxAge};path=/;SameSite=Lax;Secure`;
 }
 
 function getCookie(name: string): string | null {

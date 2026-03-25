@@ -175,11 +175,17 @@ export default async function LocaleLayout({
         <JsonLd locale={locale} />
       </head>
       <body className="bg-background text-foreground antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white focus:shadow-lg"
+        >
+          Skip to content
+        </a>
         <NextIntlClientProvider>
           <TooltipProvider>
             <ScrollProgress />
             <Header />
-            <main className="pb-16 lg:pb-0">{children}</main>
+            <main id="main-content" className="pb-16 lg:pb-0">{children}</main>
             <Footer />
             <WhatsAppWidget />
             <MobileBottomBar />
