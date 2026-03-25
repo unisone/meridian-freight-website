@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { blogPosts, getBlogPostBySlug } from "@/content/blog";
+import { getAllBlogPosts, getBlogPostBySlug } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { renderMarkdown } from "@/lib/markdown";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  return getAllBlogPosts("en").map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -22,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = getBlogPostBySlug(slug, locale);
   if (!post) return {};
   const localePath = locale === "en" ? "" : `/${locale}`;
 
@@ -61,7 +61,7 @@ export default async function BlogPostPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const tb = await getTranslations("BlogPostPage");
-  const post = getBlogPostBySlug(slug);
+  const post = getBlogPostBySlug(slug, locale);
   if (!post) notFound();
 
   const contentHtml = renderMarkdown(post.content);

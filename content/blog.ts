@@ -602,15 +602,33 @@ Brazil is one of Meridian Freight's core shipping lanes. We know the ports, the 
   },
 ];
 
-export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug);
+// ── Locale-aware accessors ──────────────────────────────────────────────────
+import { blogPostsEs } from "./blog-es";
+import { blogPostsRu } from "./blog-ru";
+
+const blogPostsByLocale: Record<string, BlogPost[]> = {
+  en: blogPosts,
+  es: blogPostsEs,
+  ru: blogPostsRu,
+};
+
+function getPostsForLocale(locale: string): BlogPost[] {
+  return blogPostsByLocale[locale] ?? blogPosts;
 }
 
-export function getRecentPosts(limit = 5): BlogPost[] {
-  return [...blogPosts]
+export function getBlogPostBySlug(slug: string, locale: string = "en"): BlogPost | undefined {
+  return getPostsForLocale(locale).find((p) => p.slug === slug);
+}
+
+export function getRecentPosts(limit = 5, locale: string = "en"): BlogPost[] {
+  return [...getPostsForLocale(locale)]
     .sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     )
     .slice(0, limit);
+}
+
+export function getAllBlogPosts(locale: string = "en"): BlogPost[] {
+  return getPostsForLocale(locale);
 }

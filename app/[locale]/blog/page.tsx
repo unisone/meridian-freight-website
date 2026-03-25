@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
-import { blogPosts } from "@/content/blog";
+import { getAllBlogPosts } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -52,16 +52,16 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   setRequestLocale(locale);
   const tb = await getTranslations({ locale: locale as Locale, namespace: "BlogPage" });
+  const posts = getAllBlogPosts(locale);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     inLanguage: locale,
-    name: "Machinery Export Blog",
-    description:
-      "Expert articles on shipping and exporting heavy machinery from the USA and Canada.",
-    numberOfItems: blogPosts.length,
-    itemListElement: blogPosts.map((post, idx) => ({
+    name: tb("heroHeading"),
+    description: tb("heroDescription", { company: COMPANY.name }),
+    numberOfItems: posts.length,
+    itemListElement: posts.map((post, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
       name: post.title,
@@ -98,7 +98,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {blogPosts.map((post, idx) => (
+              {posts.map((post, idx) => (
                 <StaggerItem key={post.slug} index={idx}>
                   <Link href={`/blog/${post.slug}`} className="group">
                     <Card className="h-full transition-all group-hover:shadow-lg group-hover:-translate-y-1">
