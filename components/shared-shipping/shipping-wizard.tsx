@@ -428,78 +428,90 @@ export function ShippingWizard({
                       ? container.total_capacity_cbm
                       : 76;
 
+                  const fillPercent = totalCbm > 0
+                    ? Math.round((1 - availableCbm / totalCbm) * 100)
+                    : 100;
+                  const availablePercent = 100 - fillPercent;
+                  const barColor = fillPercent >= 80 ? "bg-amber-500" : "bg-primary";
+
                   return (
                     <Card
                       key={container.id}
-                      className={`transition-colors ${
+                      className={`cursor-pointer transition-all duration-200 ${
                         isSelected
-                          ? "border-primary ring-2 ring-primary/20"
-                          : "hover:border-primary/40"
+                          ? "border-primary ring-2 ring-primary/20 bg-primary/[0.02]"
+                          : "hover:border-primary/40 hover:shadow-sm"
                       }`}
+                      onClick={() => !isSelected && handleSelectContainer(container)}
                     >
-                      <CardContent className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-                        {/* Left: route + dates */}
-                        <div className="space-y-1">
-                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-                            <span className="font-medium text-foreground">
-                              {/* TODO: i18n — "Departs" */}
+                      <CardContent className="px-5 py-5 space-y-4">
+                        {/* Top row: dates + transit + type badge */}
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                               Departs {formatShortDate(container.departure_date)}
-                            </span>
-                            {container.eta_date && (
-                              <>
-                                <span className="text-muted-foreground">
-                                  &rarr;
-                                </span>
-                                <span className="text-muted-foreground">
-                                  {/* TODO: i18n — "Arrives" */}
-                                  Arrives{" "}
-                                  {formatShortDate(container.eta_date)}
-                                </span>
-                              </>
-                            )}
+                              {container.eta_date && (
+                                <>
+                                  <span className="text-muted-foreground">&rarr;</span>
+                                  Arrives {formatShortDate(container.eta_date)}
+                                </>
+                              )}
+                            </div>
                             {transit !== null && (
-                              <span className="text-xs text-muted-foreground">
-                                {/* TODO: i18n */}
-                                ~{transit} days
-                              </span>
+                              <p className="text-xs text-muted-foreground">
+                                ~{transit} days transit
+                              </p>
                             )}
                           </div>
-
-                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                            <span>
-                              <span className="font-medium text-foreground">
-                                {availableCbm} CBM
-                              </span>{" "}
-                              {/* TODO: i18n */}
-                              available of {totalCbm} CBM
-                            </span>
-                            <Badge variant="secondary" className="text-[10px]">
-                              <Ship className="mr-0.5 h-2.5 w-2.5" />
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className="text-[11px]">
+                              <Ship className="mr-1 h-3 w-3" />
                               {container.container_type}
                             </Badge>
+                            {isSelected && (
+                              <Badge className="bg-primary text-primary-foreground">
+                                <CheckCircle2 className="mr-1 h-3 w-3" />
+                                Selected
+                              </Badge>
+                            )}
                           </div>
                         </div>
 
-                        {/* Right: select button or selected badge */}
-                        <div className="shrink-0">
-                          {isSelected ? (
-                            <Badge className="bg-primary text-primary-foreground">
-                              <CheckCircle2 className="mr-1 h-3 w-3" />
-                              {/* TODO: i18n */}
-                              Selected
-                            </Badge>
-                          ) : (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleSelectContainer(container)}
-                            >
-                              {/* TODO: i18n */}
-                              Select This Container
-                              <ArrowRight className="ml-1 h-3.5 w-3.5" />
-                            </Button>
-                          )}
+                        {/* Capacity bar */}
+                        <div className="space-y-2">
+                          <div className="relative h-3 w-full overflow-hidden rounded-full bg-muted">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ease-out ${barColor}`}
+                              style={{ width: `${fillPercent}%` }}
+                            />
+                          </div>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-muted-foreground">
+                              <span className="font-semibold text-foreground">
+                                {availableCbm} CBM
+                              </span>{" "}
+                              available ({availablePercent}% free)
+                            </span>
+                            <span className="text-muted-foreground">
+                              {totalCbm} CBM total
+                            </span>
+                          </div>
                         </div>
+
+                        {/* CTA */}
+                        {!isSelected && (
+                          <Button
+                            variant="outline"
+                            className="w-full"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSelectContainer(container);
+                            }}
+                          >
+                            Select This Container
+                            <ArrowRight className="ml-1.5 h-4 w-4" />
+                          </Button>
+                        )}
                       </CardContent>
                     </Card>
                   );
