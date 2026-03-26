@@ -129,6 +129,15 @@ function whatFitsHint(availableCbm: number): string {
   return fits.slice(0, 2).join(" or ");
 }
 
+// ─── Progress bar steps (module-level constant) ──────────────────────────────
+
+const WIZARD_STEPS = [
+  { num: 1, label: "CARGO" },
+  { num: 2, label: "DESTINATION" },
+  { num: 3, label: "CONTAINER" },
+  { num: 4, label: "YOUR INFO" },
+] as const;
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function ShippingWizard({
@@ -226,6 +235,12 @@ export function ShippingWizard({
   }, [selectedCountry, destinations]);
 
   // ─── Scroll behavior ──────────────────────────────────
+  useEffect(() => {
+    if (step1Done && step2Ref.current) {
+      step2Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [step1Done]);
+
   useEffect(() => {
     if (step2Done && step3Ref.current) {
       step3Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -380,14 +395,6 @@ export function ShippingWizard({
   // ═══════════════════════════════════════════════════════════════════════════
   // RENDER
   // ═══════════════════════════════════════════════════════════════════════════
-  // ─── Progress bar steps ────────────────────────────────
-  const WIZARD_STEPS = [
-    { num: 1, label: "CARGO" },
-    { num: 2, label: "DESTINATION" },
-    { num: 3, label: "CONTAINER" },
-    { num: 4, label: "DETAILS" },
-  ] as const;
-
   const completedSteps =
     (step1Done ? 1 : 0) +
     (step2Done ? 1 : 0) +
@@ -442,7 +449,7 @@ export function ShippingWizard({
 
         {/* Cargo type grid — multi-select */}
         <p className="mt-2 text-xs text-muted-foreground">Select all that apply</p>
-        <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
           {CARGO_TYPES.map((type) => {
             const isSelected = selectedCargoTypes.includes(type.id);
             return (
@@ -487,9 +494,26 @@ export function ShippingWizard({
 
         {/* Estimated total CBM */}
         {totalEstimatedCbm > 0 && (
-          <p className="mt-3 text-sm text-muted-foreground">
-            Estimated space needed:{" "}
-            <span className="font-semibold text-foreground">~{totalEstimatedCbm} CBM</span>
+          <div className="mt-3 space-y-0.5">
+            <p className="text-sm text-muted-foreground">
+              Estimated space needed:{" "}
+              <span className="font-semibold text-foreground">~{totalEstimatedCbm} CBM</span>
+            </p>
+            <p className="text-[11px] text-muted-foreground">
+              Approximate — actual space depends on dimensions and packing. Our team will confirm.
+            </p>
+          </div>
+        )}
+
+        {/* Full container note for oversized equipment */}
+        {selectedCargoTypes.includes("combine") && (
+          <p className="mt-2 flex items-center gap-1.5 rounded-md bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-700">
+            ⚠️ Combines typically require a full container or flatrack. Shared space may not be suitable.
+            Consider our{" "}
+            <a href="/pricing/calculator" className="font-medium underline underline-offset-2">
+              freight calculator
+            </a>{" "}
+            for a full-container quote.
           </p>
         )}
 
@@ -535,13 +559,23 @@ export function ShippingWizard({
         {destinations.length === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
             {/* TODO: i18n */}
-            No containers available right now. Call us at{" "}
+            No containers available right now.{" "}
             <a
-              href={CONTACT.phoneHref}
+              href={CONTACT.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-medium text-primary underline underline-offset-2"
-              onClick={() => trackContactClick("phone", "wizard_no_containers")}
+              onClick={() => trackContactClick("whatsapp", "wizard_no_containers")}
             >
-              {CONTACT.phone}
+              WhatsApp us
+            </a>{" "}
+            or email{" "}
+            <a
+              href={CONTACT.emailHref}
+              className="font-medium text-primary underline underline-offset-2"
+              onClick={() => trackContactClick("email", "wizard_no_containers")}
+            >
+              {CONTACT.email}
             </a>{" "}
             for the latest schedule.
           </p>
@@ -856,7 +890,6 @@ export function ShippingWizard({
                     className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
                   >
                     <MessageCircle className="h-4 w-4" />
-                    {/* TODO: i18n */}
                     Chat on WhatsApp
                   </a>
 
@@ -865,14 +898,13 @@ export function ShippingWizard({
                   </span>
 
                   <a
-                    href={CONTACT.phoneHref}
+                    href={CONTACT.emailHref}
                     onClick={() =>
-                      trackContactClick("phone", "wizard_success")
+                      trackContactClick("email", "wizard_success")
                     }
                     className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    <Phone className="h-4 w-4" />
-                    {CONTACT.phone}
+                    {CONTACT.email}
                   </a>
                 </div>
 
@@ -1052,6 +1084,19 @@ export function ShippingWizard({
                   </>
                 )}
               </Button>
+
+              {/* Change container link */}
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedContainer(null);
+                  resetContactState();
+                }}
+                className="flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+              >
+                <ArrowLeft className="h-3 w-3" />
+                Choose a different container
+              </button>
 
               {/* Terms text */}
               <p className="text-center text-xs text-muted-foreground">
