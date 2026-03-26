@@ -75,6 +75,41 @@ function formatDate(isoDate: string): string {
   });
 }
 
+// ─── Cargo type options for Step 1 ────────────────────────────────────────────
+
+const CARGO_TYPES = [
+  { id: "header", label: "Combine Header", icon: "🌾" },
+  { id: "tractor", label: "Tractor", icon: "🚜" },
+  { id: "combine", label: "Combine", icon: "🌾" },
+  { id: "sprayer", label: "Sprayer", icon: "💧" },
+  { id: "planter", label: "Planter / Seeder", icon: "🌱" },
+  { id: "tillage", label: "Tillage Equipment", icon: "⚙️" },
+  { id: "construction", label: "Construction Equipment", icon: "🏗️" },
+  { id: "parts", label: "Parts & Pallets", icon: "📦" },
+  { id: "other", label: "Other", icon: "📋" },
+] as const;
+
+// Approximate CBM for common cargo — used for "what fits" hints on containers
+const CARGO_CBM_EXAMPLES = [
+  { label: "pallets", cbmEach: 2, plural: "pallets" },
+  { label: "header", cbmEach: 20, plural: "headers" },
+  { label: "tractor (2WD)", cbmEach: 38, plural: "tractors" },
+  { label: "tillage implement", cbmEach: 20, plural: "tillage implements" },
+] as const;
+
+/** Generate "what fits" hint based on available CBM */
+function whatFitsHint(availableCbm: number): string {
+  const fits: string[] = [];
+  for (const item of CARGO_CBM_EXAMPLES) {
+    const count = Math.floor(availableCbm / item.cbmEach);
+    if (count >= 1) {
+      fits.push(`${count} ${count === 1 ? item.label : item.plural}`);
+    }
+  }
+  if (fits.length === 0) return "Small items and parts";
+  return fits.slice(0, 2).join(" or ");
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function ShippingWizard({
@@ -82,6 +117,7 @@ export function ShippingWizard({
   lastSyncTime,
 }: ShippingWizardProps) {
   // ─── Step state ────────────────────────────────────────
+  const [selectedCargoType, setSelectedCargoType] = useState<string | null>(null);
   const [cargoDescription, setCargoDescription] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedContainer, setSelectedContainer] =
@@ -103,7 +139,9 @@ export function ShippingWizard({
   const submittingRef = useRef(false); // prevent double submit
 
   // ─── Boolean gates ─────────────────────────────────────
-  const step1Done = cargoDescription.trim().length >= 5;
+  const step1Done = selectedCargoType !== null && (
+    selectedCargoType !== "other" || cargoDescription.trim().length >= 5
+  );
   const step2Done = step1Done && selectedCountry !== null;
   const step3Done = step2Done && selectedContainer !== null;
   const step4Done = result?.success === true;
@@ -242,7 +280,9 @@ export function ShippingWizard({
       name,
       email,
       phone,
-      cargoDescription,
+      cargoDescription: selectedCargoType === "other"
+        ? cargoDescription
+        : `[${CARGO_TYPES.find(t => t.id === selectedCargoType)?.label ?? selectedCargoType}] ${cargoDescription}`.trim(),
       containerId: selectedContainer.id,
       projectNumber: selectedContainer.project_number,
       website: honeypot,
@@ -316,22 +356,62 @@ export function ShippingWizard({
       {/* ╚═══════════════════════════════════════════════╝ */}
       <section>
         <SectionHeader num={1} title="What are you shipping?" />
-        <div className="mt-4 max-w-xl">
-          <Label htmlFor="wizard-cargo">
-            Describe your cargo <span className="text-destructive">*</span>
-          </Label>
-          <Textarea
-            id="wizard-cargo"
-            placeholder="e.g. John Deere combine header, 3 pallets of tractor parts, industrial pump..."
-            className="mt-1.5"
-            rows={3}
-            value={cargoDescription}
-            onChange={(e) => setCargoDescription(e.target.value)}
-          />
-          <p className="mt-1.5 text-xs text-muted-foreground">
-            Tell us what you need to ship — equipment type, parts, quantity, approximate size.
-          </p>
+
+        {/* Cargo type grid */}
+        <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
+          {CARGO_TYPES.map((type) => {
+            const isSelected = selectedCargoType === type.id;
+            return (
+              <button
+                key={type.id}
+                onClick={() => {
+                  setSelectedCargoType(type.id);
+                  if (type.id !== "other") {
+                    setCargoDescription("");
+                  }
+                }}
+                className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-colors ${
+                  isSelected
+                    ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                    : "border-border bg-card hover:border-primary/40 cursor-pointer"
+                }`}
+                aria-pressed={isSelected}
+              >
+                <span className="text-xl" aria-hidden="true">{type.icon}</span>
+                <span className={`text-xs font-medium leading-tight ${
+                  isSelected ? "text-primary" : "text-foreground"
+                }`}>
+                  {type.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
+
+        {/* Details textarea — always visible when a type is selected, required for "Other" */}
+        {selectedCargoType && (
+          <div className="mt-4 max-w-xl">
+            <Label htmlFor="wizard-cargo">
+              {selectedCargoType === "other" ? (
+                <>Describe your cargo <span className="text-destructive">*</span></>
+              ) : (
+                "Add details (optional)"
+              )}
+            </Label>
+            <Textarea
+              id="wizard-cargo"
+              placeholder={
+                selectedCargoType === "other"
+                  ? "e.g. industrial pump, 2 generators, custom fabrication..."
+                  : "e.g. John Deere 635FD, 35ft, needs disassembly..."
+              }
+              className="mt-1.5"
+              rows={2}
+              value={cargoDescription}
+              onChange={(e) => setCargoDescription(e.target.value)}
+            />
+          </div>
+        )}
       </section>
 
       {/* ╔═══════════════════════════════════════════════╗ */}
@@ -527,6 +607,13 @@ export function ShippingWizard({
                               {totalCbm} CBM total
                             </span>
                           </div>
+
+                          {/* What fits hint */}
+                          {availableCbm > 0 && (
+                            <p className="text-[11px] text-muted-foreground italic">
+                              Fits approx. {whatFitsHint(availableCbm)}
+                            </p>
+                          )}
                         </div>
 
                         {/* CTA */}
@@ -779,7 +866,10 @@ export function ShippingWizard({
               {/* Cargo summary (from Step 1, read-only) */}
               <div className="rounded-md bg-muted/50 px-3 py-2">
                 <p className="text-xs font-medium text-muted-foreground">Cargo</p>
-                <p className="text-sm text-foreground">{cargoDescription}</p>
+                <p className="text-sm text-foreground">
+                  {CARGO_TYPES.find(t => t.id === selectedCargoType)?.label ?? "Other"}
+                  {cargoDescription ? ` — ${cargoDescription}` : ""}
+                </p>
               </div>
 
               {/* Error message */}
