@@ -301,7 +301,7 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
   for (let i = 0; i < dataRows.length; i++) {
     const row = dataRows[i];
     // Skip empty rows
-    if (!row || row.every((cell) => !cell && cell !== 0)) {
+    if (!row || row.every((cell) => !cell && cell !== "0")) {
       skipped++;
       continue;
     }

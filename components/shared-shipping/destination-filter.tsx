@@ -51,7 +51,7 @@ export function DestinationFilter({
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex gap-3">
         {/* Destination filter */}
-        <Select value={selectedCountry} onValueChange={onCountryChange}>
+        <Select value={selectedCountry} onValueChange={(v) => onCountryChange(v ?? "all")}>
           <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="All Destinations" />
           </SelectTrigger>
@@ -66,7 +66,7 @@ export function DestinationFilter({
         </Select>
 
         {/* Sort */}
-        <Select value={sortBy} onValueChange={(v) => onSortChange(v as "soonest" | "most-space")}>
+        <Select value={sortBy} onValueChange={(v) => onSortChange((v ?? "soonest") as "soonest" | "most-space")}>
           <SelectTrigger className="w-[180px]">
             <SelectValue />
           </SelectTrigger>

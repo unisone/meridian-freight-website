@@ -25,40 +25,40 @@ export async function GET(request: Request) {
   try {
     const result = await syncContainersFromSheet();
 
-    const { upserted, errors } = result;
-
     // Revalidate shared-shipping page and all locale variants on success/partial
-    revalidatePath("/shared-shipping");
-    revalidatePath("/en/shared-shipping");
-    revalidatePath("/es/shared-shipping");
-    revalidatePath("/ru/shared-shipping");
+    if (result.status !== "failed") {
+      revalidatePath("/shared-shipping");
+      revalidatePath("/en/shared-shipping");
+      revalidatePath("/es/shared-shipping");
+      revalidatePath("/ru/shared-shipping");
+    }
 
     // Warn if error rate is high (more errors than successful upserts)
-    if (errors > upserted) {
-      const message = [
-        ":warning: *Container Sync — High Error Rate*",
-        `• Upserted: ${upserted}`,
-        `• Errors: ${errors}`,
-        "",
-        "Check Vercel logs for details: cron:sync-containers",
-      ].join("\n");
-
-      await notifySlack(message);
+    if (result.status === "failed") {
+      const errorMsg = result.errors[0]?.error ?? "Unknown error";
+      await notifySlack(
+        `:warning: *Container Sync FAILED*\nError: ${errorMsg}\nRows fetched: ${result.rowsFetched}, Errors: ${result.rowsErrored}\nDuration: ${result.durationMs}ms`
+      );
+    } else if (result.rowsErrored > result.rowsUpserted) {
+      await notifySlack(
+        `:warning: *Container Sync — High Error Rate*\nUpserted: ${result.rowsUpserted}, Errors: ${result.rowsErrored}, Skipped: ${result.rowsSkipped}\nDuration: ${result.durationMs}ms`
+      );
       log({
         level: "warn",
         msg: "sync_containers_high_error_rate",
         route: "cron:sync-containers",
-        upserted,
-        errors,
+        upserted: result.rowsUpserted,
+        errors: result.rowsErrored,
       });
     } else {
-      timer.done({ upserted, errors });
+      timer.done({ upserted: result.rowsUpserted, errored: result.rowsErrored });
     }
 
     return Response.json({
-      status: errors > 0 ? "partial" : "ok",
-      upserted,
-      errors,
+      status: result.status,
+      upserted: result.rowsUpserted,
+      errors: result.rowsErrored,
+      duration: result.durationMs,
     });
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : String(e);
