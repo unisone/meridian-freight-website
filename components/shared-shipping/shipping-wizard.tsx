@@ -5,12 +5,24 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
+  Droplets,
+  FileText,
+  Grip,
+  HardHat,
+  Leaf,
   Loader2,
   MessageCircle,
+  Mountain,
+  Package,
   Phone,
   Send,
   Ship,
+  Sprout,
+  Tractor,
+  TreePine,
+  Wheat,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { track as vercelTrack } from "@vercel/analytics";
 
 import { Button } from "@/components/ui/button";
@@ -77,18 +89,24 @@ function formatDate(isoDate: string): string {
 
 // ─── Cargo type options for Step 1 ────────────────────────────────────────────
 
-const CARGO_TYPES = [
-  { id: "header", label: "Combine Header", icon: "🌾", estimatedCbm: 20 },
-  { id: "tractor", label: "Tractor", icon: "🚜", estimatedCbm: 38 },
-  { id: "combine", label: "Combine", icon: "🌾", estimatedCbm: 99 },
-  { id: "sprayer", label: "Sprayer", icon: "💧", estimatedCbm: 45 },
-  { id: "planter", label: "Planter / Seeder", icon: "🌱", estimatedCbm: 76 },
-  { id: "tillage", label: "Tillage Equipment", icon: "⚙️", estimatedCbm: 20 },
-  { id: "construction", label: "Construction Equipment", icon: "🏗️", estimatedCbm: 30 },
-  { id: "forestry", label: "Forestry Equipment", icon: "🌲", estimatedCbm: 40 },
-  { id: "parts", label: "Parts & Pallets", icon: "📦", estimatedCbm: 5 },
-  { id: "other", label: "Other", icon: "📋", estimatedCbm: 0 },
-] as const;
+const CARGO_TYPES: Array<{
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  estimatedCbm: number;
+}> = [
+  { id: "header", label: "Headers & Platforms", icon: Grip, estimatedCbm: 20 },
+  { id: "tractor", label: "Tractor", icon: Tractor, estimatedCbm: 38 },
+  { id: "combine", label: "Combine", icon: Wheat, estimatedCbm: 99 },
+  { id: "sprayer", label: "Sprayer", icon: Droplets, estimatedCbm: 45 },
+  { id: "planter", label: "Planter", icon: Sprout, estimatedCbm: 76 },
+  { id: "seeder", label: "Seeder", icon: Leaf, estimatedCbm: 76 },
+  { id: "tillage", label: "Tillage Equipment", icon: Mountain, estimatedCbm: 20 },
+  { id: "construction", label: "Construction", icon: HardHat, estimatedCbm: 30 },
+  { id: "forestry", label: "Forestry", icon: TreePine, estimatedCbm: 40 },
+  { id: "parts", label: "Parts & Pallets", icon: Package, estimatedCbm: 5 },
+  { id: "other", label: "Other", icon: FileText, estimatedCbm: 0 },
+];
 
 // Approximate CBM for common cargo — used for "what fits" hints on containers
 const CARGO_CBM_EXAMPLES = [
@@ -362,10 +380,59 @@ export function ShippingWizard({
   // ═══════════════════════════════════════════════════════════════════════════
   // RENDER
   // ═══════════════════════════════════════════════════════════════════════════
+  // ─── Progress bar steps ────────────────────────────────
+  const WIZARD_STEPS = [
+    { num: 1, label: "CARGO" },
+    { num: 2, label: "DESTINATION" },
+    { num: 3, label: "CONTAINER" },
+    { num: 4, label: "DETAILS" },
+  ] as const;
+
+  const completedSteps =
+    (step1Done ? 1 : 0) +
+    (step2Done ? 1 : 0) +
+    (step3Done ? 1 : 0) +
+    (step4Done ? 1 : 0);
+
   return (
     <div className="space-y-8">
       {/* Stale data banner */}
       <StaleDataBanner lastSyncTime={lastSyncTime} />
+
+      {/* Progress bar — matches calculator-progress-bar pattern */}
+      <div className="mb-4">
+        <div className="mb-2 flex">
+          {WIZARD_STEPS.map((step) => (
+            <div
+              key={step.num}
+              className={`flex-1 text-xs font-medium uppercase tracking-wider ${
+                step.num <= completedSteps
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
+            >
+              Step {step.num}: {step.label}
+            </div>
+          ))}
+        </div>
+        <div
+          className="flex gap-1"
+          role="progressbar"
+          aria-valuenow={completedSteps}
+          aria-valuemin={0}
+          aria-valuemax={4}
+          aria-label={`Booking progress: ${completedSteps} of 4 steps complete`}
+        >
+          {WIZARD_STEPS.map((step) => (
+            <div
+              key={step.num}
+              className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
+                step.num <= completedSteps ? "bg-primary" : "bg-muted"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
 
       {/* ╔═══════════════════════════════════════════════╗ */}
       {/* ║ Step 01: What are you shipping?               ║ */}
@@ -400,7 +467,9 @@ export function ShippingWizard({
                     ✓
                   </span>
                 )}
-                <span className="text-xl" aria-hidden="true">{type.icon}</span>
+                <type.icon className={`h-6 w-6 ${
+                  isSelected ? "text-primary" : "text-muted-foreground"
+                }`} />
                 <span className={`text-xs font-medium leading-tight ${
                   isSelected ? "text-primary" : "text-foreground"
                 }`}>
