@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { ContainerGrid } from "@/components/shared-shipping/container-grid";
+import { ShippingWizard } from "@/components/shared-shipping/shipping-wizard";
 import { HowItWorks } from "@/components/shared-shipping/how-it-works";
 import { EmptyState } from "@/components/shared-shipping/empty-state";
 import { fetchAvailableContainers, getLastSyncTime } from "@/lib/supabase-containers";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
-import { Ship, DollarSign, Clock, ShieldCheck } from "lucide-react";
 import { sharedShippingFaqEn } from "@/content/shared-shipping-faq";
 
 export const revalidate = 900; // 15 min ISR (cron also triggers on-demand revalidation)
@@ -55,28 +54,6 @@ export async function generateMetadata({
   };
 }
 
-const valueProps = [
-  {
-    icon: DollarSign,
-    title: "Save Up to 70%",
-    description: "Pay only for the space you use instead of a full container",
-  },
-  {
-    icon: Clock,
-    title: "No Waiting",
-    description: "Join containers that are already scheduled to depart",
-  },
-  {
-    icon: Ship,
-    title: "Same Quality Service",
-    description: "Professional packing, loading, and door-to-port delivery",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Fully Insured",
-    description: "Your cargo is protected throughout the entire journey",
-  },
-];
 
 export default async function SharedShippingPage({
   params,
@@ -135,50 +112,25 @@ export default async function SharedShippingPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Hero */}
-      <section className="pt-24 pb-12 md:pt-32 md:pb-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto">
-              <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                Shared Container Shipping
-              </p>
-              <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
-                Share a Container,{" "}
-                <span className="text-primary">Ship for Less</span>
-              </h1>
-              <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
-                Don&apos;t need a full container? Book available space in our scheduled
-                shipments and save up to 70% on shipping costs. Browse real-time
-                availability below.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          {/* Value props */}
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 max-w-4xl mx-auto">
-            {valueProps.map((prop, i) => (
-              <ScrollReveal key={prop.title} delay={i * 0.08}>
-                <div className="text-center p-3">
-                  <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <prop.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-sm font-semibold">{prop.title}</h3>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {prop.description}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
+      {/* Compact Hero */}
+      <div className="bg-gradient-to-b from-primary/5 to-transparent pt-24 pb-10 md:pt-32 md:pb-12">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+            Book Space in a{" "}
+            <span className="text-primary">Shared Container</span>
+          </h1>
+          <p className="mt-3 text-base text-muted-foreground max-w-2xl mx-auto">
+            Don&apos;t need a full container? Ship your cargo alongside ours and
+            pay only for the space you use.
+          </p>
         </div>
-      </section>
+      </div>
 
-      {/* Container Grid or Empty State */}
+      {/* Booking Wizard — the centerpiece */}
       <section className="pb-16 md:pb-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           {containers && containers.length > 0 ? (
-            <ContainerGrid
+            <ShippingWizard
               containers={containers}
               lastSyncTime={lastSyncTime}
             />
@@ -224,8 +176,8 @@ export default async function SharedShippingPage({
               Don&apos;t See Your Destination?
             </h2>
             <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-              We ship to 27+ countries and add new routes regularly. Contact us to
-              discuss your shipping needs.
+              We ship to 27+ countries and add new routes regularly. Contact us
+              to discuss your shipping needs.
             </p>
             <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <a
