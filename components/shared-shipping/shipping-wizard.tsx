@@ -682,6 +682,16 @@ export function ShippingWizard({
                           ) : null}
                         </div>
 
+                        {/* Demand indicator */}
+                        {container.pending_count > 0 && (
+                          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
+                            {container.pending_count === 1
+                              ? "1 other request pending"
+                              : `${container.pending_count} other requests pending`}
+                          </p>
+                        )}
+
                         {/* CTA */}
                         {!isSelected && (
                           <Button
