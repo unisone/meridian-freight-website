@@ -162,6 +162,25 @@ export function trackCalcFunnel(
   vercelTrack(`calculator_${step}`, params);
 }
 
+/** Track shared-shipping booking funnel events (GA4 + Vercel Analytics). */
+export function trackBookingFunnel(
+  step: "view" | "filter" | "request_start" | "request_submit",
+  params: Record<string, string>,
+): void {
+  if (step === "view") {
+    trackGA4Event("container_view", params);
+    vercelTrack("container_view", params);
+  } else if (step === "filter") {
+    trackGA4Event("container_filter", params);
+  } else if (step === "request_start") {
+    trackGA4Event("booking_request_start", params);
+    vercelTrack("booking_request_start", params);
+  } else if (step === "request_submit") {
+    trackGA4Event("generate_lead", { ...params, value: "200", currency: "USD" });
+    vercelTrack("generate_lead", { source: "shared_shipping", ...params });
+  }
+}
+
 /** Get the GA4 client_id for offline conversion matching. */
 export function getGA4ClientId(): Promise<string | null> {
   return new Promise((resolve) => {
