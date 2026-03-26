@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/rate-check",
       "schedule": "0 9 * * 1"
+    },
+    {
+      "path": "/api/cron/sync-containers",
+      "schedule": "*/15 * * * *"
     }
   ],
   "headers": [
