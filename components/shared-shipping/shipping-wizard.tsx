@@ -235,21 +235,27 @@ export function ShippingWizard({
   }, [selectedCountry, destinations]);
 
   // ─── Scroll behavior ──────────────────────────────────
+  const getScrollBehavior = (): ScrollBehavior =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth";
+
   useEffect(() => {
     if (step1Done && step2Ref.current) {
-      step2Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      step2Ref.current.scrollIntoView({ behavior: getScrollBehavior(), block: "start" });
     }
   }, [step1Done]);
 
   useEffect(() => {
     if (step2Done && step3Ref.current) {
-      step3Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      step3Ref.current.scrollIntoView({ behavior: getScrollBehavior(), block: "start" });
     }
   }, [step2Done, selectedCountry]);
 
   useEffect(() => {
     if (step3Done && step4Ref.current) {
-      step4Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      step4Ref.current.scrollIntoView({ behavior: getScrollBehavior(), block: "start" });
     }
   }, [step3Done]);
 

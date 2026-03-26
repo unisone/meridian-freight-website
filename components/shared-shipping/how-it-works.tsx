@@ -1,27 +1,34 @@
-import { Search, FileText, Ship } from "lucide-react";
+import { Package, MapPin, Ship, Send } from "lucide-react";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 
 const steps = [
   {
     number: 1,
-    title: "Browse Available Containers",
+    title: "Describe Your Cargo",
     description:
-      "See our outbound containers with real-time availability — destination, departure date, and free space in CBM.",
-    icon: Search,
+      "Select your cargo type and tell us what you're shipping — machinery, parts, vehicles, or other goods.",
+    icon: Package,
   },
   {
     number: 2,
-    title: "Request Space",
+    title: "Pick a Destination",
     description:
-      "Found a container heading your way? Submit a quick request with your cargo details. No commitment — just an inquiry.",
-    icon: FileText,
+      "Choose the country you're shipping to. We'll show you containers heading that way with available space.",
+    icon: MapPin,
   },
   {
     number: 3,
-    title: "We Handle the Rest",
+    title: "Select a Container",
     description:
-      "Our team sends you a quote within 24 hours. Once confirmed, we coordinate pickup, packing, loading, and shipping.",
+      "Browse matching containers with real-time availability — departure date, free space in CBM, and port details.",
     icon: Ship,
+  },
+  {
+    number: 4,
+    title: "Submit Your Request",
+    description:
+      "Add your contact details and any notes. Our team reviews your request and sends a quote within 24 hours.",
+    icon: Send,
   },
 ];
 
@@ -35,7 +42,7 @@ export function HowItWorks() {
               How It Works
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              Three Simple Steps
+              Four Simple Steps
             </h2>
             <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
               Book space in our shared containers and ship your cargo without paying for a full container.
@@ -43,7 +50,7 @@ export function HowItWorks() {
           </div>
         </ScrollReveal>
 
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, i) => (
             <StaggerItem key={step.number} index={i}>
               <div className="relative text-center p-6">

@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import { MessageCircle } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { TrustBar } from "@/components/trust-bar";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ShippingWizard } from "@/components/shared-shipping/shipping-wizard";
 import { HowItWorks } from "@/components/shared-shipping/how-it-works";
@@ -7,7 +11,11 @@ import { EmptyState } from "@/components/shared-shipping/empty-state";
 import { fetchAvailableContainers, getLastSyncTime } from "@/lib/supabase-containers";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
-import { sharedShippingFaqEn } from "@/content/shared-shipping-faq";
+import {
+  sharedShippingFaqEn,
+  sharedShippingFaqEs,
+  sharedShippingFaqRu,
+} from "@/content/shared-shipping-faq";
 
 export const revalidate = 900; // 15 min ISR (cron also triggers on-demand revalidation)
 
@@ -54,7 +62,6 @@ export async function generateMetadata({
   };
 }
 
-
 export default async function SharedShippingPage({
   params,
 }: {
@@ -67,6 +74,14 @@ export default async function SharedShippingPage({
     fetchAvailableContainers(),
     getLastSyncTime(),
   ]);
+
+  // Fix 8: Locale-aware FAQ selection
+  const faqEntries =
+    locale === "es"
+      ? sharedShippingFaqEs
+      : locale === "ru"
+        ? sharedShippingFaqRu
+        : sharedShippingFaqEn;
 
   // JSON-LD Service schema
   const jsonLd = {
@@ -87,11 +102,12 @@ export default async function SharedShippingPage({
       : [],
   };
 
-  // FAQ JSON-LD
+  // FAQ JSON-LD (locale-aware)
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: sharedShippingFaqEn.map((faq) => ({
+    inLanguage: locale,
+    mainEntity: faqEntries.map((faq) => ({
       "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
@@ -102,7 +118,7 @@ export default async function SharedShippingPage({
   };
 
   return (
-    <>
+    <div className="pt-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -112,10 +128,18 @@ export default async function SharedShippingPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Compact Hero */}
-      <div className="bg-gradient-to-b from-primary/5 to-transparent pt-24 pb-10 md:pt-32 md:pb-12">
+      {/* Fix 1: Breadcrumbs */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "Shared Shipping" }]} />
+      </div>
+
+      {/* Hero with eyebrow (Fix 4) */}
+      <div className="bg-gradient-to-b from-primary/5 to-transparent pt-4 pb-10 md:pt-8 md:pb-12">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+            Shared Container Shipping
+          </p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             Book Space in a{" "}
             <span className="text-primary">Shared Container</span>
           </h1>
@@ -125,6 +149,9 @@ export default async function SharedShippingPage({
           </p>
         </div>
       </div>
+
+      {/* Fix 2: Trust Bar */}
+      <TrustBar />
 
       {/* Booking Wizard — the centerpiece */}
       <section className="pb-16 md:pb-24">
@@ -143,30 +170,8 @@ export default async function SharedShippingPage({
       {/* How It Works */}
       <HowItWorks />
 
-      {/* FAQ */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ScrollReveal>
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Frequently Asked Questions
-              </h2>
-            </div>
-          </ScrollReveal>
-          <div className="max-w-3xl mx-auto space-y-6">
-            {sharedShippingFaqEn.map((faq, i) => (
-              <ScrollReveal key={i} delay={i * 0.05}>
-                <div className="border-b border-border pb-5">
-                  <h3 className="text-base font-semibold">{faq.question}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Fix 3 + 8: Interactive FAQ (locale-aware, accordion) */}
+      <FaqAccordion entries={faqEntries} />
 
       {/* CTA */}
       <section className="py-16 bg-primary/5">
@@ -186,6 +191,8 @@ export default async function SharedShippingPage({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
+                {/* Fix 7: WhatsApp icon */}
+                <MessageCircle className="h-4 w-4" />
                 WhatsApp Us
               </a>
               <a
@@ -198,6 +205,6 @@ export default async function SharedShippingPage({
           </ScrollReveal>
         </div>
       </section>
-    </>
+    </div>
   );
 }
