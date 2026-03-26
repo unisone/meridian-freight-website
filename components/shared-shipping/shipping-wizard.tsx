@@ -82,15 +82,15 @@ export function ShippingWizard({
   lastSyncTime,
 }: ShippingWizardProps) {
   // ─── Step state ────────────────────────────────────────
+  const [cargoDescription, setCargoDescription] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedContainer, setSelectedContainer] =
     useState<ContainerWithPendingCount | null>(null);
 
-  // ─── Form state ────────────────────────────────────────
+  // ─── Form state (Step 4: contact info) ────────────────
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [cargoDescription, setCargoDescription] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -99,12 +99,14 @@ export function ShippingWizard({
   // ─── Refs ──────────────────────────────────────────────
   const step2Ref = useRef<HTMLDivElement>(null);
   const step3Ref = useRef<HTMLDivElement>(null);
+  const step4Ref = useRef<HTMLDivElement>(null);
   const submittingRef = useRef(false); // prevent double submit
 
   // ─── Boolean gates ─────────────────────────────────────
-  const step1Done = selectedCountry !== null;
-  const step2Done = step1Done && selectedContainer !== null;
-  const step3Done = result?.success === true;
+  const step1Done = cargoDescription.trim().length >= 5;
+  const step2Done = step1Done && selectedCountry !== null;
+  const step3Done = step2Done && selectedContainer !== null;
+  const step4Done = result?.success === true;
 
   // ─── Derived: unique destinations ──────────────────────
   const destinations = useMemo<Destination[]>(() => {
@@ -159,16 +161,16 @@ export function ShippingWizard({
 
   // ─── Scroll behavior ──────────────────────────────────
   useEffect(() => {
-    if (step1Done && step2Ref.current) {
-      step2Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [step1Done, selectedCountry]);
-
-  useEffect(() => {
     if (step2Done && step3Ref.current) {
       step3Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [step2Done]);
+  }, [step2Done, selectedCountry]);
+
+  useEffect(() => {
+    if (step3Done && step4Ref.current) {
+      step4Ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [step3Done]);
 
   // ─── Track destination selection ───────────────────────
   useEffect(() => {
@@ -180,11 +182,10 @@ export function ShippingWizard({
   }, [selectedCountry]);
 
   // ─── Reset helpers ─────────────────────────────────────
-  function resetFormState() {
+  function resetContactState() {
     setName("");
     setEmail("");
     setPhone("");
-    setCargoDescription("");
     setHoneypot("");
     setError("");
     setResult(null);
@@ -194,18 +195,18 @@ export function ShippingWizard({
     if (code === selectedCountry) return;
     setSelectedCountry(code);
     setSelectedContainer(null);
-    resetFormState();
+    resetContactState();
   }
 
-  function handleResetToStep1() {
+  function handleResetToStep2() {
     setSelectedCountry(null);
     setSelectedContainer(null);
-    resetFormState();
+    resetContactState();
   }
 
   function handleSelectContainer(container: ContainerWithPendingCount) {
     setSelectedContainer(container);
-    resetFormState();
+    resetContactState();
     trackBookingFunnel("request_start", {
       project_number: container.project_number,
       destination: container.destination,
@@ -214,7 +215,7 @@ export function ShippingWizard({
 
   function handleSubmitAnother() {
     setSelectedContainer(null);
-    resetFormState();
+    resetContactState();
   }
 
   // ─── Form submission ───────────────────────────────────
@@ -311,10 +312,40 @@ export function ShippingWizard({
       <StaleDataBanner lastSyncTime={lastSyncTime} />
 
       {/* ╔═══════════════════════════════════════════════╗ */}
-      {/* ║ Step 01: Where are you shipping?              ║ */}
+      {/* ║ Step 01: What are you shipping?               ║ */}
       {/* ╚═══════════════════════════════════════════════╝ */}
       <section>
-        <SectionHeader num={1} title="Where are you shipping?" />
+        <SectionHeader num={1} title="What are you shipping?" />
+        <div className="mt-4 max-w-xl">
+          <Label htmlFor="wizard-cargo">
+            Describe your cargo <span className="text-destructive">*</span>
+          </Label>
+          <Textarea
+            id="wizard-cargo"
+            placeholder="e.g. John Deere combine header, 3 pallets of tractor parts, industrial pump..."
+            className="mt-1.5"
+            rows={3}
+            value={cargoDescription}
+            onChange={(e) => setCargoDescription(e.target.value)}
+          />
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            Tell us what you need to ship — equipment type, parts, quantity, approximate size.
+          </p>
+        </div>
+      </section>
+
+      {/* ╔═══════════════════════════════════════════════╗ */}
+      {/* ║ Step 02: Where are you shipping?              ║ */}
+      {/* ╚═══════════════════════════════════════════════╝ */}
+      <section
+        ref={step2Ref}
+        className={`transition-all duration-300 ${
+          !step1Done
+            ? "pointer-events-none opacity-40 translate-y-2"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
+        <SectionHeader num={2} title="Where are you shipping?" />
 
         {destinations.length === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
@@ -367,19 +398,19 @@ export function ShippingWizard({
       </section>
 
       {/* ╔═══════════════════════════════════════════════╗ */}
-      {/* ║ Step 02: Available containers                 ║ */}
+      {/* ║ Step 03: Available containers                 ║ */}
       {/* ╚═══════════════════════════════════════════════╝ */}
       <section
-        ref={step2Ref}
+        ref={step3Ref}
         className={`transition-all duration-300 ${
-          !step1Done
+          !step2Done
             ? "pointer-events-none opacity-40 translate-y-2"
             : "opacity-100 translate-y-0"
         }`}
       >
-        <SectionHeader num={2} title="Available containers" />
+        <SectionHeader num={3} title="Available containers" />
 
-        {!step1Done ? (
+        {!step2Done ? (
           <p className="mt-3 text-sm text-muted-foreground">
             {/* TODO: i18n */}
             Select a destination above to see available containers.
@@ -521,7 +552,7 @@ export function ShippingWizard({
 
             {/* Back link */}
             <button
-              onClick={handleResetToStep1}
+              onClick={handleResetToStep2}
               className="mt-2 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
             >
               <ArrowLeft className="h-3 w-3" />
@@ -533,24 +564,24 @@ export function ShippingWizard({
       </section>
 
       {/* ╔═══════════════════════════════════════════════╗ */}
-      {/* ║ Step 03: Request space / Confirmation         ║ */}
+      {/* ║ Step 04: Your info / Confirmation              ║ */}
       {/* ╚═══════════════════════════════════════════════╝ */}
       <section
-        ref={step3Ref}
+        ref={step4Ref}
         className={`transition-all duration-300 ${
-          !step2Done
+          !step3Done
             ? "pointer-events-none opacity-40 translate-y-2"
             : "opacity-100 translate-y-0"
         }`}
       >
-        <SectionHeader num={3} title="Request space" />
+        <SectionHeader num={4} title="Your info" />
 
-        {!step2Done ? (
+        {!step3Done ? (
           <p className="mt-3 text-sm text-muted-foreground">
             {/* TODO: i18n */}
-            Select a container above to request space.
+            Select a container above to continue.
           </p>
-        ) : step3Done && selectedContainer ? (
+        ) : step4Done && selectedContainer ? (
           /* ─── Success / Confirmation ─── */
           <div className="mt-4">
             <Card>
@@ -745,24 +776,10 @@ export function ShippingWizard({
                 />
               </div>
 
-              {/* Cargo description */}
-              <div>
-                <Label htmlFor="wizard-cargo">
-                  {/* TODO: i18n */}
-                  What are you shipping?{" "}
-                  <span className="text-destructive">*</span>
-                </Label>
-                <Textarea
-                  id="wizard-cargo"
-                  name="cargoDescription"
-                  required
-                  rows={3}
-                  placeholder="e.g., 2 pallets of agricultural parts, approx 4 CBM total"
-                  className="mt-1.5 resize-y"
-                  value={cargoDescription}
-                  onChange={(e) => setCargoDescription(e.target.value)}
-                  disabled={isSubmitting}
-                />
+              {/* Cargo summary (from Step 1, read-only) */}
+              <div className="rounded-md bg-muted/50 px-3 py-2">
+                <p className="text-xs font-medium text-muted-foreground">Cargo</p>
+                <p className="text-sm text-foreground">{cargoDescription}</p>
               </div>
 
               {/* Error message */}
