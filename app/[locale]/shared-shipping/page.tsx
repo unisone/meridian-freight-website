@@ -189,10 +189,10 @@ export default async function SharedShippingPage({
                 WhatsApp Us
               </a>
               <a
-                href={CONTACT.phoneHref}
+                href={CONTACT.emailHref}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
-                or call {CONTACT.phone}
+                or email {CONTACT.email}
               </a>
             </div>
           </ScrollReveal>
