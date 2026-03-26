@@ -85,6 +85,7 @@ const CARGO_TYPES = [
   { id: "planter", label: "Planter / Seeder", icon: "🌱" },
   { id: "tillage", label: "Tillage Equipment", icon: "⚙️" },
   { id: "construction", label: "Construction Equipment", icon: "🏗️" },
+  { id: "forestry", label: "Forestry Equipment", icon: "🌲" },
   { id: "parts", label: "Parts & Pallets", icon: "📦" },
   { id: "other", label: "Other", icon: "📋" },
 ] as const;

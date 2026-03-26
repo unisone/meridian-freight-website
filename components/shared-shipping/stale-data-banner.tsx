@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Clock, Phone } from "lucide-react";
+import { AlertTriangle, Clock, MessageCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CONTACT } from "@/lib/constants";
 
@@ -72,9 +72,18 @@ export function StaleDataBanner({ lastSyncTime }: StaleDataBannerProps) {
   // critical
   return (
     <Alert className="border-red-200 bg-red-50 text-red-800">
-      <Phone className="h-4 w-4 text-red-600" />
+      <MessageCircle className="h-4 w-4 text-red-600" />
       <AlertDescription>
-        Container availability is currently unavailable. Call us at{" "}
+        Container availability is currently unavailable.{" "}
+        <a
+          href={CONTACT.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium underline underline-offset-2"
+        >
+          WhatsApp us
+        </a>{" "}
+        or call{" "}
         <a href={CONTACT.phoneHref} className="font-medium underline underline-offset-2">
           {CONTACT.phone}
         </a>{" "}
