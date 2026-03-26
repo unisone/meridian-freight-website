@@ -78,16 +78,16 @@ function formatDate(isoDate: string): string {
 // ─── Cargo type options for Step 1 ────────────────────────────────────────────
 
 const CARGO_TYPES = [
-  { id: "header", label: "Combine Header", icon: "🌾" },
-  { id: "tractor", label: "Tractor", icon: "🚜" },
-  { id: "combine", label: "Combine", icon: "🌾" },
-  { id: "sprayer", label: "Sprayer", icon: "💧" },
-  { id: "planter", label: "Planter / Seeder", icon: "🌱" },
-  { id: "tillage", label: "Tillage Equipment", icon: "⚙️" },
-  { id: "construction", label: "Construction Equipment", icon: "🏗️" },
-  { id: "forestry", label: "Forestry Equipment", icon: "🌲" },
-  { id: "parts", label: "Parts & Pallets", icon: "📦" },
-  { id: "other", label: "Other", icon: "📋" },
+  { id: "header", label: "Combine Header", icon: "🌾", estimatedCbm: 20 },
+  { id: "tractor", label: "Tractor", icon: "🚜", estimatedCbm: 38 },
+  { id: "combine", label: "Combine", icon: "🌾", estimatedCbm: 99 },
+  { id: "sprayer", label: "Sprayer", icon: "💧", estimatedCbm: 45 },
+  { id: "planter", label: "Planter / Seeder", icon: "🌱", estimatedCbm: 76 },
+  { id: "tillage", label: "Tillage Equipment", icon: "⚙️", estimatedCbm: 20 },
+  { id: "construction", label: "Construction Equipment", icon: "🏗️", estimatedCbm: 30 },
+  { id: "forestry", label: "Forestry Equipment", icon: "🌲", estimatedCbm: 40 },
+  { id: "parts", label: "Parts & Pallets", icon: "📦", estimatedCbm: 5 },
+  { id: "other", label: "Other", icon: "📋", estimatedCbm: 0 },
 ] as const;
 
 // Approximate CBM for common cargo — used for "what fits" hints on containers
@@ -118,7 +118,7 @@ export function ShippingWizard({
   lastSyncTime,
 }: ShippingWizardProps) {
   // ─── Step state ────────────────────────────────────────
-  const [selectedCargoType, setSelectedCargoType] = useState<string | null>(null);
+  const [selectedCargoTypes, setSelectedCargoTypes] = useState<string[]>([]);
   const [cargoDescription, setCargoDescription] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedContainer, setSelectedContainer] =
@@ -140,9 +140,18 @@ export function ShippingWizard({
   const submittingRef = useRef(false); // prevent double submit
 
   // ─── Boolean gates ─────────────────────────────────────
-  const step1Done = selectedCargoType !== null && (
-    selectedCargoType !== "other" || cargoDescription.trim().length >= 5
+  const hasOtherOnly = selectedCargoTypes.length === 1 && selectedCargoTypes[0] === "other";
+  const step1Done = selectedCargoTypes.length > 0 && (
+    !hasOtherOnly || cargoDescription.trim().length >= 5
   );
+
+  // Total estimated CBM from selected cargo types
+  const totalEstimatedCbm = useMemo(() => {
+    return selectedCargoTypes.reduce((sum, id) => {
+      const type = CARGO_TYPES.find(t => t.id === id);
+      return sum + (type?.estimatedCbm ?? 0);
+    }, 0);
+  }, [selectedCargoTypes]);
   const step2Done = step1Done && selectedCountry !== null;
   const step3Done = step2Done && selectedContainer !== null;
   const step4Done = result?.success === true;
@@ -281,9 +290,15 @@ export function ShippingWizard({
       name,
       email,
       phone,
-      cargoDescription: selectedCargoType === "other"
-        ? cargoDescription
-        : `[${CARGO_TYPES.find(t => t.id === selectedCargoType)?.label ?? selectedCargoType}] ${cargoDescription}`.trim(),
+      cargoDescription: (() => {
+        const labels = selectedCargoTypes
+          .map(id => CARGO_TYPES.find(t => t.id === id)?.label)
+          .filter(Boolean)
+          .join(", ");
+        return cargoDescription
+          ? `[${labels}] ${cargoDescription}`
+          : labels;
+      })(),
       containerId: selectedContainer.id,
       projectNumber: selectedContainer.project_number,
       website: honeypot,
@@ -358,53 +373,73 @@ export function ShippingWizard({
       <section>
         <SectionHeader num={1} title="What are you shipping?" />
 
-        {/* Cargo type grid */}
-        <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
+        {/* Cargo type grid — multi-select */}
+        <p className="mt-2 text-xs text-muted-foreground">Select all that apply</p>
+        <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
           {CARGO_TYPES.map((type) => {
-            const isSelected = selectedCargoType === type.id;
+            const isSelected = selectedCargoTypes.includes(type.id);
             return (
               <button
                 key={type.id}
                 onClick={() => {
-                  setSelectedCargoType(type.id);
-                  if (type.id !== "other") {
-                    setCargoDescription("");
-                  }
+                  setSelectedCargoTypes(prev =>
+                    isSelected
+                      ? prev.filter(id => id !== type.id)
+                      : [...prev, type.id]
+                  );
                 }}
-                className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-colors ${
+                className={`relative flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-colors ${
                   isSelected
                     ? "border-primary bg-primary/5 ring-2 ring-primary/20"
                     : "border-border bg-card hover:border-primary/40 cursor-pointer"
                 }`}
                 aria-pressed={isSelected}
               >
+                {isSelected && (
+                  <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+                    ✓
+                  </span>
+                )}
                 <span className="text-xl" aria-hidden="true">{type.icon}</span>
                 <span className={`text-xs font-medium leading-tight ${
                   isSelected ? "text-primary" : "text-foreground"
                 }`}>
                   {type.label}
                 </span>
+                {type.estimatedCbm > 0 && (
+                  <span className="text-[10px] text-muted-foreground">
+                    ~{type.estimatedCbm} CBM
+                  </span>
+                )}
               </button>
             );
           })}
         </div>
 
-        {/* Details textarea — always visible when a type is selected, required for "Other" */}
-        {selectedCargoType && (
+        {/* Estimated total CBM */}
+        {totalEstimatedCbm > 0 && (
+          <p className="mt-3 text-sm text-muted-foreground">
+            Estimated space needed:{" "}
+            <span className="font-semibold text-foreground">~{totalEstimatedCbm} CBM</span>
+          </p>
+        )}
+
+        {/* Details textarea */}
+        {selectedCargoTypes.length > 0 && (
           <div className="mt-4 max-w-xl">
             <Label htmlFor="wizard-cargo">
-              {selectedCargoType === "other" ? (
+              {hasOtherOnly ? (
                 <>Describe your cargo <span className="text-destructive">*</span></>
               ) : (
-                "Add details (optional)"
+                "Add details — model, quantity, size (optional)"
               )}
             </Label>
             <Textarea
               id="wizard-cargo"
               placeholder={
-                selectedCargoType === "other"
+                hasOtherOnly
                   ? "e.g. industrial pump, 2 generators, custom fabrication..."
-                  : "e.g. John Deere 635FD, 35ft, needs disassembly..."
+                  : "e.g. John Deere 635FD, 35ft, 2 units..."
               }
               className="mt-1.5"
               rows={2}
@@ -589,14 +624,33 @@ export function ShippingWizard({
                           </div>
                         </div>
 
-                        {/* Capacity bar */}
+                        {/* Capacity bar with estimated cargo overlay */}
                         <div className="space-y-2">
                           <div className="relative h-3 w-full overflow-hidden rounded-full bg-muted">
+                            {/* Already booked space */}
                             <div
-                              className={`h-full rounded-full transition-all duration-500 ease-out ${barColor}`}
+                              className={`absolute inset-y-0 left-0 rounded-full transition-all duration-500 ease-out ${barColor}`}
                               style={{ width: `${fillPercent}%` }}
                             />
+                            {/* Customer's estimated cargo (green overlay) */}
+                            {totalEstimatedCbm > 0 && (
+                              <div
+                                className={`absolute inset-y-0 rounded-full transition-all duration-500 ease-out ${
+                                  totalEstimatedCbm <= availableCbm
+                                    ? "bg-emerald-400/70"
+                                    : "bg-red-400/70"
+                                }`}
+                                style={{
+                                  left: `${fillPercent}%`,
+                                  width: `${Math.min(
+                                    (totalEstimatedCbm / totalCbm) * 100,
+                                    100 - fillPercent
+                                  )}%`,
+                                }}
+                              />
+                            )}
                           </div>
+
                           <div className="flex items-center justify-between text-xs">
                             <span className="text-muted-foreground">
                               <span className="font-semibold text-foreground">
@@ -609,12 +663,23 @@ export function ShippingWizard({
                             </span>
                           </div>
 
-                          {/* What fits hint */}
-                          {availableCbm > 0 && (
+                          {/* Fit indicator */}
+                          {totalEstimatedCbm > 0 ? (
+                            totalEstimatedCbm <= availableCbm ? (
+                              <p className="flex items-center gap-1 text-[11px] font-medium text-emerald-600">
+                                <CheckCircle2 className="h-3 w-3" />
+                                Your cargo (~{totalEstimatedCbm} CBM) should fit
+                              </p>
+                            ) : (
+                              <p className="flex items-center gap-1 text-[11px] font-medium text-amber-600">
+                                ⚠️ Your cargo (~{totalEstimatedCbm} CBM) may not fit — we&apos;ll verify
+                              </p>
+                            )
+                          ) : availableCbm > 0 ? (
                             <p className="text-[11px] text-muted-foreground italic">
                               Fits approx. {whatFitsHint(availableCbm)}
                             </p>
-                          )}
+                          ) : null}
                         </div>
 
                         {/* CTA */}
@@ -868,8 +933,14 @@ export function ShippingWizard({
               <div className="rounded-md bg-muted/50 px-3 py-2">
                 <p className="text-xs font-medium text-muted-foreground">Cargo</p>
                 <p className="text-sm text-foreground">
-                  {CARGO_TYPES.find(t => t.id === selectedCargoType)?.label ?? "Other"}
+                  {selectedCargoTypes
+                    .map(id => CARGO_TYPES.find(t => t.id === id)?.label)
+                    .filter(Boolean)
+                    .join(", ")}
                   {cargoDescription ? ` — ${cargoDescription}` : ""}
+                  {totalEstimatedCbm > 0 && (
+                    <span className="text-muted-foreground"> (~{totalEstimatedCbm} CBM)</span>
+                  )}
                 </p>
               </div>
 
