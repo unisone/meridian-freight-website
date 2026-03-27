@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/page-hero";
@@ -147,13 +148,13 @@ export default async function SchedulePage({
               {t("ctaDescription")}
             </p>
             <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <a
+              <Link
                 href="/shared-shipping"
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 <MessageCircle className="h-4 w-4" />
                 {t("ctaBookSpace")}
-              </a>
+              </Link>
               <a
                 href={CONTACT.emailHref}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

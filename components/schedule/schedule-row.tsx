@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -145,11 +146,7 @@ export function ScheduleRow({ container, index }: ScheduleRowProps) {
                     destination: container.destination_country ?? "",
                   });
                 }}
-                render={
-                  <a
-                    href={`/shared-shipping`}
-                  />
-                }
+                render={<Link href="/shared-shipping" />}
               >
                 {t("bookSpace")}
                 <ArrowRight className="ml-1 h-3 w-3" />

@@ -12,7 +12,6 @@ interface ScheduleEmptyStateProps {
 
 export function ScheduleEmptyState({
   variant,
-  filterCountry,
   onClearFilters,
 }: ScheduleEmptyStateProps) {
   const t = useTranslations("ScheduleList");
