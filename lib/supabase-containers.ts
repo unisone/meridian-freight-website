@@ -690,3 +690,87 @@ export async function fetchScheduleContainers(): Promise<SharedContainer[] | nul
     return null;
   }
 }
+
+/**
+ * Fetch ALL schedule containers WITH booking data (pending request counts).
+ * Used by the unified /schedule page (replaces separate fetch functions).
+ * Merges pending_count for available containers so bookable rows can show demand.
+ */
+export async function fetchScheduleContainersWithBookingData(): Promise<ContainerWithPendingCount[] | null> {
+  const config = getSupabaseConfig();
+  if (!config) return null;
+
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const cutoff = sixtyDaysAgo.toISOString().split("T")[0];
+
+  try {
+    const params = new URLSearchParams({
+      select: "*",
+      status: "in.(available,full,departed)",
+      departure_date: `gte.${cutoff}`,
+      order: "departure_date.asc",
+    });
+
+    const resp = await fetch(
+      `${config.url}/rest/v1/shared_containers?${params}`,
+      {
+        headers: buildHeaders(config.key),
+        next: { revalidate: 0 },
+      },
+    );
+
+    if (!resp.ok) {
+      log({
+        level: "error",
+        msg: "Failed to fetch schedule containers with booking data",
+        route: "supabase-containers",
+        status: resp.status,
+        body: await resp.text(),
+      });
+      return null;
+    }
+
+    const containers = (await resp.json()) as SharedContainer[];
+
+    // Fetch pending request counts for bookable containers
+    const bookableIds = containers
+      .filter((c) => c.status === "available" && (c.available_cbm ?? 0) > 0)
+      .map((c) => c.id);
+
+    const countMap = new Map<string, number>();
+
+    if (bookableIds.length > 0) {
+      const countParams = new URLSearchParams({
+        select: "container_id",
+        container_id: `in.(${bookableIds.join(",")})`,
+        status: "in.(new,contacted,quoted)",
+      });
+
+      const countResp = await fetch(
+        `${config.url}/rest/v1/space_booking_requests?${countParams}`,
+        { headers: buildHeaders(config.key) },
+      );
+
+      if (countResp.ok) {
+        const requests = (await countResp.json()) as Array<{ container_id: string }>;
+        for (const r of requests) {
+          countMap.set(r.container_id, (countMap.get(r.container_id) ?? 0) + 1);
+        }
+      }
+    }
+
+    return containers.map((c) => ({
+      ...c,
+      pending_count: countMap.get(c.id) ?? 0,
+    }));
+  } catch (e) {
+    log({
+      level: "error",
+      msg: "fetchScheduleContainersWithBookingData error",
+      route: "supabase-containers",
+      error: e instanceof Error ? e.message : String(e),
+    });
+    return null;
+  }
+}
