@@ -181,6 +181,22 @@ export function trackBookingFunnel(
   }
 }
 
+/** Track shipping schedule events (GA4 + Vercel Analytics). */
+export function trackScheduleEvent(
+  action: "view" | "filter" | "book_click",
+  params: Record<string, string> = {},
+): void {
+  if (action === "view") {
+    trackGA4Event("schedule_view", params);
+    vercelTrack("schedule_view", params);
+  } else if (action === "filter") {
+    trackGA4Event("schedule_filter", params);
+  } else if (action === "book_click") {
+    trackGA4Event("schedule_book_click", params);
+    vercelTrack("schedule_book_click", params);
+  }
+}
+
 /** Get the GA4 client_id for offline conversion matching. */
 export function getGA4ClientId(): Promise<string | null> {
   return new Promise((resolve) => {

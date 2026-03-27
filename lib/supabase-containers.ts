@@ -638,3 +638,55 @@ export async function insertSyncLog(entry: {
     });
   }
 }
+
+/**
+ * Fetch ALL containers for the /schedule page.
+ * Includes available, full, and departed (last 60 days).
+ * Excludes unlisted and cancelled.
+ */
+export async function fetchScheduleContainers(): Promise<SharedContainer[] | null> {
+  const config = getSupabaseConfig();
+  if (!config) return null;
+
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const cutoff = sixtyDaysAgo.toISOString().split("T")[0];
+
+  try {
+    const params = new URLSearchParams({
+      select: "*",
+      status: "in.(available,full,departed)",
+      departure_date: `gte.${cutoff}`,
+      order: "departure_date.asc",
+    });
+
+    const resp = await fetch(
+      `${config.url}/rest/v1/shared_containers?${params}`,
+      {
+        headers: buildHeaders(config.key),
+        next: { revalidate: 0 },
+      },
+    );
+
+    if (!resp.ok) {
+      log({
+        level: "error",
+        msg: "Failed to fetch schedule containers",
+        route: "supabase-containers",
+        status: resp.status,
+        body: await resp.text(),
+      });
+      return null;
+    }
+
+    return (await resp.json()) as SharedContainer[];
+  } catch (e) {
+    log({
+      level: "error",
+      msg: "fetchScheduleContainers error",
+      route: "supabase-containers",
+      error: e instanceof Error ? e.message : String(e),
+    });
+    return null;
+  }
+}
