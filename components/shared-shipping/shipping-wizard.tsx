@@ -132,10 +132,10 @@ function whatFitsHint(availableCbm: number): string {
 // ─── Progress bar steps (module-level constant) ──────────────────────────────
 
 const WIZARD_STEPS = [
-  { num: 1, label: "CARGO" },
-  { num: 2, label: "DESTINATION" },
-  { num: 3, label: "CONTAINER" },
-  { num: 4, label: "YOUR INFO" },
+  { num: 1, label: "WHAT" },
+  { num: 2, label: "WHERE" },
+  { num: 3, label: "SELECT" },
+  { num: 4, label: "SUBMIT" },
 ] as const;
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -410,7 +410,7 @@ export function ShippingWizard({
   return (
     <div className="space-y-8">
       {/* Stale data banner */}
-      <StaleDataBanner lastSyncTime={lastSyncTime} />
+      <StaleDataBanner lastSyncTime={lastSyncTime} hasContainers={containers.length > 0} />
 
       {/* Progress bar — matches calculator-progress-bar pattern */}
       <div className="mb-4">

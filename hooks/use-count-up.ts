@@ -14,12 +14,14 @@ export function useCountUp({
   duration = 0.8,
   enabled = true,
 }: UseCountUpOptions): number {
-  const [value, setValue] = useState(0);
+  // Initialize with end value to avoid SSR flash (renders "500" not "0")
+  const [value, setValue] = useState(end);
   const hasRun = useRef(false);
 
   useEffect(() => {
     if (!enabled || hasRun.current) return;
     hasRun.current = true;
+    setValue(0); // Reset to 0 to animate from scratch
 
     const durationMs = duration * 1000;
     let start: number | null = null;

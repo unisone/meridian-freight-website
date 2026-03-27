@@ -6,15 +6,17 @@ import { CONTACT } from "@/lib/constants";
 
 interface StaleDataBannerProps {
   lastSyncTime: string | null;
+  hasContainers?: boolean;
 }
 
 type FreshnessLevel = "fresh" | "aging" | "stale" | "critical";
 
-function getFreshnessLevel(lastSyncTime: string | null): {
+function getFreshnessLevel(lastSyncTime: string | null, hasContainers: boolean): {
   level: FreshnessLevel;
   minutesAgo: number;
 } {
-  if (!lastSyncTime) return { level: "critical", minutesAgo: Infinity };
+  // No sync history but containers exist → data was seeded/imported, treat as fresh
+  if (!lastSyncTime) return { level: hasContainers ? "fresh" : "critical", minutesAgo: Infinity };
 
   const syncDate = new Date(lastSyncTime);
   if (isNaN(syncDate.getTime())) return { level: "critical", minutesAgo: Infinity };
@@ -35,8 +37,8 @@ function formatTimeAgo(minutes: number): string {
   return `${days} day${days !== 1 ? "s" : ""} ago`;
 }
 
-export function StaleDataBanner({ lastSyncTime }: StaleDataBannerProps) {
-  const { level, minutesAgo } = getFreshnessLevel(lastSyncTime);
+export function StaleDataBanner({ lastSyncTime, hasContainers = false }: StaleDataBannerProps) {
+  const { level, minutesAgo } = getFreshnessLevel(lastSyncTime, hasContainers);
 
   if (level === "fresh") return null;
 

@@ -6,7 +6,6 @@ import { TrustBar } from "@/components/trust-bar";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ShippingWizard } from "@/components/shared-shipping/shipping-wizard";
-import { HowItWorks } from "@/components/shared-shipping/how-it-works";
 import { EmptyState } from "@/components/shared-shipping/empty-state";
 import { fetchAvailableContainers, getLastSyncTime } from "@/lib/supabase-containers";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
@@ -167,10 +166,7 @@ export default async function SharedShippingPage({
         </div>
       </section>
 
-      {/* How It Works */}
-      <HowItWorks />
-
-      {/* Fix 3 + 8: Interactive FAQ (locale-aware, accordion) */}
+      {/* FAQ (locale-aware, interactive accordion) */}
       <FaqAccordion entries={faqEntries} />
 
       {/* CTA */}
