@@ -1,6 +1,8 @@
 /**
  * Google Sheets → Supabase sync pipeline for shared containers.
  * Handles column detection, multi-format parsing, safety gates.
+ *
+ * Only syncs rows where "Available space %" > 0 AND "Final Destination" is filled.
  */
 
 import { fetchSheetValues } from "@/lib/google-sheets";
@@ -14,19 +16,46 @@ import { log } from "@/lib/logger";
 
 // ---------- Column Detection ----------
 
-/** Map of DB field name → possible header texts (case-insensitive) */
+/** Map of DB field name → possible header texts (case-insensitive substring match) */
 const COLUMN_HEADERS: Record<string, string[]> = {
-  project_number: ["номер проекта", "project #", "project number", "project", "проект"],
-  origin: ["откуда грузится", "origin", "from", "откуда", "loading from"],
-  destination: ["куда идет", "destination", "dest"],
-  departure_date: ["дата выхода", "departure", "departure date", "дата отправки", "etd"],
-  eta_date: ["eta", "arrival", "estimated arrival", "дата прибытия", "eta date"],
-  space_available: ["space available", "space", "свободно", "available cbm", "cbm", "свободное место"],
-  container_type: ["container", "type", "тип контейнера", "container type"],
+  project_number: [
+    "reference #", "reference", "номер проекта",
+    "project #", "project number", "проект",
+  ],
+  origin: [
+    "packaging facility", "facility", "packaging",
+    "откуда грузится", "origin", "from", "откуда", "loading from",
+  ],
+  destination: [
+    "final destination", "куда идет", "destination", "dest",
+  ],
+  departure_date: [
+    "vessel etd", "дата выхода", "departure", "departure date", "дата отправки", "etd",
+  ],
+  loading_date: [
+    "loading date", "дата загрузки",
+  ],
+  eta_date: [
+    "eta", "arrival", "estimated arrival", "дата прибытия", "eta date",
+  ],
+  space_available: [
+    "available space", "space available", "space %",
+    "space", "свободно", "available cbm", "cbm", "свободное место",
+  ],
+  container_type: [
+    "container type", "тип контейнера",
+  ],
+  commodities: [
+    "commodities", "commodity", "cargo", "груз",
+  ],
   notes: ["notes", "примечания", "comments", "заметки"],
 };
 
-const REQUIRED_COLUMNS = ["project_number", "destination", "departure_date", "space_available"];
+/**
+ * Required: project_number, destination, space_available.
+ * departure_date is soft-required — we fall back to loading_date if Vessel ETD is missing.
+ */
+const REQUIRED_COLUMNS = ["project_number", "destination", "space_available"];
 
 interface ColumnMap {
   [field: string]: number; // field name → column index
@@ -37,8 +66,10 @@ export function detectColumns(headerRow: string[]): ColumnMap | null {
   const normalizedHeaders = headerRow.map((h) => String(h ?? "").toLowerCase().trim());
 
   for (const [field, aliases] of Object.entries(COLUMN_HEADERS)) {
+    // Try longest alias first to avoid "container" matching "Container#" before "container type"
+    const sortedAliases = [...aliases].sort((a, b) => b.length - a.length);
     const index = normalizedHeaders.findIndex((h) =>
-      aliases.some((alias) => h.includes(alias))
+      sortedAliases.some((alias) => h.includes(alias))
     );
     if (index !== -1) {
       map[field] = index;
@@ -54,9 +85,22 @@ export function detectColumns(headerRow: string[]): ColumnMap | null {
         route: "sync-containers",
         column: required,
         available: Object.keys(map),
+        headers: normalizedHeaders.filter(Boolean),
       });
       return null;
     }
+  }
+
+  // Soft-require at least one date column (departure_date or loading_date)
+  if (map.departure_date === undefined && map.loading_date === undefined) {
+    log({
+      level: "error",
+      msg: "required_column_missing",
+      route: "sync-containers",
+      column: "departure_date or loading_date",
+      available: Object.keys(map),
+    });
+    return null;
   }
 
   return map;
@@ -64,6 +108,11 @@ export function detectColumns(headerRow: string[]): ColumnMap | null {
 
 // ---------- Date Parsing ----------
 
+/**
+ * Parse a date from various Google Sheets formats.
+ * Handles: serial numbers, ISO, DD.MM.YYYY, MM/DD/YYYY, MM/DD (infer year),
+ * and text-prefixed dates like "loading 04/01".
+ */
 export function parseSheetDate(raw: unknown): string | null {
   if (raw == null || raw === "") return null;
 
@@ -73,8 +122,17 @@ export function parseSheetDate(raw: unknown): string | null {
     return date.toISOString().split("T")[0];
   }
 
-  const str = String(raw).trim();
+  let str = String(raw).trim();
   if (!str) return null;
+
+  // Strip text prefixes: "loading 04/01" → "04/01", "cut off 04/01" → "04/01"
+  str = str.replace(/^(?:loading|cut\s*off|loaded|in\s*g(?:arage)?|depart(?:ed|ing)?)\s*/i, "").trim();
+
+  // If there are multiple dates ("01/25/2026 01/06/2024"), take the first one
+  const multiDateMatch = str.match(/^(\d{1,2}\/\d{1,2}\/\d{4})/);
+  if (multiDateMatch) {
+    str = multiDateMatch[1];
+  }
 
   // 2. ISO: "2026-04-15"
   if (/^\d{4}-\d{2}-\d{2}/.test(str)) {
@@ -90,13 +148,21 @@ export function parseSheetDate(raw: unknown): string | null {
   }
 
   // 4. MM/DD/YYYY: "04/15/2026"
-  const slashMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (slashMatch) {
-    const d = new Date(+slashMatch[3], +slashMatch[1] - 1, +slashMatch[2]);
+  const slashFullMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slashFullMatch) {
+    const d = new Date(+slashFullMatch[3], +slashFullMatch[1] - 1, +slashFullMatch[2]);
     if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
   }
 
-  // 5. Try generic Date constructor as last resort
+  // 5. MM/DD (no year) — infer current year: "04/06" → "2026-04-06"
+  const slashShortMatch = str.match(/^(\d{1,2})\/(\d{1,2})$/);
+  if (slashShortMatch) {
+    const year = new Date().getFullYear();
+    const d = new Date(year, +slashShortMatch[1] - 1, +slashShortMatch[2]);
+    if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
+  }
+
+  // 6. Try generic Date constructor as last resort
   const generic = new Date(str);
   if (!isNaN(generic.getTime())) return generic.toISOString().split("T")[0];
 
@@ -112,24 +178,48 @@ const DEFAULT_CAPACITY_CBM: Record<string, number> = {
   flatrack: 28,
 };
 
+/**
+ * Parse space available value.
+ * The "Available space %" column contains percentages of container capacity.
+ * A bare number (e.g., 15) from a column with "%" in its header is treated as a percentage.
+ */
 export function parseSpaceAvailable(
   raw: unknown,
-  totalCapacity: number = 76
+  totalCapacity: number = 76,
+  headerHint?: string,
 ): { cbm: number | null; rawValue: string } {
   const rawStr = String(raw ?? "").trim();
   if (!rawStr) return { cbm: null, rawValue: rawStr };
 
-  // Direct number
+  // Check if the column header suggests percentages
+  const isPercentColumn = headerHint?.toLowerCase().includes("%") ?? false;
+
+  // Direct number — if column header has "%", treat as percentage
   if (typeof raw === "number") {
+    if (raw === 0) return { cbm: 0, rawValue: rawStr };
+    if (isPercentColumn) {
+      const cbm = Math.round((raw / 100) * totalCapacity * 10) / 10;
+      return { cbm, rawValue: `${raw}%` };
+    }
     return { cbm: raw, rawValue: rawStr };
   }
 
-  // Percentage: "40%" → compute from capacity
+  // Explicit percentage: "40%" → compute from capacity
   const pctMatch = rawStr.match(/([\d]+(?:\.\d+)?)\s*%/);
   if (pctMatch) {
     const pct = parseFloat(pctMatch[1]);
     const cbm = Math.round((pct / 100) * totalCapacity * 10) / 10;
     return { cbm, rawValue: rawStr };
+  }
+
+  // Bare number in a "%" column: "15" → treat as 15%
+  if (isPercentColumn) {
+    const numMatch = rawStr.match(/^([\d]+(?:\.\d+)?)$/);
+    if (numMatch) {
+      const pct = parseFloat(numMatch[1]);
+      const cbm = Math.round((pct / 100) * totalCapacity * 10) / 10;
+      return { cbm, rawValue: `${pct}%` };
+    }
   }
 
   // Extract first number: "30 CBM", "~30", "30 кб.м"
@@ -157,6 +247,25 @@ const COUNTRY_MAP: Record<string, string> = {
   georgia: "GE", uzbekistan: "UZ", kyrgyzstan: "KG",
   tajikistan: "TJ", turkmenistan: "TM", mongolia: "MN",
   paraguay: "PY", bolivia: "BO", guatemala: "GT",
+  // New — from actual sheet data
+  ukraine: "UA", france: "FR", russia: "RU",
+  romania: "RO", poland: "PL", egypt: "EG",
+  germany: "DE", belgium: "BE", netherlands: "NL",
+  italy: "IT", spain: "ES", "united kingdom": "GB",
+  china: "CN", japan: "JP", "south korea": "KR",
+  india: "IN", pakistan: "PK", bangladesh: "BD",
+  // Russian city/port names that indicate country
+  novorossiysk: "RU", новороссийск: "RU",
+  kokshetau: "KZ", кокшетау: "KZ",
+  kostanai: "KZ", костанай: "KZ",
+  almaty: "KZ", алматы: "KZ",
+  aktau: "KZ", актау: "KZ",
+  batumi: "GE", батуми: "GE",
+  poti: "GE", поти: "GE",
+  odessa: "UA", одесса: "UA",
+  gdynia: "PL", alexandria: "EG",
+  constanta: "RO",
+  istanbul: "TR", стамбул: "TR",
   // Russian
   казахстан: "KZ", бразилия: "BR", уругвай: "UY",
   аргентина: "AR", колумбия: "CO", чили: "CL",
@@ -165,11 +274,16 @@ const COUNTRY_MAP: Record<string, string> = {
   нигерия: "NG", кения: "KE", гана: "GH",
   турция: "TR", грузия: "GE", узбекистан: "UZ",
   кыргызстан: "KG", парагвай: "PY", боливия: "BO",
+  украина: "UA", франция: "FR", россия: "RU",
+  румыния: "RO", польша: "PL", египет: "EG",
+  германия: "DE",
 };
 
 export function extractCountryCode(destination: string): string | null {
   const lower = destination.toLowerCase().trim();
-  for (const [name, code] of Object.entries(COUNTRY_MAP)) {
+  // Try longest match first (e.g., "south africa" before "south")
+  const entries = Object.entries(COUNTRY_MAP).sort((a, b) => b[0].length - a[0].length);
+  for (const [name, code] of entries) {
     if (lower.includes(name)) return code;
   }
   // Check for trailing ISO code: "Almaty, KZ"
@@ -186,36 +300,77 @@ function getCell(row: string[], colMap: ColumnMap, field: string): string {
   return String(row[idx] ?? "").trim();
 }
 
+/** Clean project number: take first line (before \n), trim whitespace */
+function cleanProjectNumber(raw: string): string {
+  return raw.split("\n")[0].trim();
+}
+
+/** Detect container type from the commodities/cargo description */
+function detectContainerType(commodities: string): string {
+  const lower = commodities.toLowerCase();
+  if (lower.includes("flat")) return "Flatrack";
+  return "40HC";
+}
+
 export function parseRow(
   row: string[],
   rowIndex: number,
-  colMap: ColumnMap
+  colMap: ColumnMap,
+  spaceHeaderHint?: string,
 ): { parsed: ParsedContainerRow | null; error: SyncError | null } {
-  const projectNumber = getCell(row, colMap, "project_number");
-  if (!projectNumber) {
+  const rawProject = getCell(row, colMap, "project_number");
+  if (!rawProject) {
     return { parsed: null, error: null }; // Skip silently (empty row)
   }
+  const projectNumber = cleanProjectNumber(rawProject);
 
   const destination = getCell(row, colMap, "destination");
   if (!destination) {
-    return { parsed: null, error: { row: rowIndex, field: "destination", raw: "", error: "empty" } };
+    // Silently skip rows without destination — they're not ready for the website
+    return { parsed: null, error: null };
   }
 
-  const rawDate = row[colMap.departure_date];
-  const departureDate = parseSheetDate(rawDate);
+  // Space filtering: only sync rows with available space > 0
+  const rawSpace = colMap.space_available !== undefined ? row[colMap.space_available] : undefined;
+  const spaceStr = String(rawSpace ?? "").trim();
+  if (!spaceStr) {
+    // No space data — skip silently (not offered for sharing)
+    return { parsed: null, error: null };
+  }
+
+  // Departure date: prefer Vessel ETD, fall back to Loading date
+  let departureDate: string | null = null;
+  if (colMap.departure_date !== undefined) {
+    departureDate = parseSheetDate(row[colMap.departure_date]);
+  }
+  if (!departureDate && colMap.loading_date !== undefined) {
+    departureDate = parseSheetDate(row[colMap.loading_date]);
+  }
   if (!departureDate) {
-    return { parsed: null, error: { row: rowIndex, field: "departure_date", raw: String(rawDate ?? ""), error: "unparsable" } };
+    return { parsed: null, error: { row: rowIndex, field: "departure_date", raw: String(row[colMap.departure_date ?? colMap.loading_date ?? 0] ?? ""), error: "unparsable" } };
   }
 
   const origin = getCell(row, colMap, "origin") || "Albion, IA";
   const etaRaw = colMap.eta_date !== undefined ? row[colMap.eta_date] : undefined;
   const etaDate = parseSheetDate(etaRaw);
-  const containerTypeRaw = getCell(row, colMap, "container_type") || "40HC";
-  const containerType = containerTypeRaw.toUpperCase().includes("FLAT") ? "Flatrack" : containerTypeRaw;
+
+  // Container type: from explicit column or parsed from commodities
+  let containerType = "40HC";
+  if (colMap.container_type !== undefined) {
+    const ctRaw = getCell(row, colMap, "container_type");
+    if (ctRaw) containerType = ctRaw.toUpperCase().includes("FLAT") ? "Flatrack" : ctRaw;
+  } else if (colMap.commodities !== undefined) {
+    containerType = detectContainerType(getCell(row, colMap, "commodities"));
+  }
 
   const totalCapacity = DEFAULT_CAPACITY_CBM[containerType.toLowerCase()] ?? 76;
-  const rawSpace = colMap.space_available !== undefined ? row[colMap.space_available] : undefined;
-  const { cbm, rawValue } = parseSpaceAvailable(rawSpace, totalCapacity);
+  const { cbm, rawValue } = parseSpaceAvailable(rawSpace, totalCapacity, spaceHeaderHint);
+
+  // Skip rows with 0% / 0 CBM available
+  if (cbm !== null && cbm <= 0) {
+    return { parsed: null, error: null };
+  }
+
   const notes = getCell(row, colMap, "notes") || null;
 
   return {
@@ -292,7 +447,12 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
     return result;
   }
 
-  // 3. PARSE ROWS
+  // Get the raw header text for the space column (to detect "%" hint)
+  const spaceHeaderHint = colMap.space_available !== undefined
+    ? String(headerRow[colMap.space_available] ?? "")
+    : undefined;
+
+  // 3. PARSE ROWS (only rows with space > 0 and destination filled)
   const dataRows = allRows.slice(1); // Skip header
   const parsed: ParsedContainerRow[] = [];
   const errors: SyncError[] = [];
@@ -306,40 +466,43 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
       continue;
     }
 
-    const { parsed: parsedRow, error } = parseRow(row, i + 1, colMap);
+    const { parsed: parsedRow, error } = parseRow(row, i + 1, colMap, spaceHeaderHint);
     if (parsedRow) {
       parsed.push(parsedRow);
     } else if (error) {
       errors.push(error);
     } else {
-      skipped++; // No project number — silent skip
+      skipped++; // No project / no destination / no space — silent skip
     }
   }
 
-  // 4. SAFETY GATE
-  if (parsed.length === 0) {
+  // 4. SAFETY GATE — relaxed: 0 shared containers is valid (none available right now)
+  if (parsed.length === 0 && errors.length === 0) {
+    // No containers with available space — this is normal, not a failure
+    const activeProjectNumbers: string[] = [];
+    await markStaleContainers(activeProjectNumbers);
+
     const result: SyncResult = {
-      status: "failed",
+      status: "success",
       rowsFetched: dataRows.length,
       rowsUpserted: 0,
       rowsSkipped: skipped,
-      rowsErrored: errors.length,
-      errors: [{ row: 0, field: "safety", raw: "", error: "0 parseable rows — aborting to prevent data wipe" }, ...errors],
+      rowsErrored: 0,
+      errors: [],
       durationMs: Date.now() - startMs,
     };
     await insertSyncLog({ ...toLogEntry(result), source: "google_sheets", started_at: startedAt, completed_at: new Date().toISOString() });
     return result;
   }
 
-  const errorRate = errors.length / (parsed.length + errors.length);
-  if (errorRate > 0.8) {
+  if (parsed.length === 0 && errors.length > 0) {
     const result: SyncResult = {
       status: "failed",
       rowsFetched: dataRows.length,
       rowsUpserted: 0,
       rowsSkipped: skipped,
       rowsErrored: errors.length,
-      errors: [{ row: 0, field: "safety", raw: "", error: `Error rate ${Math.round(errorRate * 100)}% > 80% — aborting` }, ...errors],
+      errors: [{ row: 0, field: "safety", raw: "", error: "0 parseable rows with available space" }, ...errors],
       durationMs: Date.now() - startMs,
     };
     await insertSyncLog({ ...toLogEntry(result), source: "google_sheets", started_at: startedAt, completed_at: new Date().toISOString() });

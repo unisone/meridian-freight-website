@@ -140,12 +140,11 @@ describe("parseRow", () => {
     expect(error).toBeNull(); // Silent skip
   });
 
-  it("errors on missing destination", () => {
+  it("silently skips row with missing destination", () => {
     const row = ["MF-001", "Chicago", "", "2026-04-15", "", "29"];
     const { parsed, error } = parseRow(row, 1, colMap);
     expect(parsed).toBeNull();
-    expect(error).not.toBeNull();
-    expect(error!.field).toBe("destination");
+    expect(error).toBeNull(); // Silent skip — not offered for sharing
   });
 
   it("errors on unparsable date", () => {

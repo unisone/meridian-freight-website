@@ -138,7 +138,7 @@ Not all freight forwarders handle heavy machinery. Look for:
 - **Transparent pricing** — no hidden fees for "fuel surcharges" or "documentation processing"
 - **References from other equipment buyers** — ask for contacts you can call
 
-At Meridian Freight, we have completed over 500 machinery exports from the USA and Canada. We handle everything in-house — from picking up your equipment to delivering a sealed, documented container to the port. [Get a free quote](/contact) and see why buyers across 30+ countries trust us with their equipment.`,
+At Meridian Freight, we have completed over 1,000 machinery exports from the USA and Canada. We handle everything in-house — from picking up your equipment to delivering a sealed, documented container to the port. [Get a free quote](/contact) and see why buyers across 30+ countries trust us with their equipment.`,
   },
   {
     slug: "how-much-cost-export-combine-harvester",

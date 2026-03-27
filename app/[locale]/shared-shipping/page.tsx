@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { MessageCircle } from "lucide-react";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/page-hero";
 import {
   Accordion,
@@ -29,10 +29,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const localePath = locale === "en" ? "" : `/${locale}`;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
 
-  const title = "Shared Container Shipping — Book Space, Ship for Less";
-  const description =
-    "Book available space in our outbound shipping containers. Ship your cargo without paying for a full container. View real-time availability and request space online.";
+  const title = t("sharedShippingTitle");
+  const description = t("sharedShippingDescription");
 
   return {
     title,
@@ -79,12 +79,13 @@ export default async function SharedShippingPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [containers, lastSyncTime] = await Promise.all([
+  const [containers, lastSyncTime, t] = await Promise.all([
     fetchAvailableContainers(),
     getLastSyncTime(),
+    getTranslations({ locale, namespace: "SharedShippingPage" }),
   ]);
 
-  // Fix 8: Locale-aware FAQ selection
+  // Locale-aware FAQ selection
   const faqEntries =
     locale === "es"
       ? sharedShippingFaqEs
@@ -139,11 +140,13 @@ export default async function SharedShippingPage({
 
       <PageHero
         variant="gradient"
-        breadcrumbs={[{ label: "Shared Shipping" }]}
-        eyebrow="Shared Container Shipping"
-        heading={<>Book Space in a{" "}<span className="text-primary">Shared Container</span></>}
-        description="Don't need a full container? Ship your cargo alongside ours and pay only for the space you use."
-        authority="Trusted by equipment buyers in 27+ countries · 1,000+ shipments since 2013"
+        breadcrumbs={[{ label: t("breadcrumb") }]}
+        eyebrow={t("eyebrow")}
+        heading={<>{t.rich("heading", {
+          accent: (chunks) => <span className="text-primary">{chunks}</span>,
+        })}</>}
+        description={t("description")}
+        authority={t("authority")}
       />
 
       {/* Booking Wizard — the centerpiece */}
@@ -165,7 +168,7 @@ export default async function SharedShippingPage({
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Questions Every Buyer Asks
+              {t("faqHeading")}
             </h2>
           </ScrollReveal>
           <Accordion className="mt-6 space-y-3">
@@ -192,11 +195,10 @@ export default async function SharedShippingPage({
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <ScrollReveal>
             <h2 className="text-2xl font-bold sm:text-3xl">
-              Don&apos;t See Your Destination?
+              {t("ctaHeading")}
             </h2>
             <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-              We ship to 27+ countries and add new routes regularly. Contact us
-              to discuss your shipping needs.
+              {t("ctaDescription")}
             </p>
             <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <a
@@ -205,15 +207,14 @@ export default async function SharedShippingPage({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
-                {/* Fix 7: WhatsApp icon */}
                 <MessageCircle className="h-4 w-4" />
-                WhatsApp Us
+                {t("ctaWhatsApp")}
               </a>
               <a
                 href={CONTACT.emailHref}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
-                or email {CONTACT.email}
+                {t("ctaOrEmail", { email: CONTACT.email })}
               </a>
             </div>
           </ScrollReveal>

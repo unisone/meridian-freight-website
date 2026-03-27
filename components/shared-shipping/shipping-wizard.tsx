@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { track as vercelTrack } from "@vercel/analytics";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -62,6 +63,7 @@ interface Destination {
   code: string;
   name: string;
   count: number;
+  nextDeparture: string;
 }
 
 // ─── Helpers (module-level, not exported) ─────────────────────────────────────
@@ -87,55 +89,48 @@ function formatDate(isoDate: string): string {
   });
 }
 
+/** Days until departure (used for departure label logic) */
+function daysUntilDeparture(isoDate: string): number | null {
+  const date = new Date(isoDate);
+  if (isNaN(date.getTime())) return null;
+  return Math.ceil((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+}
+
 // ─── Cargo type options for Step 1 ────────────────────────────────────────────
 
 const CARGO_TYPES: Array<{
   id: string;
-  label: string;
   icon: LucideIcon;
   estimatedCbm: number;
 }> = [
-  { id: "header", label: "Headers & Platforms", icon: Grip, estimatedCbm: 20 },
-  { id: "tractor", label: "Tractor", icon: Tractor, estimatedCbm: 38 },
-  { id: "combine", label: "Combine", icon: Wheat, estimatedCbm: 99 },
-  { id: "sprayer", label: "Sprayer", icon: Droplets, estimatedCbm: 45 },
-  { id: "planter", label: "Planter", icon: Sprout, estimatedCbm: 76 },
-  { id: "seeder", label: "Seeder", icon: Leaf, estimatedCbm: 76 },
-  { id: "tillage", label: "Tillage Equipment", icon: Mountain, estimatedCbm: 20 },
-  { id: "construction", label: "Construction", icon: HardHat, estimatedCbm: 30 },
-  { id: "forestry", label: "Forestry", icon: TreePine, estimatedCbm: 40 },
-  { id: "parts", label: "Parts & Pallets", icon: Package, estimatedCbm: 5 },
-  { id: "other", label: "Other", icon: FileText, estimatedCbm: 0 },
+  { id: "header", icon: Grip, estimatedCbm: 20 },
+  { id: "tractor", icon: Tractor, estimatedCbm: 38 },
+  { id: "combine", icon: Wheat, estimatedCbm: 99 },
+  { id: "sprayer", icon: Droplets, estimatedCbm: 45 },
+  { id: "planter", icon: Sprout, estimatedCbm: 76 },
+  { id: "seeder", icon: Leaf, estimatedCbm: 76 },
+  { id: "tillage", icon: Mountain, estimatedCbm: 20 },
+  { id: "construction", icon: HardHat, estimatedCbm: 30 },
+  { id: "forestry", icon: TreePine, estimatedCbm: 40 },
+  { id: "parts", icon: Package, estimatedCbm: 5 },
+  { id: "other", icon: FileText, estimatedCbm: 0 },
 ];
 
 // Approximate CBM for common cargo — used for "what fits" hints on containers
 const CARGO_CBM_EXAMPLES = [
-  { label: "pallets", cbmEach: 2, plural: "pallets" },
-  { label: "header", cbmEach: 20, plural: "headers" },
-  { label: "tractor (2WD)", cbmEach: 38, plural: "tractors" },
-  { label: "tillage implement", cbmEach: 20, plural: "tillage implements" },
+  { key: "pallets", cbmEach: 2 },
+  { key: "headers", cbmEach: 20 },
+  { key: "tractors", cbmEach: 38 },
+  { key: "tillage", cbmEach: 20 },
 ] as const;
-
-/** Generate "what fits" hint based on available CBM */
-function whatFitsHint(availableCbm: number): string {
-  const fits: string[] = [];
-  for (const item of CARGO_CBM_EXAMPLES) {
-    const count = Math.floor(availableCbm / item.cbmEach);
-    if (count >= 1) {
-      fits.push(`${count} ${count === 1 ? item.label : item.plural}`);
-    }
-  }
-  if (fits.length === 0) return "Small items and parts";
-  return fits.slice(0, 2).join(" or ");
-}
 
 // ─── Progress bar steps (module-level constant) ──────────────────────────────
 
 const WIZARD_STEPS = [
-  { num: 1, label: "WHAT" },
-  { num: 2, label: "WHERE" },
-  { num: 3, label: "SELECT" },
-  { num: 4, label: "SUBMIT" },
+  { num: 1, id: "what" },
+  { num: 2, id: "where" },
+  { num: 3, id: "select" },
+  { num: 4, id: "submit" },
 ] as const;
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -144,6 +139,8 @@ export function ShippingWizard({
   containers,
   lastSyncTime,
 }: ShippingWizardProps) {
+  const t = useTranslations("ShippingWizard");
+
   // ─── Step state ────────────────────────────────────────
   const [selectedCargoTypes, setSelectedCargoTypes] = useState<string[]>([]);
   const [cargoDescription, setCargoDescription] = useState("");
@@ -185,12 +182,15 @@ export function ShippingWizard({
 
   // ─── Derived: unique destinations ──────────────────────
   const destinations = useMemo<Destination[]>(() => {
-    const countryMap = new Map<string, { name: string; count: number }>();
+    const countryMap = new Map<string, { name: string; count: number; nextDeparture: string }>();
     for (const c of containers) {
       if (c.destination_country && c.status === "available") {
         const existing = countryMap.get(c.destination_country);
         if (existing) {
           existing.count++;
+          if (c.departure_date < existing.nextDeparture) {
+            existing.nextDeparture = c.departure_date;
+          }
         } else {
           // Extract country name from destination (e.g. "Almaty, Kazakhstan" -> "Kazakhstan")
           const parts = c.destination.split(",").map((s) => s.trim());
@@ -199,15 +199,17 @@ export function ShippingWizard({
           countryMap.set(c.destination_country, {
             name: countryName,
             count: 1,
+            nextDeparture: c.departure_date,
           });
         }
       }
     }
     return Array.from(countryMap.entries())
-      .map(([code, { name: countryName, count }]) => ({
+      .map(([code, { name: countryName, count, nextDeparture }]) => ({
         code,
         name: countryName,
         count,
+        nextDeparture,
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [containers]);
@@ -331,8 +333,7 @@ export function ShippingWizard({
       phone,
       cargoDescription: (() => {
         const labels = selectedCargoTypes
-          .map(id => CARGO_TYPES.find(t => t.id === id)?.label)
-          .filter(Boolean)
+          .map(id => t(`cargo.${id}`))
           .join(", ");
         return cargoDescription
           ? `[${labels}] ${cargoDescription}`
@@ -381,17 +382,10 @@ export function ShippingWizard({
           destination: selectedContainer.destination,
         });
       } else {
-        setError(
-          res.error ||
-            // TODO: i18n
-            "Something went wrong. Please try again or contact us via WhatsApp."
-        );
+        setError(res.error || t("errorDefault"));
       }
     } catch {
-      setError(
-        // TODO: i18n
-        "Something went wrong. Please try again or contact us via WhatsApp."
-      );
+      setError(t("errorDefault"));
     } finally {
       setIsSubmitting(false);
       submittingRef.current = false;
@@ -424,7 +418,7 @@ export function ShippingWizard({
                   : "text-muted-foreground"
               }`}
             >
-              Step {step.num}: {step.label}
+              <span className="hidden sm:inline">{t("stepPrefix", { num: step.num })}</span>{t(`step.${step.id}`)}
             </div>
           ))}
         </div>
@@ -434,7 +428,7 @@ export function ShippingWizard({
           aria-valuenow={completedSteps}
           aria-valuemin={0}
           aria-valuemax={4}
-          aria-label={`Booking progress: ${completedSteps} of 4 steps complete`}
+          aria-label={t("progressLabel", { completed: completedSteps })}
         >
           {WIZARD_STEPS.map((step) => (
             <div
@@ -447,14 +441,18 @@ export function ShippingWizard({
         </div>
       </div>
 
+      <p className="text-sm text-muted-foreground">
+        {t("intro")}
+      </p>
+
       {/* ╔═══════════════════════════════════════════════╗ */}
       {/* ║ Step 01: What are you shipping?               ║ */}
       {/* ╚═══════════════════════════════════════════════╝ */}
       <section>
-        <SectionHeader num={1} title="What are you shipping?" />
+        <SectionHeader num={1} title={t("section1")} />
 
         {/* Cargo type grid — multi-select */}
-        <p className="mt-2 text-xs text-muted-foreground">Select all that apply</p>
+        <p className="mt-2 text-xs text-muted-foreground">{t("selectAllThatApply")}</p>
         <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
           {CARGO_TYPES.map((type) => {
             const isSelected = selectedCargoTypes.includes(type.id);
@@ -486,11 +484,11 @@ export function ShippingWizard({
                 <span className={`text-xs font-medium leading-tight ${
                   isSelected ? "text-primary" : "text-foreground"
                 }`}>
-                  {type.label}
+                  {t(`cargo.${type.id}`)}
                 </span>
                 {type.estimatedCbm > 0 && (
                   <span className="text-[10px] text-muted-foreground">
-                    ~{type.estimatedCbm} CBM
+                    {t("estimatedCbm", { cbm: type.estimatedCbm })}
                   </span>
                 )}
               </button>
@@ -502,11 +500,11 @@ export function ShippingWizard({
         {totalEstimatedCbm > 0 && (
           <div className="mt-3 space-y-0.5">
             <p className="text-sm text-muted-foreground">
-              Estimated space needed:{" "}
-              <span className="font-semibold text-foreground">~{totalEstimatedCbm} CBM</span>
+              {t("estimatedSpaceNeeded")}{" "}
+              <span className="font-semibold text-foreground">{t("estimatedCbm", { cbm: totalEstimatedCbm })}</span>
             </p>
             <p className="text-[11px] text-muted-foreground">
-              Approximate — actual space depends on dimensions and packing. Our team will confirm.
+              {t("estimatedSpaceApprox")}
             </p>
           </div>
         )}
@@ -514,12 +512,13 @@ export function ShippingWizard({
         {/* Full container note for oversized equipment */}
         {selectedCargoTypes.includes("combine") && (
           <p className="mt-2 flex items-center gap-1.5 rounded-md bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-700">
-            ⚠️ Combines typically require a full container or flatrack. Shared space may not be suitable.
-            Consider our{" "}
-            <a href="/pricing/calculator" className="font-medium underline underline-offset-2">
-              freight calculator
-            </a>{" "}
-            for a full-container quote.
+            ⚠️ {t.rich("combineWarning", {
+              calcLink: (chunks) => (
+                <a href="/pricing/calculator" className="font-medium underline underline-offset-2">
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
         )}
 
@@ -528,18 +527,14 @@ export function ShippingWizard({
           <div className="mt-4 max-w-xl">
             <Label htmlFor="wizard-cargo">
               {hasOtherOnly ? (
-                <>Describe your cargo <span className="text-destructive">*</span></>
+                <>{t("describeYourCargo")} <span className="text-destructive">*</span></>
               ) : (
-                "Add details — model, quantity, size (optional)"
+                t("addDetails")
               )}
             </Label>
             <Textarea
               id="wizard-cargo"
-              placeholder={
-                hasOtherOnly
-                  ? "e.g. industrial pump, 2 generators, custom fabrication..."
-                  : "e.g. John Deere 635FD, 35ft, 2 units..."
-              }
+              placeholder={hasOtherOnly ? t("placeholderOther") : t("placeholderDetails")}
               className="mt-1.5"
               rows={2}
               value={cargoDescription}
@@ -560,30 +555,33 @@ export function ShippingWizard({
             : "opacity-100 translate-y-0"
         }`}
       >
-        <SectionHeader num={2} title="Where are you shipping?" />
+        <SectionHeader num={2} title={t("section2")} />
 
         {destinations.length === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
-            {/* TODO: i18n */}
-            No containers available right now.{" "}
-            <a
-              href={CONTACT.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary underline underline-offset-2"
-              onClick={() => trackContactClick("whatsapp", "wizard_no_containers")}
-            >
-              WhatsApp us
-            </a>{" "}
-            or email{" "}
-            <a
-              href={CONTACT.emailHref}
-              className="font-medium text-primary underline underline-offset-2"
-              onClick={() => trackContactClick("email", "wizard_no_containers")}
-            >
-              {CONTACT.email}
-            </a>{" "}
-            for the latest schedule.
+            {t.rich("noContainersNow", {
+              emailAddress: CONTACT.email,
+              whatsapp: (chunks) => (
+                <a
+                  href={CONTACT.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-primary underline underline-offset-2"
+                  onClick={() => trackContactClick("whatsapp", "wizard_no_containers")}
+                >
+                  {chunks}
+                </a>
+              ),
+              email: (chunks) => (
+                <a
+                  href={CONTACT.emailHref}
+                  className="font-medium text-primary underline underline-offset-2"
+                  onClick={() => trackContactClick("email", "wizard_no_containers")}
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
         ) : (
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -608,12 +606,15 @@ export function ShippingWizard({
                       isSelected ? "text-primary" : "text-foreground"
                     }`}
                   >
-                    {/* TODO: i18n — country name */}
                     {dest.name}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {/* TODO: i18n — pluralize */}
-                    {dest.count} container{dest.count !== 1 ? "s" : ""}
+                    {(() => {
+                      const days = daysUntilDeparture(dest.nextDeparture);
+                      if (days === null) return "";
+                      if (days <= 7) return t("departingSoon");
+                      return t("departsDate", { date: formatShortDate(dest.nextDeparture) });
+                    })()}
                   </span>
                 </button>
               );
@@ -625,48 +626,39 @@ export function ShippingWizard({
       {/* ╔═══════════════════════════════════════════════╗ */}
       {/* ║ Step 03: Available containers                 ║ */}
       {/* ╚═══════════════════════════════════════════════╝ */}
+      {step2Done && (
       <section
         ref={step3Ref}
-        className={`transition-all duration-300 ${
-          !step2Done
-            ? "pointer-events-none opacity-40 translate-y-2"
-            : "opacity-100 translate-y-0"
-        }`}
+        className="animate-in fade-in slide-in-from-bottom-2 duration-300"
       >
-        <SectionHeader num={3} title="Available containers" />
+        <SectionHeader num={3} title={t("section3")} />
 
-        {!step2Done ? (
-          <p className="mt-3 text-sm text-muted-foreground">
-            {/* TODO: i18n */}
-            Select a destination above to see available containers.
-          </p>
-        ) : (
           <div className="mt-4 space-y-3">
             {/* Heading with flag and count */}
             <p className="text-sm text-muted-foreground">
               {countryFlag(selectedCountry)}{" "}
-              {matchingContainers.length} container
-              {matchingContainers.length !== 1 ? "s" : ""} heading to{" "}
-              {selectedDestinationName}
+              {t("containerCount", { count: matchingContainers.length, destination: selectedDestinationName })}
             </p>
 
             {matchingContainers.length === 0 ? (
               <div className="rounded-lg border border-dashed p-6 text-center">
                 <p className="text-sm text-muted-foreground">
-                  {/* TODO: i18n */}
-                  No containers available for {selectedDestinationName}.{" "}
-                  <a
-                    href={CONTACT.whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium text-primary underline underline-offset-2"
-                    onClick={() =>
-                      trackContactClick("whatsapp", "wizard_no_matching")
-                    }
-                  >
-                    Contact us
-                  </a>{" "}
-                  for upcoming shipments.
+                  {t.rich("noContainersFor", {
+                    destination: selectedDestinationName,
+                    contact: (chunks) => (
+                      <a
+                        href={CONTACT.whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-primary underline underline-offset-2"
+                        onClick={() =>
+                          trackContactClick("whatsapp", "wizard_no_matching")
+                        }
+                      >
+                        {chunks}
+                      </a>
+                    ),
+                  })}
                 </p>
               </div>
             ) : (
@@ -705,17 +697,17 @@ export function ShippingWizard({
                         <div className="flex items-start justify-between">
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                              Departs {formatShortDate(container.departure_date)}
+                              {t("departsLabel", { date: formatShortDate(container.departure_date) })}
                               {container.eta_date && (
                                 <>
                                   <span className="text-muted-foreground">&rarr;</span>
-                                  Arrives {formatShortDate(container.eta_date)}
+                                  {t("arrivesLabel", { date: formatShortDate(container.eta_date) })}
                                 </>
                               )}
                             </div>
                             {transit !== null && (
                               <p className="text-xs text-muted-foreground">
-                                ~{transit} days transit
+                                {t("transitDays", { days: transit })}
                               </p>
                             )}
                           </div>
@@ -727,7 +719,7 @@ export function ShippingWizard({
                             {isSelected && (
                               <Badge className="bg-primary text-primary-foreground">
                                 <CheckCircle2 className="mr-1 h-3 w-3" />
-                                Selected
+                                {t("selected")}
                               </Badge>
                             )}
                           </div>
@@ -763,12 +755,12 @@ export function ShippingWizard({
                           <div className="flex items-center justify-between text-xs">
                             <span className="text-muted-foreground">
                               <span className="font-semibold text-foreground">
-                                {availableCbm} CBM
+                                {t("cbmAvailable", { cbm: availableCbm })}
                               </span>{" "}
-                              available ({availablePercent}% free)
+                              {t("availablePercent", { percent: availablePercent })}
                             </span>
                             <span className="text-muted-foreground">
-                              {totalCbm} CBM total
+                              {t("cbmTotal", { cbm: totalCbm })}
                             </span>
                           </div>
 
@@ -777,16 +769,27 @@ export function ShippingWizard({
                             totalEstimatedCbm <= availableCbm ? (
                               <p className="flex items-center gap-1 text-[11px] font-medium text-emerald-600">
                                 <CheckCircle2 className="h-3 w-3" />
-                                Your cargo (~{totalEstimatedCbm} CBM) should fit
+                                {t("cargoFits", { cbm: totalEstimatedCbm })}
                               </p>
                             ) : (
                               <p className="flex items-center gap-1 text-[11px] font-medium text-amber-600">
-                                ⚠️ Your cargo (~{totalEstimatedCbm} CBM) may not fit — we&apos;ll verify
+                                ⚠️ {t("cargoMayNotFit", { cbm: totalEstimatedCbm })}
                               </p>
                             )
                           ) : availableCbm > 0 ? (
                             <p className="text-[11px] text-muted-foreground italic">
-                              Fits approx. {whatFitsHint(availableCbm)}
+                              {t("fitsApprox", {
+                                hint: (() => {
+                                  const fits: string[] = [];
+                                  for (const item of CARGO_CBM_EXAMPLES) {
+                                    const count = Math.floor(availableCbm / item.cbmEach);
+                                    if (count >= 1) fits.push(t(`whatFits.${item.key}`, { count }));
+                                  }
+                                  return fits.length === 0
+                                    ? t("whatFits.smallItems")
+                                    : fits.slice(0, 2).join(` ${t("or")} `);
+                                })(),
+                              })}
                             </p>
                           ) : null}
                         </div>
@@ -795,9 +798,7 @@ export function ShippingWizard({
                         {container.pending_count > 0 && (
                           <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
-                            {container.pending_count === 1
-                              ? "1 other request pending"
-                              : `${container.pending_count} other requests pending`}
+                            {t("pendingRequests", { count: container.pending_count })}
                           </p>
                         )}
 
@@ -811,7 +812,7 @@ export function ShippingWizard({
                               handleSelectContainer(container);
                             }}
                           >
-                            Select This Container
+                            {t("selectThisContainer")}
                             <ArrowRight className="ml-1.5 h-4 w-4" />
                           </Button>
                         )}
@@ -828,32 +829,23 @@ export function ShippingWizard({
               className="mt-2 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
             >
               <ArrowLeft className="h-3 w-3" />
-              {/* TODO: i18n */}
-              Choose a different destination
+              {t("chooseDifferentDestination")}
             </button>
           </div>
-        )}
       </section>
+      )}
 
       {/* ╔═══════════════════════════════════════════════╗ */}
       {/* ║ Step 04: Your info / Confirmation              ║ */}
       {/* ╚═══════════════════════════════════════════════╝ */}
+      {step3Done && (
       <section
         ref={step4Ref}
-        className={`transition-all duration-300 ${
-          !step3Done
-            ? "pointer-events-none opacity-40 translate-y-2"
-            : "opacity-100 translate-y-0"
-        }`}
+        className="animate-in fade-in slide-in-from-bottom-2 duration-300"
       >
-        <SectionHeader num={4} title="Your info" />
+        <SectionHeader num={4} title={t("section4")} />
 
-        {!step3Done ? (
-          <p className="mt-3 text-sm text-muted-foreground">
-            {/* TODO: i18n */}
-            Select a container above to continue.
-          </p>
-        ) : step4Done && selectedContainer ? (
+        {step4Done && selectedContainer ? (
           /* ─── Success / Confirmation ─── */
           <div className="mt-4">
             <Card>
@@ -861,26 +853,19 @@ export function ShippingWizard({
                 <CheckCircle2 className="h-12 w-12 text-emerald-500" />
 
                 <h3 className="mt-4 text-lg font-semibold text-foreground">
-                  {/* TODO: i18n */}
-                  Request Submitted
+                  {t("requestSubmitted")}
                 </h3>
 
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {/* TODO: i18n */}
-                  We received your request for container{" "}
-                  <span className="font-medium text-foreground">
-                    {selectedContainer.project_number}
-                  </span>{" "}
-                  to{" "}
-                  <span className="font-medium text-foreground">
-                    {selectedDestinationName}
-                  </span>
-                  .
+                  {t.rich("successMessage", {
+                    projectNum: selectedContainer.project_number,
+                    destName: selectedDestinationName,
+                    bold: (chunks) => <span className="font-medium text-foreground">{chunks}</span>,
+                  })}
                 </p>
 
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {/* TODO: i18n */}
-                  Our team will contact you within 24 hours with a quote.
+                  {t("successFollowUp")}
                 </p>
 
                 <Separator className="my-6 w-full" />
@@ -896,11 +881,11 @@ export function ShippingWizard({
                     className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
                   >
                     <MessageCircle className="h-4 w-4" />
-                    Chat on WhatsApp
+                    {t("chatOnWhatsApp")}
                   </a>
 
                   <span className="hidden text-muted-foreground sm:inline">
-                    or
+                    {t("or")}
                   </span>
 
                   <a
@@ -919,8 +904,7 @@ export function ShippingWizard({
                   className="mt-6 w-full sm:w-auto"
                   onClick={handleSubmitAnother}
                 >
-                  {/* TODO: i18n */}
-                  Submit another request
+                  {t("submitAnother")}
                 </Button>
               </CardContent>
             </Card>
@@ -940,33 +924,29 @@ export function ShippingWizard({
               </p>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                 <span>
-                  {/* TODO: i18n */}
-                  Departs:{" "}
+                  {t("formDeparts")}{" "}
                   <span className="font-medium text-foreground">
                     {formatDate(selectedContainer.departure_date)}
                   </span>
                 </span>
                 {selectedContainer.eta_date && (
                   <span>
-                    {/* TODO: i18n */}
-                    Arrives:{" "}
+                    {t("formArrives")}{" "}
                     <span className="font-medium text-foreground">
                       {formatDate(selectedContainer.eta_date)}
                     </span>
                   </span>
                 )}
                 <span>
-                  {/* TODO: i18n */}
-                  Available:{" "}
+                  {t("formAvailable")}{" "}
                   <span className="font-medium text-foreground">
-                    {selectedContainer.available_cbm ?? 0} CBM
+                    {t("cbmAvailable", { cbm: selectedContainer.available_cbm ?? 0 })}
                   </span>
                 </span>
                 <span>{selectedContainer.container_type}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                {/* TODO: i18n */}
-                Ref: {selectedContainer.project_number}
+                {t("formRef", { ref: selectedContainer.project_number })}
               </p>
             </div>
 
@@ -993,14 +973,13 @@ export function ShippingWizard({
               {/* Name */}
               <div>
                 <Label htmlFor="wizard-name">
-                  {/* TODO: i18n */}
-                  Full Name <span className="text-destructive">*</span>
+                  {t("fullName")} <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="wizard-name"
                   name="name"
                   required
-                  placeholder="John Smith"
+                  placeholder={t("placeholderName")}
                   className="mt-1.5"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -1011,15 +990,14 @@ export function ShippingWizard({
               {/* Email */}
               <div>
                 <Label htmlFor="wizard-email">
-                  {/* TODO: i18n */}
-                  Email <span className="text-destructive">*</span>
+                  {t("email")} <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="wizard-email"
                   name="email"
                   type="email"
                   required
-                  placeholder="john@company.com"
+                  placeholder={t("placeholderEmail")}
                   className="mt-1.5"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -1030,15 +1008,14 @@ export function ShippingWizard({
               {/* Phone / WhatsApp */}
               <div>
                 <Label htmlFor="wizard-phone">
-                  {/* TODO: i18n */}
-                  Phone / WhatsApp <span className="text-destructive">*</span>
+                  {t("phoneWhatsApp")} <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="wizard-phone"
                   name="phone"
                   type="tel"
                   required
-                  placeholder="+1 (555) 000-0000"
+                  placeholder={t("placeholderPhone")}
                   className="mt-1.5"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -1048,11 +1025,10 @@ export function ShippingWizard({
 
               {/* Cargo summary (from Step 1, read-only) */}
               <div className="rounded-md bg-muted/50 px-3 py-2">
-                <p className="text-xs font-medium text-muted-foreground">Cargo</p>
+                <p className="text-xs font-medium text-muted-foreground">{t("formCargo")}</p>
                 <p className="text-sm text-foreground">
                   {selectedCargoTypes
-                    .map(id => CARGO_TYPES.find(t => t.id === id)?.label)
-                    .filter(Boolean)
+                    .map(id => t(`cargo.${id}`))
                     .join(", ")}
                   {cargoDescription ? ` — ${cargoDescription}` : ""}
                   {totalEstimatedCbm > 0 && (
@@ -1078,14 +1054,12 @@ export function ShippingWizard({
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {/* TODO: i18n */}
-                    Submitting...
+                    {t("submitting")}
                   </>
                 ) : (
                   <>
                     <Send className="mr-2 h-4 w-4" />
-                    {/* TODO: i18n */}
-                    Submit Request
+                    {t("submitRequest")}
                     <ArrowRight className="ml-1 h-3.5 w-3.5" />
                   </>
                 )}
@@ -1101,41 +1075,33 @@ export function ShippingWizard({
                 className="flex items-center gap-1 text-xs font-medium text-primary hover:underline"
               >
                 <ArrowLeft className="h-3 w-3" />
-                Choose a different container
+                {t("chooseDifferentContainer")}
               </button>
 
               {/* Terms text */}
               <p className="text-center text-xs text-muted-foreground">
-                {/* TODO: i18n */}
-                By submitting, you agree to our{" "}
-                <a
-                  href="/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline underline-offset-2 hover:text-foreground"
-                >
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  href="/privacy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline underline-offset-2 hover:text-foreground"
-                >
-                  Privacy Policy
-                </a>
-                .
+                {t.rich("termsAgreement", {
+                  terms: (chunks) => (
+                    <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">
+                      {chunks}
+                    </a>
+                  ),
+                  privacy: (chunks) => (
+                    <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">
+                      {chunks}
+                    </a>
+                  ),
+                })}
               </p>
             </form>
           </div>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            {/* TODO: i18n */}
-            Select a container above to request space.
+            {t("selectContainerPrompt")}
           </p>
         )}
       </section>
+      )}
     </div>
   );
 }
@@ -1150,7 +1116,6 @@ function SectionHeader({ num, title }: { num: number; title: string }) {
         {String(num).padStart(2, "0")}
       </div>
       <h3 className="text-lg font-bold text-foreground">
-        {/* TODO: i18n */}
         {title}
       </h3>
     </div>

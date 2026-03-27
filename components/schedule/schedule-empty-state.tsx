@@ -4,28 +4,26 @@ import { Package } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CONTACT } from "@/lib/constants";
 
-interface EmptyStateProps {
-  /** "no-data" = Supabase returned null, "no-results" = filter has 0 matches */
-  variant: "no-data" | "no-results";
-  filterCountry?: string;
+interface ScheduleEmptyStateProps {
+  variant: "no-data" | "no-filter-results";
+  filterCountry?: string | null;
   onClearFilters?: () => void;
 }
 
-export function EmptyState({ variant, filterCountry, onClearFilters }: EmptyStateProps) {
-  const t = useTranslations("EmptyState");
+export function ScheduleEmptyState({
+  variant,
+  filterCountry,
+  onClearFilters,
+}: ScheduleEmptyStateProps) {
+  const t = useTranslations("ScheduleList");
 
-  if (variant === "no-results") {
+  if (variant === "no-filter-results") {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <div className="mb-4 rounded-full bg-muted p-4">
           <Package className="h-8 w-8 text-muted-foreground" />
         </div>
-        <h3 className="text-lg font-semibold">
-          {t("noResultsHeading", { destination: filterCountry ?? "this destination" })}
-        </h3>
-        <p className="mt-2 text-sm text-muted-foreground max-w-md">
-          {t("noResultsDescription")}
-        </p>
+        <h3 className="text-lg font-semibold">{t("noResults")}</h3>
         <div className="mt-4 flex gap-3">
           {onClearFilters && (
             <button
@@ -41,7 +39,7 @@ export function EmptyState({ variant, filterCountry, onClearFilters }: EmptyStat
             rel="noopener noreferrer"
             className="text-sm font-medium text-primary underline underline-offset-2 hover:text-primary/80"
           >
-            {t("contactAboutRoute")}
+            {t("contactUs")}
           </a>
         </div>
       </div>
@@ -54,24 +52,18 @@ export function EmptyState({ variant, filterCountry, onClearFilters }: EmptyStat
       <div className="mb-4 rounded-full bg-muted p-4">
         <Package className="h-8 w-8 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-semibold">{t("noDataHeading")}</h3>
+      <h3 className="text-lg font-semibold">{t("noData")}</h3>
       <p className="mt-2 text-sm text-muted-foreground max-w-md">
         {t("noDataDescription")}
       </p>
-      <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">
+      <div className="mt-6">
         <a
           href={CONTACT.whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
         >
-          {t("whatsAppUs")}
-        </a>
-        <a
-          href={CONTACT.phoneHref}
-          className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-        >
-          {t("orCall", { phone: CONTACT.phone })}
+          {t("contactUs")}
         </a>
       </div>
     </div>

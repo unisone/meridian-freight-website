@@ -29,7 +29,7 @@ function StatItem({ item, label }: { item: TrustItem; label: string }) {
       <div ref={ref} className="flex flex-col items-center gap-1 text-center">
         <item.icon className="h-5 w-5 text-primary" />
         <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
-          {count}{item.suffix}
+          {count.toLocaleString("en-US")}{item.suffix}
         </span>
         <span className="text-xs text-muted-foreground">{label}</span>
       </div>

@@ -126,7 +126,7 @@ No todos los agentes de carga manejan maquinaria pesada. Busque:
 - **Precios transparentes** — sin cargos ocultos por "recargos de combustible" o "procesamiento de documentacion"
 - **Referencias de otros compradores de equipos** — solicite contactos a los que pueda llamar
 
-En Meridian Freight, hemos completado mas de 500 exportaciones de maquinaria desde EE.UU. y Canada. Manejamos todo internamente — desde recoger su equipo hasta entregar un contenedor sellado y documentado en el puerto. [Obtenga una cotizacion gratuita](/contact) y descubra por que compradores en mas de 30 paises confian en nosotros con su maquinaria.`,
+En Meridian Freight, hemos completado mas de 1,000 exportaciones de maquinaria desde EE.UU. y Canada. Manejamos todo internamente — desde recoger su equipo hasta entregar un contenedor sellado y documentado en el puerto. [Obtenga una cotizacion gratuita](/contact) y descubra por que compradores en mas de 30 paises confian en nosotros con su maquinaria.`,
   },
   {
     slug: "how-much-cost-export-combine-harvester",
