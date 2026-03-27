@@ -49,13 +49,14 @@ const COLUMN_HEADERS: Record<string, string[]> = {
     "commodities", "commodity", "cargo", "груз",
   ],
   notes: ["notes", "примечания", "comments", "заметки"],
+  booking_ref: ["booking #", "booking", "бронирование", "q#"],
 };
 
 /**
- * Required: project_number, destination, space_available.
- * departure_date is soft-required — we fall back to loading_date if Vessel ETD is missing.
+ * Only project_number is truly required. destination and space_available are optional —
+ * shipped containers often lack both. departure_date falls back to loading_date.
  */
-const REQUIRED_COLUMNS = ["project_number", "destination", "space_available"];
+const REQUIRED_COLUMNS = ["project_number"];
 
 interface ColumnMap {
   [field: string]: number; // field name → column index
@@ -249,7 +250,7 @@ const COUNTRY_MAP: Record<string, string> = {
   paraguay: "PY", bolivia: "BO", guatemala: "GT",
   // New — from actual sheet data
   ukraine: "UA", france: "FR", russia: "RU",
-  romania: "RO", poland: "PL", egypt: "EG",
+  romania: "RO", poland: "PL", egypt: "EG", lithuania: "LT",
   germany: "DE", belgium: "BE", netherlands: "NL",
   italy: "IT", spain: "ES", "united kingdom": "GB",
   china: "CN", japan: "JP", "south korea": "KR",
@@ -305,6 +306,37 @@ function cleanProjectNumber(raw: string): string {
   return raw.split("\n")[0].trim();
 }
 
+/**
+ * Try to extract a destination port/city from the Booking# field.
+ * Many shipped rows have port names embedded: "Q#W251200541111 - Klaipeda", "NAM8293253 Poti"
+ */
+const PORT_NAMES: Record<string, { destination: string; country: string }> = {
+  klaipeda: { destination: "Klaipeda, Lithuania", country: "LT" },
+  gdynia: { destination: "Gdynia, Poland", country: "PL" },
+  poti: { destination: "Poti, Georgia", country: "GE" },
+  batumi: { destination: "Batumi, Georgia", country: "GE" },
+  novorossiysk: { destination: "Novorossiysk, Russia", country: "RU" },
+  novoross: { destination: "Novorossiysk, Russia", country: "RU" },
+  constanta: { destination: "Constanta, Romania", country: "RO" },
+  istanbul: { destination: "Istanbul, Turkey", country: "TR" },
+  alexandria: { destination: "Alexandria, Egypt", country: "EG" },
+  bremerhaven: { destination: "Bremerhaven, Germany", country: "DE" },
+  antwerp: { destination: "Antwerp, Belgium", country: "BE" },
+  houston: { destination: "Houston, TX", country: "US" },
+  savannah: { destination: "Savannah, GA", country: "US" },
+  norfolk: { destination: "Norfolk, VA", country: "US" },
+  busan: { destination: "Busan, South Korea", country: "KR" },
+  qingdao: { destination: "Qingdao, China", country: "CN" },
+};
+
+function extractDestinationFromBooking(bookingRef: string): { destination: string; country: string } | null {
+  const lower = bookingRef.toLowerCase();
+  for (const [port, info] of Object.entries(PORT_NAMES)) {
+    if (lower.includes(port)) return info;
+  }
+  return null;
+}
+
 /** Detect container type from the commodities/cargo description */
 function detectContainerType(commodities: string): string {
   const lower = commodities.toLowerCase();
@@ -324,8 +356,20 @@ export function parseRow(
   }
   const projectNumber = cleanProjectNumber(rawProject);
 
-  const destination = getCell(row, colMap, "destination");
-  // Destination can be empty for schedule (containers being loaded)
+  let destination = getCell(row, colMap, "destination");
+  let destinationCountry: string | null = destination ? extractCountryCode(destination) : null;
+
+  // Fallback: try to extract destination from Booking# field (shipped containers often have port names there)
+  if (!destination && colMap.booking_ref !== undefined) {
+    const bookingRef = getCell(row, colMap, "booking_ref");
+    if (bookingRef) {
+      const extracted = extractDestinationFromBooking(bookingRef);
+      if (extracted) {
+        destination = extracted.destination;
+        destinationCountry = extracted.country;
+      }
+    }
+  }
 
   // Parse space if available
   const rawSpace = colMap.space_available !== undefined ? row[colMap.space_available] : undefined;
@@ -375,7 +419,7 @@ export function parseRow(
       project_number: projectNumber,
       origin,
       destination: destination || "TBD",
-      destination_country: destination ? extractCountryCode(destination) : null,
+      destination_country: destinationCountry,
       departure_date: departureDate,
       eta_date: etaDate,
       container_type: containerType,
