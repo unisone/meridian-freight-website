@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { getServiceBySlug, getRelatedServices, getAllServices } from "@/content/services";
 import { FaqAccordion } from "@/components/faq-accordion";
@@ -131,37 +131,22 @@ export default async function ServicePage({
         />
       )}
 
-      <div className="pt-20">
-        {/* Breadcrumbs */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: "Services", href: "/services" },
-              { label: service.shortTitle },
-            ]}
-          />
-        </div>
+      <PageHero
+        variant="dark"
+        breadcrumbs={[
+          { label: "Services", href: "/services" },
+          { label: service.shortTitle },
+        ]}
+        heading={service.title}
+        description={service.description}
+        icon={Icon}
+      >
+        <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
+            {ts("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </PageHero>
 
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
-                <Icon className="h-6 w-6" />
-              </div>
-            </div>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              {service.title}
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
-              {service.description}
-            </p>
-            <Button render={<Link href="/contact" />} size="lg" className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                {ts("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </section>
-
+      <div>
         {/* What We Do */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -4,7 +4,7 @@ import { ArrowRight, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
 import { getAllBlogPosts } from "@/content/blog";
@@ -83,24 +83,14 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="pt-20">
-        {/* Breadcrumbs */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: "Blog" }]} />
-        </div>
+      <PageHero
+        variant="dark"
+        breadcrumbs={[{ label: "Blog" }]}
+        heading={tb("heroHeading")}
+        description={tb("heroDescription", { company: COMPANY.name })}
+      />
 
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              {tb("heroHeading")}
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
-              {tb("heroDescription", { company: COMPANY.name })}
-            </p>
-          </div>
-        </section>
-
+      <div>
         {/* Blog Post Cards */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

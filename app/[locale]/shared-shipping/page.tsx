@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { MessageCircle } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import {
   Accordion,
   AccordionItem,
@@ -127,7 +127,7 @@ export default async function SharedShippingPage({
   };
 
   return (
-    <div className="pt-20">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -137,30 +137,14 @@ export default async function SharedShippingPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Breadcrumbs */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: "Shared Shipping" }]} />
-      </div>
-
-      {/* Hero */}
-      <div className="bg-gradient-to-b from-primary/5 to-transparent pt-4 pb-10 md:pt-8 md:pb-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Shared Container Shipping
-          </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Book Space in a{" "}
-            <span className="text-primary">Shared Container</span>
-          </h1>
-          <p className="mt-3 text-base text-muted-foreground max-w-2xl mx-auto">
-            Don&apos;t need a full container? Ship your cargo alongside ours and
-            pay only for the space you use.
-          </p>
-          <p className="mt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Trusted by equipment buyers in 27+ countries · 1,000+ shipments since 2013
-          </p>
-        </div>
-      </div>
+      <PageHero
+        variant="gradient"
+        breadcrumbs={[{ label: "Shared Shipping" }]}
+        eyebrow="Shared Container Shipping"
+        heading={<>Book Space in a{" "}<span className="text-primary">Shared Container</span></>}
+        description="Don't need a full container? Ship your cargo alongside ours and pay only for the space you use."
+        authority="Trusted by equipment buyers in 27+ countries · 1,000+ shipments since 2013"
+      />
 
       {/* Booking Wizard — the centerpiece */}
       <section className="pt-6 pb-16 md:pt-8 md:pb-20">
@@ -235,6 +219,6 @@ export default async function SharedShippingPage({
           </ScrollReveal>
         </div>
       </section>
-    </div>
+    </>
   );
 }

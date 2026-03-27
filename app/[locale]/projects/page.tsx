@@ -4,7 +4,7 @@ import { MessageCircle, ArrowRight } from "lucide-react";
 import { DarkCta } from "@/components/dark-cta";
 import { Button } from "@/components/ui/button";
 import { ProjectGrid } from "@/components/project-grid";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { getAllProjects } from "@/content/projects";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, SITE } from "@/lib/constants";
@@ -82,12 +82,12 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="pt-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">{t("heading")}</h1>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("description")}</p>
-        </div>
+      <PageHero
+        breadcrumbs={[{ label: t("breadcrumb") }]}
+        heading={t("heading")}
+        description={t("description")}
+      />
+      <div>
         <ProjectGrid hideHeader />
 
         {/* CTA */}

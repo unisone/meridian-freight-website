@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { MapPin, ArrowRight, Clock, Globe, Shield, Star, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { COMPANY, CONTACT, SITE, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -106,26 +106,17 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-    <div className="pt-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
-      </div>
-
-      {/* Hero */}
-      <section className="py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-            {t("heading", { company: COMPANY.name })}
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-            {t("intro1", { year: COMPANY.foundedYear, count: STATS.projectsCompleted })}
-          </p>
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-            {t("intro2")}
-          </p>
-        </div>
-      </section>
-
+    <PageHero
+      breadcrumbs={[{ label: t("breadcrumb") }]}
+      heading={t("heading", { company: COMPANY.name })}
+      description={
+        <>
+          <p>{t("intro1", { year: COMPANY.foundedYear, count: STATS.projectsCompleted })}</p>
+          <p className="mt-4">{t("intro2")}</p>
+        </>
+      }
+    />
+    <div>
       {/* Differentiators */}
       <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -134,7 +125,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {differentiators.map((d, idx) => (
-              <StaggerItem key={d.title} index={idx}><Card>
+              <StaggerItem key={d.title} index={idx}><Card className="h-full">
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <d.icon className="h-6 w-6" />

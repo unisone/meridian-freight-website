@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { getEquipmentBySlug, getAllEquipmentTypes } from "@/content/equipment";
 import { getServiceBySlug } from "@/content/services";
@@ -154,36 +154,25 @@ export default async function EquipmentPage({
         />
       )}
 
-      <div className="pt-20">
-        {/* Breadcrumbs */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: "Equipment", href: "/equipment" },
-              { label: equipment.pluralName },
-            ]}
-          />
-        </div>
+      <PageHero
+        variant="dark"
+        breadcrumbs={[
+          { label: "Equipment", href: "/equipment" },
+          { label: equipment.pluralName },
+        ]}
+        heading={equipment.title}
+        description={equipment.heroDescription}
+      >
+        <Button
+          render={<Link href="/contact" />}
+          size="lg"
+          className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+        >
+          {te("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </PageHero>
 
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              {equipment.title}
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
-              {equipment.heroDescription}
-            </p>
-            <Button
-              render={<Link href="/contact" />}
-              size="lg"
-              className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
-            >
-              {te("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </section>
-
+      <div>
         {/* Brands We Handle */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

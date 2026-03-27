@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ServicesGrid } from "@/components/services-grid";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ProcessSteps } from "@/components/process-steps";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -83,12 +83,12 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-    <div className="pt-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">{t("heading")}</h1>
-        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("description")}</p>
-      </div>
+    <PageHero
+      breadcrumbs={[{ label: t("breadcrumb") }]}
+      heading={t("heading")}
+      description={t("description")}
+    />
+    <div>
       <ServicesGrid />
       <ProcessSteps />
 

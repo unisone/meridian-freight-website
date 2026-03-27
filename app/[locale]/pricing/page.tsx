@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { Calculator, ArrowRight, MessageCircle } from "lucide-react";
 import { DarkCta } from "@/components/dark-cta";
 import { Button } from "@/components/ui/button";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { PricingTable } from "@/components/pricing-table";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, COMPANY, SITE } from "@/lib/constants";
@@ -78,38 +78,32 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
   };
 
   return (
-    <div className="pt-20">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }}
       />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
-      </div>
+      <PageHero
+        breadcrumbs={[{ label: t("breadcrumb") }]}
+        heading={t("heading")}
+        description={t("description")}
+      >
+        <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkWarehouse")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkCustoms")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkPacking")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkInland")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkOcean")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkAir")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkDrayage")}</li>
+        </ul>
+        <p className="mt-3 text-sm text-muted-foreground/70">
+          {t("ratesUpdated")}
+        </p>
+      </PageHero>
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              {t("heading")}
-            </h1>
-            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              {t("description")}
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkWarehouse")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkCustoms")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkPacking")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkInland")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkOcean")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkAir")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkDrayage")}</li>
-            </ul>
-            <p className="mt-3 text-sm text-muted-foreground/70">
-              {t("ratesUpdated")}
-            </p>
-          </div>
-
           {/* Calculator CTA */}
           <ScrollReveal variant="fade">
           <div className="mb-12 rounded-xl bg-primary/5 p-6 text-center shadow-sm sm:p-8">
@@ -153,6 +147,6 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
           </ScrollReveal>
         </div>
       </section>
-    </div>
+    </>
   );
 }
