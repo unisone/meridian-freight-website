@@ -116,4 +116,5 @@ export interface ParsedContainerRow {
   raw_space_value: string;
   sheet_row_number: number;
   notes: string | null;
+  status: "available" | "full" | "departed";
 }

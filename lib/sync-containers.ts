@@ -325,18 +325,10 @@ export function parseRow(
   const projectNumber = cleanProjectNumber(rawProject);
 
   const destination = getCell(row, colMap, "destination");
-  if (!destination) {
-    // Silently skip rows without destination — they're not ready for the website
-    return { parsed: null, error: null };
-  }
+  // Destination can be empty for schedule (containers being loaded)
 
-  // Space filtering: only sync rows with available space > 0
+  // Parse space if available
   const rawSpace = colMap.space_available !== undefined ? row[colMap.space_available] : undefined;
-  const spaceStr = String(rawSpace ?? "").trim();
-  if (!spaceStr) {
-    // No space data — skip silently (not offered for sharing)
-    return { parsed: null, error: null };
-  }
 
   // Departure date: prefer Vessel ETD, fall back to Loading date
   let departureDate: string | null = null;
@@ -346,8 +338,9 @@ export function parseRow(
   if (!departureDate && colMap.loading_date !== undefined) {
     departureDate = parseSheetDate(row[colMap.loading_date]);
   }
+  // Departure date is soft-required — skip silently if missing (container not scheduled yet)
   if (!departureDate) {
-    return { parsed: null, error: { row: rowIndex, field: "departure_date", raw: String(row[colMap.departure_date ?? colMap.loading_date ?? 0] ?? ""), error: "unparsable" } };
+    return { parsed: null, error: null };
   }
 
   const origin = getCell(row, colMap, "origin") || "Albion, IA";
@@ -366,19 +359,23 @@ export function parseRow(
   const totalCapacity = DEFAULT_CAPACITY_CBM[containerType.toLowerCase()] ?? 76;
   const { cbm, rawValue } = parseSpaceAvailable(rawSpace, totalCapacity, spaceHeaderHint);
 
-  // Skip rows with 0% / 0 CBM available
-  if (cbm !== null && cbm <= 0) {
-    return { parsed: null, error: null };
-  }
-
   const notes = getCell(row, colMap, "notes") || null;
+
+  // Determine status based on data
+  const today = new Date().toISOString().split("T")[0];
+  let status: "available" | "full" | "departed" = "full"; // default: no space info = full
+  if (departureDate < today) {
+    status = "departed";
+  } else if (cbm !== null && cbm > 0) {
+    status = "available";
+  }
 
   return {
     parsed: {
       project_number: projectNumber,
       origin,
-      destination,
-      destination_country: extractCountryCode(destination),
+      destination: destination || "TBD",
+      destination_country: destination ? extractCountryCode(destination) : null,
       departure_date: departureDate,
       eta_date: etaDate,
       container_type: containerType,
@@ -387,6 +384,7 @@ export function parseRow(
       raw_space_value: rawValue,
       sheet_row_number: rowIndex + 1, // 1-based for Google Sheets
       notes,
+      status,
     },
     error: null,
   };

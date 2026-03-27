@@ -131,6 +131,7 @@ describe("parseRow", () => {
     expect(parsed!.project_number).toBe("MF-2026-047");
     expect(parsed!.destination_country).toBe("KZ");
     expect(parsed!.available_cbm).toBe(29);
+    expect(parsed!.status).toBe("available");
   });
 
   it("skips row with empty project number", () => {
@@ -140,18 +141,20 @@ describe("parseRow", () => {
     expect(error).toBeNull(); // Silent skip
   });
 
-  it("silently skips row with missing destination", () => {
+  it("parses row with missing destination as TBD", () => {
     const row = ["MF-001", "Chicago", "", "2026-04-15", "", "29"];
     const { parsed, error } = parseRow(row, 1, colMap);
-    expect(parsed).toBeNull();
-    expect(error).toBeNull(); // Silent skip — not offered for sharing
+    expect(error).toBeNull();
+    expect(parsed).not.toBeNull();
+    expect(parsed!.destination).toBe("TBD");
+    expect(parsed!.destination_country).toBeNull();
   });
 
-  it("errors on unparsable date", () => {
+  it("silently skips row with unparsable date", () => {
     const row = ["MF-001", "Chicago", "Almaty, KZ", "not-a-date", "", "29"];
     const { parsed, error } = parseRow(row, 1, colMap);
     expect(parsed).toBeNull();
-    expect(error!.field).toBe("departure_date");
+    expect(error).toBeNull(); // Silent skip — container not scheduled yet
   });
 
   it("defaults origin to Albion, IA when empty", () => {

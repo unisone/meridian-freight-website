@@ -435,7 +435,7 @@ export async function upsertContainers(
       raw_space_value: row.raw_space_value,
       sheet_row_number: row.sheet_row_number,
       notes: row.notes,
-      status: "available",
+      status: row.status,
       source: "google_sheets",
       synced_at: now,
     }));
