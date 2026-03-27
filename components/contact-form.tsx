@@ -98,7 +98,7 @@ export function ContactForm() {
         >
           {/* SVG checkmark with draw animation */}
           <svg
-            className="h-16 w-16 text-emerald-500"
+            className="h-16 w-16 text-primary"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

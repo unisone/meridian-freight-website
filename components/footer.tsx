@@ -66,7 +66,7 @@ export function Footer() {
                 location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
-                <Phone className="h-4 w-4 text-sky-400" />
+                <Phone className="h-4 w-4 text-primary" />
                 {CONTACT.phone}
               </TrackedContactLink>
               <TrackedContactLink
@@ -75,11 +75,11 @@ export function Footer() {
                 location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
-                <Mail className="h-4 w-4 text-sky-400" />
+                <Mail className="h-4 w-4 text-primary" />
                 {CONTACT.email}
               </TrackedContactLink>
               <div className="flex items-center gap-3 text-sm">
-                <MapPin className="h-4 w-4 shrink-0 text-sky-400" />
+                <MapPin className="h-4 w-4 shrink-0 text-primary" />
                 {CONTACT.address.full}
               </div>
             </div>
@@ -90,7 +90,7 @@ export function Footer() {
                 href={SOCIAL.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-sky-500 hover:text-white hover:scale-110"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-primary hover:text-white hover:scale-110"
                 aria-label={t("followFacebook")}
               >
                 <Facebook className="h-5 w-5" />

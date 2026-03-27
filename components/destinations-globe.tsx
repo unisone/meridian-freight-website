@@ -328,7 +328,7 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
       {/* Route count badge */}
       <div className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
         <span className="relative flex h-2 w-2">
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
         </span>
         <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-300">
           8 Featured Routes &middot; 40+ Countries
