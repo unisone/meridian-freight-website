@@ -46,7 +46,9 @@
     "termsTitle": "Terminos de Servicio",
     "termsDescription": "Terminos de servicio de Meridian Freight Inc. Condiciones que rigen la exportacion de maquinaria, servicios de flete y uso de nuestro sitio web.",
     "sharedShippingTitle": "Envio en Contenedor Compartido — Reserve Espacio, Envie por Menos",
-    "sharedShippingDescription": "Reserve espacio disponible en nuestros contenedores de envio. Envie su carga sin pagar por un contenedor completo. Vea disponibilidad en tiempo real y solicite espacio en linea."
+    "sharedShippingDescription": "Reserve espacio disponible en nuestros contenedores de envio. Envie su carga sin pagar por un contenedor completo. Vea disponibilidad en tiempo real y solicite espacio en linea.",
+    "scheduleTitle": "Calendario de Envios — Salidas y Llegadas de Contenedores",
+    "scheduleDescription": "Calendario de envios en vivo mostrando salidas, envios en transito y llegadas de contenedores desde EE.UU. a mas de 27 paises. Actualizado cada 15 minutos."
   },
   "Header": {
     "mainNavLabel": "Navegacion principal",
@@ -61,6 +63,7 @@
       "Destinations": "Destinos",
       "Pricing": "Precios",
       "Shared Shipping": "Envio Compartido",
+      "Schedule": "Calendario",
       "FAQ": "Preguntas Frecuentes",
       "Blog": "Blog",
       "Contact": "Contacto",
@@ -701,5 +704,48 @@
     "ctaDescription": "Obtenga una cotizacion gratis en 24 horas, o <calculatorLink>pruebe nuestra calculadora</calculatorLink> para una estimacion de costos ahora mismo.",
     "getAQuote": "Solicitar Cotizacion",
     "chatOnWhatsApp": "Chatear por WhatsApp"
+  },
+  "SchedulePage": {
+    "breadcrumb": "Calendario de Envios",
+    "eyebrow": "Calendario de Contenedores en Vivo",
+    "heading": "Siga Nuestro <accent>Calendario de Envios</accent>",
+    "description": "Vea cada salida, transito y llegada de contenedores. Actualizado cada 15 minutos por nuestro equipo de operaciones.",
+    "statsContainers": "Contenedores Este Mes",
+    "statsCountries": "Paises Atendidos",
+    "statsInTransit": "En Transito Ahora",
+    "ctaHeading": "Necesita Espacio en un Contenedor Proximo?",
+    "ctaDescription": "Explore espacio disponible y envie una solicitud de reserva. Le enviaremos una cotizacion en 24 horas.",
+    "ctaBookSpace": "Reservar Espacio en Contenedor",
+    "ctaOrContact": "o escriba a {email}",
+    "viewScheduleLink": "Ver calendario completo de envios"
+  },
+  "ScheduleList": {
+    "tabAll": "Todos",
+    "tabUpcoming": "Proximos",
+    "tabInTransit": "En Transito",
+    "tabDelivered": "Entregados",
+    "allCountries": "Todos los Paises",
+    "group.departingThisWeek": "Salen Esta Semana",
+    "group.departingThisMonth": "Salen Este Mes",
+    "group.later": "Salidas Posteriores",
+    "group.inTransit": "En Transito",
+    "group.arrived": "Llegados Recientemente",
+    "status.departingSoon": "Sale Pronto",
+    "status.scheduled": "Programado",
+    "status.fullyBooked": "Completo",
+    "status.inTransit": "En Transito",
+    "status.arrived": "Llegado",
+    "departs": "Sale",
+    "departed": "Salio",
+    "eta": "Llegada",
+    "days": "dias",
+    "available": "disponible",
+    "bookSpace": "Reservar",
+    "dayOfTransit": "Dia {day} de {total}",
+    "noResults": "Ningun contenedor coincide con sus filtros.",
+    "noData": "Calendario no disponible ahora",
+    "noDataDescription": "Se agregan nuevos envios regularmente. Contactenos para la informacion mas reciente.",
+    "clearFilters": "Borrar filtros",
+    "contactUs": "Contactenos"
   }
 }
