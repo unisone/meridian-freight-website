@@ -258,6 +258,8 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
     <div
       ref={containerRef}
       className={`relative overflow-hidden rounded-2xl bg-black ${className}`}
+      role="img"
+      aria-label="Interactive map showing worldwide shipping destinations"
     >
       <GlobeGL
         ref={globeRef}

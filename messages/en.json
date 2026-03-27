@@ -22,17 +22,17 @@
   },
   "Metadata": {
     "homeTitle": "Machinery Export & Logistics — Packing & Shipping",
-    "homeDescription": "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & ocean shipping. 500+ exports. Free quote in 24 hrs.",
-    "aboutTitle": "About Meridian Freight — 500+ Exports Since 2013",
-    "aboutDescription": "Meridian Freight — 500+ equipment exports since 2013. Iowa HQ with 6 partner warehouses across USA & Canada. Get a free quote today.",
+    "homeDescription": "Full-service machinery export from USA & Canada — pickup, dismantling, packing, documentation & ocean shipping. 1,000+ exports. Free quote in 24 hrs.",
+    "aboutTitle": "About Meridian Freight — 1,000+ Exports Since 2013",
+    "aboutDescription": "Meridian Freight — 1,000+ equipment exports since 2013. Iowa HQ with 6 partner warehouses across USA & Canada. Get a free quote today.",
     "contactTitle": "Contact Us — Free Machinery Export Quote in 24 Hours",
-    "contactDescription": "Get a free machinery export quote — we respond within 24 hours. Reach us via WhatsApp, phone, or email. 500+ equipment exports from USA & Canada.",
+    "contactDescription": "Get a free machinery export quote — we respond within 24 hours. Reach us via WhatsApp, phone, or email. 1,000+ equipment exports from USA & Canada.",
     "faqTitle": "FAQ — Machinery Export & Shipping Questions Answered",
     "faqDescription": "Answers to common machinery export questions — shipping timelines, container sizes, pricing, customs documentation, insurance & payment options.",
     "servicesTitle": "Services — Machinery Dismantling, Packing & Export",
     "servicesDescription": "Machinery export services: professional dismantling, container packing, global shipping, documentation & warehousing. One company, door to port. Free quotes.",
     "projectsTitle": "Projects — Completed Machinery Export Projects",
-    "projectsDescription": "500+ machinery exports completed. See our portfolio — John Deere combines, Case IH headers, CAT excavators shipped to Brazil, UAE, Turkey & beyond.",
+    "projectsDescription": "1,000+ machinery exports completed. See our portfolio — John Deere combines, Case IH headers, CAT excavators shipped to Brazil, UAE, Turkey & beyond.",
     "pricingTitle": "Pricing — Equipment Packing & Shipping Rates",
     "pricingDescription": "Transparent machinery export pricing — 60+ equipment types, 20+ shipping routes. Itemized quotes with no hidden fees. Try our instant freight calculator.",
     "calculatorTitle": "Freight Cost Calculator — Instant Estimate",
@@ -84,7 +84,7 @@
     "termsOfService": "Terms of Service",
     "getAQuote": "Get a Quote",
     "quoteDescription": "Tell us what you need shipped — free quote within 24 hours.",
-    "trustSignals": "Fully Insured · 500+ Exports Completed · Licensed Freight Forwarder",
+    "trustSignals": "Fully Insured · 1,000+ Exports Completed · Licensed Freight Forwarder",
     "copyright": "© {year} {company} All rights reserved.",
     "languagesSpoken": "We speak English, Spanish, Russian & Arabic",
     "homeAriaLabel": "Meridian Freight Inc. — Home",
@@ -99,7 +99,7 @@
     }
   },
   "Hero": {
-    "eyebrow": "500+ Machines Shipped Since 2013",
+    "eyebrow": "1,000+ Machines Shipped Since 2013",
     "headingLine1": "One Company. Every Step Handled.",
     "headingLine2": "Your Machinery, Exported Worldwide.",
     "body": "Coordinating a trucker, a packer, a customs broker, and a freight line across borders is a full-time job. We replace all four — one team, one invoice, zero handoffs.",
@@ -200,7 +200,8 @@
   },
   "MobileBottomBar": {
     "whatsApp": "WhatsApp",
-    "getQuote": "Get Quote"
+    "getQuote": "Get Quote",
+    "opensInNewTab": "opens in new tab"
   },
   "WhatsApp": {
     "openChat": "Open WhatsApp chat",
@@ -258,7 +259,9 @@
     "selectEquipmentToBegin": "Select equipment to begin",
     "viewEstimate": "View Estimate",
     "bookThisFreight": "Book This Freight",
-    "yourFreightEstimate": "Your Freight Estimate"
+    "yourFreightEstimate": "Your Freight Estimate",
+    "packingCostInfo": "More information about packing cost",
+    "viewEstimateDetails": "View estimate details"
   },
   "CalculatorEstimate": {
     "estimateSentTo": "Estimate sent to {email}",
@@ -480,7 +483,8 @@
     "spraying": "Spraying",
     "planting": "Planting",
     "largeEquipment": "Large Equipment",
-    "miscellaneous": "Miscellaneous"
+    "miscellaneous": "Miscellaneous",
+    "equipmentCategory": "Equipment category filter"
   },
   "CalculatorPage": {
     "breadcrumbPricing": "Pricing",

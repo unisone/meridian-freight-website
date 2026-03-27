@@ -22,17 +22,17 @@
   },
   "Metadata": {
     "homeTitle": "Exportacion de Maquinaria y Logistica — Embalaje y Envio",
-    "homeDescription": "Servicio completo de exportacion de maquinaria desde EE.UU. y Canada — recogida, desmontaje, embalaje, documentacion y envio maritimo. Mas de 500 exportaciones. Cotizacion gratis en 24 horas.",
-    "aboutTitle": "Sobre Meridian Freight — Mas de 500 Exportaciones Desde 2013",
-    "aboutDescription": "Meridian Freight — mas de 500 exportaciones de equipos desde 2013. Sede en Iowa con 6 almacenes asociados en EE.UU. y Canada. Cotizacion gratis hoy.",
+    "homeDescription": "Servicio completo de exportacion de maquinaria desde EE.UU. y Canada — recogida, desmontaje, embalaje, documentacion y envio maritimo. Mas de 1,000 exportaciones. Cotizacion gratis en 24 horas.",
+    "aboutTitle": "Sobre Meridian Freight — Mas de 1,000 Exportaciones Desde 2013",
+    "aboutDescription": "Meridian Freight — mas de 1,000 exportaciones de equipos desde 2013. Sede en Iowa con 6 almacenes asociados en EE.UU. y Canada. Cotizacion gratis hoy.",
     "contactTitle": "Contactenos — Cotizacion Gratis de Exportacion de Maquinaria en 24 Horas",
-    "contactDescription": "Obtenga una cotizacion gratis de exportacion de maquinaria — respondemos en 24 horas. Contactenos via WhatsApp, telefono o correo. Mas de 500 exportaciones desde EE.UU. y Canada.",
+    "contactDescription": "Obtenga una cotizacion gratis de exportacion de maquinaria — respondemos en 24 horas. Contactenos via WhatsApp, telefono o correo. Mas de 1,000 exportaciones desde EE.UU. y Canada.",
     "faqTitle": "Preguntas Frecuentes — Exportacion y Envio de Maquinaria",
     "faqDescription": "Respuestas a preguntas comunes sobre exportacion de maquinaria — plazos de envio, tamanos de contenedor, precios, documentacion aduanera, seguro y opciones de pago.",
     "servicesTitle": "Servicios — Desmontaje, Embalaje y Exportacion de Maquinaria",
     "servicesDescription": "Servicios de exportacion de maquinaria: desmontaje profesional, embalaje en contenedor, envio global, documentacion y almacenamiento. Una empresa, puerta a puerto. Cotizaciones gratis.",
     "projectsTitle": "Proyectos — Proyectos de Exportacion de Maquinaria Completados",
-    "projectsDescription": "Mas de 500 exportaciones de maquinaria completadas. Vea nuestro portafolio — cosechadoras John Deere, cabezales Case IH, excavadoras CAT enviadas a Brasil, EAU, Turquia y mas.",
+    "projectsDescription": "Mas de 1,000 exportaciones de maquinaria completadas. Vea nuestro portafolio — cosechadoras John Deere, cabezales Case IH, excavadoras CAT enviadas a Brasil, EAU, Turquia y mas.",
     "pricingTitle": "Precios — Tarifas de Embalaje y Envio de Equipos",
     "pricingDescription": "Precios transparentes de exportacion de maquinaria — mas de 60 tipos de equipos, mas de 20 rutas de envio. Cotizaciones desglosadas sin cargos ocultos. Pruebe nuestra calculadora de flete.",
     "calculatorTitle": "Calculadora de Costos de Flete — Estimacion Instantanea",
@@ -84,7 +84,7 @@
     "termsOfService": "Terminos de Servicio",
     "getAQuote": "Solicitar Cotizacion",
     "quoteDescription": "Diganos lo que necesita enviar — cotizacion gratis en 24 horas.",
-    "trustSignals": "Totalmente Asegurado · Mas de 500 Exportaciones Completadas · Agente de Flete Licenciado",
+    "trustSignals": "Totalmente Asegurado · Mas de 1,000 Exportaciones Completadas · Agente de Flete Licenciado",
     "copyright": "© {year} {company} Todos los derechos reservados.",
     "languagesSpoken": "Hablamos ingles, espanol, ruso y arabe",
     "homeAriaLabel": "Meridian Freight Inc. — Inicio",
@@ -99,7 +99,7 @@
     }
   },
   "Hero": {
-    "eyebrow": "Mas de 500 Maquinas Enviadas Desde 2013",
+    "eyebrow": "Mas de 1,000 Maquinas Enviadas Desde 2013",
     "headingLine1": "Una Empresa. Cada Paso Resuelto.",
     "headingLine2": "Su Maquinaria, Exportada al Mundo.",
     "body": "Coordinar un transportista, un embalador, un agente aduanal y una linea de flete entre paises es un trabajo de tiempo completo. Nosotros reemplazamos a los cuatro — un equipo, una factura, cero traspasos.",
@@ -200,7 +200,8 @@
   },
   "MobileBottomBar": {
     "whatsApp": "WhatsApp",
-    "getQuote": "Cotizacion"
+    "getQuote": "Cotizacion",
+    "opensInNewTab": "abre en nueva pestaña"
   },
   "WhatsApp": {
     "openChat": "Abrir chat de WhatsApp",
@@ -258,7 +259,9 @@
     "selectEquipmentToBegin": "Seleccione equipo para comenzar",
     "viewEstimate": "Ver Cotizacion",
     "bookThisFreight": "Reservar Este Flete",
-    "yourFreightEstimate": "Su Cotizacion de Flete"
+    "yourFreightEstimate": "Su Cotizacion de Flete",
+    "packingCostInfo": "Mas informacion sobre el costo de embalaje",
+    "viewEstimateDetails": "Ver detalles de la cotizacion"
   },
   "CalculatorEstimate": {
     "estimateSentTo": "Cotizacion enviada a {email}",
@@ -480,7 +483,8 @@
     "spraying": "Pulverizacion",
     "planting": "Siembra",
     "largeEquipment": "Equipo Grande",
-    "miscellaneous": "Varios"
+    "miscellaneous": "Varios",
+    "equipmentCategory": "Filtro de categoria de equipo"
   },
   "CalculatorPage": {
     "breadcrumbPricing": "Precios",

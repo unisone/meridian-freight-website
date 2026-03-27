@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { DestinationsGlobe } from "@/components/destinations-globe";
+import { DarkCta } from "@/components/dark-cta";
 import { getAllDestinations } from "@/content/destinations";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -46,6 +47,12 @@ export async function generateMetadata({
       description: t("destinationsDescription"),
       url: `${SITE.url}${localePath}/destinations`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("destinationsTitle") }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("destinationsTitle")} | ${SITE.name}`,
+      description: t("destinationsDescription"),
+      images: [SITE.ogImage],
     },
   };
 }
@@ -176,7 +183,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
                 {/* Stats row */}
                 <div className="mt-8 flex flex-wrap gap-6 text-sm">
                   <div>
-                    <span className="font-mono text-2xl font-bold tabular-nums text-white">500+</span>
+                    <span className="font-mono text-2xl font-bold tabular-nums text-white">1,000+</span>
                     <p className="mt-0.5 text-slate-400">{t("exportsCompleted")}</p>
                   </div>
                   <div>
@@ -337,33 +344,23 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
 
         {/* ─── CTA ─────────────────────────────────────────────────────── */}
         <ScrollReveal variant="fade">
-          <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                {t("ctaHeading")}
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                {t("ctaDescription")}
-              </p>
-              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Button
-                  render={<Link href="/contact" />}
-                  size="lg"
-                  className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
-                >
-                  {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button
-                  render={<Link href="/pricing/calculator" />}
-                  size="lg"
-                  variant="outline"
-                  className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
-                >
-                  {t("tryFreightCalculator")}
-                </Button>
-              </div>
-            </div>
-          </section>
+          <DarkCta heading={t("ctaHeading")} description={t("ctaDescription")}>
+            <Button
+              render={<Link href="/contact" />}
+              size="lg"
+              className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+            >
+              {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            <Button
+              render={<Link href="/pricing/calculator" />}
+              size="lg"
+              variant="outline"
+              className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
+            >
+              {t("tryFreightCalculator")}
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>

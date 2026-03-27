@@ -40,6 +40,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/contact`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("contactTitle") }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("contactTitle")} | ${SITE.name}`,
+      description: t("contactDescription"),
+      images: [SITE.ogImage],
+    },
   };
 }
 

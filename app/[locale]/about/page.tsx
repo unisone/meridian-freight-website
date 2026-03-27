@@ -41,6 +41,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/about`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("aboutTitle") }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("aboutTitle")} | ${SITE.name}`,
+      description: t("aboutDescription"),
+      images: [SITE.ogImage],
+    },
   };
 }
 

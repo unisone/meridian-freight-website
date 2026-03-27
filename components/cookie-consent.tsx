@@ -34,6 +34,8 @@ export function CookieConsent() {
   // Always render — CSS transition handles enter/exit animation
   return (
     <div
+      role="alertdialog"
+      aria-label="Cookie consent"
       className={`fixed bottom-20 left-0 right-0 z-[60] bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:bottom-4 sm:left-4 sm:right-auto sm:max-w-md sm:rounded-xl transition-all duration-300 ${
         show
           ? "translate-y-0 opacity-100"

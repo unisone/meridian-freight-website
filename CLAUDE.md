@@ -255,7 +255,7 @@ The website V2 engine was ported from `mf-chatbot-ui/lib/kz-calculator/calculate
 - **No dark mode** — corporate marketing site, light theme only
 - **Design tokens** in `app/globals.css` `:root` block (oklch)
 - **shadcn/ui** components use `bg-background`, `text-foreground`, etc.
-- Primary brand color: Blue-600 (#2563EB)
+- Primary brand color: Sky-500 (#0EA5E9)
 - Font: Geist Sans (headings bold, body regular), Geist Mono (stats/pricing numbers)
 
 ### Content Data Pattern

@@ -57,7 +57,7 @@ export function Hero() {
             >
               <Button
                 size="lg"
-                className="h-13 w-full px-7 text-base font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all hover:shadow-lg animate-shadow-breathe sm:w-auto"
+                className="h-13 w-full px-7 text-base font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all hover:shadow-lg animate-shadow-breathe sm:w-auto"
                 render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={t("ctaPrimaryAriaLabel")} onClick={() => trackContactClick("whatsapp", "hero")} />}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
@@ -66,7 +66,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-13 w-full px-7 text-base font-semibold rounded-lg border border-border text-foreground bg-transparent hover:bg-muted transition-all sm:w-auto"
+                className="h-13 w-full px-7 text-base font-semibold rounded-xl border border-border text-foreground bg-transparent hover:bg-muted transition-all sm:w-auto"
                 render={<Link href="/pricing/calculator" />}
               >
                 {t("ctaSecondary")}

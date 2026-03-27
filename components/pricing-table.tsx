@@ -66,17 +66,20 @@ export function PricingTable() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder={t("searchPlaceholder")}
+              aria-label={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-10"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2" role="radiogroup" aria-label={t("equipmentCategory")}>
             {equipmentCategories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                role="radio"
+                aria-checked={category === cat.id}
+                className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-2 ${
                   category === cat.id
                     ? "bg-primary text-white"
                     : "bg-muted text-foreground hover:bg-primary/10"

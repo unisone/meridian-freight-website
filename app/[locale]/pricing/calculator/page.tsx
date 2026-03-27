@@ -37,6 +37,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/pricing/calculator`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("calculatorTitle") }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("calculatorTitle")} | ${SITE.name}`,
+      description: t("calculatorDescription"),
+      images: [SITE.ogImage],
+    },
   };
 }
 

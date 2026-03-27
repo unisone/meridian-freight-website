@@ -62,6 +62,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/shared-shipping`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: title }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | ${SITE.name}`,
+      description,
+      images: [SITE.ogImage],
+    },
   };
 }
 
@@ -150,11 +156,14 @@ export default async function SharedShippingPage({
             Don&apos;t need a full container? Ship your cargo alongside ours and
             pay only for the space you use.
           </p>
+          <p className="mt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            Trusted by equipment buyers in 27+ countries · 1,000+ shipments since 2013
+          </p>
         </div>
       </div>
 
       {/* Booking Wizard — the centerpiece */}
-      <section className="py-16 md:py-20">
+      <section className="pt-6 pb-16 md:pt-8 md:pb-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {containers && containers.length > 0 ? (
             <ShippingWizard
@@ -172,7 +181,7 @@ export default async function SharedShippingPage({
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Frequently Asked Questions
+              Questions Every Buyer Asks
             </h2>
           </ScrollReveal>
           <Accordion className="mt-6 space-y-3">

@@ -102,7 +102,7 @@ export function WhatsAppWidget() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: DURATION.entrance, delay: 0.8, ease: EASE.decelerate }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xl transition-all hover:bg-emerald-700 hover:scale-110 active:scale-95 lg:bottom-6 lg:right-6 sm:h-16 sm:w-16"
+        className="fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xl transition-all hover:bg-emerald-700 hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 lg:bottom-6 lg:right-6 sm:h-16 sm:w-16"
         aria-label={t("openChat")}
       >
         <MessageCircle className="h-7 w-7 sm:h-8 sm:w-8" />

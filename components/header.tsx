@@ -89,7 +89,7 @@ export function Header() {
                       onKeyDown={(e) => {
                         if (e.key === "Escape") setOpenDropdown(null);
                       }}
-                      className="flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline"
+                      className="flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
                     >
@@ -179,7 +179,7 @@ export function Header() {
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
-              className="lg:hidden p-2.5 rounded-lg transition-colors hover:bg-muted"
+              className="lg:hidden p-2.5 rounded-lg transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               aria-label={t("openMenu")}
             >
               <Menu

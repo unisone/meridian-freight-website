@@ -18,6 +18,7 @@ import { getEquipmentBySlug, getAllEquipmentTypes } from "@/content/equipment";
 import { getServiceBySlug } from "@/content/services";
 import { getAllDestinations } from "@/content/destinations";
 import { FaqAccordion } from "@/components/faq-accordion";
+import { DarkCta } from "@/components/dark-cta";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -56,6 +57,12 @@ export async function generateMetadata({
       images: [
         { url: SITE.ogImage, width: 1200, height: 630, alt: equipment.title },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: equipment.metaTitle,
+      description: equipment.metaDescription,
+      images: [SITE.ogImage],
     },
   };
 }
@@ -344,49 +351,42 @@ export default async function EquipmentPage({
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-          <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                {te("readyToShip", { equipment: equipment.singularName })}
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                {te.rich("ctaDescription", {
-                  calculatorLink: (chunks) => (
-                    <Link
-                      href="/pricing/calculator"
-                      className="underline hover:text-white transition-colors"
-                    >
-                      {chunks}
-                    </Link>
-                  ),
-                })}
-              </p>
-              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Button
-                  render={<Link href="/contact" />}
-                  size="lg"
-                  className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+          <DarkCta
+            heading={te("readyToShip", { equipment: equipment.singularName })}
+            description={te.rich("ctaDescription", {
+              calculatorLink: (chunks) => (
+                <Link
+                  href="/pricing/calculator"
+                  className="underline hover:text-white transition-colors"
                 >
-                  {te("getAQuote")}
-                </Button>
-                <Button
-                  render={
-                    <a
-                      href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={te("chatOnWhatsApp")}
-                    />
-                  }
-                  size="lg"
-                  variant="outline"
-                  className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
-                >
-                  {te("chatOnWhatsApp")}
-                </Button>
-              </div>
-            </div>
-          </section>
+                  {chunks}
+                </Link>
+              ),
+            })}
+          >
+            <Button
+              render={<Link href="/contact" />}
+              size="lg"
+              className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+            >
+              {te("getAQuote")}
+            </Button>
+            <Button
+              render={
+                <a
+                  href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={te("chatOnWhatsApp")}
+                />
+              }
+              size="lg"
+              variant="outline"
+              className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
+            >
+              {te("chatOnWhatsApp")}
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>

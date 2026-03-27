@@ -12,9 +12,10 @@ import { Footer } from "@/components/footer";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { MobileBottomBar } from "@/components/mobile-bottom-bar";
 import { CookieConsent } from "@/components/cookie-consent";
+import { MotionProvider } from "@/components/motion-provider";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { MetaPixel } from "@/components/meta-pixel";
-import { AttributionCapture } from "@/components/attribution-capture";
+
 import { COMPANY, CONTACT, SITE, SOCIAL } from "@/lib/constants";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
@@ -182,6 +183,7 @@ export default async function LocaleLayout({
           Skip to content
         </a>
         <NextIntlClientProvider>
+          <MotionProvider>
           <TooltipProvider>
             <ScrollProgress />
             <Header />
@@ -191,7 +193,7 @@ export default async function LocaleLayout({
             <MobileBottomBar />
             <CookieConsent />
           </TooltipProvider>
-          <AttributionCapture />
+          </MotionProvider>
           <GoogleAnalytics />
           <MetaPixel />
           <VercelAnalytics />

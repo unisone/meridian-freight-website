@@ -8,6 +8,7 @@ import { getOgLocale } from "@/lib/i18n-utils";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone } from "lucide-react";
+import { DarkCta } from "@/components/dark-cta";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -41,6 +42,12 @@ export async function generateMetadata({
       description: t("faqDescription"),
       url: `${SITE.url}${localePath}/faq`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("faqTitle") }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("faqTitle")} | ${SITE.name}`,
+      description: t("faqDescription"),
+      images: [SITE.ogImage],
     },
   };
 }
@@ -83,24 +90,14 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-            <h2 className="text-2xl font-bold sm:text-3xl">
-              {t("stillHaveQuestions")}
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sky-300 text-lg">
-              {t("stillHaveQuestionsDescription")}
-            </p>
-            <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                  <Mail className="mr-2 h-4 w-4" /> {tc("contactUs")}
-              </Button>
-              <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={tc("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
-                  <Phone className="mr-2 h-4 w-4" /> {tc("chatOnWhatsApp")}
-              </Button>
-            </div>
-          </div>
-        </section>
+          <DarkCta heading={t("stillHaveQuestions")} description={t("stillHaveQuestionsDescription")}>
+            <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
+              <Mail className="mr-2 h-4 w-4" /> {tc("contactUs")}
+            </Button>
+            <Button render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={tc("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
+              <Phone className="mr-2 h-4 w-4" /> {tc("chatOnWhatsApp")}
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>

@@ -19,6 +19,7 @@ import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { getDestinationBySlug, getAllDestinations } from "@/content/destinations";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
+import { DarkCta } from "@/components/dark-cta";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -63,6 +64,12 @@ export async function generateMetadata({
       description: dest.metaDescription,
       url: `${SITE.url}${localePath}/destinations/${slug}`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: dest.metaTitle }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${dest.metaTitle} | ${SITE.name}`,
+      description: dest.metaDescription,
+      images: [SITE.ogImage],
     },
   };
 }
@@ -291,30 +298,23 @@ export default async function DestinationPage({
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-          <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                {td("readyToShipTo", { country: dest.country })}
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                {td.rich("ctaDescription", {
-                  calculatorLink: (chunks) => (
-                    <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">
-                      {chunks}
-                    </Link>
-                  ),
-                })}
-              </p>
-              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                  {td("getAQuote")}
-                </Button>
-                <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping machinery to ${dest.country}.`)}`} target="_blank" rel="noopener noreferrer" aria-label={td("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
-                  <Phone className="mr-2 h-4 w-4" /> {td("chatOnWhatsApp")}
-                </Button>
-              </div>
-            </div>
-          </section>
+          <DarkCta
+            heading={td("readyToShipTo", { country: dest.country })}
+            description={td.rich("ctaDescription", {
+              calculatorLink: (chunks) => (
+                <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">
+                  {chunks}
+                </Link>
+              ),
+            })}
+          >
+            <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
+              {td("getAQuote")}
+            </Button>
+            <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping machinery to ${dest.country}.`)}`} target="_blank" rel="noopener noreferrer" aria-label={td("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
+              <Phone className="mr-2 h-4 w-4" /> {td("chatOnWhatsApp")}
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>
