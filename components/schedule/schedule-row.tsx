@@ -8,6 +8,8 @@ import { countryFlag, transitDays } from "@/lib/container-display";
 import {
   deriveScheduleStatus,
   computeTransitProgress,
+  cleanOriginText,
+  formatDestination,
   SCHEDULE_STATUS_CONFIG,
 } from "@/lib/schedule-display";
 import { cn } from "@/lib/utils";
@@ -17,22 +19,14 @@ interface ScheduleRowProps {
   container: SharedContainer;
 }
 
-/** Format an ISO date string as "Jan 30" */
+/** Format an ISO date string as "Apr 15" */
 export function formatShortDate(isoDate: string): string {
   const date = new Date(isoDate);
-  if (isNaN(date.getTime())) return "\u2014";
+  if (isNaN(date.getTime())) return "—";
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-/**
- * Departure board row — a dense, single-line horizontal entry.
- * No card wrapper. Border-bottom divider. Monospace dates and project number.
- *
- * Layout: [status dot] [flag route] [dates] [~N days] [container type] [project #]
- */
-export const ScheduleRow = memo(function ScheduleRow({
-  container,
-}: ScheduleRowProps) {
+export const ScheduleRow = memo(function ScheduleRow({ container }: ScheduleRowProps) {
   const t = useTranslations("ScheduleList");
   const status = deriveScheduleStatus(container);
   const config = SCHEDULE_STATUS_CONFIG[status];
@@ -45,13 +39,15 @@ export const ScheduleRow = memo(function ScheduleRow({
     container.eta_date,
   );
   const flag = countryFlag(container.destination_country);
-  const isTbd = !container.destination || container.destination === "TBD";
+  const { text: destText, isPending: destPending } = formatDestination(container.destination);
+  const origin = cleanOriginText(container.origin);
 
   return (
     <div
       className={cn(
-        "flex items-center gap-2 sm:gap-3 py-2.5 px-3 sm:px-4 border-b border-border/40 last:border-b-0 transition-colors hover:bg-zinc-50/80",
-        isTbd && "opacity-50",
+        "flex items-center gap-3 border-l-3 py-2.5 px-3 sm:px-4 border-b border-border/50 transition-colors hover:bg-muted/30",
+        config.borderColor,
+        destPending && "opacity-60",
       )}
     >
       {/* Status dot */}
@@ -60,32 +56,45 @@ export const ScheduleRow = memo(function ScheduleRow({
           "inline-block h-2 w-2 rounded-full shrink-0",
           config.dotColor,
         )}
-        aria-label={t(config.label)}
       />
 
       {/* Route — takes available space */}
       <div className="min-w-0 flex-1">
-        <p className="text-sm leading-tight truncate">
+        <p className="text-sm font-medium leading-tight truncate">
           <span className="mr-1" aria-hidden="true">
-            {flag}
+            {destPending ? "" : flag}
           </span>
           <span className="hidden sm:inline text-muted-foreground">
-            {container.origin}
-            <span className="mx-1">&rarr;</span>
+            {origin} &rarr;{" "}
           </span>
-          {isTbd ? (
-            <span className="text-muted-foreground italic">---</span>
+          {destPending ? (
+            <span className="text-muted-foreground italic">{destText}</span>
           ) : (
-            <span className="font-medium">{container.destination}</span>
+            container.destination
           )}
         </p>
+        <div className="flex items-center gap-2 mt-0.5">
+          <span className="text-[11px] font-mono text-muted-foreground">
+            {container.project_number}
+          </span>
+          <span className="text-[11px] text-muted-foreground">
+            {container.container_type}
+          </span>
+        </div>
       </div>
 
-      {/* In-transit indicator — "Day X of Y" text */}
+      {/* Transit progress (in-transit only) — compact inline */}
       {status === "in-transit" && transit && (
-        <div className="hidden sm:flex items-center gap-1 shrink-0">
+        <div className="hidden sm:flex items-center gap-1.5 shrink-0">
+          {/* Mini progress bar */}
+          <div className="relative w-16 h-1 rounded-full bg-indigo-100 overflow-hidden">
+            <div
+              className="absolute inset-y-0 left-0 rounded-full bg-indigo-500 transition-all duration-500"
+              style={{ width: `${transit.progressPercent}%` }}
+            />
+          </div>
           <Ship className="h-3 w-3 text-indigo-500" />
-          <span className="text-[11px] font-medium text-indigo-600 font-mono tabular-nums">
+          <span className="text-[11px] font-medium text-indigo-600 tabular-nums">
             {t("dayOfTransit", {
               day: transit.transitDay,
               total: transit.transitTotal,
@@ -94,35 +103,23 @@ export const ScheduleRow = memo(function ScheduleRow({
         </div>
       )}
 
-      {/* Dates — monospace */}
+      {/* Dates — right-aligned */}
       <div className="shrink-0 text-right">
-        <span className="text-xs font-mono tabular-nums text-foreground">
+        <p className="text-xs font-medium tabular-nums">
           {formatShortDate(container.departure_date)}
           {container.eta_date && (
             <span className="text-muted-foreground">
-              {" \u2192 "}
+              {" → "}
               {formatShortDate(container.eta_date)}
             </span>
           )}
-        </span>
+        </p>
+        {transitDayCount !== null && (
+          <p className="text-[11px] text-muted-foreground tabular-nums">
+            ~{transitDayCount} {t("days")}
+          </p>
+        )}
       </div>
-
-      {/* Transit days */}
-      {transitDayCount !== null && (
-        <span className="hidden md:inline text-[11px] font-mono tabular-nums text-muted-foreground shrink-0">
-          ~{transitDayCount} {t("days")}
-        </span>
-      )}
-
-      {/* Container type */}
-      <span className="hidden sm:inline text-[11px] text-muted-foreground shrink-0">
-        {container.container_type}
-      </span>
-
-      {/* Project number — monospace */}
-      <span className="text-[11px] font-mono text-muted-foreground/70 shrink-0 tabular-nums">
-        {container.project_number}
-      </span>
     </div>
   );
 });

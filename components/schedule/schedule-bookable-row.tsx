@@ -1,11 +1,17 @@
 "use client";
 
 import { useState, useRef, useEffect, memo } from "react";
-import { CheckCircle2, ChevronDown, Ship, X } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Sparkles,
+  X,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
   CollapsibleContent,
@@ -13,25 +19,27 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { countryFlag, transitDays } from "@/lib/container-display";
 import {
-  deriveScheduleStatus,
-  computeTransitProgress,
-  SCHEDULE_STATUS_CONFIG,
+  computeDepartureCountdown,
+  computeCapacityFill,
+  cleanOriginText,
+  formatDestination,
 } from "@/lib/schedule-display";
 import { cn } from "@/lib/utils";
 import { trackScheduleEvent } from "@/lib/tracking";
 import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
-import { formatShortDate } from "./schedule-row";
-import { TransitProgress } from "./transit-progress";
 import { ScheduleBookingForm } from "./schedule-booking-form";
 
 interface ScheduleBookableRowProps {
   container: ContainerWithPendingCount;
 }
 
-/**
- * Elevated booking card — warm, inviting, clearly distinct from departure board rows.
- * Inspired by Airbnb listing cards: left border accent, subtle gradient, generous spacing.
- */
+/** Format an ISO date string as "Mar 29" */
+function shortDate(iso: string): string {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
 export const ScheduleBookableRow = memo(function ScheduleBookableRow({
   container,
 }: ScheduleBookableRowProps) {
@@ -41,36 +49,27 @@ export const ScheduleBookableRow = memo(function ScheduleBookableRow({
   const [pendingCount, setPendingCount] = useState(container.pending_count);
   const formRef = useRef<HTMLDivElement>(null);
 
-  const status = deriveScheduleStatus(container);
-  const config = SCHEDULE_STATUS_CONFIG[status];
-  const transit = computeTransitProgress(
-    container.departure_date,
-    container.eta_date,
-  );
-  const transitDayCount = transitDays(
-    container.departure_date,
-    container.eta_date,
-  );
+  const countdown = computeDepartureCountdown(container.departure_date);
+  const transitDayCount = transitDays(container.departure_date, container.eta_date);
+  const { text: destText, isPending: destPending } = formatDestination(container.destination);
   const flag = countryFlag(container.destination_country);
+  const origin = cleanOriginText(container.origin);
   const availableCbm = container.available_cbm ?? 0;
-  const totalCbm =
-    container.total_capacity_cbm > 0 ? container.total_capacity_cbm : 76;
-  const fillPercent =
-    totalCbm > 0 ? Math.round((1 - availableCbm / totalCbm) * 100) : 100;
-  const barColor = fillPercent >= 80 ? "bg-amber-500" : "bg-sky-500";
+  const totalCbm = container.total_capacity_cbm > 0 ? container.total_capacity_cbm : 76;
+  const { fillPercent, label: capacityLabel } = computeCapacityFill(availableCbm, totalCbm);
+  const barColor = fillPercent >= 80 ? "bg-amber-500" : "bg-primary";
 
   // Scroll form into view when expanded
   useEffect(() => {
     if (isOpen && formRef.current) {
       const timer = setTimeout(() => {
         formRef.current?.scrollIntoView({
-          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
-            .matches
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
             ? "auto"
             : "smooth",
-          block: "start",
+          block: "nearest",
         });
-      }, 300);
+      }, 250);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
@@ -88,152 +87,157 @@ export const ScheduleBookableRow = memo(function ScheduleBookableRow({
 
   return (
     <Collapsible open={isOpen}>
-      <div
+      <Card
         className={cn(
-          "rounded-lg border transition-all duration-200",
-          // Left border accent — sky-500
-          "border-l-4 border-l-sky-500",
-          // Subtle warm gradient background
-          "bg-gradient-to-r from-sky-50/60 to-transparent",
+          "group/card transition-all duration-300",
           isOpen
-            ? "shadow-md ring-1 ring-sky-200/50"
-            : "shadow-sm hover:shadow-md",
+            ? "ring-2 ring-primary/20 shadow-lg border-primary/30"
+            : "hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40",
         )}
       >
-        <div className="p-4 sm:p-5">
-          {/* ─── Top row: Route + Book CTA ─── */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              {/* Route */}
-              <p className="text-base font-semibold leading-snug truncate">
-                <span className="mr-1.5" aria-hidden="true">
-                  {flag}
-                </span>
-                <span className="hidden sm:inline">
-                  {container.origin}
-                  <span className="mx-1.5 text-muted-foreground">&rarr;</span>
-                </span>
-                <span className="sm:hidden text-muted-foreground">
-                  &rarr;{" "}
-                </span>
-                {container.destination}
-              </p>
-
-              {/* Dates + transit + meta */}
-              <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-                <span className="font-mono tabular-nums">
-                  {formatShortDate(container.departure_date)}
-                  {container.eta_date && (
-                    <>
-                      {" \u2192 "}
-                      {formatShortDate(container.eta_date)}
-                    </>
+        <CardContent className="p-0">
+          {/* ─── Main content ─── */}
+          <div className="p-4 sm:p-5">
+            {/* Row 1: Route hero + Book CTA */}
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                {/* Destination as hero */}
+                <h4 className="text-base sm:text-lg font-bold leading-tight truncate">
+                  <span className="mr-2 text-lg" aria-hidden="true">
+                    {destPending ? "" : flag}
+                  </span>
+                  {destPending ? (
+                    <span className="text-muted-foreground italic font-normal">{destText}</span>
+                  ) : (
+                    destText
                   )}
-                </span>
-                {transitDayCount !== null && (
-                  <span className="text-xs">
-                    ~{transitDayCount} {t("days")}
-                  </span>
+                </h4>
+                {/* Origin + type */}
+                <p className="mt-0.5 text-sm text-muted-foreground truncate">
+                  from {origin}
+                  <span className="mx-1.5 text-border">·</span>
+                  <span className="font-mono text-xs">{container.container_type}</span>
+                  <span className="mx-1.5 text-border">·</span>
+                  <span className="font-mono text-xs">{container.project_number}</span>
+                </p>
+              </div>
+
+              <Button
+                size="sm"
+                variant={isOpen ? "secondary" : "default"}
+                onClick={handleToggle}
+                className={cn(
+                  "shrink-0 transition-all duration-200",
+                  !isOpen && "group-hover/card:shadow-md",
                 )}
-                <span className="text-xs">{container.container_type}</span>
-                <span className="text-xs font-mono text-muted-foreground/60">
-                  {container.project_number}
-                </span>
-                {status === "in-transit" && transit && (
-                  <span className="hidden sm:inline-flex items-center gap-1 text-xs text-indigo-600 font-medium">
-                    <Ship className="h-3 w-3" />
-                    {t("dayOfTransit", {
-                      day: transit.transitDay,
-                      total: transit.transitTotal,
-                    })}
-                  </span>
+              >
+                {isOpen ? (
+                  <>
+                    <X className="mr-1 h-3 w-3" />
+                    {tb("collapse")}
+                  </>
+                ) : (
+                  <>
+                    {tb("bookSpace")}
+                    <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover/card:translate-x-0.5" />
+                  </>
                 )}
+              </Button>
+            </div>
+
+            {/* Row 2: Dates + Transit + Demand — info bar */}
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+              {/* Departure countdown */}
+              <div className="flex items-center gap-1.5">
+                <Calendar className={cn(
+                  "h-3.5 w-3.5",
+                  countdown.urgency === "urgent" || countdown.urgency === "today"
+                    ? "text-amber-500"
+                    : "text-muted-foreground",
+                )} />
+                <span className={cn(
+                  "text-sm font-medium",
+                  countdown.urgency === "urgent" || countdown.urgency === "today"
+                    ? "text-amber-700"
+                    : "text-foreground",
+                )}>
+                  {countdown.urgency === "today"
+                    ? "Leaves today"
+                    : countdown.urgency === "past"
+                      ? `Departed ${shortDate(container.departure_date)}`
+                      : countdown.daysUntil === 1
+                        ? "Leaves tomorrow"
+                        : countdown.daysUntil <= 7
+                          ? `Leaves in ${countdown.daysUntil} days`
+                          : shortDate(container.departure_date)}
+                </span>
+              </div>
+
+              {/* ETA */}
+              {container.eta_date && (
+                <span className="text-xs text-muted-foreground tabular-nums">
+                  ETA {shortDate(container.eta_date)}
+                  {transitDayCount !== null && ` · ~${transitDayCount}d`}
+                </span>
+              )}
+
+              {/* Demand signal */}
+              {pendingCount > 0 && (
+                <Badge
+                  variant="secondary"
+                  className={cn(
+                    "text-[11px] ml-auto",
+                    pendingCount >= 3
+                      ? "text-amber-700 bg-amber-50 border-amber-200"
+                      : "text-blue-700 bg-blue-50 border-blue-200",
+                  )}
+                >
+                  <Sparkles className="mr-0.5 h-3 w-3" />
+                  {tb("pendingRequests", { count: pendingCount })}
+                </Badge>
+              )}
+            </div>
+
+            {/* Row 3: Capacity bar */}
+            <div className="mt-3 flex items-center gap-3">
+              <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-muted">
+                <div
+                  className={cn(
+                    "absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out",
+                    barColor,
+                  )}
+                  style={{ width: `${fillPercent}%` }}
+                />
+              </div>
+              <div className="shrink-0 flex items-center gap-1.5 text-xs text-muted-foreground tabular-nums">
+                <span className={cn(
+                  "font-semibold",
+                  fillPercent >= 80 ? "text-amber-600" : "text-emerald-600",
+                )}>
+                  {availableCbm} CBM
+                </span>
+                <span>{t("available")}</span>
+                <span className="text-border">·</span>
+                <span>{capacityLabel}</span>
               </div>
             </div>
-
-            {/* Book Space CTA — always visible top-right */}
-            <Button
-              size="sm"
-              variant={isOpen ? "secondary" : "default"}
-              onClick={handleToggle}
-              className="shrink-0"
-            >
-              {isOpen ? (
-                <>
-                  <X className="mr-1 h-3 w-3" />
-                  {tb("collapse")}
-                </>
-              ) : (
-                <>
-                  {tb("bookSpace")}
-                  <ChevronDown className="ml-1 h-3 w-3" />
-                </>
-              )}
-            </Button>
           </div>
-
-          {/* ─── Badges + Capacity ─── */}
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {/* Space Available badge — key visual differentiator */}
-            <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[11px] font-semibold">
-              <CheckCircle2 className="mr-0.5 h-3 w-3" />
-              {availableCbm} CBM {t("available")}
-            </Badge>
-
-            {/* Status */}
-            <div className="flex items-center gap-1.5">
-              <span
-                className={cn(
-                  "inline-block h-1.5 w-1.5 rounded-full",
-                  config.dotColor,
-                )}
-              />
-              <span className="text-[11px] text-muted-foreground">
-                {t(config.label)}
-              </span>
-            </div>
-
-            {pendingCount > 0 && (
-              <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
-                {tb("pendingRequests", { count: pendingCount })}
-              </span>
-            )}
-          </div>
-
-          {/* ─── Capacity bar — thin ─── */}
-          <div className="mt-3">
-            <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
-              <div
-                className={`absolute inset-y-0 left-0 rounded-full transition-all duration-500 ease-out ${barColor}`}
-                style={{ width: `${fillPercent}%` }}
-              />
-            </div>
-          </div>
-
-          {/* In-transit progress bar (rare for bookable, but possible) */}
-          {status === "in-transit" && (
-            <TransitProgress
-              status={status}
-              departureDate={container.departure_date}
-              etaDate={container.eta_date}
-              showBar
-            />
-          )}
 
           {/* ─── Booking form (collapsible) ─── */}
           <CollapsibleContent>
             <div ref={formRef}>
-              <Separator className="my-4" />
-              <ScheduleBookingForm
-                container={container}
-                onSuccess={() => setPendingCount((c) => c + 1)}
-                onCancel={() => setIsOpen(false)}
-              />
+              <Separator />
+              <div className="p-4 sm:p-5 bg-muted/20">
+                <ScheduleBookingForm
+                  container={container}
+                  onSuccess={() => setPendingCount((c) => c + 1)}
+                  onCancel={() => setIsOpen(false)}
+                />
+              </div>
             </div>
           </CollapsibleContent>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </Collapsible>
   );
 });

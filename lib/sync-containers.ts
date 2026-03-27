@@ -280,6 +280,16 @@ const COUNTRY_MAP: Record<string, string> = {
   германия: "DE",
 };
 
+/** US state abbreviations that must not be treated as ISO country codes. */
+const US_STATE_CODES = new Set([
+  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
+  "DC",
+]);
+
 export function extractCountryCode(destination: string): string | null {
   const lower = destination.toLowerCase().trim();
   // Try longest match first (e.g., "south africa" before "south")
@@ -287,9 +297,9 @@ export function extractCountryCode(destination: string): string | null {
   for (const [name, code] of entries) {
     if (lower.includes(name)) return code;
   }
-  // Check for trailing ISO code: "Almaty, KZ"
+  // Check for trailing ISO code: "Almaty, KZ" — but skip US state abbreviations
   const isoMatch = destination.match(/\b([A-Z]{2})$/);
-  if (isoMatch) return isoMatch[1];
+  if (isoMatch && !US_STATE_CODES.has(isoMatch[1])) return isoMatch[1];
   return null;
 }
 

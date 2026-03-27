@@ -5,15 +5,15 @@ import {
   Calendar,
   CalendarDays,
   CheckCircle2,
-  ChevronDown,
+  ChevronRight,
   Clock,
   Ship,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { AnimatePresence, motion } from "motion/react";
 
-import { ScrollReveal } from "@/components/scroll-reveal";
 import { StaleDataBanner } from "@/components/shared-shipping/stale-data-banner";
 import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 import {
@@ -144,7 +144,7 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
 
   // ─── Render ────────────────────────────────────────────
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <StaleDataBanner
         lastSyncTime={lastSyncTime}
         hasContainers={containers.length > 0}
@@ -187,57 +187,66 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
             }
 
             return (
-              <ScrollReveal key={group}>
-                <section>
-                  {/* Group header — clickable to collapse */}
-                  <button
-                    onClick={() => toggleGroup(group)}
-                    className={`flex items-center gap-2 border-l-4 pl-3 py-1.5 w-full text-left hover:bg-muted/30 rounded-r-md transition-colors ${config.borderColor}`}
-                  >
-                    <Icon className="h-4 w-4 text-muted-foreground" />
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      {t(config.label)}
-                    </h3>
-                    <span className="text-xs font-semibold text-muted-foreground font-mono tabular-nums">
-                      {items.length}
-                    </span>
-                    <ChevronDown
-                      className={`ml-auto h-4 w-4 text-muted-foreground transition-transform ${
-                        isCollapsed ? "-rotate-90" : ""
-                      }`}
-                    />
-                  </button>
+              <section key={group}>
+                {/* Group header — clickable to collapse */}
+                <button
+                  onClick={() => toggleGroup(group)}
+                  className={`flex items-center gap-2.5 border-l-4 pl-3 py-2 w-full text-left hover:bg-muted/40 rounded-r-md transition-colors ${config.borderColor}`}
+                >
+                  <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+                    {t(config.label)}
+                  </h3>
+                  <span className="inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-full bg-muted text-[11px] font-bold text-muted-foreground tabular-nums">
+                    {items.length}
+                  </span>
+                  <ChevronRight
+                    className={`ml-auto h-4 w-4 text-muted-foreground transition-transform duration-200 ${
+                      isCollapsed ? "" : "rotate-90"
+                    }`}
+                  />
+                </button>
 
-                  {/* Container rows */}
+                {/* Container rows — animated */}
+                <AnimatePresence initial={false}>
                   {!isCollapsed && (
-                    <div className="mt-2">
-                      {/* Bookable rows — elevated cards with breathing room */}
-                      {bookable.length > 0 && (
-                        <div className="space-y-3 mb-3">
-                          {bookable.map((container) => (
-                            <ScheduleBookableRow
-                              key={container.id}
-                              container={container}
-                            />
-                          ))}
-                        </div>
-                      )}
+                    <motion.div
+                      key={`${group}-content`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-3 space-y-3">
+                        {/* Bookable rows — elevated cards */}
+                        {bookable.map((container, i) => (
+                          <motion.div
+                            key={container.id}
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.05, duration: 0.3 }}
+                          >
+                            <ScheduleBookableRow container={container} />
+                          </motion.div>
+                        ))}
 
-                      {/* Non-bookable rows — tight departure board style */}
-                      {nonBookable.length > 0 && (
-                        <div className="rounded-lg border border-border/50 overflow-hidden bg-white">
-                          {nonBookable.map((container) => (
-                            <ScheduleRow
-                              key={container.id}
-                              container={container}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                        {/* Non-bookable rows — tight table style */}
+                        {nonBookable.length > 0 && (
+                          <div className="rounded-lg border border-border/60 overflow-hidden">
+                            {nonBookable.map((container) => (
+                              <ScheduleRow
+                                key={container.id}
+                                container={container}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
                   )}
-                </section>
-              </ScrollReveal>
+                </AnimatePresence>
+              </section>
             );
           })}
         </div>

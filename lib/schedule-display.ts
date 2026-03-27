@@ -359,3 +359,67 @@ export function groupContainers(
 
   return ordered;
 }
+
+// ─── Display Helpers ────────────────────────────────────────────────────────
+
+export type CountdownUrgency = "past" | "today" | "urgent" | "soon" | "normal";
+
+export interface DepartureCountdown {
+  daysUntil: number;
+  urgency: CountdownUrgency;
+}
+
+/** Compute days until departure and urgency level. */
+export function computeDepartureCountdown(departureDate: string): DepartureCountdown {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dep = new Date(departureDate);
+  dep.setHours(0, 0, 0, 0);
+
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const daysUntil = Math.ceil((dep.getTime() - today.getTime()) / msPerDay);
+
+  let urgency: CountdownUrgency;
+  if (daysUntil < 0) urgency = "past";
+  else if (daysUntil === 0) urgency = "today";
+  else if (daysUntil <= 3) urgency = "urgent";
+  else if (daysUntil <= 7) urgency = "soon";
+  else urgency = "normal";
+
+  return { daysUntil, urgency };
+}
+
+/** Strip operational notes from origin text and normalize formatting. */
+export function cleanOriginText(origin: string): string {
+  // Strip common operational prefixes
+  let cleaned = origin
+    .replace(/^(?:ROLLED\s+)?(?:customs?\s+hold\s+)?/i, "")
+    .trim();
+
+  // Normalize "Albion,IA" → "Albion, IA" (add space after comma if missing)
+  cleaned = cleaned.replace(/,([^\s])/g, ", $1");
+
+  return cleaned || origin;
+}
+
+/** Format destination for display — handle missing destinations gracefully. */
+export function formatDestination(destination: string): {
+  text: string;
+  isPending: boolean;
+} {
+  if (!destination || destination === "TBD" || destination === "---") {
+    return { text: "Destination pending", isPending: true };
+  }
+  return { text: destination, isPending: false };
+}
+
+/** Compute capacity fill percentage. */
+export function computeCapacityFill(
+  availableCbm: number | null,
+  totalCapacity: number,
+): { fillPercent: number; label: string } {
+  const available = availableCbm ?? 0;
+  const total = totalCapacity > 0 ? totalCapacity : 76;
+  const fillPercent = Math.min(100, Math.max(0, Math.round((1 - available / total) * 100)));
+  return { fillPercent, label: `${fillPercent}% booked` };
+}
