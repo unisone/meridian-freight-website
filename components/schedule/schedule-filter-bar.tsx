@@ -44,16 +44,20 @@ export function ScheduleFilterBar({
   return (
     <div className="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-background/95 supports-[backdrop-filter]:bg-background/80 backdrop-blur-sm border-b">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {/* Status tabs */}
+        {/* Status tabs — horizontal scroll on mobile */}
         <Tabs
           value={activeTab}
           onValueChange={(val) => onTabChange(val as FilterTab)}
         >
-          <TabsList className="h-auto overflow-x-auto scrollbar-hide">
+          <TabsList className="h-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
             {TAB_KEYS.map((tab) => (
-              <TabsTrigger key={tab} value={tab} className="text-xs sm:text-sm whitespace-nowrap">
+              <TabsTrigger
+                key={tab}
+                value={tab}
+                className="text-xs sm:text-sm whitespace-nowrap gap-1.5"
+              >
                 {t(TAB_LABEL_MAP[tab])}
-                <span className="ml-1 text-[10px] text-muted-foreground tabular-nums">
+                <span className="inline-flex items-center justify-center rounded-full bg-muted px-1.5 min-w-[18px] h-4 text-[10px] font-semibold tabular-nums text-muted-foreground">
                   {tabCounts[tab]}
                 </span>
               </TabsTrigger>

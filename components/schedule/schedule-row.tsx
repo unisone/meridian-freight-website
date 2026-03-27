@@ -17,14 +17,22 @@ interface ScheduleRowProps {
   container: SharedContainer;
 }
 
-/** Format an ISO date string as "Apr 15" */
+/** Format an ISO date string as "Jan 30" */
 export function formatShortDate(isoDate: string): string {
   const date = new Date(isoDate);
   if (isNaN(date.getTime())) return "\u2014";
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export const ScheduleRow = memo(function ScheduleRow({ container }: ScheduleRowProps) {
+/**
+ * Departure board row — a dense, single-line horizontal entry.
+ * No card wrapper. Border-bottom divider. Monospace dates and project number.
+ *
+ * Layout: [status dot] [flag route] [dates] [~N days] [container type] [project #]
+ */
+export const ScheduleRow = memo(function ScheduleRow({
+  container,
+}: ScheduleRowProps) {
   const t = useTranslations("ScheduleList");
   const status = deriveScheduleStatus(container);
   const config = SCHEDULE_STATUS_CONFIG[status];
@@ -42,8 +50,7 @@ export const ScheduleRow = memo(function ScheduleRow({ container }: ScheduleRowP
   return (
     <div
       className={cn(
-        "flex items-center gap-3 border-l-3 py-2.5 px-3 sm:px-4 border-b border-border/50 transition-colors hover:bg-muted/30",
-        config.borderColor,
+        "flex items-center gap-2 sm:gap-3 py-2.5 px-3 sm:px-4 border-b border-border/40 last:border-b-0 transition-colors hover:bg-zinc-50/80",
         isTbd && "opacity-50",
       )}
     >
@@ -53,36 +60,32 @@ export const ScheduleRow = memo(function ScheduleRow({ container }: ScheduleRowP
           "inline-block h-2 w-2 rounded-full shrink-0",
           config.dotColor,
         )}
+        aria-label={t(config.label)}
       />
 
       {/* Route — takes available space */}
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium leading-tight truncate">
-          <span className="mr-1" aria-hidden="true">{flag}</span>
+        <p className="text-sm leading-tight truncate">
+          <span className="mr-1" aria-hidden="true">
+            {flag}
+          </span>
           <span className="hidden sm:inline text-muted-foreground">
-            {container.origin} &rarr;{" "}
+            {container.origin}
+            <span className="mx-1">&rarr;</span>
           </span>
           {isTbd ? (
             <span className="text-muted-foreground italic">---</span>
           ) : (
-            container.destination
+            <span className="font-medium">{container.destination}</span>
           )}
         </p>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-[11px] font-mono text-muted-foreground">
-            {container.project_number}
-          </span>
-          <span className="text-[11px] text-muted-foreground">
-            {container.container_type}
-          </span>
-        </div>
       </div>
 
-      {/* Transit progress (in-transit only) — compact inline */}
+      {/* In-transit indicator — "Day X of Y" text */}
       {status === "in-transit" && transit && (
-        <div className="hidden sm:flex items-center gap-1.5 shrink-0">
-          <Ship className="h-3 w-3 text-indigo-500 animate-pulse" />
-          <span className="text-[11px] font-medium text-indigo-600 tabular-nums">
+        <div className="hidden sm:flex items-center gap-1 shrink-0">
+          <Ship className="h-3 w-3 text-indigo-500" />
+          <span className="text-[11px] font-medium text-indigo-600 font-mono tabular-nums">
             {t("dayOfTransit", {
               day: transit.transitDay,
               total: transit.transitTotal,
@@ -91,23 +94,35 @@ export const ScheduleRow = memo(function ScheduleRow({ container }: ScheduleRowP
         </div>
       )}
 
-      {/* Dates — right-aligned */}
+      {/* Dates — monospace */}
       <div className="shrink-0 text-right">
-        <p className="text-xs font-medium tabular-nums">
+        <span className="text-xs font-mono tabular-nums text-foreground">
           {formatShortDate(container.departure_date)}
           {container.eta_date && (
             <span className="text-muted-foreground">
-              {" → "}
+              {" \u2192 "}
               {formatShortDate(container.eta_date)}
             </span>
           )}
-        </p>
-        {transitDayCount !== null && (
-          <p className="text-[11px] text-muted-foreground tabular-nums">
-            ~{transitDayCount} {t("days")}
-          </p>
-        )}
+        </span>
       </div>
+
+      {/* Transit days */}
+      {transitDayCount !== null && (
+        <span className="hidden md:inline text-[11px] font-mono tabular-nums text-muted-foreground shrink-0">
+          ~{transitDayCount} {t("days")}
+        </span>
+      )}
+
+      {/* Container type */}
+      <span className="hidden sm:inline text-[11px] text-muted-foreground shrink-0">
+        {container.container_type}
+      </span>
+
+      {/* Project number — monospace */}
+      <span className="text-[11px] font-mono text-muted-foreground/70 shrink-0 tabular-nums">
+        {container.project_number}
+      </span>
     </div>
   );
 });

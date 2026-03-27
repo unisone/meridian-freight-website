@@ -2,6 +2,7 @@
 
 import { useState, useRef, useMemo } from "react";
 import {
+  AlertTriangle,
   ArrowRight,
   CheckCircle2,
   Droplets,
@@ -268,7 +269,7 @@ export function ScheduleBookingForm({
                       : [...prev, type.id],
                   );
                 }}
-                className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 min-h-[44px] sm:min-h-0 sm:py-1 sm:px-2.5 text-xs font-medium transition-colors ${
                   isSelected
                     ? "border-primary bg-primary/10 text-primary"
                     : "border-border bg-background text-muted-foreground hover:border-primary/40"
@@ -297,7 +298,10 @@ export function ScheduleBookingForm({
                 {t("cargoFits", { cbm: totalEstimatedCbm })}
               </>
             ) : (
-              <>⚠️ {t("cargoMayNotFit", { cbm: totalEstimatedCbm })}</>
+              <>
+                <AlertTriangle className="h-3 w-3" />
+                {t("cargoMayNotFit", { cbm: totalEstimatedCbm })}
+              </>
             )}
           </p>
         )}

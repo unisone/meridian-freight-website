@@ -166,59 +166,81 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
           onClearFilters={clearFilters}
         />
       ) : (
-        Array.from(groups.entries()).map(([group, items]) => {
-          const config = GROUP_CONFIG[group];
-          const Icon = GROUP_ICONS[group];
-          const isCollapsed = collapsedGroups.has(group);
+        <div className="space-y-8">
+          {Array.from(groups.entries()).map(([group, items]) => {
+            const config = GROUP_CONFIG[group];
+            const Icon = GROUP_ICONS[group];
+            const isCollapsed = collapsedGroups.has(group);
 
-          return (
-            <ScrollReveal key={group}>
-              <section className="space-y-2">
-                {/* Group header — clickable to collapse */}
-                <button
-                  onClick={() => toggleGroup(group)}
-                  className={`flex items-center gap-2 border-l-4 pl-3 py-1.5 w-full text-left hover:bg-muted/30 rounded-r-md transition-colors ${config.borderColor}`}
-                >
-                  <Icon className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                    {t(config.label)}
-                  </h3>
-                  <span className="text-xs font-semibold text-muted-foreground tabular-nums">
-                    {items.length}
-                  </span>
-                  <ChevronDown
-                    className={`ml-auto h-4 w-4 text-muted-foreground transition-transform ${
-                      isCollapsed ? "-rotate-90" : ""
-                    }`}
-                  />
-                </button>
+            // Split items into bookable vs non-bookable for this group
+            const bookable: ContainerWithPendingCount[] = [];
+            const nonBookable: typeof items = [];
+            for (const item of items) {
+              if (
+                item.status === "available" &&
+                (item.available_cbm ?? 0) > 0
+              ) {
+                bookable.push(item as ContainerWithPendingCount);
+              } else {
+                nonBookable.push(item);
+              }
+            }
 
-                {/* Container rows */}
-                {!isCollapsed && (
-                  <div className="space-y-2">
-                    {items.map((container) => {
-                      const isBookable =
-                        container.status === "available" &&
-                        (container.available_cbm ?? 0) > 0;
+            return (
+              <ScrollReveal key={group}>
+                <section>
+                  {/* Group header — clickable to collapse */}
+                  <button
+                    onClick={() => toggleGroup(group)}
+                    className={`flex items-center gap-2 border-l-4 pl-3 py-1.5 w-full text-left hover:bg-muted/30 rounded-r-md transition-colors ${config.borderColor}`}
+                  >
+                    <Icon className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      {t(config.label)}
+                    </h3>
+                    <span className="text-xs font-semibold text-muted-foreground font-mono tabular-nums">
+                      {items.length}
+                    </span>
+                    <ChevronDown
+                      className={`ml-auto h-4 w-4 text-muted-foreground transition-transform ${
+                        isCollapsed ? "-rotate-90" : ""
+                      }`}
+                    />
+                  </button>
 
-                      return isBookable ? (
-                        <ScheduleBookableRow
-                          key={container.id}
-                          container={container as ContainerWithPendingCount}
-                        />
-                      ) : (
-                        <ScheduleRow
-                          key={container.id}
-                          container={container}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-              </section>
-            </ScrollReveal>
-          );
-        })
+                  {/* Container rows */}
+                  {!isCollapsed && (
+                    <div className="mt-2">
+                      {/* Bookable rows — elevated cards with breathing room */}
+                      {bookable.length > 0 && (
+                        <div className="space-y-3 mb-3">
+                          {bookable.map((container) => (
+                            <ScheduleBookableRow
+                              key={container.id}
+                              container={container}
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Non-bookable rows — tight departure board style */}
+                      {nonBookable.length > 0 && (
+                        <div className="rounded-lg border border-border/50 overflow-hidden bg-white">
+                          {nonBookable.map((container) => (
+                            <ScheduleRow
+                              key={container.id}
+                              container={container}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </section>
+              </ScrollReveal>
+            );
+          })}
+        </div>
       )}
     </div>
   );

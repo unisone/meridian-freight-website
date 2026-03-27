@@ -1,6 +1,6 @@
 "use client";
 
-import { Package } from "lucide-react";
+import { Package, Ship } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CONTACT } from "@/lib/constants";
 
@@ -19,10 +19,8 @@ export function ScheduleEmptyState({
   if (variant === "no-filter-results") {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="mb-4 rounded-full bg-muted p-4">
-          <Package className="h-8 w-8 text-muted-foreground" />
-        </div>
-        <h3 className="text-lg font-semibold">{t("noResults")}</h3>
+        <Ship className="h-10 w-10 text-muted-foreground/40" />
+        <h3 className="mt-4 text-lg font-semibold">{t("noResults")}</h3>
         <div className="mt-4 flex gap-3">
           {onClearFilters && (
             <button
@@ -48,10 +46,8 @@ export function ScheduleEmptyState({
   // no-data
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="mb-4 rounded-full bg-muted p-4">
-        <Package className="h-8 w-8 text-muted-foreground" />
-      </div>
-      <h3 className="text-lg font-semibold">{t("noData")}</h3>
+      <Package className="h-10 w-10 text-muted-foreground/40" />
+      <h3 className="mt-4 text-lg font-semibold">{t("noData")}</h3>
       <p className="mt-2 text-sm text-muted-foreground max-w-md">
         {t("noDataDescription")}
       </p>

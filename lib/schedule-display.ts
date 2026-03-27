@@ -125,6 +125,7 @@ export interface ScheduleStats {
   containersThisMonth: number;
   countriesServed: number;
   inTransitNow: number;
+  bookableContainers: number;
 }
 
 /** Compute aggregate stats from the full container list. */
@@ -148,6 +149,10 @@ export function computeScheduleStats(containers: SharedContainer[]): ScheduleSta
       (c) =>
         c.status === "departed" &&
         (c.eta_date === null || c.eta_date > todayStr),
+    ).length,
+
+    bookableContainers: containers.filter(
+      (c) => c.status === "available" && (c.available_cbm ?? 0) > 0,
     ).length,
   };
 }

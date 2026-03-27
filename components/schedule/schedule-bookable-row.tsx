@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
   CollapsibleContent,
@@ -22,12 +21,17 @@ import { cn } from "@/lib/utils";
 import { trackScheduleEvent } from "@/lib/tracking";
 import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 import { formatShortDate } from "./schedule-row";
+import { TransitProgress } from "./transit-progress";
 import { ScheduleBookingForm } from "./schedule-booking-form";
 
 interface ScheduleBookableRowProps {
   container: ContainerWithPendingCount;
 }
 
+/**
+ * Elevated booking card — warm, inviting, clearly distinct from departure board rows.
+ * Inspired by Airbnb listing cards: left border accent, subtle gradient, generous spacing.
+ */
 export const ScheduleBookableRow = memo(function ScheduleBookableRow({
   container,
 }: ScheduleBookableRowProps) {
@@ -49,21 +53,24 @@ export const ScheduleBookableRow = memo(function ScheduleBookableRow({
   );
   const flag = countryFlag(container.destination_country);
   const availableCbm = container.available_cbm ?? 0;
-  const totalCbm = container.total_capacity_cbm > 0 ? container.total_capacity_cbm : 76;
-  const fillPercent = totalCbm > 0 ? Math.round((1 - availableCbm / totalCbm) * 100) : 100;
-  const barColor = fillPercent >= 80 ? "bg-amber-500" : "bg-primary";
+  const totalCbm =
+    container.total_capacity_cbm > 0 ? container.total_capacity_cbm : 76;
+  const fillPercent =
+    totalCbm > 0 ? Math.round((1 - availableCbm / totalCbm) * 100) : 100;
+  const barColor = fillPercent >= 80 ? "bg-amber-500" : "bg-sky-500";
 
   // Scroll form into view when expanded
   useEffect(() => {
     if (isOpen && formRef.current) {
       const timer = setTimeout(() => {
         formRef.current?.scrollIntoView({
-          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
             ? "auto"
             : "smooth",
           block: "start",
         });
-      }, 300); // wait for collapsible animation
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
@@ -81,127 +88,143 @@ export const ScheduleBookableRow = memo(function ScheduleBookableRow({
 
   return (
     <Collapsible open={isOpen}>
-      <Card
+      <div
         className={cn(
-          "transition-all duration-200",
-          // Distinct bookable styling — stands out from compact rows
-          "border-l-[6px] bg-primary/[0.03]",
+          "rounded-lg border transition-all duration-200",
+          // Left border accent — sky-500
+          "border-l-4 border-l-sky-500",
+          // Subtle warm gradient background
+          "bg-gradient-to-r from-sky-50/60 to-transparent",
           isOpen
-            ? "border-l-primary ring-1 ring-primary/20 shadow-md"
-            : "border-l-primary/60 hover:shadow-sm hover:border-l-primary",
+            ? "shadow-md ring-1 ring-sky-200/50"
+            : "shadow-sm hover:shadow-md",
         )}
       >
-        <CardContent className="p-4 sm:p-5">
-          {/* ─── Top row: Status + Available badge + Type + Book CTA ─── */}
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 flex-wrap">
+        <div className="p-4 sm:p-5">
+          {/* ─── Top row: Route + Book CTA ─── */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              {/* Route */}
+              <p className="text-base font-semibold leading-snug truncate">
+                <span className="mr-1.5" aria-hidden="true">
+                  {flag}
+                </span>
+                <span className="hidden sm:inline">
+                  {container.origin}
+                  <span className="mx-1.5 text-muted-foreground">&rarr;</span>
+                </span>
+                <span className="sm:hidden text-muted-foreground">
+                  &rarr;{" "}
+                </span>
+                {container.destination}
+              </p>
+
+              {/* Dates + transit + meta */}
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+                <span className="font-mono tabular-nums">
+                  {formatShortDate(container.departure_date)}
+                  {container.eta_date && (
+                    <>
+                      {" \u2192 "}
+                      {formatShortDate(container.eta_date)}
+                    </>
+                  )}
+                </span>
+                {transitDayCount !== null && (
+                  <span className="text-xs">
+                    ~{transitDayCount} {t("days")}
+                  </span>
+                )}
+                <span className="text-xs">{container.container_type}</span>
+                <span className="text-xs font-mono text-muted-foreground/60">
+                  {container.project_number}
+                </span>
+                {status === "in-transit" && transit && (
+                  <span className="hidden sm:inline-flex items-center gap-1 text-xs text-indigo-600 font-medium">
+                    <Ship className="h-3 w-3" />
+                    {t("dayOfTransit", {
+                      day: transit.transitDay,
+                      total: transit.transitTotal,
+                    })}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Book Space CTA — always visible top-right */}
+            <Button
+              size="sm"
+              variant={isOpen ? "secondary" : "default"}
+              onClick={handleToggle}
+              className="shrink-0"
+            >
+              {isOpen ? (
+                <>
+                  <X className="mr-1 h-3 w-3" />
+                  {tb("collapse")}
+                </>
+              ) : (
+                <>
+                  {tb("bookSpace")}
+                  <ChevronDown className="ml-1 h-3 w-3" />
+                </>
+              )}
+            </Button>
+          </div>
+
+          {/* ─── Badges + Capacity ─── */}
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {/* Space Available badge — key visual differentiator */}
+            <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[11px] font-semibold">
+              <CheckCircle2 className="mr-0.5 h-3 w-3" />
+              {availableCbm} CBM {t("available")}
+            </Badge>
+
+            {/* Status */}
+            <div className="flex items-center gap-1.5">
               <span
                 className={cn(
-                  "inline-block h-2 w-2 rounded-full shrink-0",
+                  "inline-block h-1.5 w-1.5 rounded-full",
                   config.dotColor,
                 )}
               />
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <span className="text-[11px] text-muted-foreground">
                 {t(config.label)}
               </span>
-              {/* Available space badge — key visual differentiator */}
-              <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[11px] font-semibold">
-                <CheckCircle2 className="mr-0.5 h-3 w-3" />
-                {availableCbm} CBM {t("available")}
-              </Badge>
-              {pendingCount >= 3 && (
-                <Badge variant="secondary" className="text-[11px] text-amber-700 bg-amber-50 border-amber-200">
-                  {tb("pendingRequests", { count: pendingCount })}
-                </Badge>
-              )}
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
-              <Badge variant="secondary" className="text-[11px] hidden sm:inline-flex">
-                {container.container_type}
-              </Badge>
-              <Button
-                size="sm"
-                variant={isOpen ? "secondary" : "default"}
-                onClick={handleToggle}
-              >
-                {isOpen ? (
-                  <>
-                    <X className="mr-1 h-3 w-3" />
-                    {tb("collapse")}
-                  </>
-                ) : (
-                  <>
-                    {tb("bookSpace")}
-                    <ChevronDown className="ml-1 h-3 w-3" />
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-
-          {/* ─── Route ─── */}
-          <p className="mt-2.5 text-sm font-semibold leading-snug truncate">
-            <span className="mr-1.5" aria-hidden="true">{flag}</span>
-            <span className="hidden sm:inline">
-              {container.origin}
-              <span className="mx-1.5 text-muted-foreground">&rarr;</span>
-            </span>
-            <span className="sm:hidden">&rarr; </span>
-            {container.destination}
-          </p>
-
-          {/* ─── Dates + Transit + Meta — compact row ─── */}
-          <div className="mt-2 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              <span className="tabular-nums">
-                <span className="font-medium text-foreground">
-                  {formatShortDate(container.departure_date)}
-                </span>
-                {container.eta_date && (
-                  <>
-                    {" → "}
-                    <span className="font-medium text-foreground">
-                      {formatShortDate(container.eta_date)}
-                    </span>
-                  </>
-                )}
+            {pendingCount > 0 && (
+              <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
+                {tb("pendingRequests", { count: pendingCount })}
               </span>
-              {transitDayCount !== null && (
-                <span>~{transitDayCount} {t("days")}</span>
-              )}
-              {status === "in-transit" && transit && (
-                <span className="hidden sm:inline-flex items-center gap-1 text-indigo-600 font-medium">
-                  <Ship className="h-3 w-3" />
-                  {t("dayOfTransit", { day: transit.transitDay, total: transit.transitTotal })}
-                </span>
-              )}
-            </div>
-            <span className="text-[11px] font-mono text-muted-foreground">
-              {container.project_number}
-            </span>
+            )}
           </div>
 
           {/* ─── Capacity bar — thin ─── */}
-          <div className="mt-2.5 space-y-1">
-            <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-muted">
+          <div className="mt-3">
+            <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
               <div
                 className={`absolute inset-y-0 left-0 rounded-full transition-all duration-500 ease-out ${barColor}`}
                 style={{ width: `${fillPercent}%` }}
               />
             </div>
-            {pendingCount > 0 && pendingCount < 3 && (
-              <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
-                {tb("pendingRequests", { count: pendingCount })}
-              </p>
-            )}
           </div>
+
+          {/* In-transit progress bar (rare for bookable, but possible) */}
+          {status === "in-transit" && (
+            <TransitProgress
+              status={status}
+              departureDate={container.departure_date}
+              etaDate={container.eta_date}
+              showBar
+            />
+          )}
 
           {/* ─── Booking form (collapsible) ─── */}
           <CollapsibleContent>
             <div ref={formRef}>
-              <Separator className="my-3" />
+              <Separator className="my-4" />
               <ScheduleBookingForm
                 container={container}
                 onSuccess={() => setPendingCount((c) => c + 1)}
@@ -209,8 +232,8 @@ export const ScheduleBookableRow = memo(function ScheduleBookableRow({
               />
             </div>
           </CollapsibleContent>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </Collapsible>
   );
 });
