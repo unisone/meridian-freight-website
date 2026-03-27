@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { MessageCircle } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { TrustBar } from "@/components/trust-bar";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ShippingWizard } from "@/components/shared-shipping/shipping-wizard";
@@ -127,12 +126,12 @@ export default async function SharedShippingPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Fix 1: Breadcrumbs */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Breadcrumbs */}
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={[{ label: "Shared Shipping" }]} />
       </div>
 
-      {/* Hero with eyebrow (Fix 4) */}
+      {/* Hero */}
       <div className="bg-gradient-to-b from-primary/5 to-transparent pt-4 pb-10 md:pt-8 md:pb-12">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
@@ -148,9 +147,6 @@ export default async function SharedShippingPage({
           </p>
         </div>
       </div>
-
-      {/* Fix 2: Trust Bar */}
-      <TrustBar />
 
       {/* Booking Wizard — the centerpiece */}
       <section className="pb-16 md:pb-24">
@@ -171,7 +167,7 @@ export default async function SharedShippingPage({
 
       {/* CTA */}
       <section className="py-16 bg-primary/5">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <ScrollReveal>
             <h2 className="text-2xl font-bold sm:text-3xl">
               Don&apos;t See Your Destination?
