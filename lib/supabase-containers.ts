@@ -441,7 +441,7 @@ export async function upsertContainers(
     }));
 
     const resp = await fetch(
-      `${config.url}/rest/v1/shared_containers`,
+      `${config.url}/rest/v1/shared_containers?on_conflict=project_number`,
       {
         method: "POST",
         headers: {
