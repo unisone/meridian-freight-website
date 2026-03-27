@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { MessageCircle } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { FaqAccordion } from "@/components/faq-accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ShippingWizard } from "@/components/shared-shipping/shipping-wizard";
 import { EmptyState } from "@/components/shared-shipping/empty-state";
@@ -162,8 +167,32 @@ export default async function SharedShippingPage({
         </div>
       </section>
 
-      {/* FAQ (locale-aware, interactive accordion) */}
-      <FaqAccordion entries={faqEntries} />
+      {/* FAQ — inline accordion at consistent max-w-4xl */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              Frequently Asked Questions
+            </h2>
+          </ScrollReveal>
+          <Accordion className="mt-6 space-y-3">
+            {faqEntries.map((faq, idx) => (
+              <AccordionItem
+                key={`faq-${idx}`}
+                value={`faq-${idx}`}
+                className="rounded-xl border-0 bg-white px-6 shadow-sm"
+              >
+                <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:text-primary py-5">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="py-16 bg-primary/5">
