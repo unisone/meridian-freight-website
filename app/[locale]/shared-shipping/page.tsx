@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MessageCircle } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/page-hero";
 import {
@@ -148,6 +148,17 @@ export default async function SharedShippingPage({
         description={t("description")}
         authority={t("authority")}
       />
+
+      {/* Cross-link to schedule */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4">
+        <a
+          href="/schedule"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+        >
+          {t("viewScheduleLink")}
+          <ArrowRight className="h-3.5 w-3.5" />
+        </a>
+      </div>
 
       {/* Booking Wizard — the centerpiece */}
       <section className="pt-6 pb-16 md:pt-8 md:pb-20">

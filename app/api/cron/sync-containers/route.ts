@@ -31,6 +31,10 @@ export async function GET(request: Request) {
       revalidatePath("/en/shared-shipping");
       revalidatePath("/es/shared-shipping");
       revalidatePath("/ru/shared-shipping");
+      revalidatePath("/schedule");
+      revalidatePath("/en/schedule");
+      revalidatePath("/es/schedule");
+      revalidatePath("/ru/schedule");
     }
 
     // Warn if error rate is high (more errors than successful upserts)

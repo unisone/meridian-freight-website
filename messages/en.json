@@ -583,7 +583,8 @@
     "ctaHeading": "Don't See Your Destination?",
     "ctaDescription": "We ship to 27+ countries and add new routes regularly. Contact us to discuss your shipping needs.",
     "ctaWhatsApp": "WhatsApp Us",
-    "ctaOrEmail": "or email {email}"
+    "ctaOrEmail": "or email {email}",
+    "viewScheduleLink": "View full shipping schedule"
   },
   "ShippingWizard": {
     "intro": "Select your cargo and destination — we'll send a detailed quote within 24 hours.",

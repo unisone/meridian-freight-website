@@ -583,7 +583,8 @@
     "ctaHeading": "No Ve Su Destino?",
     "ctaDescription": "Enviamos a mas de 27 paises y agregamos nuevas rutas regularmente. Contactenos para discutir sus necesidades de envio.",
     "ctaWhatsApp": "Escribanos por WhatsApp",
-    "ctaOrEmail": "o escriba a {email}"
+    "ctaOrEmail": "o escriba a {email}",
+    "viewScheduleLink": "Ver calendario completo de envios"
   },
   "ShippingWizard": {
     "intro": "Seleccione su carga y destino — le enviaremos una cotizacion detallada en 24 horas.",

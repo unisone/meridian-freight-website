@@ -93,6 +93,7 @@ export const NAV_ITEMS = [
   { label: "Destinations", href: "/destinations" },
   { label: "Pricing", href: "/pricing" },
   { label: "Shared Shipping", href: "/shared-shipping" },
+  { label: "Schedule", href: "/schedule" },
   { label: "FAQ", href: "/faq" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
