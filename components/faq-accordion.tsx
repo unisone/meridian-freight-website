@@ -67,7 +67,7 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 link-underline"
               >
                 {t("viewAllQuestions")}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Link>
             </div>
           )}

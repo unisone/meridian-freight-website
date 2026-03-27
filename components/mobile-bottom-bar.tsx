@@ -28,7 +28,7 @@ export function MobileBottomBar() {
         scrollDir === "down" ? "translate-y-full" : "translate-y-0"
       }`}
     >
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 pb-[env(safe-area-inset-bottom)]">
         <a
           href={CONTACT.whatsappUrl}
           target="_blank"
@@ -36,7 +36,7 @@ export function MobileBottomBar() {
           onClick={handleWhatsAppClick}
           className="flex flex-col items-center gap-1 py-3 text-emerald-600 transition-colors hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset"
         >
-          <MessageCircle className="h-5 w-5" />
+          <MessageCircle className="h-5 w-5" aria-hidden="true" />
           <span className="text-xs font-medium">{t("whatsApp")}<span className="sr-only"> ({t("opensInNewTab")})</span></span>
         </a>
         <a
@@ -44,14 +44,14 @@ export function MobileBottomBar() {
           onClick={handlePhoneClick}
           className="flex flex-col items-center gap-1 py-3 text-primary transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset"
         >
-          <Phone className="h-5 w-5" />
+          <Phone className="h-5 w-5" aria-hidden="true" />
           <span className="text-xs font-medium">{CONTACT.phone}</span>
         </a>
         <Link
           href="/contact"
           className="flex flex-col items-center gap-1 py-3 text-primary transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset"
         >
-          <FileText className="h-5 w-5" />
+          <FileText className="h-5 w-5" aria-hidden="true" />
           <span className="text-xs font-medium">{t("getQuote")}</span>
         </Link>
       </div>

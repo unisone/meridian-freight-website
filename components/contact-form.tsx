@@ -130,7 +130,7 @@ export function ContactForm() {
             onClick={() => trackContactClick("whatsapp", "contact_form_success")}
             className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 transition-colors hover:text-emerald-700"
           >
-            <MessageCircle className="h-4 w-4" />
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
             {t("whatsappPrompt")}
           </a>
         </motion.div>
@@ -153,22 +153,22 @@ export function ContactForm() {
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <Label htmlFor="name">{t("fullName")}</Label>
-              <Input id="name" name="name" required placeholder={t("fullNamePlaceholder")} className="mt-1.5" />
+              <Input id="name" name="name" required autoComplete="name" placeholder={t("fullNamePlaceholder")} className="mt-1.5" />
             </div>
             <div>
               <Label htmlFor="email">{t("email")}</Label>
-              <Input id="email" name="email" type="email" required placeholder={t("emailPlaceholder")} className="mt-1.5" />
+              <Input id="email" name="email" type="email" required autoComplete="email" spellCheck={false} placeholder={t("emailPlaceholder")} className="mt-1.5" />
             </div>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <Label htmlFor="company">{t("company")}</Label>
-              <Input id="company" name="company" placeholder={t("companyPlaceholder")} className="mt-1.5" />
+              <Input id="company" name="company" autoComplete="organization" placeholder={t("companyPlaceholder")} className="mt-1.5" />
             </div>
             <div>
               <Label htmlFor="phone">{t("phone")}</Label>
-              <Input id="phone" name="phone" type="tel" placeholder={t("phonePlaceholder")} className="mt-1.5" />
+              <Input id="phone" name="phone" type="tel" autoComplete="tel" placeholder={t("phonePlaceholder")} className="mt-1.5" />
             </div>
           </div>
 
@@ -209,7 +209,7 @@ export function ContactForm() {
             type="submit"
             disabled={isSubmitting}
             size="lg"
-            className={`w-full bg-primary hover:bg-primary/90 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base ${error ? "animate-shake" : ""}`}
+            className={`w-full bg-primary hover:bg-primary/90 text-white font-semibold py-5 rounded-xl shadow-lg hover:shadow-xl transition-[background-color,box-shadow] text-base ${error ? "animate-shake" : ""}`}
           >
             {isSubmitting ? (
               <>

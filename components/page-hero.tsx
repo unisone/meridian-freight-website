@@ -47,7 +47,7 @@ export function PageHero({
       {variant === "light" ? (
         /* ─── Light: heading + desc in same container, no background ─── */
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground text-balance sm:text-4xl md:text-5xl">
             {heading}
           </h1>
           {description && (
@@ -72,7 +72,7 @@ export function PageHero({
                       </div>
                     </div>
                   )}
-                  <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+                  <h1 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl md:text-5xl">
                     {heading}
                   </h1>
                   {description && (
@@ -94,7 +94,7 @@ export function PageHero({
                     </div>
                   </div>
                 )}
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+                <h1 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl md:text-5xl">
                   {heading}
                 </h1>
                 {description && (
@@ -116,7 +116,7 @@ export function PageHero({
                 {eyebrow}
               </p>
             )}
-            <h1 className={`${eyebrow ? "mt-2" : ""} text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl`}>
+            <h1 className={`${eyebrow ? "mt-2" : ""} text-3xl font-bold tracking-tight text-foreground text-balance sm:text-4xl md:text-5xl`}>
               {heading}
             </h1>
             {description && (

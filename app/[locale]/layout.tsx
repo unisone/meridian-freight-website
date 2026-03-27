@@ -174,6 +174,8 @@ export default async function LocaleLayout({
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
         <JsonLd locale={locale} />
+        <link rel="preconnect" href="https://img.youtube.com" />
+        <link rel="preconnect" href="https://www.youtube-nocookie.com" />
       </head>
       <body className="bg-background text-foreground antialiased">
         <a

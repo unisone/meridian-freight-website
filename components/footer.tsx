@@ -66,7 +66,7 @@ export function Footer() {
                 location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
-                <Phone className="h-4 w-4 text-primary" />
+                <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
                 {CONTACT.phone}
               </TrackedContactLink>
               <TrackedContactLink
@@ -75,11 +75,11 @@ export function Footer() {
                 location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
-                <Mail className="h-4 w-4 text-primary" />
+                <Mail className="h-4 w-4 text-primary" aria-hidden="true" />
                 {CONTACT.email}
               </TrackedContactLink>
               <div className="flex items-center gap-3 text-sm">
-                <MapPin className="h-4 w-4 shrink-0 text-primary" />
+                <MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                 {CONTACT.address.full}
               </div>
             </div>
@@ -90,7 +90,7 @@ export function Footer() {
                 href={SOCIAL.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-primary hover:text-white hover:scale-110"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-primary hover:text-white hover:scale-110"
                 aria-label={t("followFacebook")}
               >
                 <Facebook className="h-5 w-5" />
@@ -99,7 +99,7 @@ export function Footer() {
                 href={SOCIAL.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-pink-500 hover:text-white hover:scale-110"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-pink-500 hover:text-white hover:scale-110"
                 aria-label={t("followInstagram")}
               >
                 <Instagram className="h-5 w-5" />
@@ -108,7 +108,7 @@ export function Footer() {
                 href={SOCIAL.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-red-600 hover:text-white hover:scale-110"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-red-600 hover:text-white hover:scale-110"
                 aria-label={t("watchYouTube")}
               >
                 <Youtube className="h-5 w-5" />

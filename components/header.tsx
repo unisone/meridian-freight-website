@@ -42,7 +42,7 @@ export function Header() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-[background-color,box-shadow] duration-300 ${
         isScrolled
           ? "glass-heavy shadow-sm ghost-border"
           : "bg-white"
@@ -54,7 +54,7 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center rounded-lg py-1 px-1 transition-all"
+            className="flex items-center rounded-lg py-1 px-1 transition-opacity"
             aria-label={t("logoAlt")}
           >
             <Image
@@ -87,7 +87,7 @@ export function Header() {
                                 key={child.href}
                                 render={<Link href={child.href} />}
                                 closeOnClick
-                                className="block rounded-none px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/5 hover:text-primary/80 focus:bg-primary/5 focus:text-primary/80 focus-visible:ring-0 focus-visible:outline-none"
+                                className="block rounded-none px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/5 hover:text-primary/80 focus-visible:bg-primary/5 focus-visible:text-primary/80 focus-visible:outline-none"
                               >
                                 {t(`nav.${child.label}`)}
                               </NavigationMenuLink>
@@ -97,7 +97,7 @@ export function Header() {
                             <NavigationMenuLink
                               render={<Link href="/contact" />}
                               closeOnClick
-                              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary/90 focus:bg-primary/90 focus-visible:ring-0"
+                              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary/90 focus-visible:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
                             >
                               {tc("getFreeQuote")}
                             </NavigationMenuLink>
@@ -107,7 +107,7 @@ export function Header() {
                     ) : (
                       <NavigationMenuLink
                         render={<Link href={item.href} />}
-                        className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground hover:bg-transparent focus:bg-transparent link-underline focus-visible:ring-0 focus-visible:outline-none"
+                        className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                       >
                         {t(`nav.${item.label}`)}
                       </NavigationMenuLink>
@@ -127,7 +127,7 @@ export function Header() {
               onClick={() => trackContactClick("whatsapp", "header_desktop")}
               className="group ml-4 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
             >
-              <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
+              <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" aria-hidden="true" />
               {tc("chatOnWhatsApp")}
             </a>
           </div>
@@ -210,7 +210,7 @@ export function Header() {
                     className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-3.5 text-center text-base font-semibold text-white transition-colors hover:bg-emerald-700"
                     onClick={() => { setMobileOpen(false); trackContactClick("whatsapp", "header_mobile_menu"); }}
                   >
-                    <MessageCircle className="h-5 w-5" />
+                    <MessageCircle className="h-5 w-5" aria-hidden="true" />
                     {tc("chatOnWhatsApp")}
                   </a>
                 </motion.div>
@@ -231,7 +231,7 @@ export function Header() {
                     onClick={() => trackContactClick("phone", "header_mobile")}
                     className="flex items-center gap-3 rounded-lg bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
                   >
-                    <Phone className="h-5 w-5 text-emerald-600" />
+                    <Phone className="h-5 w-5 text-emerald-600" aria-hidden="true" />
                     <div>
                       <div className="font-medium text-foreground">
                         {tc("callNow")}
@@ -248,7 +248,7 @@ export function Header() {
                     onClick={() => trackContactClick("whatsapp", "header_mobile_card")}
                     className="flex items-center gap-3 rounded-lg bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
                   >
-                    <MessageCircle className="h-5 w-5 text-emerald-600" />
+                    <MessageCircle className="h-5 w-5 text-emerald-600" aria-hidden="true" />
                     <div>
                       <div className="font-medium text-foreground">
                         WhatsApp

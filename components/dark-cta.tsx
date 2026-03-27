@@ -40,7 +40,7 @@ export function DarkCta({
         )}
       >
         {icon && <div className="mb-4">{icon}</div>}
-        <h2 className="text-2xl font-bold sm:text-3xl">{heading}</h2>
+        <h2 className="text-2xl font-bold text-balance sm:text-3xl">{heading}</h2>
         <p className="mx-auto mt-3 max-w-xl text-sky-300">{description}</p>
         <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           {children}

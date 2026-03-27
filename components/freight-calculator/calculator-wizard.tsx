@@ -366,7 +366,7 @@ export function CalculatorWizard() {
                       setSelectedEquipment(null);
                       setEquipmentSize(null);
                     }}
-                    className={`group flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
+                    className={`group flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                       isSelected
                         ? "border-primary bg-primary/5 ring-1 ring-primary/20"
                         : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
@@ -425,7 +425,7 @@ export function CalculatorWizard() {
                               container_type: eq.container_type,
                             });
                           }}
-                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
+                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                             isSelected
                               ? "bg-primary text-primary-foreground"
                               : "hover:bg-muted"
@@ -479,7 +479,7 @@ export function CalculatorWizard() {
           {/* ╚═══════════════════════════════════════════════╝ */}
           <section
             aria-disabled={!selectedEquipment || undefined}
-            className={`transition-all duration-300 ${
+            className={`transition-[opacity,transform] duration-300 ${
               !selectedEquipment ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
@@ -506,7 +506,9 @@ export function CalculatorWizard() {
                     </Label>
                     <Input
                       id="equipment-size"
+                      name="equipment-size"
                       type="number"
+                      autoComplete="off"
                       min={1}
                       value={equipmentSize ?? ""}
                       onChange={(e) => {
@@ -595,7 +597,7 @@ export function CalculatorWizard() {
           {/* ╚═══════════════════════════════════════════════╝ */}
           <section
             aria-disabled={!step2Done || undefined}
-            className={`transition-all duration-300 ${
+            className={`transition-[opacity,transform] duration-300 ${
               !step2Done ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
@@ -619,6 +621,8 @@ export function CalculatorWizard() {
                     </Label>
                     <select
                       id="dest-country"
+                      name="destination-country"
+                      autoComplete="off"
                       value={destinationCountry}
                       onChange={(e) => {
                         const country = e.target.value;
@@ -661,8 +665,10 @@ export function CalculatorWizard() {
                     </Label>
                     <Input
                       id="zip-code"
+                      name="zip-code"
                       type="text"
                       inputMode="numeric"
+                      autoComplete="postal-code"
                       maxLength={5}
                       value={zipCode}
                       onChange={(e) =>

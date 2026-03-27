@@ -40,7 +40,7 @@ export function ProjectGrid({ limit, hideHeader }: ProjectGridProps) {
           {displayProjects.map((project, idx) => (
             <StaggerItem key={project.id} index={idx} variant="fade">
               <article
-                className="group flex h-full flex-col overflow-hidden rounded-xl border-0 bg-white shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99]"
+                className="group flex h-full flex-col overflow-hidden rounded-xl border-0 bg-white shadow-sm transition-[transform,box-shadow] duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99]"
               >
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -69,19 +69,19 @@ export function ProjectGrid({ limit, hideHeader }: ProjectGridProps) {
                   {/* Metadata */}
                   <div className="mt-4 grid grid-cols-2 gap-2 bg-muted -mx-5 px-5 py-3 rounded-b-xl">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <MapPin className="h-3.5 w-3.5" />
+                      <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
                       <span className="font-mono">{project.destination}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Container className="h-3.5 w-3.5" />
+                      <Container className="h-3.5 w-3.5" aria-hidden="true" />
                       <span className="font-mono">{project.containerType}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Clock className="h-3.5 w-3.5" />
+                      <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                       <span className="font-mono">{project.transitTime}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Weight className="h-3.5 w-3.5" />
+                      <Weight className="h-3.5 w-3.5" aria-hidden="true" />
                       <span className="font-mono">{project.weight}</span>
                     </div>
                   </div>
@@ -99,7 +99,7 @@ export function ProjectGrid({ limit, hideHeader }: ProjectGridProps) {
               className="group inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors link-underline"
             >
               {t("viewAllProjects")}
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
         )}

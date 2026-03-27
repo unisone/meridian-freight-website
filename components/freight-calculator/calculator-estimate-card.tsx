@@ -326,7 +326,10 @@ export function CalculatorEstimateCard({
             </Label>
             <Input
               id="est-email"
+              name="email"
               type="email"
+              autoComplete="email"
+              spellCheck={false}
               value={email}
               onChange={(e) => onEmailChange(e.target.value)}
               placeholder={t("emailPlaceholder")}
@@ -347,6 +350,8 @@ export function CalculatorEstimateCard({
               </Label>
               <Input
                 id="est-name"
+                name="name"
+                autoComplete="name"
                 value={name}
                 onChange={(e) => onNameChange(e.target.value)}
                 placeholder={t("optionalPlaceholder")}
@@ -359,6 +364,8 @@ export function CalculatorEstimateCard({
               </Label>
               <Input
                 id="est-company"
+                name="company"
+                autoComplete="organization"
                 value={company}
                 onChange={(e) => onCompanyChange(e.target.value)}
                 placeholder={t("optionalPlaceholder")}
