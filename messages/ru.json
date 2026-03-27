@@ -718,7 +718,9 @@
     "ctaDescription": "Выберите свободное место и отправьте заявку. Мы пришлем расценку в течение 24 часов.",
     "ctaBookSpace": "Забронировать место в контейнере",
     "ctaOrContact": "или напишите на {email}",
-    "viewScheduleLink": "Смотреть полное расписание отправок"
+    "viewScheduleLink": "Смотреть полное расписание отправок",
+    "statsBookable": "Свободное место",
+    "faqHeading": "Вопросы, которые задает каждый покупатель"
   },
   "ScheduleList": {
     "tabAll": "Все",
@@ -748,5 +750,52 @@
     "noDataDescription": "Новые отправки добавляются регулярно. Свяжитесь с нами для актуальной информации.",
     "clearFilters": "Сбросить фильтры",
     "contactUs": "Связаться с нами"
+  },
+  "ScheduleBooking": {
+    "bookSpace": "Забронировать место",
+    "collapse": "Отменить",
+    "whatAreYouShipping": "Что вы отправляете?",
+    "cargo": {
+      "header": "Жатки и платформы",
+      "tractor": "Трактор",
+      "combine": "Комбайн",
+      "sprayer": "Опрыскиватель",
+      "planter": "Сеялка",
+      "seeder": "Сеялка точного высева",
+      "tillage": "Почвообрабатывающее оборудование",
+      "construction": "Строительная техника",
+      "forestry": "Лесозаготовительная техника",
+      "parts": "Запчасти и паллеты",
+      "other": "Другое"
+    },
+    "estimatedCbm": "~{cbm} куб.м",
+    "addDetails": "Добавьте детали — модель, количество, размер (необязательно)",
+    "describeYourCargo": "Опишите ваш груз",
+    "placeholderDetails": "напр. John Deere 635FD, 35 футов, 2 шт...",
+    "placeholderOther": "напр. промышленный насос, 2 генератора...",
+    "combineWarning": "Комбайны обычно требуют полный контейнер. Воспользуйтесь <calcLink>калькулятором фрахта</calcLink> для расчета полного контейнера.",
+    "yourInfo": "Ваши данные",
+    "fullName": "ФИО",
+    "email": "Электронная почта",
+    "phoneWhatsApp": "Телефон / WhatsApp",
+    "placeholderName": "Иван Петров",
+    "placeholderEmail": "ivan@kompaniya.com",
+    "placeholderPhone": "+7 (999) 000-0000",
+    "submitting": "Отправка...",
+    "submitRequest": "Отправить заявку",
+    "termsAgreement": "Отправляя заявку, вы соглашаетесь с <terms>Условиями использования</terms> и <privacy>Политикой конфиденциальности</privacy>.",
+    "errorDefault": "Что-то пошло не так. Попробуйте снова или свяжитесь с нами через WhatsApp.",
+    "requestSubmitted": "Заявка отправлена",
+    "successMessage": "Мы получили вашу заявку на контейнер <bold>{projectNum}</bold> в направлении <bold>{destName}</bold>.",
+    "successFollowUp": "Наша команда свяжется с вами в течение 24 часов с расценкой.",
+    "chatOnWhatsApp": "Написать в WhatsApp",
+    "or": "или",
+    "submitAnother": "Забронировать другой контейнер",
+    "cargoFits": "Ваш груз (~{cbm} куб.м) должен поместиться",
+    "cargoMayNotFit": "Ваш груз (~{cbm} куб.м) может не поместиться — мы проверим",
+    "pendingRequests": "{count, plural, one {# другая заявка в обработке} few {# другие заявки в обработке} other {# других заявок в обработке}}",
+    "cbmAvailable": "{cbm} куб.м",
+    "availablePercent": "доступно ({percent}% свободно)",
+    "cbmTotal": "{cbm} куб.м всего"
   }
 }

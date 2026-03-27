@@ -718,7 +718,9 @@
     "ctaDescription": "Explore espacio disponible y envie una solicitud de reserva. Le enviaremos una cotizacion en 24 horas.",
     "ctaBookSpace": "Reservar Espacio en Contenedor",
     "ctaOrContact": "o escriba a {email}",
-    "viewScheduleLink": "Ver calendario completo de envios"
+    "viewScheduleLink": "Ver calendario completo de envios",
+    "statsBookable": "Espacio Disponible",
+    "faqHeading": "Preguntas que Todo Comprador Hace"
   },
   "ScheduleList": {
     "tabAll": "Todos",
@@ -748,5 +750,52 @@
     "noDataDescription": "Se agregan nuevos envios regularmente. Contactenos para la informacion mas reciente.",
     "clearFilters": "Borrar filtros",
     "contactUs": "Contactenos"
+  },
+  "ScheduleBooking": {
+    "bookSpace": "Reservar Espacio",
+    "collapse": "Cancelar",
+    "whatAreYouShipping": "Que esta enviando?",
+    "cargo": {
+      "header": "Cabezales y Plataformas",
+      "tractor": "Tractor",
+      "combine": "Cosechadora",
+      "sprayer": "Pulverizador",
+      "planter": "Sembradora",
+      "seeder": "Sembradora de Precision",
+      "tillage": "Equipo de Labranza",
+      "construction": "Construccion",
+      "forestry": "Forestal",
+      "parts": "Repuestos y Paletas",
+      "other": "Otro"
+    },
+    "estimatedCbm": "~{cbm} CBM",
+    "addDetails": "Agregue detalles — modelo, cantidad, tamano (opcional)",
+    "describeYourCargo": "Describa su carga",
+    "placeholderDetails": "ej. John Deere 635FD, 35ft, 2 unidades...",
+    "placeholderOther": "ej. bomba industrial, 2 generadores...",
+    "combineWarning": "Las cosechadoras generalmente requieren un contenedor completo. Considere nuestra <calcLink>calculadora de flete</calcLink> para una cotizacion de contenedor completo.",
+    "yourInfo": "Su informacion",
+    "fullName": "Nombre Completo",
+    "email": "Correo Electronico",
+    "phoneWhatsApp": "Telefono / WhatsApp",
+    "placeholderName": "Juan Perez",
+    "placeholderEmail": "juan@empresa.com",
+    "placeholderPhone": "+1 (555) 000-0000",
+    "submitting": "Enviando...",
+    "submitRequest": "Enviar Solicitud",
+    "termsAgreement": "Al enviar, acepta nuestros <terms>Terminos de Servicio</terms> y <privacy>Politica de Privacidad</privacy>.",
+    "errorDefault": "Algo salio mal. Intente de nuevo o contactenos por WhatsApp.",
+    "requestSubmitted": "Solicitud Enviada",
+    "successMessage": "Recibimos su solicitud para el contenedor <bold>{projectNum}</bold> con destino a <bold>{destName}</bold>.",
+    "successFollowUp": "Nuestro equipo lo contactara en 24 horas con una cotizacion.",
+    "chatOnWhatsApp": "Chatear por WhatsApp",
+    "or": "o",
+    "submitAnother": "Reservar otro contenedor",
+    "cargoFits": "Su carga (~{cbm} CBM) deberia caber",
+    "cargoMayNotFit": "Su carga (~{cbm} CBM) puede no caber — lo verificaremos",
+    "pendingRequests": "{count, plural, one {# otra solicitud pendiente} other {# otras solicitudes pendientes}}",
+    "cbmAvailable": "{cbm} CBM",
+    "availablePercent": "disponible ({percent}% libre)",
+    "cbmTotal": "{cbm} CBM total"
   }
 }

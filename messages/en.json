@@ -718,7 +718,9 @@
     "ctaDescription": "Browse available space and submit a booking request. We'll send a quote within 24 hours.",
     "ctaBookSpace": "Book Shared Container Space",
     "ctaOrContact": "or email {email}",
-    "viewScheduleLink": "View full shipping schedule"
+    "viewScheduleLink": "View full shipping schedule",
+    "statsBookable": "Available Space",
+    "faqHeading": "Questions Every Buyer Asks"
   },
   "ScheduleList": {
     "tabAll": "All",
@@ -748,5 +750,52 @@
     "noDataDescription": "New shipments are added regularly. Contact us for the latest schedule information.",
     "clearFilters": "Clear filters",
     "contactUs": "Contact us"
+  },
+  "ScheduleBooking": {
+    "bookSpace": "Book Space",
+    "collapse": "Cancel",
+    "whatAreYouShipping": "What are you shipping?",
+    "cargo": {
+      "header": "Headers & Platforms",
+      "tractor": "Tractor",
+      "combine": "Combine",
+      "sprayer": "Sprayer",
+      "planter": "Planter",
+      "seeder": "Seeder",
+      "tillage": "Tillage Equipment",
+      "construction": "Construction",
+      "forestry": "Forestry",
+      "parts": "Parts & Pallets",
+      "other": "Other"
+    },
+    "estimatedCbm": "~{cbm} CBM",
+    "addDetails": "Add details — model, quantity, size (optional)",
+    "describeYourCargo": "Describe your cargo",
+    "placeholderDetails": "e.g. John Deere 635FD, 35ft, 2 units...",
+    "placeholderOther": "e.g. industrial pump, 2 generators...",
+    "combineWarning": "Combines typically require a full container. Consider our <calcLink>freight calculator</calcLink> for a full-container quote.",
+    "yourInfo": "Your info",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phoneWhatsApp": "Phone / WhatsApp",
+    "placeholderName": "John Smith",
+    "placeholderEmail": "john@company.com",
+    "placeholderPhone": "+1 (555) 000-0000",
+    "submitting": "Submitting...",
+    "submitRequest": "Submit Request",
+    "termsAgreement": "By submitting, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "errorDefault": "Something went wrong. Please try again or contact us via WhatsApp.",
+    "requestSubmitted": "Request Submitted",
+    "successMessage": "We received your request for container <bold>{projectNum}</bold> to <bold>{destName}</bold>.",
+    "successFollowUp": "Our team will contact you within 24 hours with a quote.",
+    "chatOnWhatsApp": "Chat on WhatsApp",
+    "or": "or",
+    "submitAnother": "Book another container",
+    "cargoFits": "Your cargo (~{cbm} CBM) should fit",
+    "cargoMayNotFit": "Your cargo (~{cbm} CBM) may not fit — we'll verify",
+    "pendingRequests": "{count, plural, one {# other request pending} other {# other requests pending}}",
+    "cbmAvailable": "{cbm} CBM",
+    "availablePercent": "available ({percent}% free)",
+    "cbmTotal": "{cbm} CBM total"
   }
 }
