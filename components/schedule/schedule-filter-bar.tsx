@@ -49,12 +49,12 @@ export function ScheduleFilterBar({
           value={activeTab}
           onValueChange={(val) => onTabChange(val as FilterTab)}
         >
-          <TabsList className="h-auto flex-wrap">
+          <TabsList className="h-auto overflow-x-auto scrollbar-hide">
             {TAB_KEYS.map((tab) => (
-              <TabsTrigger key={tab} value={tab} className="text-xs sm:text-sm">
+              <TabsTrigger key={tab} value={tab} className="text-xs sm:text-sm whitespace-nowrap">
                 {t(TAB_LABEL_MAP[tab])}
                 <span className="ml-1 text-[10px] text-muted-foreground tabular-nums">
-                  ({tabCounts[tab]})
+                  {tabCounts[tab]}
                 </span>
               </TabsTrigger>
             ))}

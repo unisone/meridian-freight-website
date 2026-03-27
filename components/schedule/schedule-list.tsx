@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Calendar,
   CalendarDays,
   CheckCircle2,
+  ChevronDown,
   Clock,
   Ship,
 } from "lucide-react";
@@ -12,6 +13,7 @@ import type { LucideIcon } from "lucide-react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { StaleDataBanner } from "@/components/shared-shipping/stale-data-banner";
 import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 import {
@@ -46,6 +48,10 @@ const GROUP_ICONS: Record<ScheduleGroup, LucideIcon> = {
   arrived: CheckCircle2,
 };
 
+// ─── Groups that are collapsed by default ────────────────────────────────────
+
+const COLLAPSED_BY_DEFAULT: Set<ScheduleGroup> = new Set(["arrived"]);
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
@@ -57,6 +63,23 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
   // ─── Filter state from URL ─────────────────────────────
   const activeTab = (searchParams.get("tab") ?? "all") as FilterTab;
   const activeCountry = searchParams.get("country");
+
+  // ─── Collapsed groups state ────────────────────────────
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<ScheduleGroup>>(
+    () => new Set(COLLAPSED_BY_DEFAULT),
+  );
+
+  function toggleGroup(group: ScheduleGroup) {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(group)) {
+        next.delete(group);
+      } else {
+        next.add(group);
+      }
+      return next;
+    });
+  }
 
   // ─── Derived data (memoized) ───────────────────────────
   const tabCounts = useMemo(
@@ -120,8 +143,6 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
   }
 
   // ─── Render ────────────────────────────────────────────
-  let rowIndex = 0;
-
   return (
     <div className="space-y-6">
       <StaleDataBanner
@@ -148,46 +169,54 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
         Array.from(groups.entries()).map(([group, items]) => {
           const config = GROUP_CONFIG[group];
           const Icon = GROUP_ICONS[group];
+          const isCollapsed = collapsedGroups.has(group);
 
           return (
-            <section key={group} className="space-y-3">
-              {/* Group header */}
-              <div
-                className={`flex items-center gap-2 border-l-4 pl-3 py-1 ${config.borderColor}`}
-              >
-                <Icon className="h-4 w-4 text-muted-foreground" />
-                <h3 className="text-sm font-semibold text-foreground">
-                  {t(config.label)}
-                </h3>
-                <span className="text-xs text-muted-foreground tabular-nums">
-                  ({items.length})
-                </span>
-              </div>
+            <ScrollReveal key={group}>
+              <section className="space-y-2">
+                {/* Group header — clickable to collapse */}
+                <button
+                  onClick={() => toggleGroup(group)}
+                  className={`flex items-center gap-2 border-l-4 pl-3 py-1.5 w-full text-left hover:bg-muted/30 rounded-r-md transition-colors ${config.borderColor}`}
+                >
+                  <Icon className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                    {t(config.label)}
+                  </h3>
+                  <span className="text-xs font-semibold text-muted-foreground tabular-nums">
+                    {items.length}
+                  </span>
+                  <ChevronDown
+                    className={`ml-auto h-4 w-4 text-muted-foreground transition-transform ${
+                      isCollapsed ? "-rotate-90" : ""
+                    }`}
+                  />
+                </button>
 
-              {/* Container rows */}
-              <div className="space-y-3">
-                {items.map((container) => {
-                  const idx = rowIndex++;
-                  const isBookable =
-                    container.status === "available" &&
-                    (container.available_cbm ?? 0) > 0;
+                {/* Container rows */}
+                {!isCollapsed && (
+                  <div className="space-y-2">
+                    {items.map((container) => {
+                      const isBookable =
+                        container.status === "available" &&
+                        (container.available_cbm ?? 0) > 0;
 
-                  return isBookable ? (
-                    <ScheduleBookableRow
-                      key={container.id}
-                      container={container as ContainerWithPendingCount}
-                      index={idx}
-                    />
-                  ) : (
-                    <ScheduleRow
-                      key={container.id}
-                      container={container}
-                      index={idx}
-                    />
-                  );
-                })}
-              </div>
-            </section>
+                      return isBookable ? (
+                        <ScheduleBookableRow
+                          key={container.id}
+                          container={container as ContainerWithPendingCount}
+                        />
+                      ) : (
+                        <ScheduleRow
+                          key={container.id}
+                          container={container}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+              </section>
+            </ScrollReveal>
           );
         })
       )}

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/page-hero";
@@ -137,7 +136,7 @@ export default async function SchedulePage({
         </div>
       </section>
 
-      {/* CTA: Book Space */}
+      {/* CTA: Need a dedicated container? */}
       <section className="py-16 bg-primary/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <ScrollReveal>
@@ -148,13 +147,15 @@ export default async function SchedulePage({
               {t("ctaDescription")}
             </p>
             <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link
-                href="/shared-shipping"
+              <a
+                href={CONTACT.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 <MessageCircle className="h-4 w-4" />
-                {t("ctaBookSpace")}
-              </Link>
+                {t("ctaWhatsApp")}
+              </a>
               <a
                 href={CONTACT.emailHref}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

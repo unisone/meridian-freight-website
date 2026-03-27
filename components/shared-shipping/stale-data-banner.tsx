@@ -42,7 +42,15 @@ export function StaleDataBanner({ lastSyncTime, hasContainers = false }: StaleDa
   const t = useTranslations("StaleDataBanner");
   const { level, minutesAgo } = getFreshnessLevel(lastSyncTime, hasContainers);
 
-  if (level === "fresh") return null;
+  if (level === "fresh") {
+    if (minutesAgo === Infinity) return null; // no sync history, seeded data
+    return (
+      <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60">
+        <Clock className="h-3 w-3" />
+        <span>{t("updated", { timeAgo: formatTimeAgo(minutesAgo, t) })}</span>
+      </div>
+    );
+  }
 
   if (level === "aging") {
     return (
