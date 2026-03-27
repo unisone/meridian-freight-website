@@ -311,4 +311,41 @@ describe("groupContainers", () => {
     const groups = groupContainers(containers, "all", "XX");
     expect(groups.size).toBe(0);
   });
+
+  it("sorts upcoming groups by departure ASC (soonest first)", () => {
+    const upcoming = [
+      makeContainer({ id: "late", status: "available", departure_date: daysFromNow(20) }),
+      makeContainer({ id: "soon", status: "available", departure_date: daysFromNow(10) }),
+      makeContainer({ id: "soonest", status: "available", departure_date: daysFromNow(8) }),
+    ];
+    const groups = groupContainers(upcoming, "all", null);
+    const items = Array.from(groups.values()).flat();
+    expect(items[0].id).toBe("soonest");
+    expect(items[1].id).toBe("soon");
+    expect(items[2].id).toBe("late");
+  });
+
+  it("sorts in-transit group by departure DESC (most recent first)", () => {
+    const transit = [
+      makeContainer({ id: "old", status: "departed", departure_date: daysFromNow(-30), eta_date: daysFromNow(5) }),
+      makeContainer({ id: "recent", status: "departed", departure_date: daysFromNow(-5), eta_date: daysFromNow(30) }),
+      makeContainer({ id: "mid", status: "departed", departure_date: daysFromNow(-15), eta_date: daysFromNow(20) }),
+    ];
+    const groups = groupContainers(transit, "all", null);
+    const items = groups.get("in-transit")!;
+    expect(items[0].id).toBe("recent");
+    expect(items[1].id).toBe("mid");
+    expect(items[2].id).toBe("old");
+  });
+
+  it("sorts arrived group by ETA DESC (most recent arrival first)", () => {
+    const arrived = [
+      makeContainer({ id: "old-arrival", status: "departed", departure_date: daysFromNow(-50), eta_date: daysFromNow(-20) }),
+      makeContainer({ id: "recent-arrival", status: "departed", departure_date: daysFromNow(-40), eta_date: daysFromNow(-3) }),
+    ];
+    const groups = groupContainers(arrived, "all", null);
+    const items = groups.get("arrived")!;
+    expect(items[0].id).toBe("recent-arrival");
+    expect(items[1].id).toBe("old-arrival");
+  });
 });

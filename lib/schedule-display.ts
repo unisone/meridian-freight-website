@@ -296,7 +296,7 @@ export function groupContainers(
   // Group
   const groups = new Map<ScheduleGroup, SharedContainer[]>();
 
-  // Maintain display order
+  // Display order: bookable/upcoming FIRST, then shipped de-escalating
   const groupOrder: ScheduleGroup[] = [
     "departing-this-week",
     "departing-this-month",
@@ -326,10 +326,22 @@ export function groupContainers(
     groups.get(group)!.push(c);
   }
 
-  // Sort arrived group by ETA descending (most recent first)
-  const arrived = groups.get("arrived");
-  if (arrived) {
-    arrived.sort((a, b) => (b.eta_date ?? "").localeCompare(a.eta_date ?? ""));
+  // Sort each group:
+  // - Upcoming groups: departure date ASCENDING (soonest first — these are actionable)
+  // - Shipped groups: departure date DESCENDING (most recent first — de-escalating)
+  for (const [group, items] of groups) {
+    if (group === "in-transit") {
+      // Most recently departed first
+      items.sort((a, b) => b.departure_date.localeCompare(a.departure_date));
+    } else if (group === "arrived") {
+      // Most recently arrived first (by ETA, fallback to departure)
+      items.sort((a, b) =>
+        (b.eta_date ?? b.departure_date).localeCompare(a.eta_date ?? a.departure_date),
+      );
+    } else {
+      // Upcoming: soonest departure first
+      items.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
+    }
   }
 
   // Return in display order
