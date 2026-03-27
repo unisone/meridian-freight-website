@@ -7,7 +7,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { ScheduleList } from "@/components/schedule/schedule-list";
 import { ScheduleStats } from "@/components/schedule/schedule-stats";
 import { ScheduleEmptyState } from "@/components/schedule/schedule-empty-state";
-import { fetchScheduleContainers, getLastSyncTime } from "@/lib/supabase-containers";
+import { fetchScheduleContainersWithBookingData, getLastSyncTime } from "@/lib/supabase-containers";
 import { computeScheduleStats } from "@/lib/schedule-display";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -72,7 +72,7 @@ export default async function SchedulePage({
   setRequestLocale(locale);
 
   const [containers, lastSyncTime, t] = await Promise.all([
-    fetchScheduleContainers(),
+    fetchScheduleContainersWithBookingData(),
     getLastSyncTime(),
     getTranslations({ locale, namespace: "SchedulePage" }),
   ]);

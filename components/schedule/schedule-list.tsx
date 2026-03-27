@@ -13,7 +13,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { StaleDataBanner } from "@/components/shared-shipping/stale-data-banner";
-import type { SharedContainer } from "@/lib/types/shared-shipping";
+import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 import {
   type FilterTab,
   type ScheduleGroup,
@@ -26,12 +26,13 @@ import { trackScheduleEvent } from "@/lib/tracking";
 
 import { ScheduleFilterBar } from "./schedule-filter-bar";
 import { ScheduleRow } from "./schedule-row";
+import { ScheduleBookableRow } from "./schedule-bookable-row";
 import { ScheduleEmptyState } from "./schedule-empty-state";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface ScheduleListProps {
-  containers: SharedContainer[];
+  containers: ContainerWithPendingCount[];
   lastSyncTime: string | null;
 }
 
@@ -167,7 +168,17 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
               <div className="space-y-3">
                 {items.map((container) => {
                   const idx = rowIndex++;
-                  return (
+                  const isBookable =
+                    container.status === "available" &&
+                    (container.available_cbm ?? 0) > 0;
+
+                  return isBookable ? (
+                    <ScheduleBookableRow
+                      key={container.id}
+                      container={container as ContainerWithPendingCount}
+                      index={idx}
+                    />
+                  ) : (
                     <ScheduleRow
                       key={container.id}
                       container={container}

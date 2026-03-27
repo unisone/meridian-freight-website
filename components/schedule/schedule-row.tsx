@@ -1,11 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { StaggerItem } from "@/components/scroll-reveal";
 import { countryFlag, transitDays } from "@/lib/container-display";
@@ -15,7 +12,6 @@ import {
   SCHEDULE_STATUS_CONFIG,
 } from "@/lib/schedule-display";
 import { cn } from "@/lib/utils";
-import { trackScheduleEvent } from "@/lib/tracking";
 import type { SharedContainer } from "@/lib/types/shared-shipping";
 import { TransitProgress } from "./transit-progress";
 
@@ -44,8 +40,6 @@ export function ScheduleRow({ container, index }: ScheduleRowProps) {
     container.eta_date,
   );
   const flag = countryFlag(container.destination_country);
-  const hasAvailableSpace =
-    container.status === "available" && (container.available_cbm ?? 0) > 0;
 
   return (
     <StaggerItem index={index}>
@@ -119,38 +113,13 @@ export function ScheduleRow({ container, index }: ScheduleRowProps) {
             </p>
           )}
 
-          {/* ─── Meta + CTA ─── */}
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              <span className="font-mono">{container.project_number}</span>
-              {transitDayCount !== null && (
-                <span>
-                  ~{transitDayCount} {t("days")}
-                </span>
-              )}
-              {hasAvailableSpace && (
-                <span className="font-medium text-foreground">
-                  {container.available_cbm} CBM {t("available")}
-                </span>
-              )}
-            </div>
-
-            {hasAvailableSpace && (
-              <Button
-                size="sm"
-                variant="outline"
-                className="shrink-0"
-                onClick={() => {
-                  trackScheduleEvent("book_click", {
-                    project_number: container.project_number,
-                    destination: container.destination_country ?? "",
-                  });
-                }}
-                render={<Link href="/shared-shipping" />}
-              >
-                {t("bookSpace")}
-                <ArrowRight className="ml-1 h-3 w-3" />
-              </Button>
+          {/* ─── Meta ─── */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+            <span className="font-mono">{container.project_number}</span>
+            {transitDayCount !== null && (
+              <span>
+                ~{transitDayCount} {t("days")}
+              </span>
             )}
           </div>
         </CardContent>

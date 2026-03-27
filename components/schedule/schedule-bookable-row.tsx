@@ -10,7 +10,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { StaggerItem } from "@/components/scroll-reveal";
@@ -203,26 +202,24 @@ export function ScheduleBookableRow({
                 )}
               </div>
 
-              <CollapsibleTrigger asChild>
-                <Button
-                  size="sm"
-                  variant={isOpen ? "secondary" : "default"}
-                  className="shrink-0"
-                  onClick={handleToggle}
-                >
-                  {isOpen ? (
-                    <>
-                      <X className="mr-1 h-3 w-3" />
-                      {tb("collapse")}
-                    </>
-                  ) : (
-                    <>
-                      {tb("bookSpace")}
-                      <ChevronDown className="ml-1 h-3 w-3" />
-                    </>
-                  )}
-                </Button>
-              </CollapsibleTrigger>
+              <Button
+                size="sm"
+                variant={isOpen ? "secondary" : "default"}
+                className="shrink-0"
+                onClick={handleToggle}
+              >
+                {isOpen ? (
+                  <>
+                    <X className="mr-1 h-3 w-3" />
+                    {tb("collapse")}
+                  </>
+                ) : (
+                  <>
+                    {tb("bookSpace")}
+                    <ChevronDown className="ml-1 h-3 w-3" />
+                  </>
+                )}
+              </Button>
             </div>
 
             {/* ─── Booking form (collapsible) ─── */}
