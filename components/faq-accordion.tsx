@@ -64,10 +64,10 @@ export function FaqAccordion({ entries, showViewAll = false }: FaqAccordionProps
             <div className="mt-8 text-center">
               <Link
                 href="/faq"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 link-underline"
+                className="group inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 link-underline"
               >
                 {t("viewAllQuestions")}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           )}

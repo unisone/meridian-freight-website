@@ -78,9 +78,9 @@ export function VideoSection() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackContactClick("whatsapp", "video_section")}
-            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+            className="group inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
           >
-            <MessageCircle className="h-4 w-4" />
+            <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
             {t("getAQuote")}
           </a>
           <a

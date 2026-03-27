@@ -3,19 +3,22 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import {
-  Phone,
-  Menu,
-  ChevronDown,
-  MessageCircle,
-} from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { Phone, Menu, MessageCircle } from "lucide-react";
+import { motion } from "motion/react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import { CONTACT, NAV_ITEMS } from "@/lib/constants";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { DURATION, EASE } from "@/lib/motion";
@@ -24,7 +27,6 @@ import { useTranslations } from "next-intl";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const t = useTranslations("Header");
   const tc = useTranslations("Common");
@@ -37,13 +39,6 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    const close = () => setOpenDropdown(null);
-    document.addEventListener("click", close);
-    return () => document.removeEventListener("click", close);
-  }, []);
 
   return (
     <nav
@@ -74,92 +69,53 @@ export function Header() {
 
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
-              <div key={item.label} className="relative">
-                {"children" in item && item.children ? (
-                  <>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenDropdown(
-                          openDropdown === item.label ? null : item.label
-                        );
-                      }}
-                      onMouseEnter={() => setOpenDropdown(item.label)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Escape") setOpenDropdown(null);
-                      }}
-                      className="flex items-center gap-1 font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                      aria-expanded={openDropdown === item.label}
-                      aria-haspopup="true"
-                    >
-                      <span>{t(`nav.${item.label}`)}</span>
-                      <ChevronDown
-                        className={`h-3.5 w-3.5 transition-transform duration-300 ${
-                          openDropdown === item.label ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-
-                    <AnimatePresence>
-                      {openDropdown === item.label && (
-                        <motion.div
-                          initial={{ opacity: 0, scaleY: 0.97, y: -4 }}
-                          animate={{ opacity: 1, scaleY: 1, y: 0 }}
-                          exit={{ opacity: 0, scaleY: 0.97, y: -4 }}
-                          transition={{
-                            duration: DURATION.normal,
-                            ease: EASE.decelerate,
-                          }}
-                          style={{ transformOrigin: "top" }}
-                          className="absolute top-full left-0 mt-1 w-72 rounded-lg glass-heavy ghost-border py-1.5 shadow-xl"
-                          onMouseLeave={() => setOpenDropdown(null)}
-                        >
-                          <div className="py-1">
-                            {item.children.map((child, childIdx) => (
-                              <motion.div
+            <NavigationMenu
+              popupClassName="glass-heavy ghost-border shadow-xl !bg-white/80 !backdrop-blur-xl !ring-0"
+            >
+              <NavigationMenuList>
+                {NAV_ITEMS.map((item) => (
+                  <NavigationMenuItem key={item.label}>
+                    {"children" in item && item.children ? (
+                      <>
+                        <NavigationMenuTrigger className="bg-transparent text-muted-foreground hover:text-foreground hover:bg-transparent focus:bg-transparent data-popup-open:bg-transparent data-popup-open:hover:bg-transparent data-open:bg-transparent data-open:hover:bg-transparent data-open:focus:bg-transparent">
+                          {t(`nav.${item.label}`)}
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent className="w-72 p-0">
+                          <div className="py-2.5">
+                            {item.children.map((child) => (
+                              <NavigationMenuLink
                                 key={child.href}
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{
-                                  duration: DURATION.fast,
-                                  delay: childIdx * 0.04,
-                                  ease: EASE.decelerate,
-                                }}
+                                render={<Link href={child.href} />}
+                                closeOnClick
+                                className="block rounded-none px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/5 hover:text-primary/80 focus:bg-primary/5 focus:text-primary/80 focus-visible:ring-0 focus-visible:outline-none"
                               >
-                                <Link
-                                  href={child.href}
-                                  className="block px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-primary/5 hover:text-primary/80"
-                                  onClick={() => setOpenDropdown(null)}
-                                >
-                                  {t(`nav.${child.label}`)}
-                                </Link>
-                              </motion.div>
+                                {t(`nav.${child.label}`)}
+                              </NavigationMenuLink>
                             ))}
                           </div>
-                          <div className="mt-1 bg-muted px-3 pt-2.5 pb-2 rounded-b-lg">
-                            <Link
-                              href="/contact"
-                              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary/90"
-                              onClick={() => setOpenDropdown(null)}
+                          <div className="bg-muted px-3 pt-2.5 pb-2 rounded-b-lg">
+                            <NavigationMenuLink
+                              render={<Link href="/contact" />}
+                              closeOnClick
+                              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary/90 focus:bg-primary/90 focus-visible:ring-0"
                             >
                               {tc("getFreeQuote")}
-                            </Link>
+                            </NavigationMenuLink>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground link-underline"
-                  >
-                    {t(`nav.${item.label}`)}
-                  </Link>
-                )}
-              </div>
-            ))}
+                        </NavigationMenuContent>
+                      </>
+                    ) : (
+                      <NavigationMenuLink
+                        render={<Link href={item.href} />}
+                        className="font-medium py-2 px-3 text-sm transition-colors rounded-md text-muted-foreground hover:text-foreground hover:bg-transparent focus:bg-transparent link-underline focus-visible:ring-0 focus-visible:outline-none"
+                      >
+                        {t(`nav.${item.label}`)}
+                      </NavigationMenuLink>
+                    )}
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
 
             <LanguageSwitcher />
 
@@ -169,9 +125,9 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick("whatsapp", "header_desktop")}
-              className="ml-4 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
+              className="group ml-4 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors"
             >
-              <MessageCircle className="h-4 w-4" />
+              <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
               {tc("chatOnWhatsApp")}
             </a>
           </div>

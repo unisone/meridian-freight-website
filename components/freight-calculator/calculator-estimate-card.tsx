@@ -209,7 +209,7 @@ export function CalculatorEstimateCard({
             render={<Link href="/contact" />}
             className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            {t("getDetailedQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+            {t("getDetailedQuote")} <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
           </Button>
           <Button
             render={
@@ -396,7 +396,7 @@ export function CalculatorEstimateCard({
               </>
             ) : (
               <>
-                {t("calculateAndSend")} <ArrowRight className="ml-2 h-4 w-4" />
+                {t("calculateAndSend")} <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
               </>
             )}
           </Button>
@@ -413,7 +413,7 @@ export function CalculatorEstimateCard({
             disabled={!isComplete}
             className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            {t("bookThisFreight")} <ArrowRight className="ml-2 h-4 w-4" />
+            {t("bookThisFreight")} <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
           </Button>
           <Button
             variant="ghost"

@@ -88,7 +88,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">{t("heading")}</h1>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("description")}</p>
         </div>
-        <ProjectGrid />
+        <ProjectGrid hideHeader />
 
         {/* CTA */}
         <ScrollReveal variant="fade">

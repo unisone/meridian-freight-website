@@ -23,6 +23,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Sheet,
   SheetTrigger,
@@ -233,12 +234,44 @@ export function CalculatorWizard() {
     setShowAllCategories(false);
   }
 
-  // ─── Loading state ─────────────────────────────────────────────────────
+  // ─── Loading state — content-aware skeleton ────────────────────────────
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="mr-3 h-6 w-6 animate-spin text-primary" />
-        <span className="text-muted-foreground">{t("loadingRates")}</span>
+      <div>
+        {/* Progress bar skeleton */}
+        <div className="mb-6 flex gap-2">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-1.5 flex-1 rounded-full" />
+          ))}
+        </div>
+        <div className="flex flex-col gap-8 lg:flex-row">
+          {/* Left column — form skeleton */}
+          <div className="min-w-0 flex-[3] space-y-8">
+            {/* Section 1: Category grid */}
+            <div>
+              <Skeleton className="mb-4 h-5 w-48" />
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={i} className="h-20 rounded-xl" />
+                ))}
+              </div>
+            </div>
+            {/* Section 2: Specs */}
+            <div className="opacity-40">
+              <Skeleton className="mb-4 h-5 w-36" />
+              <Skeleton className="h-4 w-64" />
+            </div>
+            {/* Section 3: Route */}
+            <div className="opacity-40">
+              <Skeleton className="mb-4 h-5 w-32" />
+              <Skeleton className="h-4 w-56" />
+            </div>
+          </div>
+          {/* Right column — estimate card skeleton */}
+          <div className="hidden flex-[2] lg:block">
+            <Skeleton className="h-72 rounded-2xl" />
+          </div>
+        </div>
       </div>
     );
   }
