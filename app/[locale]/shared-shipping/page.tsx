@@ -132,13 +132,13 @@ export default async function SharedShippingPage({
       />
 
       {/* Breadcrumbs */}
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={[{ label: "Shared Shipping" }]} />
       </div>
 
       {/* Hero */}
       <div className="bg-gradient-to-b from-primary/5 to-transparent pt-4 pb-10 md:pt-8 md:pb-12">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             Shared Container Shipping
           </p>
@@ -154,8 +154,8 @@ export default async function SharedShippingPage({
       </div>
 
       {/* Booking Wizard — the centerpiece */}
-      <section className="pb-16 md:pb-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {containers && containers.length > 0 ? (
             <ShippingWizard
               containers={containers}
@@ -167,9 +167,9 @@ export default async function SharedShippingPage({
         </div>
       </section>
 
-      {/* FAQ — inline accordion at consistent max-w-4xl */}
+      {/* FAQ — inline accordion at consistent max-w-7xl */}
       <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
               Frequently Asked Questions
@@ -196,7 +196,7 @@ export default async function SharedShippingPage({
 
       {/* CTA */}
       <section className="py-16 bg-primary/5">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <ScrollReveal>
             <h2 className="text-2xl font-bold sm:text-3xl">
               Don&apos;t See Your Destination?
