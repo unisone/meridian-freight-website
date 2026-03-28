@@ -1,34 +1,29 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  Calendar,
-  CalendarDays,
-  CheckCircle2,
-  ChevronRight,
-  Clock,
-  Ship,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 
+import { Button } from "@/components/ui/button";
 import { StaleDataBanner } from "@/components/shared-shipping/stale-data-banner";
-import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
+import type {
+  SharedContainer,
+  ContainerWithPendingCount,
+} from "@/lib/types/shared-shipping";
 import {
   type FilterTab,
-  type ScheduleGroup,
-  GROUP_CONFIG,
   computeTabCounts,
   deriveCountryList,
-  groupContainers,
 } from "@/lib/schedule-display";
 import { trackScheduleEvent } from "@/lib/tracking";
 
 import { ScheduleFilterBar } from "./schedule-filter-bar";
-import { ScheduleRow } from "./schedule-row";
-import { ScheduleBookableRow } from "./schedule-bookable-row";
+import { ScheduleBookableCard } from "./schedule-bookable-card";
+import { ScheduleTransitCard } from "./schedule-transit-card";
+import { ScheduleDeliveredRow } from "./schedule-delivered-row";
+import { ScheduleSectionHeader } from "./schedule-section-header";
 import { ScheduleEmptyState } from "./schedule-empty-state";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -38,19 +33,123 @@ interface ScheduleListProps {
   lastSyncTime: string | null;
 }
 
-// ─── Group icon mapping ──────────────────────────────────────────────────────
+// ─── Container classification ───────────────────────────────────────────────
 
-const GROUP_ICONS: Record<ScheduleGroup, LucideIcon> = {
-  "departing-this-week": Clock,
-  "departing-this-month": Calendar,
-  "departing-later": CalendarDays,
-  "in-transit": Ship,
-  arrived: CheckCircle2,
-};
+interface ClassifiedContainers {
+  bookable: ContainerWithPendingCount[];
+  nonBookableUpcoming: SharedContainer[];
+  inTransit: SharedContainer[];
+  delivered: SharedContainer[];
+}
 
-// ─── Groups that are collapsed by default ────────────────────────────────────
+function classifyContainers(containers: ContainerWithPendingCount[]): ClassifiedContainers {
+  const today = new Date().toISOString().split("T")[0];
+  const bookable: ContainerWithPendingCount[] = [];
+  const nonBookableUpcoming: SharedContainer[] = [];
+  const inTransit: SharedContainer[] = [];
+  const delivered: SharedContainer[] = [];
 
-const COLLAPSED_BY_DEFAULT: Set<ScheduleGroup> = new Set(["arrived"]);
+  for (const c of containers) {
+    if (c.status === "departed") {
+      if (c.eta_date && c.eta_date <= today) {
+        delivered.push(c);
+      } else {
+        inTransit.push(c);
+      }
+    } else if (c.status === "available" && (c.available_cbm ?? 0) > 0) {
+      bookable.push(c);
+    } else {
+      // full or available with 0 cbm — upcoming but not bookable
+      nonBookableUpcoming.push(c);
+    }
+  }
+
+  // Sort bookable by departure ASC (soonest first)
+  bookable.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
+  nonBookableUpcoming.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
+  // Transit: most recently departed first
+  inTransit.sort((a, b) => b.departure_date.localeCompare(a.departure_date));
+  // Delivered: most recently arrived first
+  delivered.sort((a, b) =>
+    (b.eta_date ?? b.departure_date).localeCompare(a.eta_date ?? a.departure_date),
+  );
+
+  return { bookable, nonBookableUpcoming, inTransit, delivered };
+}
+
+/** Filter containers by tab and country before classifying. */
+function filterContainers(
+  containers: ContainerWithPendingCount[],
+  tab: FilterTab,
+  country: string | null,
+): ContainerWithPendingCount[] {
+  let filtered = containers;
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  if (country) {
+    filtered = filtered.filter((c) => c.destination_country === country);
+  }
+
+  if (tab === "upcoming") {
+    filtered = filtered.filter(
+      (c) => c.status === "available" || (c.status === "full" && c.departure_date > todayStr),
+    );
+  } else if (tab === "in-transit") {
+    filtered = filtered.filter(
+      (c) => c.status === "departed" && (c.eta_date === null || c.eta_date > todayStr),
+    );
+  } else if (tab === "delivered") {
+    filtered = filtered.filter(
+      (c) => c.status === "departed" && c.eta_date !== null && c.eta_date <= todayStr,
+    );
+  }
+
+  return filtered;
+}
+
+// ─── Time sub-group helpers ─────────────────────────────────────────────────
+
+interface TimeGroup {
+  label: string;
+  containers: ContainerWithPendingCount[];
+}
+
+function subGroupByTime(
+  bookable: ContainerWithPendingCount[],
+  t: ReturnType<typeof useTranslations>,
+): TimeGroup[] {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const weekOut = new Date(today);
+  weekOut.setDate(weekOut.getDate() + 7);
+  const weekStr = weekOut.toISOString().split("T")[0];
+
+  const monthOut = new Date(today);
+  monthOut.setDate(monthOut.getDate() + 30);
+  const monthStr = monthOut.toISOString().split("T")[0];
+
+  const thisWeek: ContainerWithPendingCount[] = [];
+  const thisMonth: ContainerWithPendingCount[] = [];
+  const later: ContainerWithPendingCount[] = [];
+
+  for (const c of bookable) {
+    if (c.departure_date <= weekStr) {
+      thisWeek.push(c);
+    } else if (c.departure_date <= monthStr) {
+      thisMonth.push(c);
+    } else {
+      later.push(c);
+    }
+  }
+
+  const groups: TimeGroup[] = [];
+  if (thisWeek.length > 0) groups.push({ label: t("group.departingThisWeek"), containers: thisWeek });
+  if (thisMonth.length > 0) groups.push({ label: t("group.departingThisMonth"), containers: thisMonth });
+  if (later.length > 0) groups.push({ label: t("group.later"), containers: later });
+
+  return groups;
+}
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -64,22 +163,8 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
   const activeTab = (searchParams.get("tab") ?? "all") as FilterTab;
   const activeCountry = searchParams.get("country");
 
-  // ─── Collapsed groups state ────────────────────────────
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<ScheduleGroup>>(
-    () => new Set(COLLAPSED_BY_DEFAULT),
-  );
-
-  function toggleGroup(group: ScheduleGroup) {
-    setCollapsedGroups((prev) => {
-      const next = new Set(prev);
-      if (next.has(group)) {
-        next.delete(group);
-      } else {
-        next.add(group);
-      }
-      return next;
-    });
-  }
+  // ─── Delivered expand state ────────────────────────────
+  const [deliveredExpanded, setDeliveredExpanded] = useState(false);
 
   // ─── Derived data (memoized) ───────────────────────────
   const tabCounts = useMemo(
@@ -92,10 +177,22 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
     [containers],
   );
 
-  const groups = useMemo(
-    () => groupContainers(containers, activeTab, activeCountry),
+  const filtered = useMemo(
+    () => filterContainers(containers, activeTab, activeCountry),
     [containers, activeTab, activeCountry],
   );
+
+  const classified = useMemo(
+    () => classifyContainers(filtered),
+    [filtered],
+  );
+
+  const timeGroups = useMemo(
+    () => subGroupByTime(classified.bookable, t),
+    [classified.bookable, t],
+  );
+
+  const totalUpcoming = classified.bookable.length + classified.nonBookableUpcoming.length;
 
   // ─── Track page view on mount ──────────────────────────
   useEffect(() => {
@@ -142,6 +239,16 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
     router.replace(pathname, { scroll: false });
   }
 
+  // ─── Check if anything to show ─────────────────────────
+  const hasContent =
+    classified.bookable.length > 0 ||
+    classified.nonBookableUpcoming.length > 0 ||
+    classified.inTransit.length > 0 ||
+    classified.delivered.length > 0;
+
+  // ─── Running card index for stagger across all bookable cards
+  let cardIndex = 0;
+
   // ─── Render ────────────────────────────────────────────
   return (
     <div className="space-y-4">
@@ -159,96 +266,156 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
         countries={countries}
       />
 
-      {groups.size === 0 ? (
+      {!hasContent ? (
         <ScheduleEmptyState
           variant="no-filter-results"
           filterCountry={activeCountry}
           onClearFilters={clearFilters}
         />
       ) : (
-        <div className="space-y-8">
-          {Array.from(groups.entries()).map(([group, items]) => {
-            const config = GROUP_CONFIG[group];
-            const Icon = GROUP_ICONS[group];
-            const isCollapsed = collapsedGroups.has(group);
+        <div className="space-y-12">
+          {/* ═══ SECTION 1: AVAILABLE SPACE ═══ */}
+          {totalUpcoming > 0 && (
+            <section>
+              <ScheduleSectionHeader
+                eyebrow={t("status.departingSoon")}
+                heading={t("tabUpcoming")}
+                count={totalUpcoming}
+                accentColor="primary"
+              />
 
-            // Split items into bookable vs non-bookable for this group
-            const bookable: ContainerWithPendingCount[] = [];
-            const nonBookable: typeof items = [];
-            for (const item of items) {
-              if (
-                item.status === "available" &&
-                (item.available_cbm ?? 0) > 0
-              ) {
-                bookable.push(item as ContainerWithPendingCount);
-              } else {
-                nonBookable.push(item);
-              }
-            }
-
-            return (
-              <section key={group}>
-                {/* Group header — clickable to collapse */}
-                <button
-                  onClick={() => toggleGroup(group)}
-                  className={`flex items-center gap-2.5 border-l-4 pl-3 py-2 w-full text-left hover:bg-muted/40 rounded-r-md transition-colors ${config.borderColor}`}
-                >
-                  <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
-                    {t(config.label)}
-                  </h3>
-                  <span className="inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded-full bg-muted text-[11px] font-bold text-muted-foreground tabular-nums">
-                    {items.length}
-                  </span>
-                  <ChevronRight
-                    className={`ml-auto h-4 w-4 text-muted-foreground transition-transform duration-200 ${
-                      isCollapsed ? "" : "rotate-90"
-                    }`}
-                  />
-                </button>
-
-                {/* Container rows — animated */}
-                <AnimatePresence initial={false}>
-                  {!isCollapsed && (
-                    <motion.div
-                      key={`${group}-content`}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-3 space-y-3">
-                        {/* Bookable rows — elevated cards */}
-                        {bookable.map((container, i) => (
-                          <motion.div
-                            key={container.id}
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.05, duration: 0.3 }}
-                          >
-                            <ScheduleBookableRow container={container} />
-                          </motion.div>
-                        ))}
-
-                        {/* Non-bookable rows — tight table style */}
-                        {nonBookable.length > 0 && (
-                          <div className="rounded-lg border border-border/60 overflow-hidden">
-                            {nonBookable.map((container) => (
-                              <ScheduleRow
-                                key={container.id}
-                                container={container}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
+              {/* Time sub-groups with bookable cards */}
+              {timeGroups.map((group) => (
+                <div key={group.label} className="mb-6 last:mb-0">
+                  {/* Sub-group label — thin divider */}
+                  {timeGroups.length > 1 && (
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        {group.label}
+                      </span>
+                      <div className="flex-1 border-t border-border/50" />
+                      <span className="text-xs font-mono text-muted-foreground tabular-nums">
+                        {group.containers.length}
+                      </span>
+                    </div>
                   )}
+
+                  <div className="space-y-4">
+                    {group.containers.map((container) => {
+                      const idx = cardIndex++;
+                      return (
+                        <ScheduleBookableCard
+                          key={container.id}
+                          container={container}
+                          index={idx}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+
+              {/* Non-bookable upcoming (full containers, no space) */}
+              {classified.nonBookableUpcoming.length > 0 && (
+                <div className="mt-4">
+                  {classified.bookable.length > 0 && (
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        {t("status.fullyBooked")}
+                      </span>
+                      <div className="flex-1 border-t border-border/50" />
+                      <span className="text-xs font-mono text-muted-foreground tabular-nums">
+                        {classified.nonBookableUpcoming.length}
+                      </span>
+                    </div>
+                  )}
+                  <div className="rounded-lg border border-border/60 overflow-hidden">
+                    {classified.nonBookableUpcoming.map((container) => (
+                      <ScheduleDeliveredRow
+                        key={container.id}
+                        container={container}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* ═══ SECTION 2: ON THE WATER ═══ */}
+          {classified.inTransit.length > 0 && (
+            <section>
+              <ScheduleSectionHeader
+                eyebrow={t("status.inTransit")}
+                heading={t("group.inTransit")}
+                count={classified.inTransit.length}
+                accentColor="indigo"
+              />
+
+              <div className="space-y-3">
+                {classified.inTransit.map((container, i) => (
+                  <ScheduleTransitCard
+                    key={container.id}
+                    container={container}
+                    index={i}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ═══ SECTION 3: DELIVERED ═══ */}
+          {classified.delivered.length > 0 && (
+            <section>
+              <ScheduleSectionHeader
+                eyebrow={t("status.arrived")}
+                heading={t("group.arrived")}
+                count={classified.delivered.length}
+                accentColor="emerald"
+              />
+
+              {/* Collapsed by default — show expand button */}
+              {!deliveredExpanded ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setDeliveredExpanded(true)}
+                  className="w-full justify-center gap-2"
+                >
+                  <span>
+                    {t("group.arrived")} ({classified.delivered.length})
+                  </span>
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </Button>
+              ) : (
+                <AnimatePresence>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="rounded-lg border border-border/60 overflow-hidden">
+                      {classified.delivered.map((container) => (
+                        <ScheduleDeliveredRow
+                          key={container.id}
+                          container={container}
+                        />
+                      ))}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setDeliveredExpanded(false)}
+                      className="w-full mt-2 text-muted-foreground"
+                    >
+                      Collapse
+                    </Button>
+                  </motion.div>
                 </AnimatePresence>
-              </section>
-            );
-          })}
+              )}
+            </section>
+          )}
         </div>
       )}
     </div>
