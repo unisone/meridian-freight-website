@@ -1,0 +1,111 @@
+name: Cleanup Stale Branches
+
+on:
+  # Run after every merge to main
+  push:
+    branches: [main]
+  # Also run weekly as a safety net
+  schedule:
+    - cron: "0 6 * * 1" # Monday 6 AM UTC
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    name: Delete merged branches
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history needed for merge detection
+
+      - name: Delete stale branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const protectedBranches = new Set(['main', 'production', 'staging']);
+            const staleDays = 14; // Delete branches with no activity for 14+ days
+            const now = Date.now();
+
+            // List all remote branches
+            const { data: branches } = await github.rest.repos.listBranches({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+              protected: false,
+            });
+
+            let deleted = 0;
+            let skipped = 0;
+
+            for (const branch of branches) {
+              const name = branch.name;
+
+              // Skip protected branches
+              if (protectedBranches.has(name)) continue;
+              // Skip dependabot (managed separately)
+              if (name.startsWith('dependabot/')) continue;
+
+              // Check if branch has a merged/closed PR
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: `${context.repo.owner}:${name}`,
+                state: 'closed',
+                per_page: 1,
+              });
+
+              const hasMergedPR = prs.some(pr => pr.merged_at !== null);
+
+              if (hasMergedPR) {
+                console.log(`Deleting ${name} (merged PR found)`);
+                await github.rest.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: `heads/${name}`,
+                });
+                deleted++;
+                continue;
+              }
+
+              // Check for stale branches (no commits in 14 days, no open PR)
+              const { data: commit } = await github.rest.repos.getCommit({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: name,
+              });
+
+              const lastActivity = new Date(commit.commit.committer.date).getTime();
+              const daysOld = (now - lastActivity) / (1000 * 60 * 60 * 24);
+
+              if (daysOld > staleDays) {
+                // Check for open PRs before deleting
+                const { data: openPRs } = await github.rest.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  head: `${context.repo.owner}:${name}`,
+                  state: 'open',
+                  per_page: 1,
+                });
+
+                if (openPRs.length === 0) {
+                  console.log(`Deleting ${name} (stale: ${Math.round(daysOld)} days, no open PR)`);
+                  await github.rest.git.deleteRef({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    ref: `heads/${name}`,
+                  });
+                  deleted++;
+                } else {
+                  console.log(`Skipping ${name} (stale but has open PR)`);
+                  skipped++;
+                }
+              } else {
+                skipped++;
+              }
+            }
+
+            console.log(`Done: ${deleted} deleted, ${skipped} skipped`);
