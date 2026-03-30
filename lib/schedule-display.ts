@@ -206,7 +206,7 @@ export function computeCapacityFill(
   const available = availableCbm ?? 0;
   const total = totalCapacity > 0 ? totalCapacity : 76;
   const fillPercent = Math.min(100, Math.max(0, Math.round((1 - available / total) * 100)));
-  return { fillPercent, label: `${fillPercent}% booked` };
+  return { fillPercent, label: `${fillPercent}%` };
 }
 
 // ─── Container Classification ───────────────────────────────────────────────

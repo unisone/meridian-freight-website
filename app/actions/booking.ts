@@ -87,7 +87,7 @@ export async function submitBookingRequest(
   if (!container || container.status !== "available") {
     return {
       success: false,
-      error: "This container is no longer available for booking.",
+      error: "CONTAINER_UNAVAILABLE",
     };
   }
 

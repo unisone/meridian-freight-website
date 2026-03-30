@@ -767,7 +767,8 @@
     "fromOrigin": "из {origin}",
     "transitDays": "~{days} дн. в пути",
     "transitDaysCompact": "· ~{days}д",
-    "destinationPending": "Пункт назначения уточняется"
+    "destinationPending": "Пункт назначения уточняется",
+    "capacityBooked": "{percent} занято"
   },
   "ScheduleBooking": {
     "bookSpace": "Забронировать место",
@@ -803,6 +804,7 @@
     "submitRequest": "Отправить заявку",
     "termsAgreement": "Отправляя заявку, вы соглашаетесь с <terms>Условиями использования</terms> и <privacy>Политикой конфиденциальности</privacy>.",
     "errorDefault": "Что-то пошло не так. Попробуйте снова или свяжитесь с нами через WhatsApp.",
+    "errorContainerUnavailable": "Этот контейнер больше не доступен для бронирования.",
     "requestSubmitted": "Заявка отправлена",
     "successMessage": "Мы получили вашу заявку на контейнер <bold>{projectNum}</bold> в направлении <bold>{destName}</bold>.",
     "successFollowUp": "Наша команда свяжется с вами в течение 24 часов с расценкой.",

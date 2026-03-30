@@ -384,9 +384,9 @@ describe("computeCapacityFill", () => {
     expect(fillPercent).toBe(100);
   });
 
-  it("produces label in format 'N% booked'", () => {
+  it("produces label with percentage only", () => {
     const { label } = computeCapacityFill(38, 76);
-    expect(label).toBe("50% booked");
+    expect(label).toBe("50%");
   });
 
   it("handles null availableCbm (treat as 0)", () => {

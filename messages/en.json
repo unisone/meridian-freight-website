@@ -767,7 +767,8 @@
     "fromOrigin": "from {origin}",
     "transitDays": "~{days} days transit",
     "transitDaysCompact": "· ~{days}d",
-    "destinationPending": "Destination pending"
+    "destinationPending": "Destination pending",
+    "capacityBooked": "{percent} booked"
   },
   "ScheduleBooking": {
     "bookSpace": "Book Space",
@@ -803,6 +804,7 @@
     "submitRequest": "Submit Request",
     "termsAgreement": "By submitting, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
     "errorDefault": "Something went wrong. Please try again or contact us via WhatsApp.",
+    "errorContainerUnavailable": "This container is no longer available for booking.",
     "requestSubmitted": "Request Submitted",
     "successMessage": "We received your request for container <bold>{projectNum}</bold> to <bold>{destName}</bold>.",
     "successFollowUp": "Our team will contact you within 24 hours with a quote.",

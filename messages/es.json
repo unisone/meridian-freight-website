@@ -767,7 +767,8 @@
     "fromOrigin": "desde {origin}",
     "transitDays": "~{days} días en tránsito",
     "transitDaysCompact": "· ~{days}d",
-    "destinationPending": "Destino pendiente"
+    "destinationPending": "Destino pendiente",
+    "capacityBooked": "{percent} reservado"
   },
   "ScheduleBooking": {
     "bookSpace": "Reservar Espacio",
@@ -803,6 +804,7 @@
     "submitRequest": "Enviar Solicitud",
     "termsAgreement": "Al enviar, acepta nuestros <terms>Terminos de Servicio</terms> y <privacy>Politica de Privacidad</privacy>.",
     "errorDefault": "Algo salio mal. Intente de nuevo o contactenos por WhatsApp.",
+    "errorContainerUnavailable": "Este contenedor ya no está disponible para reserva.",
     "requestSubmitted": "Solicitud Enviada",
     "successMessage": "Recibimos su solicitud para el contenedor <bold>{projectNum}</bold> con destino a <bold>{destName}</bold>.",
     "successFollowUp": "Nuestro equipo lo contactara en 24 horas con una cotizacion.",

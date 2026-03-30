@@ -238,7 +238,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                 </span>
                 <span className="text-muted-foreground">{t("available")}</span>
                 <span className="text-border">·</span>
-                <span className="text-muted-foreground">{capacityLabel}</span>
+                <span className="text-muted-foreground">{t("capacityBooked", { percent: capacityLabel })}</span>
               </div>
             </div>
 

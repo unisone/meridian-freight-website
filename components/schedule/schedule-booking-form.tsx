@@ -175,7 +175,8 @@ export function ScheduleBookingForm({
 
         onSuccess?.();
       } else {
-        setError(res.error || t("errorDefault"));
+        const errorKey = res.error === "CONTAINER_UNAVAILABLE" ? "errorContainerUnavailable" : "errorDefault";
+        setError(t(errorKey));
       }
     } catch {
       setError(t("errorDefault"));
