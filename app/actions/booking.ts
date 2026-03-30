@@ -147,7 +147,8 @@ export async function submitBookingRequest(
   try {
     const { error } = await resend.emails.send({
       from: CONTACT.fromEmail,
-      to: CONTACT.notificationEmail,
+      to: CONTACT.bookingNotificationEmail,
+      cc: CONTACT.bookingNotificationCc as unknown as string[],
       replyTo: email,
       subject: `New Booking Request: ${name} — ${container.destination}${locale !== "en" ? ` [${locale.toUpperCase()}]` : ""}`,
       html: `
