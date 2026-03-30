@@ -8,7 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
   container,
   index,
 }: ScheduleBookableCardProps) {
+  const locale = useLocale();
   const t = useTranslations("ScheduleList");
   const tb = useTranslations("ScheduleBooking");
   const [isOpen, setIsOpen] = useState(false);
@@ -85,10 +86,10 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
 
   const countdownText = (() => {
     if (countdown.urgency === "today") return t("countdown.leavesToday");
-    if (countdown.urgency === "past") return t("countdown.departed", { date: shortDate(container.departure_date) });
+    if (countdown.urgency === "past") return t("countdown.departed", { date: shortDate(container.departure_date, locale) });
     if (countdown.daysUntil === 1) return t("countdown.leavesTomorrow");
     if (countdown.daysUntil <= 7) return t("countdown.leavesInDays", { days: countdown.daysUntil });
-    return shortDate(container.departure_date);
+    return shortDate(container.departure_date, locale);
   })();
 
   const isUrgent = countdown.urgency === "urgent" || countdown.urgency === "today";
@@ -181,7 +182,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                     </p>
                     {countdown.daysUntil > 7 && (
                       <p className="text-[11px] text-muted-foreground">
-                        {shortDate(container.departure_date)}
+                        {shortDate(container.departure_date, locale)}
                       </p>
                     )}
                   </div>
@@ -195,7 +196,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                   <div className="flex items-center gap-2">
                     <div>
                       <p className="text-sm font-medium text-foreground text-right tabular-nums">
-                        {shortDate(container.eta_date)}
+                        {shortDate(container.eta_date, locale)}
                       </p>
                       {transitDayCount !== null && (
                         <p className="text-[11px] text-muted-foreground text-right">

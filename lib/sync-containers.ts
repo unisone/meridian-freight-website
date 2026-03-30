@@ -155,12 +155,21 @@ export function parseSheetDate(raw: unknown): string | null {
     if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
   }
 
-  // 5. MM/DD (no year) — infer current year: "04/06" → "2026-04-06"
+  // 5. MM/DD (no year) — infer current or next year: "04/06" → "2026-04-06"
+  // If the resulting date is more than 60 days in the past, assume next year
   const slashShortMatch = str.match(/^(\d{1,2})\/(\d{1,2})$/);
   if (slashShortMatch) {
-    const year = new Date().getFullYear();
-    const d = new Date(year, +slashShortMatch[1] - 1, +slashShortMatch[2]);
-    if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
+    const now = new Date();
+    const year = now.getFullYear();
+    let d = new Date(year, +slashShortMatch[1] - 1, +slashShortMatch[2]);
+    if (!isNaN(d.getTime())) {
+      const sixtyDaysAgo = new Date(now);
+      sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+      if (d < sixtyDaysAgo) {
+        d = new Date(year + 1, +slashShortMatch[1] - 1, +slashShortMatch[2]);
+      }
+      return d.toISOString().split("T")[0];
+    }
   }
 
   // 6. Try generic Date constructor as last resort
@@ -242,7 +251,7 @@ const COUNTRY_MAP: Record<string, string> = {
   mexico: "MX", "south africa": "ZA", australia: "AU",
   "new zealand": "NZ", nigeria: "NG", ghana: "GH",
   kenya: "KE", tanzania: "TZ", uganda: "UG",
-  ethiopia: "ET", mozambique: "MO", zambia: "ZM",
+  ethiopia: "ET", mozambique: "MZ", zambia: "ZM",
   thailand: "TH", vietnam: "VN", indonesia: "ID",
   philippines: "PH", malaysia: "MY", turkey: "TR",
   georgia: "GE", uzbekistan: "UZ", kyrgyzstan: "KG",

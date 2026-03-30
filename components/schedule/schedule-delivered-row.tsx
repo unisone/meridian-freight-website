@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { countryFlag } from "@/lib/container-display";
 import { cleanOriginText, formatDestination, shortDate } from "@/lib/schedule-display";
@@ -15,6 +15,7 @@ interface ScheduleDeliveredRowProps {
 export const ScheduleDeliveredRow = memo(function ScheduleDeliveredRow({
   container,
 }: ScheduleDeliveredRowProps) {
+  const locale = useLocale();
   const t = useTranslations("ScheduleList");
   const flag = countryFlag(container.destination_country);
   const { text: destText, isPending: destPending } = formatDestination(container.destination);
@@ -49,9 +50,9 @@ export const ScheduleDeliveredRow = memo(function ScheduleDeliveredRow({
       {/* Dates */}
       <div className="shrink-0 text-right">
         <p className="text-xs text-muted-foreground tabular-nums">
-          {shortDate(container.departure_date)}
+          {shortDate(container.departure_date, locale)}
           {container.eta_date && (
-            <span> &rarr; {shortDate(container.eta_date)}</span>
+            <span> &rarr; {shortDate(container.eta_date, locale)}</span>
           )}
         </p>
       </div>

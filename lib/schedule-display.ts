@@ -102,8 +102,8 @@ export function computeTabCounts(
       } else {
         inTransit++;
       }
-    } else {
-      // available or full with future departure
+    } else if (c.status === "available" || c.departure_date > todayStr) {
+      // available containers or full containers with future departure
       upcoming++;
     }
   }
@@ -191,11 +191,12 @@ export function formatDestination(destination: string): {
   return { text: destination, isPending: false };
 }
 
-/** Format ISO date to short display format (e.g., "Mar 29"). */
-export function shortDate(iso: string): string {
+/** Format ISO date to short display format (e.g., "Mar 29" / "29 мар."). */
+export function shortDate(iso: string, locale: string = "en-US"): string {
   const d = new Date(iso);
   if (isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const localeMap: Record<string, string> = { en: "en-US", es: "es", ru: "ru" };
+  return d.toLocaleDateString(localeMap[locale] ?? locale, { month: "short", day: "numeric" });
 }
 
 /** Compute capacity fill percentage. */
