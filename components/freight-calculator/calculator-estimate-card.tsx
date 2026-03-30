@@ -215,7 +215,7 @@ export function CalculatorEstimateCard({
             render={
               <a
                 href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(
-                  `Hi! Your calculator estimated $${preview ? Math.round(preview.estimatedTotal).toLocaleString("en-US") : "N/A"} for ${selectedEquipment?.display_name_en ?? "equipment"} to ${destinationCountry}. Can I get an exact quote?`,
+                  `Hi! Your calculator estimated $${estimate ? Math.round(estimate.estimatedTotal).toLocaleString("en-US") : "N/A"} for ${selectedEquipment?.display_name_en ?? "equipment"} to ${destinationCountry}. Can I get an exact quote?`,
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
