@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { MessageCircle } from "lucide-react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -91,10 +92,30 @@ export default async function SchedulePage({
     },
     description:
       "Live shipping schedule showing container departures, in-transit shipments, and arrivals from the USA to 27+ countries.",
-    serviceType: "Ocean Freight Schedule",
+    serviceType: "Freight Transport",
     areaServed: containers
       ? [...new Set(containers.map((c) => c.destination_country).filter(Boolean))]
       : [],
+  };
+
+  // S1: BreadcrumbList JSON-LD
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: t("breadcrumb"),
+        item: `${SITE.url}/schedule`,
+      },
+    ],
   };
 
   return (
@@ -102,6 +123,10 @@ export default async function SchedulePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       <PageHero
@@ -126,10 +151,12 @@ export default async function SchedulePage({
       <section className="pt-2 pb-16 md:pb-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {containers && containers.length > 0 ? (
-            <ScheduleList
-              containers={containers}
-              lastSyncTime={lastSyncTime}
-            />
+            <Suspense fallback={<div className="py-8 text-center text-sm text-muted-foreground">Loading schedule...</div>}>
+              <ScheduleList
+                containers={containers}
+                lastSyncTime={lastSyncTime}
+              />
+            </Suspense>
           ) : (
             <ScheduleEmptyState variant="no-data" />
           )}
@@ -137,7 +164,7 @@ export default async function SchedulePage({
       </section>
 
       {/* CTA: Need a dedicated container? */}
-      <section className="py-16 bg-primary/5">
+      <section className="py-16 border-t border-border/40 bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <ScrollReveal>
             <h2 className="text-2xl font-bold sm:text-3xl">
@@ -155,6 +182,7 @@ export default async function SchedulePage({
               >
                 <MessageCircle className="h-4 w-4" />
                 {t("ctaWhatsApp")}
+                <span className="sr-only">(opens in new window)</span>
               </a>
               <a
                 href={CONTACT.emailHref}
@@ -166,6 +194,9 @@ export default async function SchedulePage({
           </ScrollReveal>
         </div>
       </section>
+
+      {/* M6: Bottom spacing for mobile bottom bar */}
+      <div className="h-16 lg:hidden" />
     </>
   );
 }

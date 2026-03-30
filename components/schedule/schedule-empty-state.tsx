@@ -1,7 +1,8 @@
 "use client";
 
-import { Package, Ship } from "lucide-react";
+import { Package, Ship, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/constants";
 
 interface ScheduleEmptyStateProps {
@@ -31,20 +32,22 @@ export function ScheduleEmptyState({
             {t("noResultsCountryDescription")}
           </p>
         )}
-        <div className="mt-4 flex gap-3">
+        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">
           {onClearFilters && (
-            <button
+            <Button
+              variant="default"
+              size="sm"
               onClick={onClearFilters}
-              className="text-sm font-medium text-primary underline underline-offset-2 hover:text-primary/80"
             >
+              <X className="mr-1.5 h-3.5 w-3.5" />
               {t("clearFilters")}
-            </button>
+            </Button>
           )}
           <a
             href={CONTACT.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             {t("contactUs")}
           </a>

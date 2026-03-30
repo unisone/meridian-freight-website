@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect, memo } from "react";
+import { useState, useRef, useEffect, useCallback, memo } from "react";
 import {
+  AlertTriangle,
   ArrowRight,
   MapPin,
   Sparkles,
@@ -33,16 +34,19 @@ import { ScheduleBookingForm } from "./schedule-booking-form";
 interface ScheduleBookableCardProps {
   container: ContainerWithPendingCount;
   index: number;
+  isExpanded: boolean;
+  onToggle: () => void;
 }
 
 export const ScheduleBookableCard = memo(function ScheduleBookableCard({
   container,
   index,
+  isExpanded,
+  onToggle,
 }: ScheduleBookableCardProps) {
   const locale = useLocale();
   const t = useTranslations("ScheduleList");
   const tb = useTranslations("ScheduleBooking");
-  const [isOpen, setIsOpen] = useState(false);
   const [pendingCount, setPendingCount] = useState(container.pending_count);
   const formRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -60,7 +64,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
 
   // Scroll form into view when expanded
   useEffect(() => {
-    if (isOpen && formRef.current) {
+    if (isExpanded && formRef.current) {
       const timer = setTimeout(() => {
         formRef.current?.scrollIntoView({
           behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -71,17 +75,33 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
       }, 250);
       return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isExpanded]);
+
+  // U1: Escape key closes the expanded booking form
+  const handleEscape = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isExpanded) {
+        onToggle();
+      }
+    },
+    [isExpanded, onToggle],
+  );
+
+  useEffect(() => {
+    if (isExpanded) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isExpanded, handleEscape]);
 
   function handleToggle() {
-    const next = !isOpen;
-    setIsOpen(next);
-    if (next) {
+    if (!isExpanded) {
       trackScheduleEvent("book_click", {
         project_number: container.project_number,
         destination: container.destination_country ?? "",
       });
     }
+    onToggle();
   }
 
   const departureDisplay = shortDate(container.departure_date, locale);
@@ -102,11 +122,11 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ delay: index * 0.08, duration: 0.5, ease: [0, 0, 0.15, 1] }}
     >
-      <Collapsible open={isOpen}>
+      <Collapsible open={isExpanded}>
         <div
           className={cn(
             "group/card rounded-xl ring-1 transition-all duration-300",
-            isOpen
+            isExpanded
               ? "ring-primary/30 shadow-lg bg-white"
               : "ring-foreground/10 bg-white hover:shadow-lg hover:-translate-y-1 hover:ring-primary/20",
           )}
@@ -144,14 +164,14 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
 
               <Button
                 size="sm"
-                variant={isOpen ? "secondary" : "default"}
+                variant={isExpanded ? "secondary" : "default"}
                 onClick={handleToggle}
                 className={cn(
                   "shrink-0 transition-all duration-200",
-                  !isOpen && "group-hover/card:shadow-md",
+                  !isExpanded && "group-hover/card:shadow-md",
                 )}
               >
-                {isOpen ? (
+                {isExpanded ? (
                   <>
                     <X className="mr-1 h-3 w-3" />
                     {tb("collapse")}
@@ -170,10 +190,11 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
               <div className="flex items-center justify-between gap-2">
                 {/* Departure */}
                 <div className="flex items-center gap-2">
-                  <div className={cn(
-                    "h-2.5 w-2.5 rounded-full shrink-0",
-                    isUrgent ? "bg-amber-500" : "bg-primary",
-                  )} />
+                  {isUrgent ? (
+                    <AlertTriangle className="h-3.5 w-3.5 text-amber-500 shrink-0" aria-hidden="true" />
+                  ) : (
+                    <div className="h-2.5 w-2.5 rounded-full bg-primary shrink-0" />
+                  )}
                   <div>
                     <p className={cn(
                       "text-sm font-semibold tabular-nums",
@@ -221,7 +242,14 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
 
             {/* Row 3: Capacity bar + demand */}
             <div className="mt-4 flex items-center gap-3">
-              <div className="relative h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
+              <div
+                className="relative h-2.5 flex-1 overflow-hidden rounded-full bg-muted"
+                role="progressbar"
+                aria-valuenow={fillPercent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${availableCbm} CBM ${t("available")}, ${capacityLabel} ${t("capacityBooked", { percent: capacityLabel })}`}
+              >
                 <motion.div
                   className={cn(
                     "absolute inset-y-0 left-0 rounded-full",
@@ -242,8 +270,8 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                   {availableCbm} CBM
                 </span>
                 <span className="text-muted-foreground">{t("available")}</span>
-                <span className="text-border">·</span>
-                <span className="text-muted-foreground">{t("capacityBooked", { percent: capacityLabel })}</span>
+                <span className="hidden sm:inline text-border">·</span>
+                <span className="hidden sm:inline text-muted-foreground">{t("capacityBooked", { percent: capacityLabel })}</span>
               </div>
             </div>
 
@@ -274,7 +302,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                 <ScheduleBookingForm
                   container={container}
                   onSuccess={() => setPendingCount((c) => c + 1)}
-                  onCancel={() => setIsOpen(false)}
+                  onCancel={onToggle}
                 />
               </div>
             </div>
