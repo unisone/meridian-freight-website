@@ -176,8 +176,10 @@ export function trackBookingFunnel(
     trackGA4Event("booking_request_start", params);
     vercelTrack("booking_request_start", params);
   } else if (step === "request_submit") {
-    trackGA4Event("generate_lead", { ...params, value: "200", currency: "USD" });
-    vercelTrack("generate_lead", { source: "shared_shipping", ...params });
+    // NOTE: generate_lead is fired separately in the booking form handler with the
+    // canonical $300 lead value. This fires a distinct event to avoid double-counting.
+    trackGA4Event("booking_request_submit", params);
+    vercelTrack("booking_request_submit", params);
   }
 }
 

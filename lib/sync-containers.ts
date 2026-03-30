@@ -254,7 +254,7 @@ const COUNTRY_MAP: Record<string, string> = {
   ethiopia: "ET", mozambique: "MZ", zambia: "ZM",
   thailand: "TH", vietnam: "VN", indonesia: "ID",
   philippines: "PH", malaysia: "MY", turkey: "TR",
-  georgia: "GE", uzbekistan: "UZ", kyrgyzstan: "KG",
+  georgia: "GE", uzbekistan: "UZ", kyrgyzstan: "KG", kyrgystan: "KG",
   tajikistan: "TJ", turkmenistan: "TM", mongolia: "MN",
   paraguay: "PY", bolivia: "BO", guatemala: "GT",
   // New — from actual sheet data
@@ -270,6 +270,7 @@ const COUNTRY_MAP: Record<string, string> = {
   kostanai: "KZ", костанай: "KZ",
   almaty: "KZ", алматы: "KZ",
   aktau: "KZ", актау: "KZ",
+  bishkek: "KG", бишкек: "KG",
   batumi: "GE", батуми: "GE",
   poti: "GE", поти: "GE",
   odessa: "UA", одесса: "UA",

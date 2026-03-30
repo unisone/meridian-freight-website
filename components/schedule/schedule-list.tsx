@@ -6,7 +6,6 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 
-import { Button } from "@/components/ui/button";
 import { StaleDataBanner } from "@/components/shared-shipping/stale-data-banner";
 import type {
   ContainerWithPendingCount,
@@ -16,7 +15,7 @@ import {
   classifyContainers,
   computeTabCounts,
   deriveCountryList,
-  todayDateString,
+  filterContainers,
 } from "@/lib/schedule-display";
 import { trackScheduleEvent } from "@/lib/tracking";
 
@@ -32,42 +31,6 @@ import { ScheduleEmptyState } from "./schedule-empty-state";
 interface ScheduleListProps {
   containers: ContainerWithPendingCount[];
   lastSyncTime: string | null;
-}
-
-/** Filter containers by tab and country before classifying. */
-function filterContainers(
-  containers: ContainerWithPendingCount[],
-  tab: FilterTab,
-  country: string | null,
-): ContainerWithPendingCount[] {
-  let filtered = containers;
-  const todayStr = todayDateString();
-
-  if (country) {
-    filtered = filtered.filter((c) => c.destination_country === country);
-  }
-
-  // Departure date takes precedence over DB status (cron runs every 15 min)
-  if (tab === "upcoming") {
-    filtered = filtered.filter(
-      (c) => c.departure_date >= todayStr && c.status !== "departed",
-    );
-  } else if (tab === "in-transit") {
-    filtered = filtered.filter(
-      (c) =>
-        (c.status === "departed" || c.departure_date < todayStr) &&
-        (c.eta_date === null || c.eta_date > todayStr),
-    );
-  } else if (tab === "delivered") {
-    filtered = filtered.filter(
-      (c) =>
-        (c.status === "departed" || c.departure_date < todayStr) &&
-        c.eta_date !== null &&
-        c.eta_date <= todayStr,
-    );
-  }
-
-  return filtered;
 }
 
 // ─── Time sub-group helpers ─────────────────────────────────────────────────
@@ -130,7 +93,11 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
   // ─── Delivered expand state ────────────────────────────
   const [deliveredExpanded, setDeliveredExpanded] = useState(false);
 
+  // ─── Single-open booking card (U2) ────────────────────
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+
   // ─── Derived data (memoized) ───────────────────────────
+  // P3: tabCounts and countries depend only on containers (stable from server)
   const tabCounts = useMemo(
     () => computeTabCounts(containers),
     [containers],
@@ -141,6 +108,7 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
     [containers],
   );
 
+  // These depend on filter state
   const filtered = useMemo(
     () => filterContainers(containers, activeTab, activeCountry),
     [containers, activeTab, activeCountry],
@@ -157,6 +125,9 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
   );
 
   const totalUpcoming = classified.bookable.length + classified.nonBookableUpcoming.length;
+
+  // AC1: Announce filter result count to screen readers
+  const resultCount = classified.bookable.length + classified.nonBookableUpcoming.length + classified.inTransit.length + classified.delivered.length;
 
   // ─── Track page view on mount ──────────────────────────
   useEffect(() => {
@@ -230,6 +201,13 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
         countries={countries}
       />
 
+      {/* AC1: Screen reader announcement for filter results */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {hasContent
+          ? `${resultCount} containers shown`
+          : "No containers match your filters"}
+      </div>
+
       {!hasContent ? (
         <ScheduleEmptyState
           variant="no-filter-results"
@@ -237,7 +215,7 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
           onClearFilters={clearFilters}
         />
       ) : (
-        <div className="space-y-12">
+        <div className="mt-2 space-y-12">
           {/* ═══ SECTION 1: AVAILABLE SPACE ═══ */}
           {totalUpcoming > 0 && (
             <section>
@@ -272,6 +250,8 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                           key={container.id}
                           container={container}
                           index={idx}
+                          isExpanded={expandedCardId === container.id}
+                          onToggle={() => setExpandedCardId((prev) => prev === container.id ? null : container.id)}
                         />
                       );
                     })}
@@ -298,6 +278,7 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                       <ScheduleDeliveredRow
                         key={container.id}
                         container={container}
+                        variant="fully-booked"
                       />
                     ))}
                   </div>
@@ -340,17 +321,17 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
 
               {/* Collapsed by default — expand/collapse with exit animation */}
               {!deliveredExpanded && (
-                <Button
-                  variant="outline"
-                  size="sm"
+                <button
+                  type="button"
                   onClick={() => setDeliveredExpanded(true)}
-                  className="w-full justify-center gap-2"
+                  className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-border/60 px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                  aria-expanded="false"
                 >
                   <span>
                     {t("group.arrived")} ({classified.delivered.length})
                   </span>
                   <ChevronDown className="h-3.5 w-3.5" />
-                </Button>
+                </button>
               )}
               <AnimatePresence>
                 {deliveredExpanded && (
@@ -361,6 +342,7 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
+                    aria-hidden={!deliveredExpanded}
                   >
                     <div className="rounded-lg border border-border/60 overflow-hidden">
                       {classified.delivered.map((container) => (
@@ -370,14 +352,14 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                         />
                       ))}
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
+                    <button
+                      type="button"
                       onClick={() => setDeliveredExpanded(false)}
-                      className="w-full mt-2 text-muted-foreground"
+                      className="w-full mt-2 flex items-center justify-center gap-1 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                      aria-expanded="true"
                     >
                       {t("collapseDelivered")}
-                    </Button>
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
