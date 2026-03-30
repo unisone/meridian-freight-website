@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { CalculatorWizard } from "@/components/freight-calculator/calculator-wizard";
 import { COMPANY, SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -37,6 +37,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/pricing/calculator`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("calculatorTitle") }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("calculatorTitle")} | ${SITE.name}`,
+      description: t("calculatorDescription"),
+      images: [SITE.ogImage],
+    },
   };
 }
 
@@ -67,37 +73,31 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
   const t = await getTranslations("CalculatorPage");
 
   return (
-    <div className="pt-20">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(calculatorJsonLd) }}
       />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { label: t("breadcrumbPricing"), href: "/pricing" },
-            { label: t("breadcrumbCalculator") },
-          ]}
-        />
-      </div>
-
-      {/* Hero band — matches pricing page pattern */}
-      <div className="bg-gradient-to-b from-primary/5 to-transparent py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-            {t("heading")}
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            {t("description")}
-          </p>
-        </div>
-      </div>
+      <PageHero
+        variant="gradient"
+        breadcrumbs={[
+          { label: t("breadcrumbPricing"), href: "/pricing" },
+          { label: t("breadcrumbCalculator") },
+        ]}
+        eyebrow={t("eyebrow")}
+        heading={
+          <>{t.rich("heading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
+        description={t("description")}
+      />
 
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <CalculatorWizard />
         </div>
       </section>
-    </div>
+    </>
   );
 }

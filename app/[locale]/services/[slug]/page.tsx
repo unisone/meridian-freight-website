@@ -14,10 +14,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { getServiceBySlug, getRelatedServices, getAllServices } from "@/content/services";
 import { FaqAccordion } from "@/components/faq-accordion";
+import { DarkCta } from "@/components/dark-cta";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -64,6 +65,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/services/${slug}`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: service.title }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${service.title} | ${SITE.name}`,
+      description: service.description,
+      images: [SITE.ogImage],
+    },
   };
 }
 
@@ -87,6 +94,7 @@ export default async function ServicePage({
     inLanguage: locale,
     name: service.title,
     description: service.longDescription,
+    url: `${SITE.url}${locale === "en" ? "" : `/${locale}`}/services/${slug}`,
     image: `${SITE.url}${SITE.ogImage}`,
     availableLanguage: ["English", "Russian", "Spanish", "Arabic"],
     priceRange: "Contact for quote",
@@ -99,7 +107,6 @@ export default async function ServicePage({
       { "@type": "Country", name: "United States" },
       { "@type": "Country", name: "Canada" },
     ],
-    url: `${SITE.url}/services/${slug}`,
   };
 
   return (
@@ -124,37 +131,23 @@ export default async function ServicePage({
         />
       )}
 
-      <div className="pt-20">
-        {/* Breadcrumbs */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: "Services", href: "/services" },
-              { label: service.shortTitle },
-            ]}
-          />
-        </div>
+      <PageHero
+        variant="dark"
+        breadcrumbs={[
+          { label: "Services", href: "/services" },
+          { label: service.shortTitle },
+        ]}
+        eyebrow={ts("eyebrow")}
+        heading={service.title}
+        description={service.description}
+        icon={Icon}
+      >
+        <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
+            {ts("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </PageHero>
 
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
-                <Icon className="h-6 w-6" />
-              </div>
-            </div>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              {service.title}
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
-              {service.description}
-            </p>
-            <Button render={<Link href="/contact" />} size="lg" className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                {ts("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </section>
-
+      <div>
         {/* What We Do */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -229,28 +222,21 @@ export default async function ServicePage({
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-            <h2 className="text-2xl font-bold sm:text-3xl">
-              {ts("needServices", { service: service.shortTitle })}
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sky-300">
-              {ts.rich("ctaDescription", {
-                calculatorLink: (chunks) => (
-                  <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">{chunks}</Link>
-                ),
-              })}
-            </p>
-            <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-                  {ts("getAQuote")}
-              </Button>
-              <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label={ts("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
-                  {ts("chatOnWhatsApp")}
-              </Button>
-            </div>
-          </div>
-        </section>
+          <DarkCta
+            heading={ts("needServices", { service: service.shortTitle })}
+            description={ts.rich("ctaDescription", {
+              calculatorLink: (chunks) => (
+                <Link href="/pricing/calculator" className="underline hover:text-white transition-colors">{chunks}</Link>
+              ),
+            })}
+          >
+            <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
+              {ts("getAQuote")}
+            </Button>
+            <Button render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in your ${service.shortTitle} services.`)}`} target="_blank" rel="noopener noreferrer" aria-label={ts("chatOnWhatsApp")} />} size="lg" variant="outline" className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold">
+              {ts("chatOnWhatsApp")}
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>

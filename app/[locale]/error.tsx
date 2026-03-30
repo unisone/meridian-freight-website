@@ -21,7 +21,7 @@ export default function Error({
   }, [error]);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
-      <h1 className="text-4xl font-bold tracking-tight text-foreground">
+      <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
         {t("heading")}
       </h1>
       <p className="mt-4 max-w-md text-muted-foreground">

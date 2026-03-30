@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { Calculator, ArrowRight, MessageCircle } from "lucide-react";
+import { DarkCta } from "@/components/dark-cta";
 import { Button } from "@/components/ui/button";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { PricingTable } from "@/components/pricing-table";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, COMPANY, SITE } from "@/lib/constants";
@@ -44,6 +45,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/pricing`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("pricingTitle") }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("pricingTitle")} | ${SITE.name}`,
+      description: t("pricingDescription"),
+      images: [SITE.ogImage],
+    },
   };
 }
 
@@ -71,38 +78,38 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
   };
 
   return (
-    <div className="pt-20">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }}
       />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
-      </div>
+      <PageHero
+        variant="gradient"
+        breadcrumbs={[{ label: t("breadcrumb") }]}
+        eyebrow={t("eyebrow")}
+        heading={
+          <>{t.rich("heading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
+        description={t("description")}
+      >
+        <ul className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-muted-foreground">
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkWarehouse")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkCustoms")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkPacking")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkInland")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkOcean")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkAir")}</li>
+          <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkDrayage")}</li>
+        </ul>
+        <p className="mt-3 text-sm text-muted-foreground/70">
+          {t("ratesUpdated")}
+        </p>
+      </PageHero>
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              {t("heading")}
-            </h1>
-            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              {t("description")}
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkWarehouse")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkCustoms")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkPacking")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkInland")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkOcean")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkAir")}</li>
-              <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkDrayage")}</li>
-            </ul>
-            <p className="mt-3 text-sm text-muted-foreground/70">
-              {t("ratesUpdated")}
-            </p>
-          </div>
-
           {/* Calculator CTA */}
           <ScrollReveal variant="fade">
           <div className="mb-12 rounded-xl bg-primary/5 p-6 text-center shadow-sm sm:p-8">
@@ -124,38 +131,28 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
 
           {/* Bottom CTA */}
           <ScrollReveal variant="fade">
-          <section className="mt-16 rounded-2xl bg-slate-900 py-12 sm:py-16">
-            <div className="mx-auto max-w-3xl px-4 text-center text-white">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                {t("ctaHeading")}
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-slate-300">
-                {t("ctaDescription")}
-              </p>
-              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Button
-                    render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={t("chatOnWhatsAppAriaLabel")} />}
-                    size="lg"
-                    className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
-                  >
-                    <MessageCircle className="mr-2 h-4 w-4" />
-                    {t("chatOnWhatsApp")}
-                </Button>
-                <Button
-                    render={<Link href="/contact" />}
-                    size="lg"
-                    variant="outline"
-                    className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
-                  >
-                    {t("contactUs")}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </section>
+            <DarkCta variant="card" className="mt-16" heading={t("ctaHeading")} description={t("ctaDescription")}>
+              <Button
+                render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={t("chatOnWhatsAppAriaLabel")} />}
+                size="lg"
+                className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                {t("chatOnWhatsApp")}
+              </Button>
+              <Button
+                render={<Link href="/contact" />}
+                size="lg"
+                variant="outline"
+                className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
+              >
+                {t("contactUs")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </DarkCta>
           </ScrollReveal>
         </div>
       </section>
-    </div>
+    </>
   );
 }

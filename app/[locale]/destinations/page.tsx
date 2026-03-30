@@ -4,9 +4,10 @@ import { ArrowRight, MapPin, Clock, Anchor, MessageCircle, Ship, Globe } from "l
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { DestinationsGlobe } from "@/components/destinations-globe";
+import { DarkCta } from "@/components/dark-cta";
 import { getAllDestinations } from "@/content/destinations";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -46,6 +47,12 @@ export async function generateMetadata({
       description: t("destinationsDescription"),
       url: `${SITE.url}${localePath}/destinations`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("destinationsTitle") }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("destinationsTitle")} | ${SITE.name}`,
+      description: t("destinationsDescription"),
+      images: [SITE.ogImage],
     },
   };
 }
@@ -154,94 +161,83 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="pt-20">
-        {/* Breadcrumbs */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
+      <PageHero
+        variant="dark"
+        breadcrumbs={[{ label: t("breadcrumb") }]}
+        eyebrow={t("eyebrow")}
+        heading={t("heroHeading")}
+        description={t("heroDescription", { company: COMPANY.name })}
+        rightContent={
+          <>
+            {/* Right — Globe (desktop only) */}
+            <div className="hidden lg:block">
+              <DestinationsGlobe />
+            </div>
+
+            {/* Mobile: visual stats grid instead of heavy WebGL globe */}
+            <div className="grid grid-cols-3 gap-3 lg:hidden">
+              {[
+                { icon: Globe, label: t("mobileAnyPort"), accent: "text-sky-400 bg-sky-500/15" },
+                { icon: Ship, label: t("mobileWeeklySailings"), accent: "text-teal-400 bg-teal-500/15" },
+                { icon: MapPin, label: t("mobileCountriesServed"), accent: "text-emerald-400 bg-emerald-500/15" },
+              ].map((item) => (
+                <div key={item.label} className="flex flex-col items-center gap-2 rounded-xl bg-white/5 p-4 text-center">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full ${item.accent}`}>
+                    <item.icon className="h-5 w-5" />
+                  </div>
+                  <p className="text-xs font-medium text-slate-300 whitespace-pre-line leading-tight">
+                    {item.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </>
+        }
+      >
+        {/* Stats row */}
+        <div className="flex flex-wrap gap-6 text-sm">
+          <div>
+            <span className="font-mono text-2xl font-bold tabular-nums text-white">1,000+</span>
+            <p className="mt-0.5 text-slate-400">{t("exportsCompleted")}</p>
+          </div>
+          <div>
+            <span className="font-mono text-2xl font-bold tabular-nums text-white">40+</span>
+            <p className="mt-0.5 text-slate-400">{t("countriesServed")}</p>
+          </div>
+          <div>
+            <span className="font-mono text-2xl font-bold tabular-nums text-white">6</span>
+            <p className="mt-0.5 text-slate-400">{t("continentsReached")}</p>
+          </div>
         </div>
 
-        {/* ─── Hero with Globe ─────────────────────────────────────────── */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20 overflow-hidden">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-              {/* Left — Text */}
-              <div className="text-white">
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl leading-[1.1]">
-                  {t("heroHeading")}
-                </h1>
-                <p className="mt-5 max-w-lg text-lg text-sky-300 leading-relaxed">
-                  {t("heroDescription", { company: COMPANY.name })}
-                </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button
+            render={<Link href="/contact" />}
+            size="lg"
+            className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+          >
+            {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <Button
+            render={
+              <a
+                href={CONTACT.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t("chatOnWhatsAppAriaLabel")}
+              />
+            }
+            size="lg"
+            variant="outline"
+            className="h-12 px-8 rounded-xl border-2 border-white/30 text-white bg-transparent hover:bg-white/10 font-semibold"
+          >
+            <MessageCircle className="mr-2 h-4 w-4" />
+            {t("chatOnWhatsApp")}
+          </Button>
+        </div>
+      </PageHero>
 
-                {/* Stats row */}
-                <div className="mt-8 flex flex-wrap gap-6 text-sm">
-                  <div>
-                    <span className="font-mono text-2xl font-bold tabular-nums text-white">500+</span>
-                    <p className="mt-0.5 text-slate-400">{t("exportsCompleted")}</p>
-                  </div>
-                  <div>
-                    <span className="font-mono text-2xl font-bold tabular-nums text-white">40+</span>
-                    <p className="mt-0.5 text-slate-400">{t("countriesServed")}</p>
-                  </div>
-                  <div>
-                    <span className="font-mono text-2xl font-bold tabular-nums text-white">6</span>
-                    <p className="mt-0.5 text-slate-400">{t("continentsReached")}</p>
-                  </div>
-                </div>
-
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Button
-                    render={<Link href="/contact" />}
-                    size="lg"
-                    className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
-                  >
-                    {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                  <Button
-                    render={
-                      <a
-                        href={CONTACT.whatsappUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={t("chatOnWhatsAppAriaLabel")}
-                      />
-                    }
-                    size="lg"
-                    variant="outline"
-                    className="h-12 px-8 rounded-xl border-2 border-white/30 text-white bg-transparent hover:bg-white/10 font-semibold"
-                  >
-                    <MessageCircle className="mr-2 h-4 w-4" />
-                    {t("chatOnWhatsApp")}
-                  </Button>
-                </div>
-              </div>
-
-              {/* Right — Globe (desktop only) */}
-              <div className="hidden lg:block">
-                <DestinationsGlobe />
-              </div>
-
-              {/* Mobile: visual stats grid instead of heavy WebGL globe */}
-              <div className="grid grid-cols-3 gap-3 lg:hidden">
-                {[
-                  { icon: Globe, label: t("mobileAnyPort"), accent: "text-sky-400 bg-sky-500/15" },
-                  { icon: Ship, label: t("mobileWeeklySailings"), accent: "text-teal-400 bg-teal-500/15" },
-                  { icon: MapPin, label: t("mobileCountriesServed"), accent: "text-emerald-400 bg-emerald-500/15" },
-                ].map((item) => (
-                  <div key={item.label} className="flex flex-col items-center gap-2 rounded-xl bg-white/5 p-4 text-center">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-full ${item.accent}`}>
-                      <item.icon className="h-5 w-5" />
-                    </div>
-                    <p className="text-xs font-medium text-slate-300 whitespace-pre-line leading-tight">
-                      {item.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
+      <div>
         {/* ─── Destination Cards by Region (matches original site pattern) ── */}
         {regions.map((region) => {
           const regionDests = destinations.filter((d) => d.region === region);
@@ -337,33 +333,23 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
 
         {/* ─── CTA ─────────────────────────────────────────────────────── */}
         <ScrollReveal variant="fade">
-          <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                {t("ctaHeading")}
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                {t("ctaDescription")}
-              </p>
-              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Button
-                  render={<Link href="/contact" />}
-                  size="lg"
-                  className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
-                >
-                  {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button
-                  render={<Link href="/pricing/calculator" />}
-                  size="lg"
-                  variant="outline"
-                  className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
-                >
-                  {t("tryFreightCalculator")}
-                </Button>
-              </div>
-            </div>
-          </section>
+          <DarkCta heading={t("ctaHeading")} description={t("ctaDescription")}>
+            <Button
+              render={<Link href="/contact" />}
+              size="lg"
+              className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+            >
+              {t("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            <Button
+              render={<Link href="/pricing/calculator" />}
+              size="lg"
+              variant="outline"
+              className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
+            >
+              {t("tryFreightCalculator")}
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>

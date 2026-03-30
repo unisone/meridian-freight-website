@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { ServicesGrid } from "@/components/services-grid";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ProcessSteps } from "@/components/process-steps";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { DarkCta } from "@/components/dark-cta";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -46,6 +47,12 @@ export async function generateMetadata({
       url: `${SITE.url}${localePath}/services`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: t("servicesTitle") }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("servicesTitle")} | ${SITE.name}`,
+      description: t("servicesDescription"),
+      images: [SITE.ogImage],
+    },
   };
 }
 
@@ -76,30 +83,28 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-    <div className="pt-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">{t("heading")}</h1>
-        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("description")}</p>
-      </div>
+    <PageHero
+      variant="gradient"
+      breadcrumbs={[{ label: t("breadcrumb") }]}
+      eyebrow={t("eyebrow")}
+      heading={
+        <>{t.rich("heading", {
+          accent: (chunks) => <span className="text-primary">{chunks}</span>,
+        })}</>
+      }
+      description={t("description")}
+    />
+    <div>
       <ServicesGrid />
       <ProcessSteps />
 
       {/* CTA */}
       <ScrollReveal variant="fade">
-      <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-          <h2 className="text-2xl font-bold sm:text-3xl">
-            {t("ctaHeading")}
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sky-300">
-            {t("ctaDescription")}
-          </p>
-          <Button render={<Link href="/contact" />} size="lg" className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
-              {t("ctaButton")} <ArrowRight className="ml-2 h-4 w-4" />
+        <DarkCta heading={t("ctaHeading")} description={t("ctaDescription")}>
+          <Button render={<Link href="/contact" />} size="lg" className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg">
+            {t("ctaButton")} <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-        </div>
-      </section>
+        </DarkCta>
       </ScrollReveal>
     </div>
     </>

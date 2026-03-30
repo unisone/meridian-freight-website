@@ -21,7 +21,7 @@ export default async function NotFound() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 pt-20 pb-16">
       <div className="mx-auto max-w-2xl text-center">
-        <h1 className="text-6xl font-bold tracking-tight text-foreground">{t("title")}</h1>
+        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">{t("title")}</h1>
         <p className="mt-4 text-xl text-muted-foreground">
           {t("subtitle")}
         </p>

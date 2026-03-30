@@ -112,7 +112,7 @@ export function CalculatorEstimateCard({
               <div>
                 <div className="text-sm text-slate-300">{t("usInlandTransport")}</div>
                 {estimate.distanceMiles !== null && (
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-slate-400">
                     {estimate.distanceMiles} mi × ${estimate.deliveryRatePerMile}/mi
                     {estimate.containerType === "fortyhc" ? " + $1,800 drayage" : ""}
                   </div>
@@ -125,8 +125,8 @@ export function CalculatorEstimateCard({
           )}
           {estimate.usInlandTransport === null && (
             <div className="flex items-start justify-between">
-              <span className="text-sm text-slate-500">{t("usInlandTransport")}</span>
-              <span className="text-xs italic text-slate-500">{t("enterZipForEstimate")}</span>
+              <span className="text-sm text-slate-400">{t("usInlandTransport")}</span>
+              <span className="text-xs italic text-slate-400">{t("enterZipForEstimate")}</span>
             </div>
           )}
 
@@ -135,7 +135,7 @@ export function CalculatorEstimateCard({
               <div>
                 <div className="text-sm text-slate-300">{t("packingAndLoading")}</div>
                 {estimate.packingBreakdown && (
-                  <div className="text-xs text-slate-500">{estimate.packingBreakdown}</div>
+                  <div className="text-xs text-slate-400">{estimate.packingBreakdown}</div>
                 )}
               </div>
               <span className="font-mono font-bold text-white">
@@ -149,7 +149,7 @@ export function CalculatorEstimateCard({
               <div className="text-sm text-slate-300">
                 {estimate.containerType === "flatrack" ? t("seaFreightAndLoading") : t("oceanFreight")}
               </div>
-              <div className="text-xs text-slate-500">
+              <div className="text-xs text-slate-400">
                 {estimate.carrier} &bull; {estimate.originPort} → {estimate.destinationPort}
                 {estimate.transitTimeDays && ` • ${estimate.transitTimeDays} days`}
               </div>
@@ -199,7 +199,7 @@ export function CalculatorEstimateCard({
           </div>
         )}
 
-        <p className="mt-4 text-xs text-slate-500">
+        <p className="mt-4 text-xs text-slate-400">
           {t("coversNote")}
         </p>
 
@@ -209,7 +209,7 @@ export function CalculatorEstimateCard({
             render={<Link href="/contact" />}
             className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            {t("getDetailedQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+            {t("getDetailedQuote")} <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
           </Button>
           <Button
             render={
@@ -275,7 +275,7 @@ export function CalculatorEstimateCard({
           <Ship className="h-4 w-4 text-primary" />
         </div>
       </div>
-      <p className="mb-4 text-xs text-slate-500">{t("basedOnRates")}</p>
+      <p className="mb-4 text-xs text-slate-400">{t("basedOnRates")}</p>
 
       {/* Price */}
       {preview ? (
@@ -321,46 +321,55 @@ export function CalculatorEstimateCard({
           </p>
 
           <div>
-            <Label htmlFor="est-email" className="text-xs text-slate-400">
+            <Label htmlFor="est-email" className="text-xs text-slate-300">
               {t("emailLabel")}
             </Label>
             <Input
               id="est-email"
+              name="email"
               type="email"
+              autoComplete="email"
+              spellCheck={false}
               value={email}
               onChange={(e) => onEmailChange(e.target.value)}
               placeholder={t("emailPlaceholder")}
               required
-              className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-600 focus:border-primary"
+              aria-invalid={email ? !isEmailValid : undefined}
+              aria-describedby={email && !isEmailValid ? "est-email-error" : undefined}
+              className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-primary"
             />
             {email && !isEmailValid && (
-              <p className="mt-1 text-xs text-red-500">{t("validEmailError")}</p>
+              <p id="est-email-error" className="mt-1 text-xs text-red-500">{t("validEmailError")}</p>
             )}
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <Label htmlFor="est-name" className="text-xs text-slate-400">
+              <Label htmlFor="est-name" className="text-xs text-slate-300">
                 {t("nameLabel")}
               </Label>
               <Input
                 id="est-name"
+                name="name"
+                autoComplete="name"
                 value={name}
                 onChange={(e) => onNameChange(e.target.value)}
                 placeholder={t("optionalPlaceholder")}
-                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-600"
+                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
               />
             </div>
             <div>
-              <Label htmlFor="est-company" className="text-xs text-slate-400">
+              <Label htmlFor="est-company" className="text-xs text-slate-300">
                 {t("companyLabel")}
               </Label>
               <Input
                 id="est-company"
+                name="company"
+                autoComplete="organization"
                 value={company}
                 onChange={(e) => onCompanyChange(e.target.value)}
                 placeholder={t("optionalPlaceholder")}
-                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-600"
+                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -394,12 +403,12 @@ export function CalculatorEstimateCard({
               </>
             ) : (
               <>
-                {t("calculateAndSend")} <ArrowRight className="ml-2 h-4 w-4" />
+                {t("calculateAndSend")} <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
               </>
             )}
           </Button>
 
-          <p className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+          <p className="flex items-center justify-center gap-1.5 text-xs text-slate-400">
             <Lock className="h-3 w-3" /> {t("emailBreakdownNote")}
           </p>
         </div>
@@ -411,7 +420,7 @@ export function CalculatorEstimateCard({
             disabled={!isComplete}
             className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            {t("bookThisFreight")} <ArrowRight className="ml-2 h-4 w-4" />
+            {t("bookThisFreight")} <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
           </Button>
           <Button
             variant="ghost"

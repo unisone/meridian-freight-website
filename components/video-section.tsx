@@ -61,10 +61,10 @@ export function VideoSection() {
                 <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/20" />
 
                 {/* Play button */}
-                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-primary shadow-xl transition-all group-hover:scale-110 group-hover:bg-primary/90">
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-primary shadow-xl transition-[background-color,transform] group-hover:scale-110 group-hover:bg-primary/90">
                   <span className="absolute inset-0 rounded-full bg-primary/70 animate-pulse-ring pointer-events-none" />
                   <span className="absolute inset-0 rounded-full bg-primary/70 animate-pulse-ring-outer pointer-events-none" />
-                  <Play className="h-8 w-8 text-white ml-1" />
+                  <Play className="h-8 w-8 text-white ml-1" aria-hidden="true" />
                 </div>
               </button>
             )}
@@ -78,9 +78,9 @@ export function VideoSection() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackContactClick("whatsapp", "video_section")}
-            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+            className="group inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
           >
-            <MessageCircle className="h-4 w-4" />
+            <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" aria-hidden="true" />
             {t("getAQuote")}
           </a>
           <a
@@ -90,7 +90,7 @@ export function VideoSection() {
             className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80 link-underline"
           >
             {t("watchMoreYouTube")}
-            <ExternalLink className="h-4 w-4" />
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
       </div>

@@ -6,7 +6,7 @@ export const COMPANY = {
   legalName: "Meridian Freight Inc.",
   tagline: "Professional Machinery Export & Logistics",
   description:
-    "Full-service machinery export from USA & Canada — equipment pickup, professional dismantling, secure container packing, export documentation, and air or ocean shipping worldwide. 500+ exports completed.",
+    "Full-service machinery export from USA & Canada — equipment pickup, professional dismantling, secure container packing, export documentation, and air or ocean shipping worldwide. 1,000+ exports completed.",
   foundedYear: 2013,
 } as const;
 
@@ -52,7 +52,7 @@ export const TRACKING = {
 } as const;
 
 export const STATS = {
-  projectsCompleted: 500,
+  projectsCompleted: 1000,
   yearsExperience: new Date().getFullYear() - COMPANY.foundedYear,
 } as const;
 
@@ -92,6 +92,7 @@ export const NAV_ITEMS = [
   { label: "Projects", href: "/projects" },
   { label: "Destinations", href: "/destinations" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Shipping Schedule", href: "/schedule" },
   { label: "FAQ", href: "/faq" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },

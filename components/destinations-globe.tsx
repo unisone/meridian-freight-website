@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import dynamic from "next/dynamic";
+import { MeshPhongMaterial, Color } from "three";
 
 const GlobeGL = dynamic(() => import("react-globe.gl"), { ssr: false });
 
@@ -107,13 +108,13 @@ const SECONDARY_PORTS: [number, number][] = [
 const GEOJSON_URL =
   "https://cdn.jsdelivr.net/npm/globe.gl/example/datasets/ne_110m_admin_0_countries.geojson";
 
-const LAND_COLOR = "rgba(25, 25, 38, 0.95)";
-const BORDER_COLOR = "rgba(65, 65, 85, 0.5)";
-const LAND_SIDE_COLOR = "rgba(15, 15, 25, 0.4)";
+const LAND_COLOR = "rgba(55, 75, 100, 1)";
+const BORDER_COLOR = "rgba(130, 160, 190, 0.8)";
+const LAND_SIDE_COLOR = "rgba(35, 50, 70, 0.6)";
 
 // Unified teal palette — matches site design system (single accent color)
 // Variation comes from opacity/stagger, not rainbow colors
-const ARC_COLOR: [string, string] = ["rgba(0, 200, 200, 0.80)", "rgba(0, 200, 200, 0.25)"];
+const ARC_COLOR: [string, string] = ["rgba(0, 200, 200, 0.65)", "rgba(0, 200, 200, 0.18)"];
 
 const MARKER_COLOR = "rgba(0, 200, 200, 1)";
 const MARKER_SECONDARY = "rgba(0, 200, 200, 0.5)";
@@ -166,6 +167,16 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
       ),
     [countries]
   );
+
+  // ─── Globe ocean material (dark navy, distinct from land) ───────────
+  const oceanMaterial = useMemo(() => {
+    const mat = new MeshPhongMaterial();
+    mat.color = new Color(0x0a1628);       // deep navy ocean
+    mat.emissive = new Color(0x061020);    // subtle self-illumination
+    mat.emissiveIntensity = 0.2;
+    mat.shininess = 5;
+    return mat;
+  }, []);
 
   // ─── Build arcs — one per featured route ────────────────────────────
   const arcsData = useMemo<ArcDatum[]>(() => {
@@ -243,11 +254,10 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
     // Set initial camera to see Atlantic — shows Americas + Europe/Africa
     globeRef.current.pointOfView({ lat: 20, lng: -30, altitude: 2.2 }, 0);
 
-    // Enable auto-rotation
+    // Static positioning — no auto-spin, no zoom
     const controls = globeRef.current.controls();
     if (controls) {
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.4;
+      controls.autoRotate = false;
       controls.enableZoom = false;
     }
   }, [globeReady]);
@@ -258,6 +268,8 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
     <div
       ref={containerRef}
       className={`relative overflow-hidden rounded-2xl bg-black ${className}`}
+      role="img"
+      aria-label="Interactive map showing worldwide shipping destinations"
     >
       <GlobeGL
         ref={globeRef}
@@ -266,14 +278,15 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
         height={globeHeight}
         backgroundColor="rgba(0,0,0,0)"
         showGlobe={true}
+        globeMaterial={oceanMaterial}
         showAtmosphere={true}
-        atmosphereColor="rgba(56, 189, 248, 0.15)"
+        atmosphereColor="#38bdf8"
         atmosphereAltitude={0.15}
         polygonsData={polygonData}
         polygonCapColor={() => LAND_COLOR}
         polygonSideColor={() => LAND_SIDE_COLOR}
         polygonStrokeColor={() => BORDER_COLOR}
-        polygonAltitude={0.005}
+        polygonAltitude={0.008}
         arcsData={arcsData}
         arcStartLat="startLat"
         arcStartLng="startLng"
@@ -315,7 +328,7 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
       {/* Route count badge */}
       <div className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
         <span className="relative flex h-2 w-2">
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
         </span>
         <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-300">
           8 Featured Routes &middot; 40+ Countries

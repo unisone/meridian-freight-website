@@ -6,7 +6,6 @@ import {
   ChevronDown,
   Globe,
   Info,
-  Loader2,
   Package,
   Ship,
   Truck,
@@ -23,6 +22,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Sheet,
   SheetTrigger,
@@ -233,12 +233,44 @@ export function CalculatorWizard() {
     setShowAllCategories(false);
   }
 
-  // ─── Loading state ─────────────────────────────────────────────────────
+  // ─── Loading state — content-aware skeleton ────────────────────────────
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="mr-3 h-6 w-6 animate-spin text-primary" />
-        <span className="text-muted-foreground">{t("loadingRates")}</span>
+      <div>
+        {/* Progress bar skeleton */}
+        <div className="mb-6 flex gap-2">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-1.5 flex-1 rounded-full" />
+          ))}
+        </div>
+        <div className="flex flex-col gap-8 lg:flex-row">
+          {/* Left column — form skeleton */}
+          <div className="min-w-0 flex-[3] space-y-8">
+            {/* Section 1: Category grid */}
+            <div>
+              <Skeleton className="mb-4 h-5 w-48" />
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={i} className="h-20 rounded-xl" />
+                ))}
+              </div>
+            </div>
+            {/* Section 2: Specs */}
+            <div className="opacity-40">
+              <Skeleton className="mb-4 h-5 w-36" />
+              <Skeleton className="h-4 w-64" />
+            </div>
+            {/* Section 3: Route */}
+            <div className="opacity-40">
+              <Skeleton className="mb-4 h-5 w-32" />
+              <Skeleton className="h-4 w-56" />
+            </div>
+          </div>
+          {/* Right column — estimate card skeleton */}
+          <div className="hidden flex-[2] lg:block">
+            <Skeleton className="h-72 rounded-2xl" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -333,7 +365,7 @@ export function CalculatorWizard() {
                       setSelectedEquipment(null);
                       setEquipmentSize(null);
                     }}
-                    className={`group flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-all ${
+                    className={`group flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                       isSelected
                         ? "border-primary bg-primary/5 ring-1 ring-primary/20"
                         : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
@@ -364,7 +396,7 @@ export function CalculatorWizard() {
             {data.categories.length > 8 && !showAllCategories && (
               <button
                 onClick={() => setShowAllCategories(true)}
-                className="mt-2 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                className="mt-2 flex items-center gap-1 py-2 text-xs font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded"
               >
                 {t("showAllCategories", { count: data.categories.length })}{" "}
                 <ChevronDown className="h-3 w-3" />
@@ -392,7 +424,7 @@ export function CalculatorWizard() {
                               container_type: eq.container_type,
                             });
                           }}
-                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-all duration-150 ${
+                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                             isSelected
                               ? "bg-primary text-primary-foreground"
                               : "hover:bg-muted"
@@ -445,7 +477,8 @@ export function CalculatorWizard() {
           {/* ║ Section 02: Equipment Specs                   ║ */}
           {/* ╚═══════════════════════════════════════════════╝ */}
           <section
-            className={`transition-all duration-300 ${
+            aria-disabled={!selectedEquipment || undefined}
+            className={`transition-[opacity,transform] duration-300 ${
               !selectedEquipment ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
@@ -472,7 +505,9 @@ export function CalculatorWizard() {
                     </Label>
                     <Input
                       id="equipment-size"
+                      name="equipment-size"
                       type="number"
+                      autoComplete="off"
                       min={1}
                       value={equipmentSize ?? ""}
                       onChange={(e) => {
@@ -511,7 +546,7 @@ export function CalculatorWizard() {
                         </span>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger aria-label={t("packingCostInfo")}>
                               <Info className="h-4 w-4 text-muted-foreground" />
                             </TooltipTrigger>
                             <TooltipContent>
@@ -560,7 +595,8 @@ export function CalculatorWizard() {
           {/* ║ Section 03: Shipping Route                    ║ */}
           {/* ╚═══════════════════════════════════════════════╝ */}
           <section
-            className={`transition-all duration-300 ${
+            aria-disabled={!step2Done || undefined}
+            className={`transition-[opacity,transform] duration-300 ${
               !step2Done ? "pointer-events-none opacity-40 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
@@ -584,6 +620,8 @@ export function CalculatorWizard() {
                     </Label>
                     <select
                       id="dest-country"
+                      name="destination-country"
+                      autoComplete="off"
                       value={destinationCountry}
                       onChange={(e) => {
                         const country = e.target.value;
@@ -601,7 +639,7 @@ export function CalculatorWizard() {
                           });
                         }
                       }}
-                      className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-base md:text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     >
                       <option value="">{t("selectCountry")}</option>
                       {data.countries.map((code) => (
@@ -626,8 +664,10 @@ export function CalculatorWizard() {
                     </Label>
                     <Input
                       id="zip-code"
+                      name="zip-code"
                       type="text"
                       inputMode="numeric"
+                      autoComplete="postal-code"
                       maxLength={5}
                       value={zipCode}
                       onChange={(e) =>
@@ -713,6 +753,7 @@ export function CalculatorWizard() {
           {/* Bottom bar */}
           <div className="flex items-center justify-between bg-slate-900 px-4 py-3 shadow-2xl">
             <SheetTrigger
+              aria-label={t("viewEstimateDetails")}
               className="flex items-center gap-2 text-white"
             >
               {preview ? (

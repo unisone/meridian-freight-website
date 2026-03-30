@@ -14,7 +14,8 @@ export function useCountUp({
   duration = 0.8,
   enabled = true,
 }: UseCountUpOptions): number {
-  const [value, setValue] = useState(0);
+  // Initialize with end value to avoid SSR flash (renders "500" not "0")
+  const [value, setValue] = useState(end);
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export function useCountUp({
 
     const durationMs = duration * 1000;
     let start: number | null = null;
+    let raf: number;
 
     function step(timestamp: number) {
       if (start === null) start = timestamp;
@@ -33,11 +35,13 @@ export function useCountUp({
       setValue(Math.round(eased * end));
 
       if (progress < 1) {
-        requestAnimationFrame(step);
+        raf = requestAnimationFrame(step);
       }
     }
 
-    requestAnimationFrame(step);
+    // First frame renders 0 via rAF callback (not synchronous setState)
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
   }, [enabled, end, duration]);
 
   return value;

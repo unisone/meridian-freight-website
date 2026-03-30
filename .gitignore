@@ -49,3 +49,6 @@ audit-*.png
 *-page.png
 *-mobile.png
 .env*.local
+
+# Supabase local config
+supabase/.temp/

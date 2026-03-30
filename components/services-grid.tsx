@@ -54,9 +54,9 @@ export function ServicesGrid() {
                   href={`/services/${service.slug}`}
                   className="group active:scale-[0.99]"
                 >
-                  <Card className="h-full border-0 shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                  <Card className="h-full border-0 shadow-sm transition-[transform,box-shadow] duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
                     <CardContent className="p-6 sm:p-8">
-                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary/20 group-hover:text-primary/80 group-hover:scale-110 group-hover:shadow-sm">
+                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-[color,background-color,transform,box-shadow] duration-300 group-hover:bg-primary/20 group-hover:text-primary/80 group-hover:scale-110 group-hover:shadow-sm">
                         <Icon className="h-6 w-6" />
                       </div>
                       <h3 className="text-lg font-bold text-foreground leading-snug">
@@ -67,7 +67,7 @@ export function ServicesGrid() {
                       </p>
                       <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-primary transition-colors group-hover:text-primary/80 link-underline">
                         {tc("learnMore")}
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                       </div>
                     </CardContent>
                   </Card>

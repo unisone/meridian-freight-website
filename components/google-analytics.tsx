@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Script from "next/script";
 import { TRACKING } from "@/lib/constants";
+import { captureAttribution } from "@/lib/tracking";
 
 /**
  * Google Analytics 4 with Consent Mode v2 (region-aware).
@@ -20,6 +21,9 @@ export function GoogleAnalytics() {
   const adsId = TRACKING.googleAdsId;
 
   useEffect(() => {
+    // Capture UTM params and click IDs from URL on page load
+    captureAttribution();
+
     // If user already accepted cookies before this component mounted,
     // update consent state immediately
     if (localStorage.getItem("cookie-consent") === "accepted") {
@@ -39,7 +43,7 @@ export function GoogleAnalytics() {
   return (
     <>
       {/* Consent Mode v2 defaults — MUST run before gtag config */}
-      <Script id="gtag-consent-default" strategy="beforeInteractive">
+      <Script id="gtag-consent-default" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

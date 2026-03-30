@@ -66,3 +66,23 @@ export const calculatorV2Schema = z.object({
 });
 
 export type CalculatorV2Data = z.infer<typeof calculatorV2Schema>;
+
+// --- Shared Shipping Booking Request ---
+
+export const bookingRequestSchema = z.object({
+  name: z.string().min(1, "Name is required").max(200),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(5, "Phone number is required").max(50),
+  cargoDescription: z.string().min(5, "Please describe your cargo").max(2000),
+  containerId: z.string().uuid("Invalid container ID"),
+  projectNumber: z.string().min(1, "Project number is required"),
+  // Honeypot — bots fill hidden fields, humans don't
+  website: z.string().max(500).optional().default(""),
+  // UTM attribution (auto-captured on client)
+  source_page: z.string().max(500).optional().default(""),
+  utm_source: z.string().max(200).optional().default(""),
+  utm_medium: z.string().max(200).optional().default(""),
+  utm_campaign: z.string().max(200).optional().default(""),
+});
+
+export type BookingRequestData = z.infer<typeof bookingRequestSchema>;

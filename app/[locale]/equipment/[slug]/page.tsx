@@ -12,12 +12,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { getEquipmentBySlug, getAllEquipmentTypes } from "@/content/equipment";
 import { getServiceBySlug } from "@/content/services";
 import { getAllDestinations } from "@/content/destinations";
 import { FaqAccordion } from "@/components/faq-accordion";
+import { DarkCta } from "@/components/dark-cta";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -56,6 +57,12 @@ export async function generateMetadata({
       images: [
         { url: SITE.ogImage, width: 1200, height: 630, alt: equipment.title },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: equipment.metaTitle,
+      description: equipment.metaDescription,
+      images: [SITE.ogImage],
     },
   };
 }
@@ -147,36 +154,26 @@ export default async function EquipmentPage({
         />
       )}
 
-      <div className="pt-20">
-        {/* Breadcrumbs */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: "Equipment", href: "/equipment" },
-              { label: equipment.pluralName },
-            ]}
-          />
-        </div>
+      <PageHero
+        variant="dark"
+        breadcrumbs={[
+          { label: "Equipment", href: "/equipment" },
+          { label: equipment.pluralName },
+        ]}
+        eyebrow={te("eyebrow")}
+        heading={equipment.title}
+        description={equipment.heroDescription}
+      >
+        <Button
+          render={<Link href="/contact" />}
+          size="lg"
+          className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+        >
+          {te("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </PageHero>
 
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              {equipment.title}
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
-              {equipment.heroDescription}
-            </p>
-            <Button
-              render={<Link href="/contact" />}
-              size="lg"
-              className="mt-8 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
-            >
-              {te("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </section>
-
+      <div>
         {/* Brands We Handle */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -344,49 +341,42 @@ export default async function EquipmentPage({
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-          <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                {te("readyToShip", { equipment: equipment.singularName })}
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                {te.rich("ctaDescription", {
-                  calculatorLink: (chunks) => (
-                    <Link
-                      href="/pricing/calculator"
-                      className="underline hover:text-white transition-colors"
-                    >
-                      {chunks}
-                    </Link>
-                  ),
-                })}
-              </p>
-              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Button
-                  render={<Link href="/contact" />}
-                  size="lg"
-                  className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+          <DarkCta
+            heading={te("readyToShip", { equipment: equipment.singularName })}
+            description={te.rich("ctaDescription", {
+              calculatorLink: (chunks) => (
+                <Link
+                  href="/pricing/calculator"
+                  className="underline hover:text-white transition-colors"
                 >
-                  {te("getAQuote")}
-                </Button>
-                <Button
-                  render={
-                    <a
-                      href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={te("chatOnWhatsApp")}
-                    />
-                  }
-                  size="lg"
-                  variant="outline"
-                  className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
-                >
-                  {te("chatOnWhatsApp")}
-                </Button>
-              </div>
-            </div>
-          </section>
+                  {chunks}
+                </Link>
+              ),
+            })}
+          >
+            <Button
+              render={<Link href="/contact" />}
+              size="lg"
+              className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+            >
+              {te("getAQuote")}
+            </Button>
+            <Button
+              render={
+                <a
+                  href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={te("chatOnWhatsApp")}
+                />
+              }
+              size="lg"
+              variant="outline"
+              className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
+            >
+              {te("chatOnWhatsApp")}
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>

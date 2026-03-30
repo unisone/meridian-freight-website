@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { DarkCta } from "@/components/dark-cta";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -49,6 +50,12 @@ export async function generateMetadata({
       images: [
         { url: SITE.ogImage, width: 1200, height: 630, alt: post.title },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.metaTitle,
+      description: post.metaDescription,
+      images: [SITE.ogImage],
     },
   };
 }
@@ -167,23 +174,15 @@ export default async function BlogPostPage({
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-          <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-white">
-              <h2 className="text-2xl font-bold sm:text-3xl">
-                {tb("ctaHeading")}
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-sky-300">
-                {tb("ctaDescription")}
-              </p>
-              <Button
-                render={<Link href="/contact" />}
-                size="lg"
-                className="mt-6 h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
-              >
-                {tb("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </section>
+          <DarkCta heading={tb("ctaHeading")} description={tb("ctaDescription")}>
+            <Button
+              render={<Link href="/contact" />}
+              size="lg"
+              className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+            >
+              {tb("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </DarkCta>
         </ScrollReveal>
       </div>
     </>

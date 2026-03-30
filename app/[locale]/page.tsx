@@ -13,6 +13,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { DarkCta } from "@/components/dark-cta";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { getHomepageFaq } from "@/content/faq";
@@ -49,6 +50,12 @@ export async function generateMetadata({
       description: t("homeDescription"),
       url: `${SITE.url}${localePath}`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: COMPANY.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("homeTitle")} | ${SITE.name}`,
+      description: t("homeDescription"),
+      images: [SITE.ogImage],
     },
   };
 }
@@ -141,25 +148,20 @@ export default async function HomePage({
 
       {/* Calculator CTA */}
       <ScrollReveal variant="scale">
-        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 sm:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <BarChart3 className="mx-auto h-8 w-8 text-sky-400" />
-            <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
-              {t("calcHeading")}
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-slate-300">
-              {t("calcDescription")}
-            </p>
-            <Button
-              size="lg"
-              className="mt-6 h-12 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg"
-              render={<Link href="/pricing/calculator" />}
-            >
-              {t("openCalculator")}
-              <ArrowRight className="ml-2 h-4 w-4 animate-nudge-right" />
-            </Button>
-          </div>
-        </section>
+        <DarkCta
+          heading={t("calcHeading")}
+          description={t("calcDescription")}
+          icon={<BarChart3 className="mx-auto h-8 w-8 text-sky-400" />}
+        >
+          <Button
+            size="lg"
+            className="h-12 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg"
+            render={<Link href="/pricing/calculator" />}
+          >
+            {t("openCalculator")}
+            <ArrowRight className="ml-2 h-4 w-4 animate-nudge-right" />
+          </Button>
+        </DarkCta>
       </ScrollReveal>
 
       <ScrollReveal>

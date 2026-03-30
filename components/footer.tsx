@@ -42,7 +42,7 @@ export function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-6">
+        <nav aria-label="Footer navigation" className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-6">
           {/* Column 1: Company info */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" aria-label={t("homeAriaLabel")}>
@@ -66,7 +66,7 @@ export function Footer() {
                 location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
-                <Phone className="h-4 w-4 text-sky-400" />
+                <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
                 {CONTACT.phone}
               </TrackedContactLink>
               <TrackedContactLink
@@ -75,11 +75,11 @@ export function Footer() {
                 location="footer"
                 className="flex items-center gap-3 text-sm transition-colors hover:text-white"
               >
-                <Mail className="h-4 w-4 text-sky-400" />
+                <Mail className="h-4 w-4 text-primary" aria-hidden="true" />
                 {CONTACT.email}
               </TrackedContactLink>
               <div className="flex items-center gap-3 text-sm">
-                <MapPin className="h-4 w-4 shrink-0 text-sky-400" />
+                <MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                 {CONTACT.address.full}
               </div>
             </div>
@@ -90,7 +90,7 @@ export function Footer() {
                 href={SOCIAL.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-sky-500 hover:text-white hover:scale-110"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-primary hover:text-white hover:scale-110"
                 aria-label={t("followFacebook")}
               >
                 <Facebook className="h-5 w-5" />
@@ -99,7 +99,7 @@ export function Footer() {
                 href={SOCIAL.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-pink-500 hover:text-white hover:scale-110"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-pink-500 hover:text-white hover:scale-110"
                 aria-label={t("followInstagram")}
               >
                 <Instagram className="h-5 w-5" />
@@ -108,7 +108,7 @@ export function Footer() {
                 href={SOCIAL.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-all hover:bg-red-600 hover:text-white hover:scale-110"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-red-600 hover:text-white hover:scale-110"
                 aria-label={t("watchYouTube")}
               >
                 <Youtube className="h-5 w-5" />
@@ -233,13 +233,13 @@ export function Footer() {
               </p>
               <Link
                 href="/contact"
-                className="mt-4 inline-block rounded-lg bg-sky-500 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sky-600"
+                className="mt-4 inline-block rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
               >
                 {tc("contactUs")}
               </Link>
             </div>
           </div>
-        </div>
+        </nav>
 
         <div className="my-10 h-px bg-slate-800/50" />
 
@@ -250,11 +250,11 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-400">
             {t("copyright", { year, company: COMPANY.legalName })}
           </p>
           <div className="flex items-center gap-4">
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-slate-400">
               {CONTACT.address.full} &middot; {t("languagesSpoken")}
             </p>
             <LanguageSwitcher />

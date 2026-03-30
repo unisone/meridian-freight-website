@@ -162,6 +162,43 @@ export function trackCalcFunnel(
   vercelTrack(`calculator_${step}`, params);
 }
 
+/** Track shared-shipping booking funnel events (GA4 + Vercel Analytics). */
+export function trackBookingFunnel(
+  step: "view" | "filter" | "request_start" | "request_submit",
+  params: Record<string, string>,
+): void {
+  if (step === "view") {
+    trackGA4Event("container_view", params);
+    vercelTrack("container_view", params);
+  } else if (step === "filter") {
+    trackGA4Event("container_filter", params);
+  } else if (step === "request_start") {
+    trackGA4Event("booking_request_start", params);
+    vercelTrack("booking_request_start", params);
+  } else if (step === "request_submit") {
+    // NOTE: generate_lead is fired separately in the booking form handler with the
+    // canonical $300 lead value. This fires a distinct event to avoid double-counting.
+    trackGA4Event("booking_request_submit", params);
+    vercelTrack("booking_request_submit", params);
+  }
+}
+
+/** Track shipping schedule events (GA4 + Vercel Analytics). */
+export function trackScheduleEvent(
+  action: "view" | "filter" | "book_click",
+  params: Record<string, string> = {},
+): void {
+  if (action === "view") {
+    trackGA4Event("schedule_view", params);
+    vercelTrack("schedule_view", params);
+  } else if (action === "filter") {
+    trackGA4Event("schedule_filter", params);
+  } else if (action === "book_click") {
+    trackGA4Event("schedule_book_click", params);
+    vercelTrack("schedule_book_click", params);
+  }
+}
+
 /** Get the GA4 client_id for offline conversion matching. */
 export function getGA4ClientId(): Promise<string | null> {
   return new Promise((resolve) => {

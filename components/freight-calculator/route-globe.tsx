@@ -315,6 +315,8 @@ export function RouteGlobe({
     <div
       ref={containerRef}
       className={`relative overflow-hidden rounded-xl bg-black ${className}`}
+      role="img"
+      aria-label="Shipping route visualization"
     >
       <GlobeGL
         ref={globeRef}
@@ -361,7 +363,7 @@ export function RouteGlobe({
       />
 
       {hasRoute && (
-        <div className="absolute bottom-4 left-4 flex items-center gap-1.5">
+        <div className="absolute bottom-4 left-4 flex items-center gap-1.5" aria-hidden="true">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />

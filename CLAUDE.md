@@ -255,7 +255,7 @@ The website V2 engine was ported from `mf-chatbot-ui/lib/kz-calculator/calculate
 - **No dark mode** — corporate marketing site, light theme only
 - **Design tokens** in `app/globals.css` `:root` block (oklch)
 - **shadcn/ui** components use `bg-background`, `text-foreground`, etc.
-- Primary brand color: Blue-600 (#2563EB)
+- Primary brand color: Sky-500 (#0EA5E9)
 - Font: Geist Sans (headings bold, body regular), Geist Mono (stats/pricing numbers)
 
 ### Content Data Pattern
@@ -420,6 +420,99 @@ See `.env.example` for the full list. Required in `.env.local`:
 
 **IMPORTANT when adding env vars via CLI**: Use `printf 'value' | vercel env add NAME environment` — NOT `echo`. The `echo` command appends a newline (`\n`) that gets embedded in the value and breaks inline JavaScript template literals.
 
-## Deployment
+## Deployment & Environments
 
-Deployed to Vercel (project: `meridian-freight-export`). Pushes to main trigger auto-deploy. Dependabot PRs auto-merge via `.github/workflows/auto-merge-dependabot.yml`.
+Deployed to Vercel (project: `meridian-freight-export`). Full environment strategy: `docs/environments.md`.
+
+| Environment | Trigger | Domain |
+|-------------|---------|--------|
+| Production | Push to `main` | `meridianexport.com` |
+| Preview | Push to non-main branch / PR | `*.vercel.app` (auto-generated) |
+| Development | `vercel env pull` → `.env.local` | `localhost:3000` |
+
+**Environment variable scoping:** Analytics (GA4, Meta Pixel, CAPI), Slack, IndexNow, SEO verification, and Google Sheets vars are **production-only**. Core infra (Supabase, Resend, Sentry, CRON_SECRET) is available in all environments. Preview deployments have no side effects — no analytics pollution, no Slack spam, no CAPI events.
+
+**CI pipeline:** `.github/workflows/ci.yml` runs lint + build + test on every PR to `main`. Dependabot PRs wait for CI then auto-merge via `.github/workflows/auto-merge-dependabot.yml`.
+
+**Branch protection:** `main` requires PRs + status checks. No direct pushes. No force pushes.
+
+## Development Workflow (Claude Code SOP)
+
+**CRITICAL: Claude Code owns the entire development and ops cycle. The user is the final gatekeeper — they review preview URLs, approve features, and make business decisions. Never ask the user to run commands. Never leave the user with manual steps.**
+
+### Standard Feature Workflow
+
+```
+PHASE 1 — DEVELOP (local)
+  1. git checkout main && git pull origin main
+  2. git checkout -b feat/<descriptive-name>
+  3. Implement the feature/fix
+  4. npm run lint — fix any errors
+  5. npm test — fix any failures
+  6. git add -A && git commit -m "feat(scope): description"
+
+PHASE 2 — STAGE (preview)
+  7. git push origin feat/<descriptive-name>
+  8. Wait ~60s for Vercel Preview to deploy
+  9. Get the preview URL: vercel ls | grep feat-<name>
+     Or from: https://vercel.com/unisone-projects/meridian-freight-export/deployments
+  10. VERIFY the preview using browser automation:
+      a. Navigate to the preview URL
+      b. Screenshot the key pages that changed
+      c. Check browser console for errors
+      d. Test interactive flows if applicable (calculator, forms)
+      e. Verify the feature works as intended
+
+PHASE 3 — PRESENT (to user)
+  11. Open PR: gh pr create --base main --fill
+  12. Present to the user:
+      - One-sentence summary of what was built
+      - Preview URL (clickable)
+      - Key screenshots or verification results
+      - Any decisions that need their input
+  13. Wait for user response:
+      - "Ship it" → proceed to Phase 4
+      - Feedback → fix, re-push, re-verify, re-present
+
+PHASE 4 — SHIP (production)
+  14. gh pr merge --squash --delete-branch
+  15. Wait ~60s for production deploy
+  16. VERIFY production using browser automation:
+      a. Navigate to meridianexport.com (or relevant page)
+      b. Confirm the feature is live
+      c. Check for console errors
+  17. Report to user: "Shipped to production. Verified at <URL>."
+  18. If errors detected: vercel rollback immediately, then investigate
+```
+
+### What to Verify in Preview
+| Check | How |
+|-------|-----|
+| Page loads | Navigate to preview URL, confirm 200 |
+| No console errors | Check browser console for red errors |
+| Visual correctness | Screenshot key pages, check layout |
+| Forms work | Fill test data, verify submission (email sends, no Slack/analytics) |
+| Calculator works | Select equipment + country, verify estimate renders |
+| Links work | Check navigation, no 404s on changed pages |
+
+### What NOT to Test in Preview
+- Analytics firing (GA4, Meta Pixel) — intentionally disabled
+- Slack notifications — intentionally disabled
+- Google Sheets sync — intentionally disabled
+- Cron jobs — only run on production
+- IndexNow — intentionally disabled
+
+### Hotfix Workflow (production is broken)
+```
+1. vercel rollback — instant, reverts to previous deploy
+2. Investigate on a branch, don't push to main until fixed
+3. Follow standard workflow above for the fix
+```
+
+### PR Description Format
+Use the PR template at `.github/pull_request_template.md`. Fill in:
+- Summary (one sentence)
+- Changes (bullet list)
+- Preview URL
+- Verification checklist (all boxes checked)
+- Screenshots (if visual changes)

@@ -145,6 +145,7 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
 }
 
@@ -214,6 +215,11 @@
   100% { stroke-dashoffset: 0; }
 }
 
+@keyframes ship-bob {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-2px); }
+}
+
 /* ─── Animation utility classes ──────────────────────── */
 @layer utilities {
   .link-underline {
@@ -253,6 +259,16 @@
   }
   .animate-shake {
     animation: shake var(--duration-normal) var(--ease-default);
+  }
+
+  .animate-ship-bob {
+    animation: ship-bob 3s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-ship-bob {
+      animation: none;
+    }
   }
 
   /* ─── Ghost Border — felt, not seen ────────────── */
