@@ -126,13 +126,13 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                     {destPending ? "" : flag}
                   </span>
                   {destPending ? (
-                    <span className="text-muted-foreground italic font-normal">{destText}</span>
+                    <span className="text-muted-foreground italic font-normal">{t("destinationPending")}</span>
                   ) : (
                     destText
                   )}
                 </h4>
                 <p className="mt-0.5 text-sm text-muted-foreground truncate">
-                  from {origin}
+                  {t("fromOrigin", { origin })}
                   <span className="mx-1.5 text-border">·</span>
                   <span className="font-mono text-xs">{container.container_type}</span>
                   <span className="mx-1.5 text-border">·</span>
@@ -199,7 +199,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                       </p>
                       {transitDayCount !== null && (
                         <p className="text-[11px] text-muted-foreground text-right">
-                          ~{transitDayCount} {t("days")} transit
+                          {t("transitDays", { days: transitDayCount })}
                         </p>
                       )}
                     </div>

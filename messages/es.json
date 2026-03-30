@@ -761,7 +761,11 @@
       "departed": "Partió {date}",
       "etaPending": "Llegada pendiente"
     },
-    "collapseDelivered": "Colapsar"
+    "collapseDelivered": "Colapsar",
+    "fromOrigin": "desde {origin}",
+    "transitDays": "~{days} días en tránsito",
+    "transitDaysCompact": "· ~{days}d",
+    "destinationPending": "Destino pendiente"
   },
   "ScheduleBooking": {
     "bookSpace": "Reservar Espacio",

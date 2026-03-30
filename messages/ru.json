@@ -761,7 +761,11 @@
       "departed": "Отправлен {date}",
       "etaPending": "Дата прибытия уточняется"
     },
-    "collapseDelivered": "Свернуть"
+    "collapseDelivered": "Свернуть",
+    "fromOrigin": "из {origin}",
+    "transitDays": "~{days} дн. в пути",
+    "transitDaysCompact": "· ~{days}д",
+    "destinationPending": "Пункт назначения уточняется"
   },
   "ScheduleBooking": {
     "bookSpace": "Забронировать место",

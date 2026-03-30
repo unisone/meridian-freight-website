@@ -761,7 +761,11 @@
       "departed": "Departed {date}",
       "etaPending": "ETA pending"
     },
-    "collapseDelivered": "Collapse"
+    "collapseDelivered": "Collapse",
+    "fromOrigin": "from {origin}",
+    "transitDays": "~{days} days transit",
+    "transitDaysCompact": "· ~{days}d",
+    "destinationPending": "Destination pending"
   },
   "ScheduleBooking": {
     "bookSpace": "Book Space",

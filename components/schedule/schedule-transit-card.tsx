@@ -55,7 +55,7 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
               <span className="text-muted-foreground">{origin}</span>
               <span className="mx-1.5 text-border">&rarr;</span>
               {destPending ? (
-                <span className="text-muted-foreground italic font-normal">{destText}</span>
+                <span className="text-muted-foreground italic font-normal">{t("destinationPending")}</span>
               ) : (
                 <span>{destText}</span>
               )}
@@ -116,7 +116,7 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
                 <span>
                   {shortDate(container.eta_date)}
                   {transitDayCount !== null && (
-                    <span className="ml-1">· ~{transitDayCount}d</span>
+                    <span className="ml-1">{t("transitDaysCompact", { days: transitDayCount })}</span>
                   )}
                 </span>
               )}
