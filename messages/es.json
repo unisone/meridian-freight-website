@@ -750,6 +750,8 @@
     "bookSpace": "Reservar",
     "dayOfTransit": "Dia {day} de {total}",
     "noResults": "Ningun contenedor coincide con sus filtros.",
+    "noResultsCountry": "No hay contenedores a {country} en este momento",
+    "noResultsCountryDescription": "Se agregan nuevos envios regularmente. Contactenos para discutir sus necesidades o vuelva pronto.",
     "noData": "Calendario no disponible ahora",
     "noDataDescription": "Se agregan nuevos envios regularmente. Contactenos para la informacion mas reciente.",
     "clearFilters": "Borrar filtros",

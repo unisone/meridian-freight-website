@@ -750,6 +750,8 @@
     "bookSpace": "Book Space",
     "dayOfTransit": "Day {day} of {total}",
     "noResults": "No containers match your filters.",
+    "noResultsCountry": "No containers to {country} right now",
+    "noResultsCountryDescription": "New shipments are added regularly. Contact us to discuss your shipping needs or check back soon.",
     "noData": "Schedule unavailable right now",
     "noDataDescription": "New shipments are added regularly. Contact us for the latest schedule information.",
     "clearFilters": "Clear filters",

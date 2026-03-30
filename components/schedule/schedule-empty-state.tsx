@@ -12,6 +12,7 @@ interface ScheduleEmptyStateProps {
 
 export function ScheduleEmptyState({
   variant,
+  filterCountry,
   onClearFilters,
 }: ScheduleEmptyStateProps) {
   const t = useTranslations("ScheduleList");
@@ -20,7 +21,16 @@ export function ScheduleEmptyState({
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <Ship className="h-10 w-10 text-muted-foreground/40" />
-        <h3 className="mt-4 text-lg font-semibold">{t("noResults")}</h3>
+        <h3 className="mt-4 text-lg font-semibold">
+          {filterCountry
+            ? t("noResultsCountry", { country: filterCountry })
+            : t("noResults")}
+        </h3>
+        {filterCountry && (
+          <p className="mt-2 text-sm text-muted-foreground max-w-md">
+            {t("noResultsCountryDescription")}
+          </p>
+        )}
         <div className="mt-4 flex gap-3">
           {onClearFilters && (
             <button

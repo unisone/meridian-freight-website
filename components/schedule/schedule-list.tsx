@@ -225,7 +225,7 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
       {!hasContent ? (
         <ScheduleEmptyState
           variant="no-filter-results"
-          filterCountry={activeCountry}
+          filterCountry={activeCountry ? countries.find((c) => c.code === activeCountry)?.name ?? activeCountry : null}
           onClearFilters={clearFilters}
         />
       ) : (
