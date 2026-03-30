@@ -19,6 +19,11 @@ export const CONTACT = {
   partsEmail: "parts@meridianexport.com",
   partsEmailHref: "mailto:parts@meridianexport.com",
   notificationEmail: "alex.z@meridianexport.com",
+  bookingNotificationEmail: "svetlana.g@meridianexport.com",
+  bookingNotificationCc: [
+    "alex.z@meridianexport.com",
+    "alex.r@meridianexport.com",
+  ] as readonly string[],
   fromEmail: "Meridian Freight <contact@meridianexport.com>",
   whatsappUrl: "https://wa.me/16415161616",
   address: {
