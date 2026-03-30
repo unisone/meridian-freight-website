@@ -3,7 +3,8 @@
 import { after } from "next/server";
 import { Resend } from "resend";
 import { bookingRequestSchema, type BookingRequestData } from "@/lib/schemas";
-import { CONTACT, COMPANY } from "@/lib/constants";
+import { CONTACT } from "@/lib/constants";
+import { buildBookingConfirmationEmail } from "@/lib/emails/booking-confirmation";
 import { track } from "@vercel/analytics/server";
 import { notifySlack } from "@/lib/slack";
 import { sendCAPIEvent } from "@/lib/meta-capi";
@@ -30,35 +31,12 @@ export type BookingActionResult = {
   eventId?: string;
 };
 
-const AUTO_REPLY_SUBJECTS: Record<string, string> = {
-  en: `We received your booking request — ${COMPANY.name}`,
-  es: `Hemos recibido su solicitud de reserva — ${COMPANY.name}`,
-  ru: `Мы получили ваш запрос на бронирование — ${COMPANY.name}`,
-};
-
-const AUTO_REPLY_BODY: Record<string, (name: string, cargo: string) => string> = {
-  en: (name, cargo) => `
-    <p>Hi ${name},</p>
-    <p>Thanks for your interest in sharing a container with ${COMPANY.name}. We received your booking request and will review it within <strong>24 hours</strong>.</p>
-    <p style="margin-top:16px;color:#374151"><strong>Your cargo:</strong><br/>${cargo}</p>
-    <p style="margin-top:16px">Our team will reach out with availability details, pricing, and next steps.</p>
-    <p style="margin-top:20px;color:#6b7280;font-size:13px">If you need to add anything, just reply to this email or call us at ${CONTACT.phone}.</p>
-  `,
-  es: (name, cargo) => `
-    <p>Hola ${name},</p>
-    <p>Gracias por su interes en compartir un contenedor con ${COMPANY.name}. Hemos recibido su solicitud de reserva y la revisaremos dentro de las proximas <strong>24 horas</strong>.</p>
-    <p style="margin-top:16px;color:#374151"><strong>Su carga:</strong><br/>${cargo}</p>
-    <p style="margin-top:16px">Nuestro equipo se comunicara con detalles de disponibilidad, precios y los siguientes pasos.</p>
-    <p style="margin-top:20px;color:#6b7280;font-size:13px">Si necesita agregar algo, simplemente responda a este correo o llamenos al ${CONTACT.phone}.</p>
-  `,
-  ru: (name, cargo) => `
-    <p>Здравствуйте, ${name},</p>
-    <p>Спасибо за интерес к совместной перевозке с ${COMPANY.name}. Мы получили ваш запрос на бронирование и рассмотрим его в течение <strong>24 часов</strong>.</p>
-    <p style="margin-top:16px;color:#374151"><strong>Ваш груз:</strong><br/>${cargo}</p>
-    <p style="margin-top:16px">Наша команда свяжется с вами с деталями по наличию места, ценам и дальнейшим шагам.</p>
-    <p style="margin-top:20px;color:#6b7280;font-size:13px">Если вам нужно что-то добавить, просто ответьте на это письмо или позвоните нам по номеру ${CONTACT.phone}.</p>
-  `,
-};
+/** Generate a short booking reference: BK-XXXXXXX */
+function generateBookingRef(): string {
+  const ts = Date.now().toString(36).toUpperCase();
+  const rand = Math.random().toString(36).slice(2, 5).toUpperCase();
+  return `BK-${ts.slice(-4)}${rand}`;
+}
 
 export async function submitBookingRequest(
   raw: BookingRequestData,
@@ -205,20 +183,28 @@ export async function submitBookingRequest(
 
   // 9-10. Best-effort work runs AFTER the response is sent to the user.
   after(async () => {
-    // a. Auto-reply to customer
+    // a. Auto-reply to customer (enterprise-branded)
     try {
-      const replySubject = AUTO_REPLY_SUBJECTS[locale] ?? AUTO_REPLY_SUBJECTS.en;
-      const replyBodyFn = AUTO_REPLY_BODY[locale] ?? AUTO_REPLY_BODY.en;
+      const confirmation = buildBookingConfirmationEmail({
+        name: safeName,
+        cargo: safeCargo.replace(/\n/g, "<br/>"),
+        locale,
+        bookingRef: generateBookingRef(),
+        container: {
+          origin: escapeHtml(container.origin),
+          destination: escapeHtml(container.destination),
+          departureDate: container.departure_date,
+          etaDate: container.eta_date ?? null,
+          containerType: escapeHtml(container.container_type),
+          projectNumber: escapeHtml(container.project_number),
+        },
+      });
       await resend.emails.send({
         from: CONTACT.fromEmail,
         to: email,
-        replyTo: CONTACT.notificationEmail,
-        subject: replySubject,
-        html: `
-          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
-            ${replyBodyFn(safeName, safeCargo.replace(/\n/g, "<br/>"))}
-          </div>
-        `,
+        replyTo: CONTACT.bookingNotificationEmail,
+        subject: confirmation.subject,
+        html: confirmation.html,
       });
     } catch (e) {
       log({ level: "error", msg: "auto_reply_failed", route: "action:booking-request", error: String(e) });
