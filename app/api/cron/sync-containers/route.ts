@@ -25,12 +25,8 @@ export async function GET(request: Request) {
   try {
     const result = await syncContainersFromSheet();
 
-    // Revalidate shared-shipping page and all locale variants on success/partial
+    // Revalidate schedule page and all locale variants on success/partial
     if (result.status !== "failed") {
-      revalidatePath("/shared-shipping");
-      revalidatePath("/en/shared-shipping");
-      revalidatePath("/es/shared-shipping");
-      revalidatePath("/ru/shared-shipping");
       revalidatePath("/schedule");
       revalidatePath("/en/schedule");
       revalidatePath("/es/schedule");
