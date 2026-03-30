@@ -36,6 +36,7 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net",
+      "worker-src 'self' blob:",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://www.facebook.com https://www.googletagmanager.com",
       "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://*.sentry.io https://graph.facebook.com https://*.supabase.co https://cdn.jsdelivr.net",
