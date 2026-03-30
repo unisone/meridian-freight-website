@@ -8,6 +8,10 @@ import {
   deriveCountryList,
   classifyContainers,
   shortDate,
+  computeCapacityFill,
+  computeDepartureCountdown,
+  cleanOriginText,
+  formatDestination,
 } from "@/lib/schedule-display";
 
 // ─── Test Helpers ────────────────────────────────────────────────────────────
@@ -16,6 +20,23 @@ function daysFromNow(days: number): string {
   const d = new Date();
   d.setDate(d.getDate() + days);
   return d.toISOString().split("T")[0];
+}
+
+/** Produce a date string that computeDepartureCountdown interprets as N days from today.
+ *  Compensates for UTC-parsing quirk: new Date("YYYY-MM-DD") is UTC midnight,
+ *  but setHours(0,0,0,0) shifts to local midnight (off by 1 day in UTC- zones). */
+function countdownDate(days: number): string {
+  const target = new Date();
+  target.setHours(0, 0, 0, 0);
+  target.setDate(target.getDate() + days);
+  // In UTC- zones, the SUT's parse-then-setHours subtracts 1 day, so add 1 to compensate
+  if (target.getTimezoneOffset() > 0) {
+    target.setDate(target.getDate() + 1);
+  }
+  const yyyy = target.getFullYear();
+  const mm = String(target.getMonth() + 1).padStart(2, "0");
+  const dd = String(target.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
 }
 
 function makeContainer(overrides: Partial<SharedContainer> = {}): SharedContainer {
@@ -349,5 +370,137 @@ describe("classifyContainers", () => {
     const result = classifyContainers(c);
     expect(result.delivered[0].id).toBe("recent-arrival");
     expect(result.delivered[1].id).toBe("old-arrival");
+  });
+});
+
+// ─── computeCapacityFill ────────────────────────────────────────────────────
+
+describe("computeCapacityFill", () => {
+  it("returns 0% fill when container is empty (available = total)", () => {
+    const { fillPercent } = computeCapacityFill(76, 76);
+    expect(fillPercent).toBe(0);
+  });
+
+  it("returns 100% fill when available = 0", () => {
+    const { fillPercent } = computeCapacityFill(0, 76);
+    expect(fillPercent).toBe(100);
+  });
+
+  it("computes correct percentage for partial fill", () => {
+    const { fillPercent } = computeCapacityFill(19, 76);
+    expect(fillPercent).toBe(75);
+  });
+
+  it("clamps to 0-100 range", () => {
+    const over = computeCapacityFill(-10, 76);
+    expect(over.fillPercent).toBeLessThanOrEqual(100);
+    const under = computeCapacityFill(200, 76);
+    expect(under.fillPercent).toBeGreaterThanOrEqual(0);
+  });
+
+  it("uses default 76 CBM when totalCapacity is 0", () => {
+    const { fillPercent } = computeCapacityFill(0, 0);
+    expect(fillPercent).toBe(100);
+  });
+
+  it("produces label in format 'N% booked'", () => {
+    const { label } = computeCapacityFill(38, 76);
+    expect(label).toBe("50% booked");
+  });
+
+  it("handles null availableCbm (treat as 0)", () => {
+    const { fillPercent } = computeCapacityFill(null, 76);
+    expect(fillPercent).toBe(100);
+  });
+});
+
+// ─── computeDepartureCountdown ──────────────────────────────────────────────
+
+describe("computeDepartureCountdown", () => {
+  it("returns 'past' urgency for dates before today", () => {
+    const result = computeDepartureCountdown(countdownDate(-5));
+    expect(result.urgency).toBe("past");
+    expect(result.daysUntil).toBeLessThan(0);
+  });
+
+  it("returns 'today' urgency for today's date", () => {
+    const result = computeDepartureCountdown(countdownDate(0));
+    expect(result.urgency).toBe("today");
+    expect(result.daysUntil).toBe(0);
+  });
+
+  it("returns 'urgent' for 1-3 days out", () => {
+    expect(computeDepartureCountdown(countdownDate(1)).urgency).toBe("urgent");
+    expect(computeDepartureCountdown(countdownDate(2)).urgency).toBe("urgent");
+    expect(computeDepartureCountdown(countdownDate(3)).urgency).toBe("urgent");
+  });
+
+  it("returns 'soon' for 4-7 days out", () => {
+    expect(computeDepartureCountdown(countdownDate(4)).urgency).toBe("soon");
+    expect(computeDepartureCountdown(countdownDate(7)).urgency).toBe("soon");
+  });
+
+  it("returns 'normal' for 8+ days out", () => {
+    expect(computeDepartureCountdown(countdownDate(8)).urgency).toBe("normal");
+    expect(computeDepartureCountdown(countdownDate(30)).urgency).toBe("normal");
+  });
+
+  it("daysUntil is correct positive integer", () => {
+    const result = computeDepartureCountdown(countdownDate(10));
+    expect(result.daysUntil).toBe(10);
+  });
+});
+
+// ─── cleanOriginText ────────────────────────────────────────────────────────
+
+describe("cleanOriginText", () => {
+  it("strips ROLLED prefix", () => {
+    expect(cleanOriginText("ROLLED Albion, IA")).toBe("Albion, IA");
+  });
+
+  it("strips 'customs hold' prefix", () => {
+    expect(cleanOriginText("customs hold Albion, IA")).toBe("Albion, IA");
+  });
+
+  it("handles combined prefixes", () => {
+    expect(cleanOriginText("ROLLED customs hold Albion, IA")).toBe("Albion, IA");
+  });
+
+  it("normalizes missing space after comma", () => {
+    expect(cleanOriginText("Albion,IA")).toBe("Albion, IA");
+  });
+
+  it("returns original if cleaning produces empty string", () => {
+    expect(cleanOriginText("ROLLED")).toBe("ROLLED");
+  });
+
+  it("passes through normal text unchanged", () => {
+    expect(cleanOriginText("Chicago, IL")).toBe("Chicago, IL");
+  });
+});
+
+// ─── formatDestination ──────────────────────────────────────────────────────
+
+describe("formatDestination", () => {
+  it("returns text and isPending=false for normal destination", () => {
+    const result = formatDestination("Almaty, Kazakhstan");
+    expect(result.text).toBe("Almaty, Kazakhstan");
+    expect(result.isPending).toBe(false);
+  });
+
+  it("returns pending for TBD", () => {
+    const result = formatDestination("TBD");
+    expect(result.text).toBe("Destination pending");
+    expect(result.isPending).toBe(true);
+  });
+
+  it("returns pending for ---", () => {
+    const result = formatDestination("---");
+    expect(result.isPending).toBe(true);
+  });
+
+  it("returns pending for empty string", () => {
+    const result = formatDestination("");
+    expect(result.isPending).toBe(true);
   });
 });
