@@ -6,7 +6,6 @@ import {
   ChevronDown,
   Globe,
   Info,
-  Loader2,
   Package,
   Ship,
   Truck,

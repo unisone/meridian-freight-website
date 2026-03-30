@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useMemo } from "react";
+import Link from "next/link";
 import {
   AlertTriangle,
   ArrowRight,
@@ -311,12 +312,12 @@ export function ScheduleBookingForm({
           <p className="mt-1.5 rounded-md bg-amber-50 border border-amber-200 px-2.5 py-1.5 text-[11px] text-amber-700">
             {t.rich("combineWarning", {
               calcLink: (chunks) => (
-                <a
+                <Link
                   href="/pricing/calculator"
                   className="font-medium underline underline-offset-2"
                 >
                   {chunks}
-                </a>
+                </Link>
               ),
             })}
           </p>

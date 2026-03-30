@@ -11,7 +11,6 @@ import {
   cleanOriginText,
   formatDestination,
 } from "@/lib/schedule-display";
-import { cn } from "@/lib/utils";
 import type { SharedContainer } from "@/lib/types/shared-shipping";
 
 interface ScheduleTransitCardProps {

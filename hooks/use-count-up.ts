@@ -21,10 +21,10 @@ export function useCountUp({
   useEffect(() => {
     if (!enabled || hasRun.current) return;
     hasRun.current = true;
-    setValue(0); // Reset to 0 to animate from scratch
 
     const durationMs = duration * 1000;
     let start: number | null = null;
+    let raf: number;
 
     function step(timestamp: number) {
       if (start === null) start = timestamp;
@@ -35,11 +35,13 @@ export function useCountUp({
       setValue(Math.round(eased * end));
 
       if (progress < 1) {
-        requestAnimationFrame(step);
+        raf = requestAnimationFrame(step);
       }
     }
 
-    requestAnimationFrame(step);
+    // First frame renders 0 via rAF callback (not synchronous setState)
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
   }, [enabled, end, duration]);
 
   return value;

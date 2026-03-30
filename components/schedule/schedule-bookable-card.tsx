@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, memo } from "react";
 import {
   ArrowRight,
-  Calendar,
   MapPin,
   Sparkles,
   X,

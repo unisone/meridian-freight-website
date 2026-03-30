@@ -420,6 +420,16 @@ See `.env.example` for the full list. Required in `.env.local`:
 
 **IMPORTANT when adding env vars via CLI**: Use `printf 'value' | vercel env add NAME environment` — NOT `echo`. The `echo` command appends a newline (`\n`) that gets embedded in the value and breaks inline JavaScript template literals.
 
-## Deployment
+## Deployment & Environments
 
-Deployed to Vercel (project: `meridian-freight-export`). Pushes to main trigger auto-deploy. Dependabot PRs auto-merge via `.github/workflows/auto-merge-dependabot.yml`.
+Deployed to Vercel (project: `meridian-freight-export`). Full environment strategy: `docs/environments.md`.
+
+| Environment | Trigger | Domain |
+|-------------|---------|--------|
+| Production | Push to `main` | `meridianexport.com` |
+| Preview | Push to non-main branch / PR | `*.vercel.app` (auto-generated) |
+| Development | `vercel env pull` → `.env.local` | `localhost:3000` |
+
+**Environment variable scoping:** Analytics (GA4, Meta Pixel, CAPI), Slack, IndexNow, SEO verification, and Google Sheets vars are **production-only**. Core infra (Supabase, Resend, Sentry, CRON_SECRET) is available in all environments. Preview deployments have no side effects — no analytics pollution, no Slack spam, no CAPI events.
+
+**CI pipeline:** `.github/workflows/ci.yml` runs lint + build + test on every PR to `main`. Dependabot PRs auto-merge via `.github/workflows/auto-merge-dependabot.yml`.
