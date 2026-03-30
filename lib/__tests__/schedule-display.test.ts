@@ -371,6 +371,48 @@ describe("classifyContainers", () => {
     expect(result.delivered[0].id).toBe("recent-arrival");
     expect(result.delivered[1].id).toBe("old-arrival");
   });
+
+  it("routes available_cbm=null to nonBookableUpcoming", () => {
+    const c = [makeContainerWithPending({ status: "available", available_cbm: null })];
+    const result = classifyContainers(c);
+    expect(result.bookable).toHaveLength(0);
+    expect(result.nonBookableUpcoming).toHaveLength(1);
+  });
+
+  it("routes departed with eta_date=today to delivered (boundary)", () => {
+    const c = [makeContainerWithPending({
+      status: "departed",
+      departure_date: daysFromNow(-30),
+      eta_date: daysFromNow(0),
+    })];
+    const result = classifyContainers(c);
+    expect(result.delivered).toHaveLength(1);
+    expect(result.inTransit).toHaveLength(0);
+  });
+
+  it("returns all-empty arrays for empty input", () => {
+    const result = classifyContainers([]);
+    expect(result.bookable).toHaveLength(0);
+    expect(result.nonBookableUpcoming).toHaveLength(0);
+    expect(result.inTransit).toHaveLength(0);
+    expect(result.delivered).toHaveLength(0);
+  });
+
+  it("distributes mixed statuses correctly", () => {
+    const c = [
+      makeContainerWithPending({ id: "a", status: "available", available_cbm: 20 }),
+      makeContainerWithPending({ id: "b", status: "full" }),
+      makeContainerWithPending({ id: "c", status: "departed", departure_date: daysFromNow(-10), eta_date: daysFromNow(20) }),
+      makeContainerWithPending({ id: "d", status: "departed", departure_date: daysFromNow(-40), eta_date: daysFromNow(-5) }),
+      makeContainerWithPending({ id: "e", status: "available", available_cbm: 0 }),
+    ];
+    const result = classifyContainers(c);
+    expect(result.bookable.map((x) => x.id)).toEqual(["a"]);
+    expect(result.nonBookableUpcoming.map((x) => x.id)).toContain("b");
+    expect(result.nonBookableUpcoming.map((x) => x.id)).toContain("e");
+    expect(result.inTransit.map((x) => x.id)).toEqual(["c"]);
+    expect(result.delivered.map((x) => x.id)).toEqual(["d"]);
+  });
 });
 
 // ─── computeCapacityFill ────────────────────────────────────────────────────
