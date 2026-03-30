@@ -330,8 +330,8 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                 accentColor="emerald"
               />
 
-              {/* Collapsed by default — show expand button */}
-              {!deliveredExpanded ? (
+              {/* Collapsed by default — expand/collapse with exit animation */}
+              {!deliveredExpanded && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -343,11 +343,14 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                   </span>
                   <ChevronDown className="h-3.5 w-3.5" />
                 </Button>
-              ) : (
-                <AnimatePresence>
+              )}
+              <AnimatePresence>
+                {deliveredExpanded && (
                   <motion.div
+                    key="delivered-content"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
@@ -368,8 +371,8 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                       {t("collapseDelivered")}
                     </Button>
                   </motion.div>
-                </AnimatePresence>
-              )}
+                )}
+              </AnimatePresence>
             </section>
           )}
         </div>

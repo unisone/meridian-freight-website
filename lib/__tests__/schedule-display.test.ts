@@ -143,6 +143,7 @@ describe("computeScheduleStats", () => {
     const stats = computeScheduleStats(containers);
     expect(stats.countriesServed).toBe(3); // KZ, BR, UY
     expect(stats.inTransitNow).toBe(1); // only the one with future ETA
+    expect(stats.bookableContainers).toBe(2); // 2 available containers with cbm > 0
   });
 
   it("handles empty array", () => {
