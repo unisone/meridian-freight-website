@@ -96,14 +96,15 @@ export function computeTabCounts(
   let delivered = 0;
 
   for (const c of containers) {
-    if (c.status === "departed") {
+    const hasDeparted = c.status === "departed" || c.departure_date < todayStr;
+
+    if (hasDeparted) {
       if (c.eta_date && c.eta_date <= todayStr) {
         delivered++;
       } else {
         inTransit++;
       }
-    } else if (c.status === "available" || c.departure_date > todayStr) {
-      // available containers or full containers with future departure
+    } else {
       upcoming++;
     }
   }
@@ -219,7 +220,10 @@ export interface ClassifiedContainers {
   delivered: SharedContainer[];
 }
 
-/** Classify containers into display buckets and sort each group. */
+/** Classify containers into display buckets and sort each group.
+ *  IMPORTANT: departure_date takes precedence over DB status. Between cron runs
+ *  (15-min gap), a container can have status=available but departure_date in the past.
+ *  We classify by date first to avoid showing departed containers as bookable. */
 export function classifyContainers(containers: ContainerWithPendingCount[]): ClassifiedContainers {
   const today = new Date().toISOString().split("T")[0];
   const bookable: ContainerWithPendingCount[] = [];
@@ -228,20 +232,21 @@ export function classifyContainers(containers: ContainerWithPendingCount[]): Cla
   const delivered: SharedContainer[] = [];
 
   for (const c of containers) {
-    if (c.status === "departed") {
+    // 1. Check if container has effectively departed (date-based, not status-based)
+    const hasDeparted = c.status === "departed" || c.departure_date < today;
+
+    if (hasDeparted) {
       if (c.eta_date && c.eta_date <= today) {
         delivered.push(c);
       } else {
         inTransit.push(c);
       }
     } else if (c.status === "available" && (c.available_cbm ?? 0) > 0) {
+      // Future departure + available space = bookable
       bookable.push(c);
-    } else if (c.departure_date > today) {
-      // full or available with 0 cbm — future departure, upcoming but not bookable
-      nonBookableUpcoming.push(c);
     } else {
-      // full/available with past departure — treat as in-transit (cron hasn't marked departed yet)
-      inTransit.push(c);
+      // Future departure but full or no space
+      nonBookableUpcoming.push(c);
     }
   }
 

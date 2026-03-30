@@ -46,17 +46,23 @@ function filterContainers(
     filtered = filtered.filter((c) => c.destination_country === country);
   }
 
+  // Departure date takes precedence over DB status (cron runs every 15 min)
   if (tab === "upcoming") {
     filtered = filtered.filter(
-      (c) => c.status === "available" || (c.status === "full" && c.departure_date > todayStr),
+      (c) => c.departure_date >= todayStr && c.status !== "departed",
     );
   } else if (tab === "in-transit") {
     filtered = filtered.filter(
-      (c) => c.status === "departed" && (c.eta_date === null || c.eta_date > todayStr),
+      (c) =>
+        (c.status === "departed" || c.departure_date < todayStr) &&
+        (c.eta_date === null || c.eta_date > todayStr),
     );
   } else if (tab === "delivered") {
     filtered = filtered.filter(
-      (c) => c.status === "departed" && c.eta_date !== null && c.eta_date <= todayStr,
+      (c) =>
+        (c.status === "departed" || c.departure_date < todayStr) &&
+        c.eta_date !== null &&
+        c.eta_date <= todayStr,
     );
   }
 

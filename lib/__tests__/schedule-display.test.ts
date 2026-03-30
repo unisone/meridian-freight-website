@@ -312,6 +312,39 @@ describe("classifyContainers", () => {
     expect(result.delivered[1].id).toBe("old-arrival");
   });
 
+  it("routes available+cbm>0 with PAST departure to inTransit (not bookable)", () => {
+    const c = [makeContainerWithPending({
+      status: "available",
+      available_cbm: 30,
+      departure_date: daysFromNow(-3),
+      eta_date: daysFromNow(25),
+    })];
+    const result = classifyContainers(c);
+    expect(result.bookable).toHaveLength(0);
+    expect(result.inTransit).toHaveLength(1);
+  });
+
+  it("routes full container with PAST departure to inTransit (not upcoming)", () => {
+    const c = [makeContainerWithPending({
+      status: "full",
+      departure_date: daysFromNow(-2),
+      eta_date: daysFromNow(30),
+    })];
+    const result = classifyContainers(c);
+    expect(result.nonBookableUpcoming).toHaveLength(0);
+    expect(result.inTransit).toHaveLength(1);
+  });
+
+  it("allows booking for available container departing TODAY", () => {
+    const c = [makeContainerWithPending({
+      status: "available",
+      available_cbm: 30,
+      departure_date: daysFromNow(0),
+    })];
+    const result = classifyContainers(c);
+    expect(result.bookable).toHaveLength(1);
+  });
+
   it("routes available_cbm=null to nonBookableUpcoming", () => {
     const c = [makeContainerWithPending({ status: "available", available_cbm: null })];
     const result = classifyContainers(c);

@@ -89,9 +89,10 @@ export async function submitBookingRequest(
 
   const { name, email, phone, cargoDescription, containerId, projectNumber } = data;
 
-  // 4. Container status re-check (after email config verified)
+  // 4. Container status + departure date re-check (after email config verified)
   const container = await fetchContainerById(containerId);
-  if (!container || container.status !== "available") {
+  const todayStr = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+  if (!container || container.status !== "available" || container.departure_date < todayStr) {
     return {
       success: false,
       error: "CONTAINER_UNAVAILABLE",
