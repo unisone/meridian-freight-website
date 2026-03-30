@@ -4,7 +4,7 @@
  * Derives schedule-specific status from existing SharedContainer fields.
  */
 
-import type { SharedContainer } from "@/lib/types/shared-shipping";
+import type { SharedContainer, ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 
 // ─── Schedule Status ─────────────────────────────────────────────────────────
 
@@ -161,40 +161,6 @@ export function computeScheduleStats(containers: SharedContainer[]): ScheduleSta
 
 export type FilterTab = "all" | "upcoming" | "in-transit" | "delivered";
 
-export type ScheduleGroup =
-  | "departing-this-week"
-  | "departing-this-month"
-  | "departing-later"
-  | "in-transit"
-  | "arrived";
-
-export interface GroupConfig {
-  label: string;
-  borderColor: string;
-}
-
-export const GROUP_CONFIG: Record<ScheduleGroup, GroupConfig> = {
-  "departing-this-week": {
-    label: "group.departingThisWeek",
-    borderColor: "border-l-amber-500",
-  },
-  "departing-this-month": {
-    label: "group.departingThisMonth",
-    borderColor: "border-l-blue-500",
-  },
-  "departing-later": {
-    label: "group.later",
-    borderColor: "border-l-muted",
-  },
-  "in-transit": {
-    label: "group.inTransit",
-    borderColor: "border-l-indigo-500",
-  },
-  arrived: {
-    label: "group.arrived",
-    borderColor: "border-l-emerald-500",
-  },
-};
 
 /** Count containers per filter tab. */
 export function computeTabCounts(
@@ -248,117 +214,6 @@ export function deriveCountryList(
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-/**
- * Group containers by time/status, filtered by tab and country.
- * Returns groups in display order.
- */
-export function groupContainers(
-  containers: SharedContainer[],
-  filterTab: FilterTab,
-  filterCountry: string | null,
-): Map<ScheduleGroup, SharedContainer[]> {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayStr = today.toISOString().split("T")[0];
-
-  const weekOut = new Date(today);
-  weekOut.setDate(weekOut.getDate() + 7);
-  const weekStr = weekOut.toISOString().split("T")[0];
-
-  const monthOut = new Date(today);
-  monthOut.setDate(monthOut.getDate() + 30);
-  const monthStr = monthOut.toISOString().split("T")[0];
-
-  let filtered = containers;
-
-  // Country filter
-  if (filterCountry) {
-    filtered = filtered.filter((c) => c.destination_country === filterCountry);
-  }
-
-  // Tab filter
-  if (filterTab === "upcoming") {
-    filtered = filtered.filter(
-      (c) =>
-        c.status === "available" ||
-        (c.status === "full" && c.departure_date > todayStr),
-    );
-  } else if (filterTab === "in-transit") {
-    filtered = filtered.filter(
-      (c) =>
-        c.status === "departed" &&
-        (c.eta_date === null || c.eta_date > todayStr),
-    );
-  } else if (filterTab === "delivered") {
-    filtered = filtered.filter(
-      (c) =>
-        c.status === "departed" &&
-        c.eta_date !== null &&
-        c.eta_date <= todayStr,
-    );
-  }
-
-  // Group
-  const groups = new Map<ScheduleGroup, SharedContainer[]>();
-
-  // Display order: bookable/upcoming FIRST, then shipped de-escalating
-  const groupOrder: ScheduleGroup[] = [
-    "departing-this-week",
-    "departing-this-month",
-    "departing-later",
-    "in-transit",
-    "arrived",
-  ];
-
-  for (const c of filtered) {
-    let group: ScheduleGroup;
-
-    if (c.status === "departed") {
-      if (c.eta_date && c.eta_date <= todayStr) {
-        group = "arrived";
-      } else {
-        group = "in-transit";
-      }
-    } else if (c.departure_date <= weekStr) {
-      group = "departing-this-week";
-    } else if (c.departure_date <= monthStr) {
-      group = "departing-this-month";
-    } else {
-      group = "departing-later";
-    }
-
-    if (!groups.has(group)) groups.set(group, []);
-    groups.get(group)!.push(c);
-  }
-
-  // Sort each group:
-  // - Upcoming groups: departure date ASCENDING (soonest first — these are actionable)
-  // - Shipped groups: departure date DESCENDING (most recent first — de-escalating)
-  for (const [group, items] of groups) {
-    if (group === "in-transit") {
-      // Most recently departed first
-      items.sort((a, b) => b.departure_date.localeCompare(a.departure_date));
-    } else if (group === "arrived") {
-      // Most recently arrived first (by ETA, fallback to departure)
-      items.sort((a, b) =>
-        (b.eta_date ?? b.departure_date).localeCompare(a.eta_date ?? a.departure_date),
-      );
-    } else {
-      // Upcoming: soonest departure first
-      items.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
-    }
-  }
-
-  // Return in display order
-  const ordered = new Map<ScheduleGroup, SharedContainer[]>();
-  for (const key of groupOrder) {
-    if (groups.has(key)) {
-      ordered.set(key, groups.get(key)!);
-    }
-  }
-
-  return ordered;
-}
 
 // ─── Display Helpers ────────────────────────────────────────────────────────
 
@@ -413,6 +268,13 @@ export function formatDestination(destination: string): {
   return { text: destination, isPending: false };
 }
 
+/** Format ISO date to short display format (e.g., "Mar 29"). */
+export function shortDate(iso: string): string {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
 /** Compute capacity fill percentage. */
 export function computeCapacityFill(
   availableCbm: number | null,
@@ -422,4 +284,49 @@ export function computeCapacityFill(
   const total = totalCapacity > 0 ? totalCapacity : 76;
   const fillPercent = Math.min(100, Math.max(0, Math.round((1 - available / total) * 100)));
   return { fillPercent, label: `${fillPercent}% booked` };
+}
+
+// ─── Container Classification ───────────────────────────────────────────────
+
+export interface ClassifiedContainers {
+  bookable: ContainerWithPendingCount[];
+  nonBookableUpcoming: SharedContainer[];
+  inTransit: SharedContainer[];
+  delivered: SharedContainer[];
+}
+
+/** Classify containers into display buckets and sort each group. */
+export function classifyContainers(containers: ContainerWithPendingCount[]): ClassifiedContainers {
+  const today = new Date().toISOString().split("T")[0];
+  const bookable: ContainerWithPendingCount[] = [];
+  const nonBookableUpcoming: SharedContainer[] = [];
+  const inTransit: SharedContainer[] = [];
+  const delivered: SharedContainer[] = [];
+
+  for (const c of containers) {
+    if (c.status === "departed") {
+      if (c.eta_date && c.eta_date <= today) {
+        delivered.push(c);
+      } else {
+        inTransit.push(c);
+      }
+    } else if (c.status === "available" && (c.available_cbm ?? 0) > 0) {
+      bookable.push(c);
+    } else {
+      // full or available with 0 cbm — upcoming but not bookable
+      nonBookableUpcoming.push(c);
+    }
+  }
+
+  // Sort bookable by departure ASC (soonest first)
+  bookable.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
+  nonBookableUpcoming.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
+  // Transit: most recently departed first
+  inTransit.sort((a, b) => b.departure_date.localeCompare(a.departure_date));
+  // Delivered: most recently arrived first
+  delivered.sort((a, b) =>
+    (b.eta_date ?? b.departure_date).localeCompare(a.eta_date ?? a.departure_date),
+  );
+
+  return { bookable, nonBookableUpcoming, inTransit, delivered };
 }

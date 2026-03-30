@@ -23,6 +23,7 @@ import {
   computeCapacityFill,
   cleanOriginText,
   formatDestination,
+  shortDate,
 } from "@/lib/schedule-display";
 import { cn } from "@/lib/utils";
 import { trackScheduleEvent } from "@/lib/tracking";
@@ -32,12 +33,6 @@ import { ScheduleBookingForm } from "./schedule-booking-form";
 interface ScheduleBookableCardProps {
   container: ContainerWithPendingCount;
   index: number;
-}
-
-function shortDate(iso: string): string {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 export const ScheduleBookableCard = memo(function ScheduleBookableCard({

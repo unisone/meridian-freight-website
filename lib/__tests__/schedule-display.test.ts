@@ -1,12 +1,13 @@
 import { describe, it, expect } from "vitest";
-import type { SharedContainer } from "@/lib/types/shared-shipping";
+import type { SharedContainer, ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 import {
   deriveScheduleStatus,
   computeTransitProgress,
   computeScheduleStats,
   computeTabCounts,
   deriveCountryList,
-  groupContainers,
+  classifyContainers,
+  shortDate,
 } from "@/lib/schedule-display";
 
 // ─── Test Helpers ────────────────────────────────────────────────────────────
@@ -37,6 +38,16 @@ function makeContainer(overrides: Partial<SharedContainer> = {}): SharedContaine
     synced_at: new Date().toISOString(),
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    ...overrides,
+  };
+}
+
+function makeContainerWithPending(
+  overrides: Partial<ContainerWithPendingCount> = {},
+): ContainerWithPendingCount {
+  return {
+    ...makeContainer(overrides),
+    pending_count: 0,
     ...overrides,
   };
 }
@@ -237,115 +248,106 @@ describe("deriveCountryList", () => {
   });
 });
 
-// ─── groupContainers ─────────────────────────────────────────────────────────
+// ─── shortDate ──────────────────────────────────────────────────────────────
 
-describe("groupContainers", () => {
-  const containers = [
-    makeContainer({ id: "1", status: "available", departure_date: daysFromNow(2) }),
-    makeContainer({ id: "2", status: "available", departure_date: daysFromNow(14) }),
-    makeContainer({ id: "3", status: "available", departure_date: daysFromNow(45) }),
-    makeContainer({
-      id: "4",
+describe("shortDate", () => {
+  it("formats a valid ISO date to 'Mon DD' format", () => {
+    const result = shortDate("2026-06-15");
+    // Should produce "Jun 14" or "Jun 15" depending on timezone — verify format
+    expect(result).toMatch(/^[A-Z][a-z]{2}\s+\d{1,2}$/);
+  });
+
+  it("returns — for invalid date", () => {
+    expect(shortDate("invalid")).toBe("—");
+  });
+
+  it("returns — for empty string", () => {
+    expect(shortDate("")).toBe("—");
+  });
+});
+
+// ─── classifyContainers ─────────────────────────────────────────────────────
+
+describe("classifyContainers", () => {
+  it("routes available+cbm>0 to bookable", () => {
+    const c = [makeContainerWithPending({ status: "available", available_cbm: 30 })];
+    const result = classifyContainers(c);
+    expect(result.bookable).toHaveLength(1);
+    expect(result.nonBookableUpcoming).toHaveLength(0);
+  });
+
+  it("routes available+cbm=0 to nonBookableUpcoming", () => {
+    const c = [makeContainerWithPending({ status: "available", available_cbm: 0 })];
+    const result = classifyContainers(c);
+    expect(result.bookable).toHaveLength(0);
+    expect(result.nonBookableUpcoming).toHaveLength(1);
+  });
+
+  it("routes full to nonBookableUpcoming", () => {
+    const c = [makeContainerWithPending({ status: "full" })];
+    const result = classifyContainers(c);
+    expect(result.nonBookableUpcoming).toHaveLength(1);
+  });
+
+  it("routes departed+futureETA to inTransit", () => {
+    const c = [makeContainerWithPending({
       status: "departed",
-      departure_date: daysFromNow(-15),
+      departure_date: daysFromNow(-10),
       eta_date: daysFromNow(20),
-    }),
-    makeContainer({
-      id: "5",
+    })];
+    const result = classifyContainers(c);
+    expect(result.inTransit).toHaveLength(1);
+  });
+
+  it("routes departed+nullETA to inTransit", () => {
+    const c = [makeContainerWithPending({
       status: "departed",
-      departure_date: daysFromNow(-45),
-      eta_date: daysFromNow(-10),
-    }),
-  ];
-
-  it("groups all containers when tab is 'all'", () => {
-    const groups = groupContainers(containers, "all", null);
-    const allItems = Array.from(groups.values()).flat();
-    expect(allItems).toHaveLength(5);
+      departure_date: daysFromNow(-10),
+      eta_date: null,
+    })];
+    const result = classifyContainers(c);
+    expect(result.inTransit).toHaveLength(1);
   });
 
-  it("filters to upcoming only", () => {
-    const groups = groupContainers(containers, "upcoming", null);
-    const allItems = Array.from(groups.values()).flat();
-    expect(allItems).toHaveLength(3);
-    // Should not contain departed containers
-    expect(allItems.every((c) => c.status !== "departed")).toBe(true);
+  it("routes departed+pastETA to delivered", () => {
+    const c = [makeContainerWithPending({
+      status: "departed",
+      departure_date: daysFromNow(-40),
+      eta_date: daysFromNow(-5),
+    })];
+    const result = classifyContainers(c);
+    expect(result.delivered).toHaveLength(1);
   });
 
-  it("filters to in-transit only", () => {
-    const groups = groupContainers(containers, "in-transit", null);
-    const allItems = Array.from(groups.values()).flat();
-    expect(allItems).toHaveLength(1);
-    expect(allItems[0].id).toBe("4");
-  });
-
-  it("filters to delivered only", () => {
-    const groups = groupContainers(containers, "delivered", null);
-    const allItems = Array.from(groups.values()).flat();
-    expect(allItems).toHaveLength(1);
-    expect(allItems[0].id).toBe("5");
-  });
-
-  it("filters by country", () => {
-    const mixed = [
-      makeContainer({ id: "a", destination_country: "KZ" }),
-      makeContainer({ id: "b", destination_country: "BR" }),
+  it("sorts bookable by departure ASC (soonest first)", () => {
+    const c = [
+      makeContainerWithPending({ id: "late", departure_date: daysFromNow(20) }),
+      makeContainerWithPending({ id: "soon", departure_date: daysFromNow(5) }),
+      makeContainerWithPending({ id: "soonest", departure_date: daysFromNow(2) }),
     ];
-    const groups = groupContainers(mixed, "all", "KZ");
-    const allItems = Array.from(groups.values()).flat();
-    expect(allItems).toHaveLength(1);
-    expect(allItems[0].id).toBe("a");
+    const result = classifyContainers(c);
+    expect(result.bookable[0].id).toBe("soonest");
+    expect(result.bookable[1].id).toBe("soon");
+    expect(result.bookable[2].id).toBe("late");
   });
 
-  it("returns groups in display order", () => {
-    const groups = groupContainers(containers, "all", null);
-    const keys = Array.from(groups.keys());
-    const expectedOrder = ["departing-this-week", "departing-this-month", "departing-later", "in-transit", "arrived"];
-    // Each key should appear in correct relative order
-    for (let i = 0; i < keys.length - 1; i++) {
-      expect(expectedOrder.indexOf(keys[i])).toBeLessThan(expectedOrder.indexOf(keys[i + 1]));
-    }
-  });
-
-  it("returns empty map when no containers match", () => {
-    const groups = groupContainers(containers, "all", "XX");
-    expect(groups.size).toBe(0);
-  });
-
-  it("sorts upcoming groups by departure ASC (soonest first)", () => {
-    const upcoming = [
-      makeContainer({ id: "late", status: "available", departure_date: daysFromNow(20) }),
-      makeContainer({ id: "soon", status: "available", departure_date: daysFromNow(10) }),
-      makeContainer({ id: "soonest", status: "available", departure_date: daysFromNow(8) }),
+  it("sorts inTransit by departure DESC (most recent first)", () => {
+    const c = [
+      makeContainerWithPending({ id: "old", status: "departed", departure_date: daysFromNow(-30), eta_date: daysFromNow(5) }),
+      makeContainerWithPending({ id: "recent", status: "departed", departure_date: daysFromNow(-5), eta_date: daysFromNow(30) }),
     ];
-    const groups = groupContainers(upcoming, "all", null);
-    const items = Array.from(groups.values()).flat();
-    expect(items[0].id).toBe("soonest");
-    expect(items[1].id).toBe("soon");
-    expect(items[2].id).toBe("late");
+    const result = classifyContainers(c);
+    expect(result.inTransit[0].id).toBe("recent");
+    expect(result.inTransit[1].id).toBe("old");
   });
 
-  it("sorts in-transit group by departure DESC (most recent first)", () => {
-    const transit = [
-      makeContainer({ id: "old", status: "departed", departure_date: daysFromNow(-30), eta_date: daysFromNow(5) }),
-      makeContainer({ id: "recent", status: "departed", departure_date: daysFromNow(-5), eta_date: daysFromNow(30) }),
-      makeContainer({ id: "mid", status: "departed", departure_date: daysFromNow(-15), eta_date: daysFromNow(20) }),
+  it("sorts delivered by ETA DESC (most recent arrival first)", () => {
+    const c = [
+      makeContainerWithPending({ id: "old-arrival", status: "departed", departure_date: daysFromNow(-50), eta_date: daysFromNow(-20) }),
+      makeContainerWithPending({ id: "recent-arrival", status: "departed", departure_date: daysFromNow(-40), eta_date: daysFromNow(-3) }),
     ];
-    const groups = groupContainers(transit, "all", null);
-    const items = groups.get("in-transit")!;
-    expect(items[0].id).toBe("recent");
-    expect(items[1].id).toBe("mid");
-    expect(items[2].id).toBe("old");
-  });
-
-  it("sorts arrived group by ETA DESC (most recent arrival first)", () => {
-    const arrived = [
-      makeContainer({ id: "old-arrival", status: "departed", departure_date: daysFromNow(-50), eta_date: daysFromNow(-20) }),
-      makeContainer({ id: "recent-arrival", status: "departed", departure_date: daysFromNow(-40), eta_date: daysFromNow(-3) }),
-    ];
-    const groups = groupContainers(arrived, "all", null);
-    const items = groups.get("arrived")!;
-    expect(items[0].id).toBe("recent-arrival");
-    expect(items[1].id).toBe("old-arrival");
+    const result = classifyContainers(c);
+    expect(result.delivered[0].id).toBe("recent-arrival");
+    expect(result.delivered[1].id).toBe("old-arrival");
   });
 });

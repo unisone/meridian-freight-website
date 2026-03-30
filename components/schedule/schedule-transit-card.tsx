@@ -10,18 +10,13 @@ import {
   computeTransitProgress,
   cleanOriginText,
   formatDestination,
+  shortDate,
 } from "@/lib/schedule-display";
 import type { SharedContainer } from "@/lib/types/shared-shipping";
 
 interface ScheduleTransitCardProps {
   container: SharedContainer;
   index: number;
-}
-
-function shortDate(iso: string): string {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 export const ScheduleTransitCard = memo(function ScheduleTransitCard({

@@ -9,11 +9,11 @@ import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { StaleDataBanner } from "@/components/shared-shipping/stale-data-banner";
 import type {
-  SharedContainer,
   ContainerWithPendingCount,
 } from "@/lib/types/shared-shipping";
 import {
   type FilterTab,
+  classifyContainers,
   computeTabCounts,
   deriveCountryList,
 } from "@/lib/schedule-display";
@@ -31,50 +31,6 @@ import { ScheduleEmptyState } from "./schedule-empty-state";
 interface ScheduleListProps {
   containers: ContainerWithPendingCount[];
   lastSyncTime: string | null;
-}
-
-// ─── Container classification ───────────────────────────────────────────────
-
-interface ClassifiedContainers {
-  bookable: ContainerWithPendingCount[];
-  nonBookableUpcoming: SharedContainer[];
-  inTransit: SharedContainer[];
-  delivered: SharedContainer[];
-}
-
-function classifyContainers(containers: ContainerWithPendingCount[]): ClassifiedContainers {
-  const today = new Date().toISOString().split("T")[0];
-  const bookable: ContainerWithPendingCount[] = [];
-  const nonBookableUpcoming: SharedContainer[] = [];
-  const inTransit: SharedContainer[] = [];
-  const delivered: SharedContainer[] = [];
-
-  for (const c of containers) {
-    if (c.status === "departed") {
-      if (c.eta_date && c.eta_date <= today) {
-        delivered.push(c);
-      } else {
-        inTransit.push(c);
-      }
-    } else if (c.status === "available" && (c.available_cbm ?? 0) > 0) {
-      bookable.push(c);
-    } else {
-      // full or available with 0 cbm — upcoming but not bookable
-      nonBookableUpcoming.push(c);
-    }
-  }
-
-  // Sort bookable by departure ASC (soonest first)
-  bookable.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
-  nonBookableUpcoming.sort((a, b) => a.departure_date.localeCompare(b.departure_date));
-  // Transit: most recently departed first
-  inTransit.sort((a, b) => b.departure_date.localeCompare(a.departure_date));
-  // Delivered: most recently arrived first
-  delivered.sort((a, b) =>
-    (b.eta_date ?? b.departure_date).localeCompare(a.eta_date ?? a.departure_date),
-  );
-
-  return { bookable, nonBookableUpcoming, inTransit, delivered };
 }
 
 /** Filter containers by tab and country before classifying. */

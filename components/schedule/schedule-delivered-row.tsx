@@ -4,17 +4,11 @@ import { memo } from "react";
 import { CheckCircle2 } from "lucide-react";
 
 import { countryFlag } from "@/lib/container-display";
-import { cleanOriginText, formatDestination } from "@/lib/schedule-display";
+import { cleanOriginText, formatDestination, shortDate } from "@/lib/schedule-display";
 import type { SharedContainer } from "@/lib/types/shared-shipping";
 
 interface ScheduleDeliveredRowProps {
   container: SharedContainer;
-}
-
-function shortDate(iso: string): string {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 export const ScheduleDeliveredRow = memo(function ScheduleDeliveredRow({
