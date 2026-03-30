@@ -300,28 +300,76 @@ export function ScheduleBookingForm({
           })}
         </div>
 
-        {/* Fit indicator */}
-        {totalEstimatedCbm > 0 && availableCbm > 0 && (
-          <p
-            className={`mt-1.5 flex items-center gap-1 text-[11px] font-medium ${
-              totalEstimatedCbm <= availableCbm
-                ? "text-emerald-600"
-                : "text-amber-600"
-            }`}
-          >
-            {totalEstimatedCbm <= availableCbm ? (
-              <>
-                <CheckCircle2 className="h-3 w-3" />
-                {t("cargoFits", { cbm: totalEstimatedCbm })}
-              </>
-            ) : (
-              <>
-                <AlertTriangle className="h-3 w-3" />
-                {t("cargoMayNotFit", { cbm: totalEstimatedCbm })}
-              </>
-            )}
-          </p>
-        )}
+        {/* Interactive capacity preview */}
+        {totalEstimatedCbm > 0 && availableCbm > 0 && (() => {
+          const totalCbm = container.total_capacity_cbm > 0 ? container.total_capacity_cbm : 76;
+          const bookedCbm = totalCbm - availableCbm;
+          const bookedPercent = Math.round((bookedCbm / totalCbm) * 100);
+          const cargoPercent = Math.round((totalEstimatedCbm / totalCbm) * 100);
+          const fits = totalEstimatedCbm <= availableCbm;
+          const cargoBarWidth = fits ? cargoPercent : Math.round((availableCbm / totalCbm) * 100);
+
+          return (
+            <div className="mt-3 space-y-1.5">
+              {/* Bar */}
+              <div
+                className="relative h-3 w-full overflow-hidden rounded-full bg-muted"
+                role="progressbar"
+                aria-valuenow={bookedPercent + cargoPercent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${bookedCbm} CBM booked, ${totalEstimatedCbm} CBM selected cargo, ${availableCbm} CBM available`}
+              >
+                {/* Already booked */}
+                <div
+                  className="absolute inset-y-0 left-0 rounded-l-full bg-gradient-to-r from-zinc-300 to-zinc-400 transition-all duration-300"
+                  style={{ width: `${bookedPercent}%` }}
+                />
+                {/* Customer's cargo estimate */}
+                <div
+                  className={`absolute inset-y-0 rounded-r-full transition-all duration-500 ease-out ${
+                    fits
+                      ? "bg-gradient-to-r from-emerald-400 to-emerald-500"
+                      : "bg-gradient-to-r from-red-400 to-red-500"
+                  }`}
+                  style={{
+                    left: `${bookedPercent}%`,
+                    width: `${cargoBarWidth}%`,
+                  }}
+                />
+                {/* Overflow indicator */}
+                {!fits && (
+                  <div className="absolute inset-0 rounded-full ring-2 ring-red-400/50 ring-inset" />
+                )}
+              </div>
+
+              {/* Legend */}
+              <div className="flex items-center justify-between text-[11px]">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <span className="inline-block h-2 w-2 rounded-full bg-zinc-400" />
+                    {t("capacityBooked", { percent: `${bookedPercent}%` })}
+                  </span>
+                  <span className={`flex items-center gap-1 font-medium ${fits ? "text-emerald-600" : "text-red-600"}`}>
+                    <span className={`inline-block h-2 w-2 rounded-full ${fits ? "bg-emerald-500" : "bg-red-500"}`} />
+                    ~{totalEstimatedCbm} CBM
+                  </span>
+                </div>
+                {fits ? (
+                  <span className="flex items-center gap-1 font-medium text-emerald-600">
+                    <CheckCircle2 className="h-3 w-3" />
+                    {t("cargoFits", { cbm: totalEstimatedCbm })}
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 font-medium text-amber-600">
+                    <AlertTriangle className="h-3 w-3" />
+                    {t("cargoMayNotFit", { cbm: totalEstimatedCbm })}
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Combine warning */}
         {selectedCargoTypes.includes("combine") && (
