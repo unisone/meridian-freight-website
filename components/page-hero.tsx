@@ -11,7 +11,7 @@ interface PageHeroProps {
   description?: string | React.ReactNode;
   /** Lucide icon component — rendered as a badge above the heading (dark variant only) */
   icon?: React.ComponentType<{ className?: string }>;
-  /** Eyebrow text above the heading (gradient variant) */
+  /** Eyebrow text above the heading (gradient + dark variants) */
   eyebrow?: string;
   /** Authority/trust text below description (gradient variant) */
   authority?: string;
@@ -65,6 +65,11 @@ export function PageHero({
               /* 2-col grid layout (destinations page with globe) */
               <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
                 <div className="text-white lg:max-w-xl">
+                  {eyebrow && (
+                    <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-sky-400">
+                      {eyebrow}
+                    </p>
+                  )}
                   {Icon && (
                     <div className="mb-4 flex items-center gap-3">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
@@ -87,6 +92,11 @@ export function PageHero({
             ) : (
               /* Standard single-column dark layout */
               <div className="text-white">
+                {eyebrow && (
+                  <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-sky-400">
+                    {eyebrow}
+                  </p>
+                )}
                 {Icon && (
                   <div className="mb-4 flex items-center gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">

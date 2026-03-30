@@ -16,6 +16,7 @@ import {
   classifyContainers,
   computeTabCounts,
   deriveCountryList,
+  todayDateString,
 } from "@/lib/schedule-display";
 import { trackScheduleEvent } from "@/lib/tracking";
 
@@ -40,23 +41,29 @@ function filterContainers(
   country: string | null,
 ): ContainerWithPendingCount[] {
   let filtered = containers;
-  const todayStr = new Date().toISOString().split("T")[0];
+  const todayStr = todayDateString();
 
   if (country) {
     filtered = filtered.filter((c) => c.destination_country === country);
   }
 
+  // Departure date takes precedence over DB status (cron runs every 15 min)
   if (tab === "upcoming") {
     filtered = filtered.filter(
-      (c) => c.status === "available" || (c.status === "full" && c.departure_date > todayStr),
+      (c) => c.departure_date >= todayStr && c.status !== "departed",
     );
   } else if (tab === "in-transit") {
     filtered = filtered.filter(
-      (c) => c.status === "departed" && (c.eta_date === null || c.eta_date > todayStr),
+      (c) =>
+        (c.status === "departed" || c.departure_date < todayStr) &&
+        (c.eta_date === null || c.eta_date > todayStr),
     );
   } else if (tab === "delivered") {
     filtered = filtered.filter(
-      (c) => c.status === "departed" && c.eta_date !== null && c.eta_date <= todayStr,
+      (c) =>
+        (c.status === "departed" || c.departure_date < todayStr) &&
+        c.eta_date !== null &&
+        c.eta_date <= todayStr,
     );
   }
 
@@ -70,20 +77,21 @@ interface TimeGroup {
   containers: ContainerWithPendingCount[];
 }
 
+function localDatePlusDays(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 function subGroupByTime(
   bookable: ContainerWithPendingCount[],
   t: ReturnType<typeof useTranslations>,
 ): TimeGroup[] {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const weekOut = new Date(today);
-  weekOut.setDate(weekOut.getDate() + 7);
-  const weekStr = weekOut.toISOString().split("T")[0];
-
-  const monthOut = new Date(today);
-  monthOut.setDate(monthOut.getDate() + 30);
-  const monthStr = monthOut.toISOString().split("T")[0];
+  const weekStr = localDatePlusDays(7);
+  const monthStr = localDatePlusDays(30);
 
   const thisWeek: ContainerWithPendingCount[] = [];
   const thisMonth: ContainerWithPendingCount[] = [];
@@ -330,8 +338,8 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                 accentColor="emerald"
               />
 
-              {/* Collapsed by default — show expand button */}
-              {!deliveredExpanded ? (
+              {/* Collapsed by default — expand/collapse with exit animation */}
+              {!deliveredExpanded && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -343,11 +351,14 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                   </span>
                   <ChevronDown className="h-3.5 w-3.5" />
                 </Button>
-              ) : (
-                <AnimatePresence>
+              )}
+              <AnimatePresence>
+                {deliveredExpanded && (
                   <motion.div
+                    key="delivered-content"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
@@ -368,8 +379,8 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                       {t("collapseDelivered")}
                     </Button>
                   </motion.div>
-                </AnimatePresence>
-              )}
+                )}
+              </AnimatePresence>
             </section>
           )}
         </div>

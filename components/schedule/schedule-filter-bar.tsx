@@ -70,7 +70,7 @@ export function ScheduleFilterBar({
           value={activeCountry ?? ""}
           onValueChange={(val) => onCountryChange(val || null)}
         >
-          <SelectTrigger size="sm" className="min-w-[160px]">
+          <SelectTrigger size="sm" className="min-w-[160px]" aria-label={t("allCountries")}>
             <SelectValue placeholder={t("allCountries")} />
           </SelectTrigger>
           <SelectContent align="end">

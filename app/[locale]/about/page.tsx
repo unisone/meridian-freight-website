@@ -107,14 +107,16 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
     <PageHero
+      variant="gradient"
       breadcrumbs={[{ label: t("breadcrumb") }]}
-      heading={t("heading", { company: COMPANY.name })}
-      description={
-        <>
-          <p>{t("intro1", { year: COMPANY.foundedYear, count: STATS.projectsCompleted })}</p>
-          <p className="mt-4">{t("intro2")}</p>
-        </>
+      eyebrow={t("eyebrow")}
+      heading={
+        <>{t.rich("heading", {
+          company: COMPANY.name,
+          accent: (chunks) => <span className="text-primary">{chunks}</span>,
+        })}</>
       }
+      description={t("intro1", { year: COMPANY.foundedYear, count: STATS.projectsCompleted })}
     />
     <div>
       {/* Differentiators */}

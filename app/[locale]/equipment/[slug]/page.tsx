@@ -160,6 +160,7 @@ export default async function EquipmentPage({
           { label: "Equipment", href: "/equipment" },
           { label: equipment.pluralName },
         ]}
+        eyebrow={te("eyebrow")}
         heading={equipment.title}
         description={equipment.heroDescription}
       >

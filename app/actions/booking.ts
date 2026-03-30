@@ -80,24 +80,32 @@ export async function submitBookingRequest(
     return { success: true };
   }
 
+  // 3. Verify email service is configured (fail fast before DB operations)
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    timer.error("RESEND_API_KEY is not configured");
+    return { success: false, error: "Email service is not configured." };
+  }
+
   const { name, email, phone, cargoDescription, containerId, projectNumber } = data;
 
-  // 3. Container status re-check
+  // 4. Container status + departure date re-check (after email config verified)
   const container = await fetchContainerById(containerId);
-  if (!container || container.status !== "available") {
+  const todayStr = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+  if (!container || container.status !== "available" || container.departure_date < todayStr) {
     return {
       success: false,
       error: "CONTAINER_UNAVAILABLE",
     };
   }
 
-  // 4. Dedup check — if same email submitted for same container within 5 minutes, return success (idempotent)
+  // 5. Dedup check — if same email submitted for same container within 5 minutes, return success (idempotent)
   const recentCount = await countRecentRequests(email, containerId, 5);
   if (recentCount > 0) {
     return { success: true };
   }
 
-  // 5. Insert booking request to Supabase
+  // 6. Insert booking request to Supabase
   const insertResult = await insertBookingRequest({
     container_id: containerId,
     project_number: projectNumber,
@@ -122,16 +130,10 @@ export async function submitBookingRequest(
     // Continue — email is the must-succeed step, not Supabase
   }
 
-  // 6. Get pending count for notifications
+  // 7. Get pending count for notifications
   const pendingCount = await countPendingRequests(containerId);
 
-  // 7. Send owner notification email via Resend (MUST succeed)
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    timer.error("RESEND_API_KEY is not configured");
-    return { success: false, error: "Email service is not configured." };
-  }
-
+  // 8. Send owner notification email via Resend (MUST succeed)
   const resend = new Resend(apiKey);
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
@@ -197,7 +199,7 @@ export async function submitBookingRequest(
     return { success: false, error: "An unexpected error occurred." };
   }
 
-  // 8. Generate event ID for Pixel/CAPI dedup
+  // 9. Generate event ID for Pixel/CAPI dedup
   const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
   // 9-10. Best-effort work runs AFTER the response is sent to the user.

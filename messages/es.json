@@ -321,9 +321,9 @@
   },
   "AboutPage": {
     "breadcrumb": "Nosotros",
-    "heading": "Acerca de {company}",
+    "eyebrow": "Sobre Nosotros",
+    "heading": "Acerca de <accent>{company}</accent>",
     "intro1": "Desde {year}, hemos enviado mas de {count} piezas de maquinaria pesada desde EE.UU. y Canada a puertos en America Latina, Africa, Medio Oriente y Asia Central. Manejamos toda la cadena — recogida, desmontaje, embalaje, documentacion y flete maritimo — para que los compradores internacionales no tengan que coordinar multiples proveedores.",
-    "intro2": "Nuestros tecnicos conocen las especificaciones de desensamblaje de John Deere, Case IH, CAT, Kinze y docenas de otras marcas. Cada componente se etiqueta, fotografía y embala para que se reensamble correctamente en el destino.",
     "whyChooseUs": "Por Que Elegirnos",
     "diff1Title": "Una Factura, Cero Coordinacion",
     "diff1Description": "La mayoria de los exportadores le pasan entre transportista, embalador y agente de flete. Nosotros controlamos toda la cadena — desde la recogida hasta el puerto — para que nada se pierda en el camino.",
@@ -339,19 +339,22 @@
   },
   "ContactPage": {
     "breadcrumb": "Contacto",
-    "heading": "Obtenga Su Cotizacion en 24 Horas",
+    "eyebrow": "Contactenos",
+    "heading": "Obtenga Su <accent>Cotizacion</accent> en 24 Horas",
     "description": "Diganos el equipo, donde esta y a donde va. Le enviamos cada partida — flete terrestre, embalaje, envio maritimo — para que sepa exactamente lo que esta pagando.",
     "requestYourQuote": "Solicite Su Cotizacion"
   },
   "FaqPage": {
     "breadcrumb": "Preguntas Frecuentes",
-    "heading": "Preguntas Frecuentes",
+    "eyebrow": "Centro de Ayuda",
+    "heading": "<accent>Preguntas</accent> Frecuentes",
     "description": "Todo lo que necesita saber sobre la exportacion de maquinaria desde EE.UU. y Canada — plazos, precios, documentacion y mas.",
     "stillHaveQuestions": "Aun Tiene Preguntas?",
     "stillHaveQuestionsDescription": "Envienos los detalles de su equipo y destino — responderemos todo y le enviaremos una cotizacion en 24 horas."
   },
   "DestinationsPage": {
     "breadcrumb": "Destinos",
+    "eyebrow": "Envios Internacionales",
     "heroHeading": "Enviamos a Cualquier Puerto del Mundo",
     "heroDescription": "{company} exporta maquinaria desde EE.UU. y Canada a mas de 40 paises en seis continentes. Si tiene un puerto maritimo, podemos llevar su equipo ahi.",
     "exportsCompleted": "Exportaciones Completadas",
@@ -379,7 +382,8 @@
   },
   "PricingPage": {
     "breadcrumb": "Precios",
-    "heading": "Precios Transparentes — Cada Partida Visible",
+    "eyebrow": "Precios y Tarifas",
+    "heading": "<accent>Precios</accent> Transparentes — Cada Partida Visible",
     "description": "Creemos que debe ver exactamente a donde va cada dolar antes de comprometerse. Tarifas de referencia para mas de 60 tipos de equipos y mas de 20 rutas de envio — cada cotizacion esta desglosada, sin cargos ocultos.",
     "checkWarehouse": "Almacenamiento en bodega",
     "checkCustoms": "Documentacion aduanera",
@@ -400,7 +404,8 @@
   },
   "ServicesPage": {
     "breadcrumb": "Servicios",
-    "heading": "Servicios de Exportacion de Maquinaria — EE.UU. y Canada",
+    "eyebrow": "Nuestros Servicios",
+    "heading": "<accent>Servicios</accent> de Exportacion de Maquinaria — EE.UU. y Canada",
     "description": "Una sola empresa para toda la cadena — recogida, desmontaje, embalaje, documentacion y envio aereo o maritimo desde cualquier ubicacion en EE.UU. o Canada.",
     "ctaHeading": "Tiene Equipo Que Necesita Mover?",
     "ctaDescription": "Envienos la marca, modelo y destino. Recibira una cotizacion desglosada en 24 horas — sin compromiso.",
@@ -408,7 +413,8 @@
   },
   "ProjectsPage": {
     "breadcrumb": "Proyectos",
-    "heading": "Proyectos de Exportacion Completados",
+    "eyebrow": "Portafolio de Proyectos",
+    "heading": "<accent>Proyectos</accent> de Exportacion Completados",
     "description": "Envios reales, equipos reales, destinos reales. Explore nuestro portafolio de exportaciones de maquinaria en seis continentes.",
     "ctaHeading": "Listo para Enviar Su Equipo?",
     "ctaDescription": "Diganos sobre su equipo y destino — le enviaremos una cotizacion detallada y desglosada en 24 horas.",
@@ -493,7 +499,8 @@
   "CalculatorPage": {
     "breadcrumbPricing": "Precios",
     "breadcrumbCalculator": "Calculadora de Flete",
-    "heading": "Calculadora de Costos de Flete",
+    "eyebrow": "Herramienta de Estimacion",
+    "heading": "<accent>Calculadora</accent> de Costos de Flete",
     "description": "Obtenga una cotizacion instantanea para su exportacion de maquinaria. Seleccione su equipo y destino — calcularemos los costos de embalaje y envio."
   },
   "NotFoundPage": {
@@ -527,7 +534,8 @@
     "chatOnWhatsApp": "Chatear por WhatsApp"
   },
   "BlogPage": {
-    "heroHeading": "Perspectivas de Exportacion de Maquinaria",
+    "eyebrow": "Guias y Articulos",
+    "heroHeading": "<accent>Perspectivas</accent> de Exportacion de Maquinaria",
     "heroDescription": "Guias expertas, desgloses de costos y consejos especificos por destino del equipo de {company}. Todo lo que necesita saber sobre el envio de equipos pesados desde EE.UU. y Canada.",
     "readArticle": "Leer articulo",
     "ctaHeading": "Listo para Enviar su Equipo?",
@@ -541,6 +549,7 @@
     "getAQuote": "Solicitar Cotizacion"
   },
   "ServiceDetailPage": {
+    "eyebrow": "Nuestros Servicios",
     "howWeHandle": "Como Manejamos su Envio",
     "equipmentWeHandle": "Equipos que Manejamos",
     "equipmentWeHandleDescription": "Cada tipo listado a continuacion se envia con desmontaje especifico por marca, bloqueo personalizado y documentacion completa.",
@@ -551,6 +560,7 @@
     "chatOnWhatsApp": "Chatear por WhatsApp"
   },
   "DestinationDetailPage": {
+    "eyebrow": "Destinos de Envio",
     "routeDetails": "Detalles de la Ruta",
     "transitTime": "Tiempo de Transito",
     "destinationPort": "Puerto de Destino",
@@ -689,6 +699,7 @@
     "orCall": "o llame al {phone}"
   },
   "EquipmentDetailPage": {
+    "eyebrow": "Exportacion de Equipos",
     "brandsWeHandle": "Marcas que Manejamos",
     "brandsDescription": "Tenemos experiencia directa exportando estas marcas de {equipment}. Sin importar el modelo o ano, sabemos como desmontarlo, embalarlo y enviarlo.",
     "commonModels": "Modelos Comunes que Enviamos",

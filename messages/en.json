@@ -321,9 +321,9 @@
   },
   "AboutPage": {
     "breadcrumb": "About",
-    "heading": "About {company}",
+    "eyebrow": "About Us",
+    "heading": "About <accent>{company}</accent>",
     "intro1": "Since {year}, we've shipped {count}+ pieces of heavy equipment from the USA and Canada to ports in Latin America, Africa, the Middle East, and Central Asia. We handle the entire chain — pickup, dismantling, packing, documentation, and ocean freight — so international buyers don't have to coordinate multiple vendors.",
-    "intro2": "Our technicians know the disassembly specs for John Deere, Case IH, CAT, Kinze, and dozens of other brands. Every component gets tagged, photographed, and packed so it reassembles correctly on the other end.",
     "whyChooseUs": "Why Choose Us",
     "diff1Title": "One Invoice, Zero Coordination",
     "diff1Description": "Most exporters hand you off between trucker, packer, and freight forwarder. We own the entire chain — pickup to port — so nothing falls through the cracks.",
@@ -339,19 +339,22 @@
   },
   "ContactPage": {
     "breadcrumb": "Contact",
-    "heading": "Get Your Quote in 24 Hours",
+    "eyebrow": "Get in Touch",
+    "heading": "Get Your <accent>Quote</accent> in 24 Hours",
     "description": "Tell us the equipment, where it is, and where it's going. We send back every line item — inland freight, packing, ocean shipping — so you know exactly what you're paying for.",
     "requestYourQuote": "Request Your Quote"
   },
   "FaqPage": {
     "breadcrumb": "FAQ",
-    "heading": "Frequently Asked Questions",
+    "eyebrow": "Help Center",
+    "heading": "Frequently Asked <accent>Questions</accent>",
     "description": "Everything you need to know about exporting machinery from the USA and Canada — timelines, pricing, documentation, and more.",
     "stillHaveQuestions": "Still Have Questions?",
     "stillHaveQuestionsDescription": "Send us your equipment details and destination — we'll answer everything and send a quote within 24 hours."
   },
   "DestinationsPage": {
     "breadcrumb": "Destinations",
+    "eyebrow": "Global Shipping",
     "heroHeading": "We Ship to Any Port Worldwide",
     "heroDescription": "{company} exports machinery from the USA and Canada to 40+ countries across six continents. If it has a seaport, we can get your equipment there.",
     "exportsCompleted": "Exports Completed",
@@ -379,7 +382,8 @@
   },
   "PricingPage": {
     "breadcrumb": "Pricing",
-    "heading": "Transparent Pricing — Every Line Item Visible",
+    "eyebrow": "Pricing & Rates",
+    "heading": "Transparent <accent>Pricing</accent> — Every Line Item Visible",
     "description": "We believe you should see exactly where every dollar goes before you commit. Reference rates for 60+ equipment types and 20+ shipping routes — every quote is itemized, with no hidden fees.",
     "checkWarehouse": "Warehouse staging",
     "checkCustoms": "Customs documentation",
@@ -400,7 +404,8 @@
   },
   "ServicesPage": {
     "breadcrumb": "Services",
-    "heading": "Machinery Export Services — USA & Canada",
+    "eyebrow": "Our Services",
+    "heading": "Machinery Export <accent>Services</accent> — USA & Canada",
     "description": "One company for the entire chain — pickup, dismantling, packing, documentation, and air or ocean shipping from any location in the USA or Canada.",
     "ctaHeading": "Have Equipment That Needs to Move?",
     "ctaDescription": "Send us the make, model, and destination. You get a line-by-line quote within 24 hours — no obligation.",
@@ -408,7 +413,8 @@
   },
   "ProjectsPage": {
     "breadcrumb": "Projects",
-    "heading": "Completed Export Projects",
+    "eyebrow": "Project Portfolio",
+    "heading": "Completed Export <accent>Projects</accent>",
     "description": "Real shipments, real equipment, real destinations. Browse our portfolio of machinery exports across six continents.",
     "ctaHeading": "Ready to Ship Your Equipment?",
     "ctaDescription": "Tell us about your equipment and destination — we'll send a detailed, itemized quote within 24 hours.",
@@ -493,7 +499,8 @@
   "CalculatorPage": {
     "breadcrumbPricing": "Pricing",
     "breadcrumbCalculator": "Freight Calculator",
-    "heading": "Freight Cost Calculator",
+    "eyebrow": "Free Estimate Tool",
+    "heading": "Freight Cost <accent>Calculator</accent>",
     "description": "Get an instant estimate for your machinery export. Select your equipment and destination — we will calculate packing and shipping costs."
   },
   "NotFoundPage": {
@@ -527,7 +534,8 @@
     "chatOnWhatsApp": "Chat on WhatsApp"
   },
   "BlogPage": {
-    "heroHeading": "Machinery Export Insights",
+    "eyebrow": "Insights & Guides",
+    "heroHeading": "Machinery Export <accent>Insights</accent>",
     "heroDescription": "Expert guides, cost breakdowns, and destination-specific advice from the {company} team. Everything you need to know about shipping heavy equipment from the USA and Canada.",
     "readArticle": "Read article",
     "ctaHeading": "Ready to Ship Your Equipment?",
@@ -541,6 +549,7 @@
     "getAQuote": "Get a Quote"
   },
   "ServiceDetailPage": {
+    "eyebrow": "Our Services",
     "howWeHandle": "How We Handle Your Shipment",
     "equipmentWeHandle": "Equipment We Handle",
     "equipmentWeHandleDescription": "Every type listed below ships with brand-specific disassembly, custom blocking, and full documentation.",
@@ -551,6 +560,7 @@
     "chatOnWhatsApp": "Chat on WhatsApp"
   },
   "DestinationDetailPage": {
+    "eyebrow": "Shipping Destinations",
     "routeDetails": "Route Details",
     "transitTime": "Transit Time",
     "destinationPort": "Destination Port",
@@ -689,6 +699,7 @@
     "orCall": "or call {phone}"
   },
   "EquipmentDetailPage": {
+    "eyebrow": "Equipment Export",
     "brandsWeHandle": "Brands We Handle",
     "brandsDescription": "We have hands-on experience exporting these {equipment} brands. No matter the model or year, we know how to disassemble, pack, and ship it.",
     "commonModels": "Common Models We Ship",

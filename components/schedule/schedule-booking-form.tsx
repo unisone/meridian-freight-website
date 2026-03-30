@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { track as vercelTrack } from "@vercel/analytics";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,6 +81,7 @@ export function ScheduleBookingForm({
   onSuccess,
   onCancel,
 }: ScheduleBookingFormProps) {
+  const locale = useLocale();
   const t = useTranslations("ScheduleBooking");
 
   // ─── State ─────────────────────────────────────────────
@@ -106,10 +107,14 @@ export function ScheduleBookingForm({
 
   const availableCbm = container.available_cbm ?? 0;
 
+  // Client-side validation: "other" requires description
+  const canSubmit = selectedCargoTypes.length > 0 &&
+    (!hasOtherOnly || cargoDescription.trim().length >= 5);
+
   // ─── Submit ────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (submittingRef.current) return;
+    if (submittingRef.current || !canSubmit) return;
     submittingRef.current = true;
     setIsSubmitting(true);
     setError("");
@@ -144,7 +149,7 @@ export function ScheduleBookingForm({
     };
 
     try {
-      const res = await submitBookingRequest(payload);
+      const res = await submitBookingRequest(payload, locale);
 
       if (res.success) {
         setResult(res);
@@ -235,6 +240,7 @@ export function ScheduleBookingForm({
   return (
     <form
       onSubmit={handleSubmit}
+      aria-busy={isSubmitting}
       className={`space-y-4 px-1 ${isSubmitting ? "pointer-events-none opacity-60" : ""}`}
     >
       {/* Honeypot */}
@@ -419,7 +425,7 @@ export function ScheduleBookingForm({
 
       {/* Actions */}
       <div className="flex items-center gap-3">
-        <Button type="submit" size="sm" disabled={isSubmitting}>
+        <Button type="submit" size="sm" disabled={isSubmitting || !canSubmit}>
           {isSubmitting ? (
             <>
               <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />

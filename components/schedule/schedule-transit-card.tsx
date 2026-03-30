@@ -3,7 +3,7 @@
 import { memo, useRef } from "react";
 import { Ship } from "lucide-react";
 import { motion, useInView } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { countryFlag, transitDays } from "@/lib/container-display";
 import {
@@ -23,6 +23,7 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
   container,
   index,
 }: ScheduleTransitCardProps) {
+  const locale = useLocale();
   const t = useTranslations("ScheduleList");
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -111,10 +112,10 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
 
             {/* Labels below */}
             <div className="flex justify-between mt-2 text-[11px] text-muted-foreground tabular-nums">
-              <span>{shortDate(container.departure_date)}</span>
+              <span>{shortDate(container.departure_date, locale)}</span>
               {container.eta_date && (
                 <span>
-                  {shortDate(container.eta_date)}
+                  {shortDate(container.eta_date, locale)}
                   {transitDayCount !== null && (
                     <span className="ml-1">{t("transitDaysCompact", { days: transitDayCount })}</span>
                   )}
@@ -127,11 +128,11 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
         {/* Fallback for no transit data */}
         {!transit && (
           <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="tabular-nums">{shortDate(container.departure_date)}</span>
+            <span className="tabular-nums">{shortDate(container.departure_date, locale)}</span>
             {container.eta_date && (
               <>
                 <span>&rarr;</span>
-                <span className="tabular-nums">{shortDate(container.eta_date)}</span>
+                <span className="tabular-nums">{shortDate(container.eta_date, locale)}</span>
                 {transitDayCount !== null && (
                   <span>· ~{transitDayCount} {t("days")}</span>
                 )}

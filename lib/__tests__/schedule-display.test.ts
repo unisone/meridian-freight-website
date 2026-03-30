@@ -21,20 +21,16 @@ function daysFromNow(days: number): string {
   return d.toISOString().split("T")[0];
 }
 
-/** Produce a date string that computeDepartureCountdown interprets as N days from today.
- *  Compensates for UTC-parsing quirk: new Date("YYYY-MM-DD") is UTC midnight,
- *  but setHours(0,0,0,0) shifts to local midnight (off by 1 day in UTC- zones). */
-function countdownDate(days: number): string {
-  const target = new Date();
-  target.setHours(0, 0, 0, 0);
-  target.setDate(target.getDate() + days);
-  // In UTC- zones, the SUT's parse-then-setHours subtracts 1 day, so add 1 to compensate
-  if (target.getTimezoneOffset() > 0) {
-    target.setDate(target.getDate() + 1);
-  }
-  const yyyy = target.getFullYear();
-  const mm = String(target.getMonth() + 1).padStart(2, "0");
-  const dd = String(target.getDate()).padStart(2, "0");
+/** Produce a local-date YYYY-MM-DD string N days from today.
+ *  Since computeDepartureCountdown now uses parseLocalDate (not new Date()),
+ *  no timezone compensation is needed — the date string is parsed as local time. */
+function localDatePlusDays(days: number): string {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + days);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
 }
 
@@ -143,6 +139,7 @@ describe("computeScheduleStats", () => {
     const stats = computeScheduleStats(containers);
     expect(stats.countriesServed).toBe(3); // KZ, BR, UY
     expect(stats.inTransitNow).toBe(1); // only the one with future ETA
+    expect(stats.bookableContainers).toBe(2); // 2 available containers with cbm > 0
   });
 
   it("handles empty array", () => {
@@ -311,6 +308,39 @@ describe("classifyContainers", () => {
     expect(result.delivered[1].id).toBe("old-arrival");
   });
 
+  it("routes available+cbm>0 with PAST departure to inTransit (not bookable)", () => {
+    const c = [makeContainerWithPending({
+      status: "available",
+      available_cbm: 30,
+      departure_date: daysFromNow(-3),
+      eta_date: daysFromNow(25),
+    })];
+    const result = classifyContainers(c);
+    expect(result.bookable).toHaveLength(0);
+    expect(result.inTransit).toHaveLength(1);
+  });
+
+  it("routes full container with PAST departure to inTransit (not upcoming)", () => {
+    const c = [makeContainerWithPending({
+      status: "full",
+      departure_date: daysFromNow(-2),
+      eta_date: daysFromNow(30),
+    })];
+    const result = classifyContainers(c);
+    expect(result.nonBookableUpcoming).toHaveLength(0);
+    expect(result.inTransit).toHaveLength(1);
+  });
+
+  it("allows booking for available container departing TODAY", () => {
+    const c = [makeContainerWithPending({
+      status: "available",
+      available_cbm: 30,
+      departure_date: daysFromNow(0),
+    })];
+    const result = classifyContainers(c);
+    expect(result.bookable).toHaveLength(1);
+  });
+
   it("routes available_cbm=null to nonBookableUpcoming", () => {
     const c = [makeContainerWithPending({ status: "available", available_cbm: null })];
     const result = classifyContainers(c);
@@ -399,35 +429,35 @@ describe("computeCapacityFill", () => {
 
 describe("computeDepartureCountdown", () => {
   it("returns 'past' urgency for dates before today", () => {
-    const result = computeDepartureCountdown(countdownDate(-5));
+    const result = computeDepartureCountdown(localDatePlusDays(-5));
     expect(result.urgency).toBe("past");
     expect(result.daysUntil).toBeLessThan(0);
   });
 
   it("returns 'today' urgency for today's date", () => {
-    const result = computeDepartureCountdown(countdownDate(0));
+    const result = computeDepartureCountdown(localDatePlusDays(0));
     expect(result.urgency).toBe("today");
     expect(result.daysUntil).toBe(0);
   });
 
   it("returns 'urgent' for 1-3 days out", () => {
-    expect(computeDepartureCountdown(countdownDate(1)).urgency).toBe("urgent");
-    expect(computeDepartureCountdown(countdownDate(2)).urgency).toBe("urgent");
-    expect(computeDepartureCountdown(countdownDate(3)).urgency).toBe("urgent");
+    expect(computeDepartureCountdown(localDatePlusDays(1)).urgency).toBe("urgent");
+    expect(computeDepartureCountdown(localDatePlusDays(2)).urgency).toBe("urgent");
+    expect(computeDepartureCountdown(localDatePlusDays(3)).urgency).toBe("urgent");
   });
 
   it("returns 'soon' for 4-7 days out", () => {
-    expect(computeDepartureCountdown(countdownDate(4)).urgency).toBe("soon");
-    expect(computeDepartureCountdown(countdownDate(7)).urgency).toBe("soon");
+    expect(computeDepartureCountdown(localDatePlusDays(4)).urgency).toBe("soon");
+    expect(computeDepartureCountdown(localDatePlusDays(7)).urgency).toBe("soon");
   });
 
   it("returns 'normal' for 8+ days out", () => {
-    expect(computeDepartureCountdown(countdownDate(8)).urgency).toBe("normal");
-    expect(computeDepartureCountdown(countdownDate(30)).urgency).toBe("normal");
+    expect(computeDepartureCountdown(localDatePlusDays(8)).urgency).toBe("normal");
+    expect(computeDepartureCountdown(localDatePlusDays(30)).urgency).toBe("normal");
   });
 
   it("daysUntil is correct positive integer", () => {
-    const result = computeDepartureCountdown(countdownDate(10));
+    const result = computeDepartureCountdown(localDatePlusDays(10));
     expect(result.daysUntil).toBe(10);
   });
 });

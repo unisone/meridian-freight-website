@@ -59,6 +59,40 @@ describe("parseSheetDate", () => {
     expect(parseSheetDate(null)).toBeNull();
     expect(parseSheetDate("not a date")).toBeNull();
   });
+
+  it("parses MM/DD (no year) — infers current year", () => {
+    const year = new Date().getFullYear();
+    const result = parseSheetDate("06/15");
+    expect(result).toMatch(new RegExp(`^${year}(-\\d{2}){2}$`));
+  });
+
+  it("handles MM/DD year-rollover when date is >60 days in the past", () => {
+    // If we parse "01/05" and it would be >60 days ago, it should use next year
+    const now = new Date();
+    const result = parseSheetDate("01/05");
+    const parsed = new Date(result!);
+    const sixtyDaysAgo = new Date(now);
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+    // Result should be in the future or within 60 days of today
+    expect(parsed.getTime()).toBeGreaterThanOrEqual(sixtyDaysAgo.getTime());
+  });
+
+  it("strips text prefix from date ('loading 04/01')", () => {
+    const result = parseSheetDate("loading 04/01");
+    expect(result).not.toBeNull();
+    // Should extract and parse the date portion
+    expect(result).toMatch(/^\d{4}-04-01$/);
+  });
+
+  it("strips 'departed' prefix from date", () => {
+    const result = parseSheetDate("departed 03/15/2026");
+    expect(result).toBe("2026-03-15");
+  });
+
+  it("takes first date from multi-date string", () => {
+    const result = parseSheetDate("01/25/2026 01/06/2024");
+    expect(result).toBe("2026-01-25");
+  });
 });
 
 describe("parseSpaceAvailable", () => {
@@ -92,6 +126,23 @@ describe("parseSpaceAvailable", () => {
     expect(parseSpaceAvailable("half")).toEqual({ cbm: null, rawValue: "half" });
     expect(parseSpaceAvailable("")).toEqual({ cbm: null, rawValue: "" });
   });
+
+  it("treats bare number as percentage when headerHint contains %", () => {
+    const result = parseSpaceAvailable(15, 76, "Available space %");
+    // 15% of 76 = 11.4
+    expect(result.cbm).toBeCloseTo(11.4, 1);
+    expect(result.rawValue).toBe("15%");
+  });
+
+  it("treats bare string number as percentage when headerHint contains %", () => {
+    const result = parseSpaceAvailable("40", 76, "Space %");
+    expect(result.cbm).toBeCloseTo(30.4, 1);
+  });
+
+  it("returns 0 CBM for zero value regardless of headerHint", () => {
+    const result = parseSpaceAvailable(0, 76, "Available space %");
+    expect(result.cbm).toBe(0);
+  });
 });
 
 describe("extractCountryCode", () => {
@@ -110,6 +161,11 @@ describe("extractCountryCode", () => {
 
   it("returns null for unknown", () => {
     expect(extractCountryCode("Unknown Place")).toBeNull();
+  });
+
+  it("does not match US state codes as country codes", () => {
+    expect(extractCountryCode("Houston, TX")).not.toBe("TX");
+    expect(extractCountryCode("Savannah, GA")).not.toBe("GA");
   });
 });
 

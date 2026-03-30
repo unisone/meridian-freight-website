@@ -84,7 +84,12 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
           { label: t("breadcrumbPricing"), href: "/pricing" },
           { label: t("breadcrumbCalculator") },
         ]}
-        heading={t("heading")}
+        eyebrow={t("eyebrow")}
+        heading={
+          <>{t.rich("heading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
         description={t("description")}
       />
 

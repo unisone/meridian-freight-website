@@ -137,6 +137,7 @@ export default async function ServicePage({
           { label: "Services", href: "/services" },
           { label: service.shortTitle },
         ]}
+        eyebrow={ts("eyebrow")}
         heading={service.title}
         description={service.description}
         icon={Icon}
