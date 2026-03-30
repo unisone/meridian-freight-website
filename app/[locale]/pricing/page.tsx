@@ -84,11 +84,17 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }}
       />
       <PageHero
+        variant="gradient"
         breadcrumbs={[{ label: t("breadcrumb") }]}
-        heading={t("heading")}
+        eyebrow={t("eyebrow")}
+        heading={
+          <>{t.rich("heading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
         description={t("description")}
       >
-        <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
+        <ul className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-muted-foreground">
           <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkWarehouse")}</li>
           <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkCustoms")}</li>
           <li className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> {t("checkPacking")}</li>

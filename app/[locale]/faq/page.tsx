@@ -81,8 +81,14 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <PageHero
+        variant="gradient"
         breadcrumbs={[{ label: t("breadcrumb") }]}
-        heading={t("heading")}
+        eyebrow={t("eyebrow")}
+        heading={
+          <>{t.rich("heading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
         description={t("description")}
       />
       <div>

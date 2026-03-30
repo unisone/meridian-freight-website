@@ -77,8 +77,14 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
       />
       <PageHero
+        variant="gradient"
         breadcrumbs={[{ label: t("breadcrumb") }]}
-        heading={t("heading")}
+        eyebrow={t("eyebrow")}
+        heading={
+          <>{t.rich("heading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
         description={t("description")}
       />
 

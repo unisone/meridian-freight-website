@@ -83,8 +83,14 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <PageHero
+        variant="gradient"
         breadcrumbs={[{ label: t("breadcrumb") }]}
-        heading={t("heading")}
+        eyebrow={t("eyebrow")}
+        heading={
+          <>{t.rich("heading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
         description={t("description")}
       />
       <div>
