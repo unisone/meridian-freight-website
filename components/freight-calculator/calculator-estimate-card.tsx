@@ -345,7 +345,7 @@ export function CalculatorEstimateCard({
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid gap-2 sm:grid-cols-2">
             <div>
               <Label htmlFor="est-name" className="text-xs text-slate-300">
                 {t("nameLabel")}

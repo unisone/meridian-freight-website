@@ -75,7 +75,7 @@ export function ContactInfo() {
             href={SOCIAL.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
+            className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
             aria-label={t("facebook")}
           >
             <Facebook className="h-4 w-4" />
@@ -84,7 +84,7 @@ export function ContactInfo() {
             href={SOCIAL.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
+            className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
             aria-label={t("instagram")}
           >
             <Instagram className="h-4 w-4" />
@@ -93,7 +93,7 @@ export function ContactInfo() {
             href={SOCIAL.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
+            className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
             aria-label={t("youtube")}
           >
             <Youtube className="h-4 w-4" />

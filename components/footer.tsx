@@ -42,7 +42,7 @@ export function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <nav aria-label="Footer navigation" className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-6">
+        <nav aria-label="Footer navigation" className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-6 lg:gap-12">
           {/* Column 1: Company info */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" aria-label={t("homeAriaLabel")}>
@@ -90,7 +90,7 @@ export function Footer() {
                 href={SOCIAL.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-primary hover:text-white hover:scale-110"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-primary hover:text-white hover:scale-110"
                 aria-label={t("followFacebook")}
               >
                 <Facebook className="h-5 w-5" />
@@ -99,7 +99,7 @@ export function Footer() {
                 href={SOCIAL.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-pink-500 hover:text-white hover:scale-110"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-pink-500 hover:text-white hover:scale-110"
                 aria-label={t("followInstagram")}
               >
                 <Instagram className="h-5 w-5" />
@@ -108,7 +108,7 @@ export function Footer() {
                 href={SOCIAL.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-red-600 hover:text-white hover:scale-110"
+                className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-red-600 hover:text-white hover:scale-110"
                 aria-label={t("watchYouTube")}
               >
                 <Youtube className="h-5 w-5" />
@@ -253,8 +253,8 @@ export function Footer() {
           <p className="text-sm text-slate-400">
             {t("copyright", { year, company: COMPANY.legalName })}
           </p>
-          <div className="flex items-center gap-4">
-            <p className="text-xs text-slate-400">
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+            <p className="hidden text-xs text-slate-400 sm:block">
               {CONTACT.address.full} &middot; {t("languagesSpoken")}
             </p>
             <LanguageSwitcher />
