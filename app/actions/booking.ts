@@ -98,13 +98,13 @@ export async function submitBookingRequest(
     };
   }
 
-  // 4. Dedup check — if same email submitted for same container within 5 minutes, return success (idempotent)
+  // 5. Dedup check — if same email submitted for same container within 5 minutes, return success (idempotent)
   const recentCount = await countRecentRequests(email, containerId, 5);
   if (recentCount > 0) {
     return { success: true };
   }
 
-  // 5. Insert booking request to Supabase
+  // 6. Insert booking request to Supabase
   const insertResult = await insertBookingRequest({
     container_id: containerId,
     project_number: projectNumber,
@@ -129,10 +129,10 @@ export async function submitBookingRequest(
     // Continue — email is the must-succeed step, not Supabase
   }
 
-  // 6. Get pending count for notifications
+  // 7. Get pending count for notifications
   const pendingCount = await countPendingRequests(containerId);
 
-  // 7. Send owner notification email via Resend (MUST succeed)
+  // 8. Send owner notification email via Resend (MUST succeed)
   const resend = new Resend(apiKey);
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
@@ -198,7 +198,7 @@ export async function submitBookingRequest(
     return { success: false, error: "An unexpected error occurred." };
   }
 
-  // 8. Generate event ID for Pixel/CAPI dedup
+  // 9. Generate event ID for Pixel/CAPI dedup
   const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
   // 9-10. Best-effort work runs AFTER the response is sent to the user.

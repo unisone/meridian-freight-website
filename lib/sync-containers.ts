@@ -424,8 +424,8 @@ export function parseRow(
 
   const notes = getCell(row, colMap, "notes") || null;
 
-  // Determine status based on data
-  const today = new Date().toISOString().split("T")[0];
+  // Determine status based on data — use US Central time (operations are in Iowa)
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
   let status: "available" | "full" | "departed" = "full"; // default: no space info = full
   if (departureDate < today) {
     status = "departed";

@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { track as vercelTrack } from "@vercel/analytics";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,6 +81,7 @@ export function ScheduleBookingForm({
   onSuccess,
   onCancel,
 }: ScheduleBookingFormProps) {
+  const locale = useLocale();
   const t = useTranslations("ScheduleBooking");
 
   // ─── State ─────────────────────────────────────────────
@@ -148,7 +149,7 @@ export function ScheduleBookingForm({
     };
 
     try {
-      const res = await submitBookingRequest(payload);
+      const res = await submitBookingRequest(payload, locale);
 
       if (res.success) {
         setResult(res);

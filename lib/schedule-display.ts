@@ -236,9 +236,12 @@ export function classifyContainers(containers: ContainerWithPendingCount[]): Cla
       }
     } else if (c.status === "available" && (c.available_cbm ?? 0) > 0) {
       bookable.push(c);
-    } else {
-      // full or available with 0 cbm — upcoming but not bookable
+    } else if (c.departure_date > today) {
+      // full or available with 0 cbm — future departure, upcoming but not bookable
       nonBookableUpcoming.push(c);
+    } else {
+      // full/available with past departure — treat as in-transit (cron hasn't marked departed yet)
+      inTransit.push(c);
     }
   }
 

@@ -28,7 +28,6 @@ export async function GET(request: Request) {
     // Revalidate schedule page and all locale variants on success/partial
     if (result.status !== "failed") {
       revalidatePath("/schedule");
-      revalidatePath("/en/schedule");
       revalidatePath("/es/schedule");
       revalidatePath("/ru/schedule");
     }
