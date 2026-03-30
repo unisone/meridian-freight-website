@@ -164,6 +164,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
       <PageHero
         variant="dark"
         breadcrumbs={[{ label: t("breadcrumb") }]}
+        eyebrow={t("eyebrow")}
         heading={t("heroHeading")}
         description={t("heroDescription", { company: COMPANY.name })}
         rightContent={

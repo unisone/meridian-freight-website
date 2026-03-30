@@ -354,6 +354,7 @@
   },
   "DestinationsPage": {
     "breadcrumb": "Destinos",
+    "eyebrow": "Envios Internacionales",
     "heroHeading": "Enviamos a Cualquier Puerto del Mundo",
     "heroDescription": "{company} exporta maquinaria desde EE.UU. y Canada a mas de 40 paises en seis continentes. Si tiene un puerto maritimo, podemos llevar su equipo ahi.",
     "exportsCompleted": "Exportaciones Completadas",
@@ -533,7 +534,8 @@
     "chatOnWhatsApp": "Chatear por WhatsApp"
   },
   "BlogPage": {
-    "heroHeading": "Perspectivas de Exportacion de Maquinaria",
+    "eyebrow": "Guias y Articulos",
+    "heroHeading": "<accent>Perspectivas</accent> de Exportacion de Maquinaria",
     "heroDescription": "Guias expertas, desgloses de costos y consejos especificos por destino del equipo de {company}. Todo lo que necesita saber sobre el envio de equipos pesados desde EE.UU. y Canada.",
     "readArticle": "Leer articulo",
     "ctaHeading": "Listo para Enviar su Equipo?",
@@ -547,6 +549,7 @@
     "getAQuote": "Solicitar Cotizacion"
   },
   "ServiceDetailPage": {
+    "eyebrow": "Nuestros Servicios",
     "howWeHandle": "Como Manejamos su Envio",
     "equipmentWeHandle": "Equipos que Manejamos",
     "equipmentWeHandleDescription": "Cada tipo listado a continuacion se envia con desmontaje especifico por marca, bloqueo personalizado y documentacion completa.",
@@ -557,6 +560,7 @@
     "chatOnWhatsApp": "Chatear por WhatsApp"
   },
   "DestinationDetailPage": {
+    "eyebrow": "Destinos de Envio",
     "routeDetails": "Detalles de la Ruta",
     "transitTime": "Tiempo de Transito",
     "destinationPort": "Puerto de Destino",
@@ -695,6 +699,7 @@
     "orCall": "o llame al {phone}"
   },
   "EquipmentDetailPage": {
+    "eyebrow": "Exportacion de Equipos",
     "brandsWeHandle": "Marcas que Manejamos",
     "brandsDescription": "Tenemos experiencia directa exportando estas marcas de {equipment}. Sin importar el modelo o ano, sabemos como desmontarlo, embalarlo y enviarlo.",
     "commonModels": "Modelos Comunes que Enviamos",

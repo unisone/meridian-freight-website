@@ -354,6 +354,7 @@
   },
   "DestinationsPage": {
     "breadcrumb": "Destinations",
+    "eyebrow": "Global Shipping",
     "heroHeading": "We Ship to Any Port Worldwide",
     "heroDescription": "{company} exports machinery from the USA and Canada to 40+ countries across six continents. If it has a seaport, we can get your equipment there.",
     "exportsCompleted": "Exports Completed",
@@ -533,7 +534,8 @@
     "chatOnWhatsApp": "Chat on WhatsApp"
   },
   "BlogPage": {
-    "heroHeading": "Machinery Export Insights",
+    "eyebrow": "Insights & Guides",
+    "heroHeading": "Machinery Export <accent>Insights</accent>",
     "heroDescription": "Expert guides, cost breakdowns, and destination-specific advice from the {company} team. Everything you need to know about shipping heavy equipment from the USA and Canada.",
     "readArticle": "Read article",
     "ctaHeading": "Ready to Ship Your Equipment?",
@@ -547,6 +549,7 @@
     "getAQuote": "Get a Quote"
   },
   "ServiceDetailPage": {
+    "eyebrow": "Our Services",
     "howWeHandle": "How We Handle Your Shipment",
     "equipmentWeHandle": "Equipment We Handle",
     "equipmentWeHandleDescription": "Every type listed below ships with brand-specific disassembly, custom blocking, and full documentation.",
@@ -557,6 +560,7 @@
     "chatOnWhatsApp": "Chat on WhatsApp"
   },
   "DestinationDetailPage": {
+    "eyebrow": "Shipping Destinations",
     "routeDetails": "Route Details",
     "transitTime": "Transit Time",
     "destinationPort": "Destination Port",
@@ -695,6 +699,7 @@
     "orCall": "or call {phone}"
   },
   "EquipmentDetailPage": {
+    "eyebrow": "Equipment Export",
     "brandsWeHandle": "Brands We Handle",
     "brandsDescription": "We have hands-on experience exporting these {equipment} brands. No matter the model or year, we know how to disassemble, pack, and ship it.",
     "commonModels": "Common Models We Ship",

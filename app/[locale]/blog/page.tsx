@@ -84,9 +84,14 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       />
 
       <PageHero
-        variant="dark"
+        variant="gradient"
         breadcrumbs={[{ label: "Blog" }]}
-        heading={tb("heroHeading")}
+        eyebrow={tb("eyebrow")}
+        heading={
+          <>{tb.rich("heroHeading", {
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}</>
+        }
         description={tb("heroDescription", { company: COMPANY.name })}
       />
 

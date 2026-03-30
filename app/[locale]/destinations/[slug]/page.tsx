@@ -159,6 +159,7 @@ export default async function DestinationPage({
           { label: "Destinations", href: "/destinations" },
           { label: dest.country },
         ]}
+        eyebrow={td("eyebrow")}
         heading={td("heroHeading", { country: dest.country })}
         description={dest.heroDescription}
         icon={Ship}
