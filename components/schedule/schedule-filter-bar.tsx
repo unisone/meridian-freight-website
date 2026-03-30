@@ -50,20 +50,31 @@ export function ScheduleFilterBar({
           onValueChange={(val) => onTabChange(val as FilterTab)}
         >
           <TabsList className="h-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
-            {TAB_KEYS.map((tab) => (
-              <TabsTrigger
-                key={tab}
-                value={tab}
-                className="text-xs sm:text-sm whitespace-nowrap gap-1.5"
-              >
-                {t(TAB_LABEL_MAP[tab])}
-                <span className="inline-flex items-center justify-center rounded-full bg-muted px-1.5 min-w-[18px] h-4 text-[10px] font-semibold tabular-nums text-muted-foreground">
-                  {tabCounts[tab]}
-                </span>
-              </TabsTrigger>
-            ))}
+            {TAB_KEYS.map((tab) => {
+              const label = t(TAB_LABEL_MAP[tab]);
+              const count = tabCounts[tab];
+              return (
+                <TabsTrigger
+                  key={tab}
+                  value={tab}
+                  className="text-xs sm:text-sm whitespace-nowrap gap-1.5"
+                  aria-label={`${label} (${count})`}
+                >
+                  {label}
+                  <span
+                    className="inline-flex items-center justify-center rounded-full bg-muted px-1.5 min-w-[18px] h-4 text-[10px] font-semibold tabular-nums text-muted-foreground"
+                    aria-hidden="true"
+                  >
+                    {count}
+                  </span>
+                </TabsTrigger>
+              );
+            })}
           </TabsList>
         </Tabs>
+
+        {/* Separator visible only on mobile stacked layout */}
+        <div className="h-px bg-border/50 sm:hidden" />
 
         {/* Country filter */}
         <Select

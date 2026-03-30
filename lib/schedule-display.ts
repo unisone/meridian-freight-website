@@ -284,3 +284,41 @@ export function classifyContainers(containers: ContainerWithPendingCount[]): Cla
 
   return { bookable, nonBookableUpcoming, inTransit, delivered };
 }
+
+// ─── Filter Containers ─────────────────────────────────────────────────────
+
+/** Filter containers by tab and country. Departure date takes precedence over
+ *  DB status since the cron only runs every 15 min. */
+export function filterContainers(
+  containers: ContainerWithPendingCount[],
+  tab: FilterTab,
+  country: string | null,
+): ContainerWithPendingCount[] {
+  let filtered = containers;
+  const todayStr = todayDateString();
+
+  if (country) {
+    filtered = filtered.filter((c) => c.destination_country === country);
+  }
+
+  if (tab === "upcoming") {
+    filtered = filtered.filter(
+      (c) => c.departure_date >= todayStr && c.status !== "departed",
+    );
+  } else if (tab === "in-transit") {
+    filtered = filtered.filter(
+      (c) =>
+        (c.status === "departed" || c.departure_date < todayStr) &&
+        (c.eta_date === null || c.eta_date > todayStr),
+    );
+  } else if (tab === "delivered") {
+    filtered = filtered.filter(
+      (c) =>
+        (c.status === "departed" || c.departure_date < todayStr) &&
+        c.eta_date !== null &&
+        c.eta_date <= todayStr,
+    );
+  }
+
+  return filtered;
+}

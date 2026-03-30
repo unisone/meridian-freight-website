@@ -45,20 +45,20 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
       transition={{ delay: index * 0.06, duration: 0.4, ease: "easeOut" }}
     >
-      <div className="rounded-lg border border-border/60 border-l-[3px] border-l-indigo-400 bg-white p-4 sm:p-5 transition-colors hover:bg-muted/20">
+      <div className="rounded-lg border border-border/60 border-l-[3px] border-l-indigo-400 bg-card p-4 sm:p-5 transition-colors hover:bg-muted/20">
         {/* Route */}
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold leading-tight truncate">
+            <p className="text-sm font-semibold leading-tight">
               {!destPending && (
                 <span className="mr-1.5" aria-hidden="true">{flag}</span>
               )}
-              <span className="text-muted-foreground">{origin}</span>
-              <span className="mx-1.5 text-border">&rarr;</span>
+              <span className="hidden sm:inline text-muted-foreground">{origin}</span>
+              <span className="hidden sm:inline mx-1.5 text-border">&rarr;</span>
               {destPending ? (
                 <span className="text-muted-foreground italic font-normal">{t("destinationPending")}</span>
               ) : (
-                <span>{destText}</span>
+                <span className="truncate">{destText}</span>
               )}
             </p>
             <div className="flex items-center gap-2 mt-0.5">
@@ -89,7 +89,14 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
         {transit && (
           <div className="mt-3 relative">
             {/* Track */}
-            <div className="relative h-1.5 w-full rounded-full bg-indigo-100 overflow-visible">
+            <div
+              className="relative h-1.5 w-full rounded-full bg-indigo-100 overflow-visible"
+              role="progressbar"
+              aria-valuenow={transit.transitDay}
+              aria-valuemin={0}
+              aria-valuemax={transit.transitTotal}
+              aria-label={t("dayOfTransit", { day: transit.transitDay, total: transit.transitTotal })}
+            >
               {/* Fill */}
               <motion.div
                 className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-indigo-400 to-indigo-500"

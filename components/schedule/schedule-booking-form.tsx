@@ -212,7 +212,7 @@ export function ScheduleBookingForm({
           {t("successFollowUp")}
         </p>
         <Separator className="my-4 w-full" />
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <a
             href={CONTACT.whatsappUrl}
             target="_blank"
@@ -223,7 +223,7 @@ export function ScheduleBookingForm({
             <MessageCircle className="h-4 w-4" />
             {t("chatOnWhatsApp")}
           </a>
-          <span className="text-muted-foreground">{t("or")}</span>
+          <span className="hidden sm:inline text-muted-foreground">{t("or")}</span>
           <a
             href={CONTACT.emailHref}
             onClick={() => trackContactClick("email", "booking_success")}
@@ -232,6 +232,15 @@ export function ScheduleBookingForm({
             {CONTACT.email}
           </a>
         </div>
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="mt-3 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {t("submitAnother")}
+          </button>
+        )}
       </div>
     );
   }
@@ -263,7 +272,7 @@ export function ScheduleBookingForm({
         <p className="text-xs font-medium text-muted-foreground mb-2">
           {t("whatAreYouShipping")}
         </p>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap">
           {CARGO_TYPES.map((type) => {
             const isSelected = selectedCargoTypes.includes(type.id);
             return (
