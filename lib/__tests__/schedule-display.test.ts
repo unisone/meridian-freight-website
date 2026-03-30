@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import type { SharedContainer, ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 import {
-  deriveScheduleStatus,
   computeTransitProgress,
   computeScheduleStats,
   computeTabCounts,
@@ -72,66 +71,6 @@ function makeContainerWithPending(
     ...overrides,
   };
 }
-
-// ─── deriveScheduleStatus ────────────────────────────────────────────────────
-
-describe("deriveScheduleStatus", () => {
-  it("returns 'scheduled' for available container departing > 7 days", () => {
-    const c = makeContainer({ status: "available", departure_date: daysFromNow(14) });
-    expect(deriveScheduleStatus(c)).toBe("scheduled");
-  });
-
-  it("returns 'departing-soon' for available container departing ≤ 7 days", () => {
-    const c = makeContainer({ status: "available", departure_date: daysFromNow(3) });
-    expect(deriveScheduleStatus(c)).toBe("departing-soon");
-  });
-
-  it("returns 'departing-soon' for available container departing today", () => {
-    const c = makeContainer({ status: "available", departure_date: daysFromNow(0) });
-    expect(deriveScheduleStatus(c)).toBe("departing-soon");
-  });
-
-  it("returns 'fully-booked' for full container with future departure", () => {
-    const c = makeContainer({ status: "full", departure_date: daysFromNow(10) });
-    expect(deriveScheduleStatus(c)).toBe("fully-booked");
-  });
-
-  it("returns 'in-transit' for departed container with future ETA", () => {
-    const c = makeContainer({
-      status: "departed",
-      departure_date: daysFromNow(-10),
-      eta_date: daysFromNow(25),
-    });
-    expect(deriveScheduleStatus(c)).toBe("in-transit");
-  });
-
-  it("returns 'in-transit' for departed container with null ETA", () => {
-    const c = makeContainer({
-      status: "departed",
-      departure_date: daysFromNow(-10),
-      eta_date: null,
-    });
-    expect(deriveScheduleStatus(c)).toBe("in-transit");
-  });
-
-  it("returns 'arrived' for departed container with past ETA", () => {
-    const c = makeContainer({
-      status: "departed",
-      departure_date: daysFromNow(-40),
-      eta_date: daysFromNow(-5),
-    });
-    expect(deriveScheduleStatus(c)).toBe("arrived");
-  });
-
-  it("returns 'arrived' for departed container with today as ETA", () => {
-    const c = makeContainer({
-      status: "departed",
-      departure_date: daysFromNow(-30),
-      eta_date: daysFromNow(0),
-    });
-    expect(deriveScheduleStatus(c)).toBe("arrived");
-  });
-});
 
 // ─── computeTransitProgress ──────────────────────────────────────────────────
 

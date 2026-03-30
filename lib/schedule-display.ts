@@ -1,86 +1,9 @@
 /**
  * Pure display logic for the /schedule page.
  * All functions are pure — no I/O, no side effects.
- * Derives schedule-specific status from existing SharedContainer fields.
  */
 
 import type { SharedContainer, ContainerWithPendingCount } from "@/lib/types/shared-shipping";
-
-// ─── Schedule Status ─────────────────────────────────────────────────────────
-
-export type ScheduleStatus =
-  | "departing-soon"
-  | "scheduled"
-  | "fully-booked"
-  | "in-transit"
-  | "arrived";
-
-export interface ScheduleStatusConfig {
-  label: string;
-  dotColor: string;
-  borderColor: string;
-}
-
-/** Display config per status — labels are i18n keys resolved in components. */
-export const SCHEDULE_STATUS_CONFIG: Record<ScheduleStatus, ScheduleStatusConfig> = {
-  "departing-soon": {
-    label: "status.departingSoon",
-    dotColor: "bg-amber-500",
-    borderColor: "border-l-amber-500",
-  },
-  scheduled: {
-    label: "status.scheduled",
-    dotColor: "bg-blue-500",
-    borderColor: "border-l-blue-500",
-  },
-  "fully-booked": {
-    label: "status.fullyBooked",
-    dotColor: "bg-zinc-400",
-    borderColor: "border-l-zinc-400",
-  },
-  "in-transit": {
-    label: "status.inTransit",
-    dotColor: "bg-indigo-500",
-    borderColor: "border-l-indigo-500",
-  },
-  arrived: {
-    label: "status.arrived",
-    dotColor: "bg-emerald-500",
-    borderColor: "border-l-emerald-500",
-  },
-};
-
-/**
- * Derive a schedule display status from a SharedContainer's DB fields.
- * No migration needed — purely computed at render time.
- */
-export function deriveScheduleStatus(container: SharedContainer): ScheduleStatus {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayStr = today.toISOString().split("T")[0];
-
-  const weekOut = new Date(today);
-  weekOut.setDate(weekOut.getDate() + 7);
-  const weekStr = weekOut.toISOString().split("T")[0];
-
-  if (container.status === "departed") {
-    if (container.eta_date && container.eta_date <= todayStr) {
-      return "arrived";
-    }
-    return "in-transit";
-  }
-
-  if (container.status === "full") {
-    return "fully-booked";
-  }
-
-  // status === "available"
-  if (container.departure_date <= weekStr) {
-    return "departing-soon";
-  }
-
-  return "scheduled";
-}
 
 // ─── Transit Progress ────────────────────────────────────────────────────────
 
