@@ -133,7 +133,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
           <ScrollReveal variant="fade">
             <DarkCta variant="card" className="mt-16" heading={t("ctaHeading")} description={t("ctaDescription")}>
               <Button
-                render={<a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label={t("chatOnWhatsAppAriaLabel")} />}
+                render={<a href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent("Hi! I was looking at your freight pricing. I'd like to get a quote.")}`} target="_blank" rel="noopener noreferrer" aria-label={t("chatOnWhatsAppAriaLabel")} />}
                 size="lg"
                 className="h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg"
               >

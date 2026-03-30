@@ -32,6 +32,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 
 import { CONTACT } from "@/lib/constants";
+import { buildWhatsAppUrl } from "@/lib/wa-attribution";
 import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 import type { BookingRequestData } from "@/lib/schemas";
 import {
@@ -214,7 +215,14 @@ export function ScheduleBookingForm({
         <Separator className="my-4 w-full" />
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <a
-            href={CONTACT.whatsappUrl}
+            href={
+              result.waRefCode
+                ? buildWhatsAppUrl(
+                    result.waRefCode,
+                    `I just submitted a booking request for the ${container.destination} container (${container.project_number}), departing ${container.departure_date}.`,
+                  )
+                : CONTACT.whatsappUrl
+            }
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackContactClick("whatsapp", "booking_success")}

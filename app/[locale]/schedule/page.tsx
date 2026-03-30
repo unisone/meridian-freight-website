@@ -175,7 +175,7 @@ export default async function SchedulePage({
             </p>
             <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <a
-                href={CONTACT.whatsappUrl}
+                href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent("Hi! I'm looking at your shipping schedule. I'm interested in container freight services.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"

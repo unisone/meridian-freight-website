@@ -214,7 +214,9 @@ export function CalculatorEstimateCard({
           <Button
             render={
               <a
-                href={CONTACT.whatsappUrl}
+                href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(
+                  `Hi! Your calculator estimated $${preview ? Math.round(preview.estimatedTotal).toLocaleString("en-US") : "N/A"} for ${selectedEquipment?.display_name_en ?? "equipment"} to ${destinationCountry}. Can I get an exact quote?`,
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("whatsAppChatAriaLabel")}

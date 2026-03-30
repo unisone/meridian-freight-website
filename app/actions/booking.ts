@@ -15,6 +15,7 @@ import {
   countPendingRequests,
   insertBookingRequest,
 } from "@/lib/supabase-containers";
+import { generateRefCode, storeWaAttribution } from "@/lib/wa-attribution";
 
 function escapeHtml(input: string): string {
   return String(input)
@@ -29,6 +30,8 @@ export type BookingActionResult = {
   success: boolean;
   error?: string;
   eventId?: string;
+  /** WhatsApp attribution ref code (MF-XXXX) for pre-filled CTA */
+  waRefCode?: string;
 };
 
 /** Generate a short booking reference: BK-XXXXXXX */
@@ -180,8 +183,9 @@ export async function submitBookingRequest(
     return { success: false, error: "An unexpected error occurred." };
   }
 
-  // 9. Generate event ID for Pixel/CAPI dedup
+  // 9. Generate event ID for Pixel/CAPI dedup + WhatsApp ref code
   const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  const waRefCode = generateRefCode();
 
   // 9-10. Best-effort work runs AFTER the response is sent to the user.
   after(async () => {
@@ -236,8 +240,17 @@ export async function submitBookingRequest(
 
     // d. Vercel Analytics server-side event
     await track("lead_submitted", { source: "shared_shipping", locale }).catch(() => {});
+
+    // e. WhatsApp attribution — enables chatbot to correlate booking with WhatsApp conversation
+    await storeWaAttribution({
+      ref_code: waRefCode,
+      source_page: `/schedule#${projectNumber}`,
+      utm_source: "website",
+      utm_medium: "booking_success",
+      utm_campaign: "container_booking",
+    });
   });
 
   timer.done({ email, locale, containerId, projectNumber });
-  return { success: true, eventId };
+  return { success: true, eventId, waRefCode };
 }
