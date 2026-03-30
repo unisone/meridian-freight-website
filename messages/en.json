@@ -324,7 +324,6 @@
     "eyebrow": "About Us",
     "heading": "About <accent>{company}</accent>",
     "intro1": "Since {year}, we've shipped {count}+ pieces of heavy equipment from the USA and Canada to ports in Latin America, Africa, the Middle East, and Central Asia. We handle the entire chain — pickup, dismantling, packing, documentation, and ocean freight — so international buyers don't have to coordinate multiple vendors.",
-    "intro2": "Our technicians know the disassembly specs for John Deere, Case IH, CAT, Kinze, and dozens of other brands. Every component gets tagged, photographed, and packed so it reassembles correctly on the other end.",
     "whyChooseUs": "Why Choose Us",
     "diff1Title": "One Invoice, Zero Coordination",
     "diff1Description": "Most exporters hand you off between trucker, packer, and freight forwarder. We own the entire chain — pickup to port — so nothing falls through the cracks.",
