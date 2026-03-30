@@ -5,6 +5,21 @@
 
 import type { SharedContainer, ContainerWithPendingCount } from "@/lib/types/shared-shipping";
 
+// ─── Date Utility ───────────────────────────────────────────────────────────
+
+/** Get today's date as YYYY-MM-DD in local time.
+ *  Uses local time (not UTC) because departure_date values in the DB represent
+ *  the departure date at the US port — comparison should match the user's
+ *  expectation of "today." Using toISOString().split("T")[0] would give UTC,
+ *  which is already the next day at 7 PM+ US Eastern. */
+export function todayDateString(): string {
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 // ─── Transit Progress ────────────────────────────────────────────────────────
 
 export interface TransitProgress {
@@ -54,10 +69,8 @@ export interface ScheduleStats {
 /** Compute aggregate stats from the full container list. */
 export function computeScheduleStats(containers: SharedContainer[]): ScheduleStats {
   const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
-    .toISOString()
-    .split("T")[0];
-  const todayStr = now.toISOString().split("T")[0];
+  const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
+  const todayStr = todayDateString();
 
   return {
     containersThisMonth: containers.filter(
@@ -68,15 +81,15 @@ export function computeScheduleStats(containers: SharedContainer[]): ScheduleSta
       containers.map((c) => c.destination_country).filter(Boolean),
     ).size,
 
-    inTransitNow: containers.filter(
-      (c) =>
-        c.status === "departed" &&
-        (c.eta_date === null || c.eta_date > todayStr),
-    ).length,
+    inTransitNow: containers.filter((c) => {
+      const hasDeparted = c.status === "departed" || c.departure_date < todayStr;
+      return hasDeparted && (c.eta_date === null || c.eta_date > todayStr);
+    }).length,
 
-    bookableContainers: containers.filter(
-      (c) => c.status === "available" && (c.available_cbm ?? 0) > 0,
-    ).length,
+    bookableContainers: containers.filter((c) => {
+      const hasDeparted = c.status === "departed" || c.departure_date < todayStr;
+      return !hasDeparted && c.status === "available" && (c.available_cbm ?? 0) > 0;
+    }).length,
   };
 }
 
@@ -89,7 +102,7 @@ export type FilterTab = "all" | "upcoming" | "in-transit" | "delivered";
 export function computeTabCounts(
   containers: SharedContainer[],
 ): Record<FilterTab, number> {
-  const todayStr = new Date().toISOString().split("T")[0];
+  const todayStr = todayDateString();
 
   let upcoming = 0;
   let inTransit = 0;
@@ -225,7 +238,7 @@ export interface ClassifiedContainers {
  *  (15-min gap), a container can have status=available but departure_date in the past.
  *  We classify by date first to avoid showing departed containers as bookable. */
 export function classifyContainers(containers: ContainerWithPendingCount[]): ClassifiedContainers {
-  const today = new Date().toISOString().split("T")[0];
+  const today = todayDateString();
   const bookable: ContainerWithPendingCount[] = [];
   const nonBookableUpcoming: SharedContainer[] = [];
   const inTransit: SharedContainer[] = [];

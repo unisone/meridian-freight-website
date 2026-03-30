@@ -16,6 +16,7 @@ import {
   classifyContainers,
   computeTabCounts,
   deriveCountryList,
+  todayDateString,
 } from "@/lib/schedule-display";
 import { trackScheduleEvent } from "@/lib/tracking";
 
@@ -40,7 +41,7 @@ function filterContainers(
   country: string | null,
 ): ContainerWithPendingCount[] {
   let filtered = containers;
-  const todayStr = new Date().toISOString().split("T")[0];
+  const todayStr = todayDateString();
 
   if (country) {
     filtered = filtered.filter((c) => c.destination_country === country);
@@ -76,20 +77,21 @@ interface TimeGroup {
   containers: ContainerWithPendingCount[];
 }
 
+function localDatePlusDays(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 function subGroupByTime(
   bookable: ContainerWithPendingCount[],
   t: ReturnType<typeof useTranslations>,
 ): TimeGroup[] {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const weekOut = new Date(today);
-  weekOut.setDate(weekOut.getDate() + 7);
-  const weekStr = weekOut.toISOString().split("T")[0];
-
-  const monthOut = new Date(today);
-  monthOut.setDate(monthOut.getDate() + 30);
-  const monthStr = monthOut.toISOString().split("T")[0];
+  const weekStr = localDatePlusDays(7);
+  const monthStr = localDatePlusDays(30);
 
   const thisWeek: ContainerWithPendingCount[] = [];
   const thisMonth: ContainerWithPendingCount[] = [];
