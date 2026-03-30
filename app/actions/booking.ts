@@ -113,6 +113,7 @@ export async function submitBookingRequest(
 
   // 8. Send owner notification email via Resend (MUST succeed)
   const resend = new Resend(apiKey);
+  const bookingRef = generateBookingRef();
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
   const safeCargo = escapeHtml(cargoDescription);
@@ -135,6 +136,7 @@ export async function submitBookingRequest(
             <h1 style="margin:0;font-size:20px">New Booking Request — Shared Container</h1>
           </div>
           <div style="background:#f9fafb;padding:24px;border-radius:0 0 8px 8px">
+            <p style="margin:0 0 16px;font-size:13px;color:#6b7280">Reference: <strong style="color:#0369a1;font-family:monospace;letter-spacing:0.5px">${bookingRef}</strong></p>
             <h3 style="margin:0 0 12px;color:#1f2937">Customer Details</h3>
             <p><strong>Name:</strong> ${safeName}</p>
             <p><strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
@@ -189,7 +191,7 @@ export async function submitBookingRequest(
         name: safeName,
         cargo: safeCargo.replace(/\n/g, "<br/>"),
         locale,
-        bookingRef: generateBookingRef(),
+        bookingRef,
         container: {
           origin: escapeHtml(container.origin),
           destination: escapeHtml(container.destination),
