@@ -365,7 +365,7 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
                       onClick={() => setDeliveredExpanded(false)}
                       className="w-full mt-2 text-muted-foreground"
                     >
-                      Collapse
+                      {t("collapseDelivered")}
                     </Button>
                   </motion.div>
                 </AnimatePresence>

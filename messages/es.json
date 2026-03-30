@@ -753,7 +753,15 @@
     "noData": "Calendario no disponible ahora",
     "noDataDescription": "Se agregan nuevos envios regularmente. Contactenos para la informacion mas reciente.",
     "clearFilters": "Borrar filtros",
-    "contactUs": "Contactenos"
+    "contactUs": "Contactenos",
+    "countdown": {
+      "leavesToday": "Sale hoy",
+      "leavesTomorrow": "Sale mañana",
+      "leavesInDays": "Sale en {days} días",
+      "departed": "Partió {date}",
+      "etaPending": "Llegada pendiente"
+    },
+    "collapseDelivered": "Colapsar"
   },
   "ScheduleBooking": {
     "bookSpace": "Reservar Espacio",

@@ -84,10 +84,10 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
   }
 
   const countdownText = (() => {
-    if (countdown.urgency === "today") return "Leaves today";
-    if (countdown.urgency === "past") return `Departed ${shortDate(container.departure_date)}`;
-    if (countdown.daysUntil === 1) return "Leaves tomorrow";
-    if (countdown.daysUntil <= 7) return `Leaves in ${countdown.daysUntil} days`;
+    if (countdown.urgency === "today") return t("countdown.leavesToday");
+    if (countdown.urgency === "past") return t("countdown.departed", { date: shortDate(container.departure_date) });
+    if (countdown.daysUntil === 1) return t("countdown.leavesTomorrow");
+    if (countdown.daysUntil <= 7) return t("countdown.leavesInDays", { days: countdown.daysUntil });
     return shortDate(container.departure_date);
   })();
 
@@ -207,7 +207,7 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <p className="text-xs text-muted-foreground italic">ETA pending</p>
+                    <p className="text-xs text-muted-foreground italic">{t("countdown.etaPending")}</p>
                     <MapPin className="h-3.5 w-3.5 text-border shrink-0" />
                   </div>
                 )}

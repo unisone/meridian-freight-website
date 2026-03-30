@@ -753,7 +753,15 @@
     "noData": "Schedule unavailable right now",
     "noDataDescription": "New shipments are added regularly. Contact us for the latest schedule information.",
     "clearFilters": "Clear filters",
-    "contactUs": "Contact us"
+    "contactUs": "Contact us",
+    "countdown": {
+      "leavesToday": "Leaves today",
+      "leavesTomorrow": "Leaves tomorrow",
+      "leavesInDays": "Leaves in {days} days",
+      "departed": "Departed {date}",
+      "etaPending": "ETA pending"
+    },
+    "collapseDelivered": "Collapse"
   },
   "ScheduleBooking": {
     "bookSpace": "Book Space",

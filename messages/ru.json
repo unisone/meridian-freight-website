@@ -753,7 +753,15 @@
     "noData": "Расписание временно недоступно",
     "noDataDescription": "Новые отправки добавляются регулярно. Свяжитесь с нами для актуальной информации.",
     "clearFilters": "Сбросить фильтры",
-    "contactUs": "Связаться с нами"
+    "contactUs": "Связаться с нами",
+    "countdown": {
+      "leavesToday": "Отправка сегодня",
+      "leavesTomorrow": "Отправка завтра",
+      "leavesInDays": "Отправка через {days} дн.",
+      "departed": "Отправлен {date}",
+      "etaPending": "Дата прибытия уточняется"
+    },
+    "collapseDelivered": "Свернуть"
   },
   "ScheduleBooking": {
     "bookSpace": "Забронировать место",
