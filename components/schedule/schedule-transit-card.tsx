@@ -44,7 +44,7 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
       transition={{ delay: index * 0.06, duration: 0.4, ease: "easeOut" }}
     >
-      <div className="rounded-lg border border-border/60 bg-white p-4 sm:p-5 transition-colors hover:bg-muted/20">
+      <div className="rounded-lg border border-border/60 border-l-[3px] border-l-indigo-400 bg-white p-4 sm:p-5 transition-colors hover:bg-muted/20">
         {/* Route */}
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">

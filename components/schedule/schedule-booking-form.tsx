@@ -270,7 +270,7 @@ export function ScheduleBookingForm({
                       : [...prev, type.id],
                   );
                 }}
-                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 min-h-[44px] sm:min-h-0 sm:py-1 sm:px-2.5 text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 min-h-[44px] sm:min-h-0 sm:py-1 sm:px-2.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 ${
                   isSelected
                     ? "border-primary bg-primary/10 text-primary"
                     : "border-border bg-background text-muted-foreground hover:border-primary/40"
