@@ -4,6 +4,7 @@ import {
   parseSheetDate,
   parseSpaceAvailable,
   extractCountryCode,
+  isUSLocation,
   parseRow,
 } from "@/lib/sync-containers";
 
@@ -169,6 +170,36 @@ describe("extractCountryCode", () => {
   });
 });
 
+describe("isUSLocation", () => {
+  it("detects City, STATE pattern", () => {
+    expect(isUSLocation("Houston, TX")).toBe(true);
+    expect(isUSLocation("Norfolk, VA")).toBe(true);
+    expect(isUSLocation("Savannah, GA")).toBe(true);
+    expect(isUSLocation("Baltimore, MD")).toBe(true);
+  });
+
+  it("detects known US port city names", () => {
+    expect(isUSLocation("Houston")).toBe(true);
+    expect(isUSLocation("Savannah")).toBe(true);
+    expect(isUSLocation("Norfolk")).toBe(true);
+    expect(isUSLocation("Albion")).toBe(true);
+    expect(isUSLocation("Minneapolis")).toBe(true);
+  });
+
+  it("does NOT flag international destinations", () => {
+    expect(isUSLocation("Almaty, Kazakhstan")).toBe(false);
+    expect(isUSLocation("Klaipeda, Lithuania")).toBe(false);
+    expect(isUSLocation("Poti, Georgia")).toBe(false);
+    expect(isUSLocation("Constanta, Romania")).toBe(false);
+    expect(isUSLocation("Santos, Brazil")).toBe(false);
+  });
+
+  it("returns false for empty/TBD", () => {
+    expect(isUSLocation("")).toBe(false);
+    expect(isUSLocation("TBD")).toBe(false);
+  });
+});
+
 describe("parseRow", () => {
   const colMap = {
     project_number: 0,
@@ -217,5 +248,40 @@ describe("parseRow", () => {
     const row = ["MF-001", "", "Almaty, KZ", "2026-04-15", "", "29"];
     const { parsed } = parseRow(row, 1, colMap);
     expect(parsed!.origin).toBe("Albion, IA");
+  });
+
+  it("treats US location destination as TBD", () => {
+    const row = ["LionH1126", "Houston,TX", "Houston, TX", "2026-04-15", "", "0"];
+    const { parsed } = parseRow(row, 1, colMap);
+    expect(parsed).not.toBeNull();
+    expect(parsed!.destination).toBe("TBD");
+    expect(parsed!.destination_country).toBeNull();
+  });
+
+  it("treats Norfolk, VA destination as TBD", () => {
+    const row = ["LionN1127", "Norfolk, VA", "Norfolk, VA", "2026-04-15", "", "0"];
+    const { parsed } = parseRow(row, 1, colMap);
+    expect(parsed!.destination).toBe("TBD");
+  });
+
+  it("preserves valid international destination", () => {
+    const row = ["NRD68", "Minneapolis", "Kokshetau, Kazakhstan", "2026-04-15", "", "29"];
+    const { parsed } = parseRow(row, 1, colMap);
+    expect(parsed!.destination).toBe("Kokshetau, Kazakhstan");
+    expect(parsed!.destination_country).toBe("KZ");
+  });
+
+  it("nullifies ETA when it equals departure date", () => {
+    const row = ["LionH1126", "Houston,TX", "", "2026-04-01", "2026-04-01", "0"];
+    const { parsed } = parseRow(row, 1, colMap);
+    expect(parsed!.departure_date).toBe("2026-04-01");
+    expect(parsed!.eta_date).toBeNull();
+  });
+
+  it("keeps ETA when it differs from departure date", () => {
+    const row = ["NRD66", "Albion,IA", "", "2026-04-01", "2026-04-20", "0"];
+    const { parsed } = parseRow(row, 1, colMap);
+    expect(parsed!.departure_date).toBe("2026-04-01");
+    expect(parsed!.eta_date).toBe("2026-04-20");
   });
 });

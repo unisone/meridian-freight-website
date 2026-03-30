@@ -300,6 +300,36 @@ const US_STATE_CODES = new Set([
   "DC",
 ]);
 
+/**
+ * Detect US locations that are NOT valid international destinations.
+ * These are US port cities or "City, STATE" patterns that the ops team
+ * sometimes enters as "Final Destination" when the international leg
+ * hasn't been determined yet.
+ */
+const US_PORT_CITIES = new Set([
+  "houston", "savannah", "norfolk", "baltimore", "charleston",
+  "tacoma", "los angeles", "long beach", "new york", "newark",
+  "jacksonville", "miami", "new orleans", "oakland", "seattle",
+  "minneapolis", "st louis", "st. louis", "albion",
+]);
+
+export function isUSLocation(destination: string): boolean {
+  const trimmed = destination.trim();
+  if (!trimmed) return false;
+
+  // Pattern: "City, XX" where XX is a US state code
+  const stateMatch = trimmed.match(/,\s*([A-Z]{2})$/);
+  if (stateMatch && US_STATE_CODES.has(stateMatch[1])) return true;
+
+  // Known US port city names (without state suffix)
+  const lower = trimmed.toLowerCase();
+  for (const city of US_PORT_CITIES) {
+    if (lower.includes(city)) return true;
+  }
+
+  return false;
+}
+
 export function extractCountryCode(destination: string): string | null {
   const lower = destination.toLowerCase().trim();
   // Try longest match first (e.g., "south africa" before "south")
@@ -329,6 +359,7 @@ function cleanProjectNumber(raw: string): string {
 /**
  * Try to extract a destination port/city from the Booking# field.
  * Many shipped rows have port names embedded: "Q#W251200541111 - Klaipeda", "NAM8293253 Poti"
+ * NOTE: Only international ports — US ports (Houston, Savannah, Norfolk) are origin ports, not destinations.
  */
 const PORT_NAMES: Record<string, { destination: string; country: string }> = {
   klaipeda: { destination: "Klaipeda, Lithuania", country: "LT" },
@@ -342,9 +373,6 @@ const PORT_NAMES: Record<string, { destination: string; country: string }> = {
   alexandria: { destination: "Alexandria, Egypt", country: "EG" },
   bremerhaven: { destination: "Bremerhaven, Germany", country: "DE" },
   antwerp: { destination: "Antwerp, Belgium", country: "BE" },
-  houston: { destination: "Houston, TX", country: "US" },
-  savannah: { destination: "Savannah, GA", country: "US" },
-  norfolk: { destination: "Norfolk, VA", country: "US" },
   busan: { destination: "Busan, South Korea", country: "KR" },
   qingdao: { destination: "Qingdao, China", country: "CN" },
 };
@@ -379,6 +407,13 @@ export function parseRow(
   let destination = getCell(row, colMap, "destination");
   let destinationCountry: string | null = destination ? extractCountryCode(destination) : null;
 
+  // Guard: US locations (ports, "City, STATE") are origin points, not international destinations.
+  // Ops sometimes enters the US port as "Final Destination" before the international leg is planned.
+  if (destination && !destinationCountry && isUSLocation(destination)) {
+    destination = "";
+    destinationCountry = null;
+  }
+
   // Fallback: try to extract destination from Booking# field (shipped containers often have port names there)
   if (!destination && colMap.booking_ref !== undefined) {
     const bookingRef = getCell(row, colMap, "booking_ref");
@@ -409,7 +444,13 @@ export function parseRow(
 
   const origin = getCell(row, colMap, "origin") || "Albion, IA";
   const etaRaw = colMap.eta_date !== undefined ? row[colMap.eta_date] : undefined;
-  const etaDate = parseSheetDate(etaRaw);
+  let etaDate = parseSheetDate(etaRaw);
+
+  // Guard: if ETA equals departure, the ops team likely entered staging/loading dates
+  // in both columns. 0-day transit is impossible for international shipping.
+  if (etaDate && departureDate && etaDate === departureDate) {
+    etaDate = null;
+  }
 
   // Container type: from explicit column or parsed from commodities
   let containerType = "40HC";
