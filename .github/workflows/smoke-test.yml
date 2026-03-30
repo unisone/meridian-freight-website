@@ -1,0 +1,154 @@
+name: Production Smoke Test
+
+on:
+  # Runs after every push to main (production deploy)
+  push:
+    branches: [main]
+  # Manual trigger for debugging
+  workflow_dispatch:
+
+concurrency:
+  group: smoke-test
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Smoke Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    # Wait for Vercel production deploy to finish (~60-90s)
+    steps:
+      - name: Wait for production deploy
+        run: sleep 90
+
+      - name: Check critical pages
+        run: |
+          SITE="https://meridianexport.com"
+          FAILED=0
+
+          check_page() {
+            local path=$1
+            local expected_status=${2:-200}
+            local url="${SITE}${path}"
+
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "$url")
+
+            if [ "$STATUS" -eq "$expected_status" ]; then
+              echo "✅ ${path} → ${STATUS}"
+            else
+              echo "❌ ${path} → ${STATUS} (expected ${expected_status})"
+              FAILED=1
+            fi
+          }
+
+          echo "## Production Smoke Test" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Page | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          # Core pages
+          for path in "/" "/services" "/about" "/contact" "/faq" "/pricing" "/pricing/calculator" "/projects" "/schedule" "/privacy" "/terms"; do
+            check_page "$path"
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${SITE}${path}")
+            if [ "$STATUS" -eq 200 ]; then
+              echo "| \`${path}\` | ✅ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| \`${path}\` | ❌ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+          # Service subpages
+          for slug in "ocean-freight" "inland-transport" "customs-brokerage" "packing-crating" "project-cargo" "equipment-sourcing"; do
+            check_page "/services/${slug}"
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${SITE}/services/${slug}")
+            if [ "$STATUS" -eq 200 ]; then
+              echo "| \`/services/${slug}\` | ✅ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| \`/services/${slug}\` | ❌ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+          # SEO critical files
+          check_page "/sitemap.xml"
+          check_page "/robots.txt"
+          check_page "/llms.txt"
+
+          for path in "/sitemap.xml" "/robots.txt" "/llms.txt"; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${SITE}${path}")
+            if [ "$STATUS" -eq 200 ]; then
+              echo "| \`${path}\` | ✅ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| \`${path}\` | ❌ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+          # API health
+          check_page "/api/indexnow-verify"
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "::error::One or more pages returned unexpected status codes"
+            exit 1
+          fi
+
+          echo "All pages healthy ✅" >> $GITHUB_STEP_SUMMARY
+
+      - name: Verify critical content
+        run: |
+          SITE="https://meridianexport.com"
+
+          echo "## Content Verification" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          FAILED=0
+
+          # Homepage has company name
+          if curl -s -L "$SITE" | grep -q "Meridian Freight"; then
+            echo "✅ Homepage contains company name"
+            echo "- ✅ Homepage contains company name" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Homepage missing company name"
+            echo "- ❌ Homepage missing company name" >> $GITHUB_STEP_SUMMARY
+            FAILED=1
+          fi
+
+          # Contact page has phone number
+          if curl -s -L "$SITE/contact" | grep -q "641"; then
+            echo "✅ Contact page has phone number"
+            echo "- ✅ Contact page has phone number" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Contact page missing phone number"
+            echo "- ❌ Contact page missing phone number" >> $GITHUB_STEP_SUMMARY
+            FAILED=1
+          fi
+
+          # Sitemap has entries
+          SITEMAP_URLS=$(curl -s -L "$SITE/sitemap.xml" | grep -c "<url>")
+          if [ "$SITEMAP_URLS" -gt 10 ]; then
+            echo "✅ Sitemap has ${SITEMAP_URLS} URLs"
+            echo "- ✅ Sitemap has ${SITEMAP_URLS} URLs" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Sitemap only has ${SITEMAP_URLS} URLs (expected >10)"
+            echo "- ❌ Sitemap only has ${SITEMAP_URLS} URLs" >> $GITHUB_STEP_SUMMARY
+            FAILED=1
+          fi
+
+          # Security headers present
+          if curl -s -I -L "$SITE" | grep -qi "strict-transport-security"; then
+            echo "✅ HSTS header present"
+            echo "- ✅ HSTS header present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ HSTS header missing"
+            echo "- ❌ HSTS header missing" >> $GITHUB_STEP_SUMMARY
+            FAILED=1
+          fi
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "::error::Content verification failed"
+            exit 1
+          fi
