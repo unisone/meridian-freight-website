@@ -20,6 +20,16 @@ export function todayDateString(): string {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+/** Parse a YYYY-MM-DD date string as LOCAL midnight (not UTC).
+ *  CRITICAL: new Date("2026-03-30") creates UTC midnight, which in US timezones
+ *  becomes March 29 — causing off-by-one in date display and countdown logic.
+ *  This function parses the components directly to create a local-time Date. */
+export function parseLocalDate(iso: string): Date {
+  const parts = iso.split("-");
+  if (parts.length !== 3) return new Date(iso); // fallback for non-ISO
+  return new Date(+parts[0], +parts[1] - 1, +parts[2]);
+}
+
 // ─── Transit Progress ────────────────────────────────────────────────────────
 
 export interface TransitProgress {
@@ -38,8 +48,8 @@ export function computeTransitProgress(
 ): TransitProgress | null {
   if (!etaDate) return null;
 
-  const dep = new Date(departureDate);
-  const eta = new Date(etaDate);
+  const dep = parseLocalDate(departureDate);
+  const eta = parseLocalDate(etaDate);
   const now = new Date();
 
   if (isNaN(dep.getTime()) || isNaN(eta.getTime())) return null;
@@ -165,8 +175,7 @@ export interface DepartureCountdown {
 export function computeDepartureCountdown(departureDate: string): DepartureCountdown {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const dep = new Date(departureDate);
-  dep.setHours(0, 0, 0, 0);
+  const dep = parseLocalDate(departureDate);
 
   const msPerDay = 1000 * 60 * 60 * 24;
   const daysUntil = Math.ceil((dep.getTime() - today.getTime()) / msPerDay);
@@ -205,9 +214,9 @@ export function formatDestination(destination: string): {
   return { text: destination, isPending: false };
 }
 
-/** Format ISO date to short display format (e.g., "Mar 29" / "29 мар."). */
+/** Format ISO date to short display format (e.g., "Mar 30" / "30 мар."). */
 export function shortDate(iso: string, locale: string = "en-US"): string {
-  const d = new Date(iso);
+  const d = parseLocalDate(iso);
   if (isNaN(d.getTime())) return "—";
   const localeMap: Record<string, string> = { en: "en-US", es: "es", ru: "ru" };
   return d.toLocaleDateString(localeMap[locale] ?? locale, { month: "short", day: "numeric" });
