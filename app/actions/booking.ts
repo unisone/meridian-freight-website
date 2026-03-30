@@ -80,9 +80,16 @@ export async function submitBookingRequest(
     return { success: true };
   }
 
+  // 3. Verify email service is configured (fail fast before DB operations)
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    timer.error("RESEND_API_KEY is not configured");
+    return { success: false, error: "Email service is not configured." };
+  }
+
   const { name, email, phone, cargoDescription, containerId, projectNumber } = data;
 
-  // 3. Container status re-check
+  // 4. Container status re-check (after email config verified)
   const container = await fetchContainerById(containerId);
   if (!container || container.status !== "available") {
     return {
@@ -126,12 +133,6 @@ export async function submitBookingRequest(
   const pendingCount = await countPendingRequests(containerId);
 
   // 7. Send owner notification email via Resend (MUST succeed)
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    timer.error("RESEND_API_KEY is not configured");
-    return { success: false, error: "Email service is not configured." };
-  }
-
   const resend = new Resend(apiKey);
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
