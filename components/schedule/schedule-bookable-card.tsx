@@ -84,12 +84,13 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
     }
   }
 
-  const countdownText = (() => {
+  const departureDisplay = shortDate(container.departure_date, locale);
+  const countdownHint = (() => {
     if (countdown.urgency === "today") return t("countdown.leavesToday");
-    if (countdown.urgency === "past") return t("countdown.departed", { date: shortDate(container.departure_date, locale) });
+    if (countdown.urgency === "past") return t("countdown.departed", { date: departureDisplay });
     if (countdown.daysUntil === 1) return t("countdown.leavesTomorrow");
     if (countdown.daysUntil <= 7) return t("countdown.leavesInDays", { days: countdown.daysUntil });
-    return shortDate(container.departure_date, locale);
+    return null;
   })();
 
   const isUrgent = countdown.urgency === "urgent" || countdown.urgency === "today";
@@ -175,14 +176,17 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                   )} />
                   <div>
                     <p className={cn(
-                      "text-sm font-semibold",
+                      "text-sm font-semibold tabular-nums",
                       isUrgent ? "text-amber-700" : "text-foreground",
                     )}>
-                      {countdownText}
+                      {departureDisplay}
                     </p>
-                    {countdown.daysUntil > 7 && (
-                      <p className="text-[11px] text-muted-foreground">
-                        {shortDate(container.departure_date, locale)}
+                    {countdownHint && (
+                      <p className={cn(
+                        "text-[11px]",
+                        isUrgent ? "text-amber-600" : "text-muted-foreground",
+                      )}>
+                        {countdownHint}
                       </p>
                     )}
                   </div>
