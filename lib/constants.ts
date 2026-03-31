@@ -76,9 +76,6 @@ export const WAREHOUSE_PARTNERS = [
   { state: "AB", name: "Alberta, Canada" },
 ] as const;
 
-/** @deprecated Use WAREHOUSE_MAIN + WAREHOUSE_PARTNERS instead */
-export const WAREHOUSE_LOCATIONS = WAREHOUSE_PARTNERS;
-
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },

@@ -79,7 +79,7 @@ export const PORT_COORDINATES: Record<string, [lat: number, lon: number]> = {
  * Fallback: country code → approximate capital/major city coordinates.
  * Used when the destination port name isn't found in PORT_COORDINATES.
  */
-export const COUNTRY_COORDINATES: Record<string, [lat: number, lon: number]> = {
+const COUNTRY_COORDINATES: Record<string, [lat: number, lon: number]> = {
   UY: [-34.88, -56.17],
   AR: [-34.6, -58.38],
   BR: [-23.55, -46.63],

@@ -138,21 +138,6 @@ export function trackContactClick(
   vercelTrack("contact_click", { type, location });
 }
 
-/** Track a CTA button click with GA4 + Vercel Analytics. */
-export function trackCtaClick(
-  location: string,
-  text: string,
-  destination: string,
-): void {
-  trackGA4Event("cta_click", {
-    event_category: "engagement",
-    cta_location: location,
-    cta_text: text,
-    cta_destination: destination,
-  });
-  vercelTrack("cta_click", { location, text: text.slice(0, 100), destination });
-}
-
 /** Track a calculator funnel step with GA4 + Vercel Analytics. */
 export function trackCalcFunnel(
   step: "start" | "step" | "complete",
@@ -199,18 +184,3 @@ export function trackScheduleEvent(
   }
 }
 
-/** Get the GA4 client_id for offline conversion matching. */
-export function getGA4ClientId(): Promise<string | null> {
-  return new Promise((resolve) => {
-    if (typeof window === "undefined") { resolve(null); return; }
-    const w = window as unknown as { gtag?: (...args: unknown[]) => void };
-    if (!w.gtag) { resolve(null); return; }
-    try {
-      w.gtag("get", "client_id", (id: unknown) => resolve(typeof id === "string" ? id : null));
-      // Timeout fallback — gtag may never call back if not initialized
-      setTimeout(() => resolve(null), 2000);
-    } catch {
-      resolve(null);
-    }
-  });
-}

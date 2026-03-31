@@ -19,12 +19,12 @@ import {
 } from "@/lib/schedule-display";
 import { trackScheduleEvent } from "@/lib/tracking";
 
-import { ScheduleFilterBar } from "./schedule-filter-bar";
-import { ScheduleBookableCard } from "./schedule-bookable-card";
-import { ScheduleTransitCard } from "./schedule-transit-card";
-import { ScheduleDeliveredRow } from "./schedule-delivered-row";
-import { ScheduleSectionHeader } from "./schedule-section-header";
-import { ScheduleEmptyState } from "./schedule-empty-state";
+import { ScheduleFilterBar } from "@/components/schedule/schedule-filter-bar";
+import { ScheduleBookableCard } from "@/components/schedule/schedule-bookable-card";
+import { ScheduleTransitCard } from "@/components/schedule/schedule-transit-card";
+import { ScheduleDeliveredRow } from "@/components/schedule/schedule-delivered-row";
+import { ScheduleSectionHeader } from "@/components/schedule/schedule-section-header";
+import { ScheduleEmptyState } from "@/components/schedule/schedule-empty-state";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

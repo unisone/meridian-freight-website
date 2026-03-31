@@ -49,10 +49,10 @@ import { CONTACT } from "@/lib/constants";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
-import { CalculatorProgressBar } from "./calculator-progress-bar";
-import { RouteGlobe } from "./route-globe";
-import { CalculatorEstimateCard } from "./calculator-estimate-card";
-import { CATEGORY_ICONS } from "./category-icons";
+import { CalculatorProgressBar } from "@/components/freight-calculator/calculator-progress-bar";
+import { RouteGlobe } from "@/components/freight-calculator/route-globe";
+import { CalculatorEstimateCard } from "@/components/freight-calculator/calculator-estimate-card";
+import { CATEGORY_ICONS } from "@/components/freight-calculator/category-icons";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

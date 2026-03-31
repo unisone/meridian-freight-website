@@ -29,7 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackScheduleEvent } from "@/lib/tracking";
 import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
-import { ScheduleBookingForm } from "./schedule-booking-form";
+import { ScheduleBookingForm } from "@/components/schedule/schedule-booking-form";
 
 interface ScheduleBookableCardProps {
   container: ContainerWithPendingCount;
