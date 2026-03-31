@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -19,7 +19,6 @@ import {
   equipmentCategories,
   translateType,
 } from "@/content/pricing";
-import { useLocale } from "next-intl";
 
 const categoryKeyMap: Record<string, string> = {
   all: "allEquipment",

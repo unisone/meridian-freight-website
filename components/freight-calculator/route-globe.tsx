@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { resolveCoordinates, PORT_COORDINATES } from "./port-coordinates";
+import { resolveCoordinates, PORT_COORDINATES } from "@/components/freight-calculator/port-coordinates";
 
 const GlobeGL = dynamic(() => import("react-globe.gl"), { ssr: false });
 
