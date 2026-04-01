@@ -45,7 +45,9 @@ import {
   trackBookingFunnel,
   trackContactClick,
   generateEventId,
+  trackGoogleAdsConversion,
 } from "@/lib/tracking";
+import { TRACKING } from "@/lib/constants";
 
 // ─── Cargo type options ──────────────────────────────────────────────────────
 
@@ -161,6 +163,7 @@ export function ScheduleBookingForm({
           value: 300,
           currency: "USD",
         });
+        trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 300);
 
         vercelTrack("generate_lead", {
           source: "booking_request",

@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/app/actions/contact";
 import { track as vercelTrack } from "@vercel/analytics";
-import { trackGA4Event, trackPixelEvent, trackContactClick } from "@/lib/tracking";
+import { trackGA4Event, trackPixelEvent, trackContactClick, trackGoogleAdsConversion } from "@/lib/tracking";
+import { TRACKING } from "@/lib/constants";
 import { CONTACT } from "@/lib/constants";
 import { DURATION, EASE } from "@/lib/motion";
 import { useTranslations } from "next-intl";
@@ -71,6 +72,7 @@ export function ContactForm() {
           value: 500,
           currency: "USD",
         });
+        trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 500);
         vercelTrack("generate_lead", { source: "contact_form", value: 500 });
         // Fire Pixel event with same eventId as CAPI for deduplication
         if (result.eventId) {

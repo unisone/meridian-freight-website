@@ -54,6 +54,8 @@ export const TRACKING = {
   gaId: (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "").trim(),
   metaPixelId: (process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "").trim(),
   googleAdsId: (process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "").trim(),
+  gadsLeadLabel: (process.env.NEXT_PUBLIC_GADS_LEAD_LABEL ?? "").trim(),
+  gadsWhatsAppLabel: (process.env.NEXT_PUBLIC_GADS_WHATSAPP_LABEL ?? "").trim(),
 } as const;
 
 export const STATS = {

@@ -7,6 +7,7 @@
  */
 
 import { track as vercelTrack } from "@vercel/analytics";
+import { TRACKING } from "@/lib/constants";
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
 const CLICK_IDS = ["gclid", "fbclid", "msclkid"] as const;
@@ -114,6 +115,21 @@ export function trackPixelEvent(
   }
 }
 
+/** Fire a Google Ads conversion event with a specific conversion label. */
+export function trackGoogleAdsConversion(
+  sendTo: string,
+  value?: number,
+  currency: string = "USD"
+): void {
+  if (typeof window === "undefined" || !sendTo) return;
+  const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+  w.gtag?.("event", "conversion", {
+    send_to: sendTo,
+    value,
+    currency,
+  });
+}
+
 // ─── High-level tracking helpers ────────────────────────────────────────────
 
 /** Get current locale from URL path. */
@@ -123,7 +139,7 @@ function getLocaleFromPath(): string {
   return match ? match[1] : "en";
 }
 
-/** Track a contact link click (WhatsApp / phone / email) with GA4 + Pixel + Vercel Analytics. */
+/** Track a contact link click (WhatsApp / phone / email) with GA4 + Pixel + Google Ads + Vercel Analytics. */
 export function trackContactClick(
   type: "whatsapp" | "phone" | "email",
   location: string,
@@ -135,6 +151,9 @@ export function trackContactClick(
     locale: getLocaleFromPath(),
   });
   trackPixelEvent("Contact", { content_name: `${location}_${type}` }, eventId);
+  if (type === "whatsapp") {
+    trackGoogleAdsConversion(TRACKING.gadsWhatsAppLabel, 100);
+  }
   vercelTrack("contact_click", { type, location });
 }
 
