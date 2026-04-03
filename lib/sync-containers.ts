@@ -613,9 +613,16 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
   }
 
   // 5. DEDUPLICATE by project_number — last sheet row wins
+  const projectCounts = new Map<string, number>();
+  for (const r of parsed) {
+    projectCounts.set(r.project_number, (projectCounts.get(r.project_number) ?? 0) + 1);
+  }
   const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
   const duplicateCount = parsed.length - deduped.length;
   if (duplicateCount > 0) {
+    const duplicateValues = [...projectCounts.entries()]
+      .filter(([, count]) => count > 1)
+      .map(([proj, count]) => `${proj} (${count}x)`);
     log({
       level: "warn",
       msg: "duplicate_project_numbers_in_sheet",
@@ -623,6 +630,7 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
       duplicateCount,
       total: parsed.length,
       deduped: deduped.length,
+      duplicates: duplicateValues,
     });
   }
 
