@@ -285,3 +285,68 @@ describe("parseRow", () => {
     expect(parsed!.eta_date).toBe("2026-04-20");
   });
 });
+
+describe("deduplication by project_number", () => {
+  const colMap = {
+    project_number: 0,
+    origin: 1,
+    destination: 2,
+    departure_date: 3,
+    eta_date: 4,
+    space_available: 5,
+  };
+
+  it("last row wins when duplicate project_numbers exist", () => {
+    const rows = [
+      ["MF-2026-047", "Chicago, IL", "Santos, Brazil", "2026-04-15", "", "29"],
+      ["MF-2026-048", "Albion, IA", "Almaty, Kazakhstan", "2026-04-20", "", "40"],
+      ["MF-2026-047", "Albion, IA", "Montevideo, Uruguay", "2026-05-01", "", "15"],
+    ];
+
+    const parsed = rows
+      .map((row, i) => parseRow(row, i + 1, colMap).parsed)
+      .filter((r): r is NonNullable<typeof r> => r !== null);
+
+    expect(parsed).toHaveLength(3);
+
+    // Dedup using the same logic as syncContainersFromSheet
+    const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
+
+    expect(deduped).toHaveLength(2);
+    // Last row (Uruguay) should win over first row (Brazil) for MF-2026-047
+    const mf047 = deduped.find((r) => r.project_number === "MF-2026-047");
+    expect(mf047).toBeDefined();
+    expect(mf047!.destination).toBe("Montevideo, Uruguay");
+    expect(mf047!.departure_date).toBe("2026-05-01");
+  });
+
+  it("no duplicates passes through unchanged", () => {
+    const rows = [
+      ["MF-001", "Chicago, IL", "Santos, Brazil", "2026-04-15", "", "29"],
+      ["MF-002", "Albion, IA", "Almaty, Kazakhstan", "2026-04-20", "", "40"],
+    ];
+
+    const parsed = rows
+      .map((row, i) => parseRow(row, i + 1, colMap).parsed)
+      .filter((r): r is NonNullable<typeof r> => r !== null);
+
+    const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
+    expect(deduped).toHaveLength(2);
+  });
+
+  it("handles triple duplicate — last one wins", () => {
+    const rows = [
+      ["MF-DUP", "Chicago", "Brazil", "2026-04-15", "", "10"],
+      ["MF-DUP", "Albion", "Uruguay", "2026-04-20", "", "20"],
+      ["MF-DUP", "Houston", "Argentina", "2026-05-01", "", "30"],
+    ];
+
+    const parsed = rows
+      .map((row, i) => parseRow(row, i + 1, colMap).parsed)
+      .filter((r): r is NonNullable<typeof r> => r !== null);
+
+    const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
+    expect(deduped).toHaveLength(1);
+    expect(deduped[0].available_cbm).toBe(30);
+  });
+});

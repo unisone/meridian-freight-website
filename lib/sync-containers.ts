@@ -612,8 +612,22 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
     return result;
   }
 
-  // 5. UPSERT
-  const upsertResult = await upsertContainers(parsed);
+  // 5. DEDUPLICATE by project_number — last sheet row wins
+  const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
+  const duplicateCount = parsed.length - deduped.length;
+  if (duplicateCount > 0) {
+    log({
+      level: "warn",
+      msg: "duplicate_project_numbers_in_sheet",
+      route: "sync-containers",
+      duplicateCount,
+      total: parsed.length,
+      deduped: deduped.length,
+    });
+  }
+
+  // 6. UPSERT
+  const upsertResult = await upsertContainers(deduped);
   if (!upsertResult.ok) {
     const result: SyncResult = {
       status: "failed",
@@ -628,16 +642,16 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
     return result;
   }
 
-  // 6. HANDLE STALE + AUTO-EXPIRE
-  const activeProjectNumbers = parsed.map((r) => r.project_number);
+  // 7. HANDLE STALE + AUTO-EXPIRE
+  const activeProjectNumbers = deduped.map((r) => r.project_number);
   await markStaleContainers(activeProjectNumbers);
 
-  // 7. RESULT
+  // 8. RESULT
   const result: SyncResult = {
     status: errors.length > 0 ? "partial" : "success",
     rowsFetched: dataRows.length,
-    rowsUpserted: parsed.length,
-    rowsSkipped: skipped,
+    rowsUpserted: deduped.length,
+    rowsSkipped: skipped + duplicateCount,
     rowsErrored: errors.length,
     errors,
     durationMs: Date.now() - startMs,
