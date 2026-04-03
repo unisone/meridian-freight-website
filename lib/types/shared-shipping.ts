@@ -15,6 +15,7 @@ export interface SharedContainer {
   source: "google_sheets" | "portal";
   sheet_row_number: number | null;
   raw_space_value: string | null;
+  container_count: number;
   synced_at: string;
   created_at: string;
   updated_at: string;
@@ -117,4 +118,5 @@ export interface ParsedContainerRow {
   sheet_row_number: number;
   notes: string | null;
   status: "available" | "full" | "departed";
+  container_count: number;
 }

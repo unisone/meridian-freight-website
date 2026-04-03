@@ -350,6 +350,7 @@ export async function upsertContainers(
       sheet_row_number: row.sheet_row_number,
       notes: row.notes,
       status: row.status,
+      container_count: row.container_count,
       source: "google_sheets",
       synced_at: now,
     }));

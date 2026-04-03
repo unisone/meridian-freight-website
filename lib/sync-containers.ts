@@ -490,9 +490,109 @@ export function parseRow(
       sheet_row_number: rowIndex + 1, // 1-based for Google Sheets
       notes,
       status,
+      container_count: 1,
     },
     error: null,
   };
+}
+
+// ---------- Multi-Container Aggregation ----------
+
+/**
+ * Group parsed rows by project_number and aggregate multi-container shipments.
+ * Single-container rows pass through unchanged. Multi-container groups produce
+ * one record with the best data from each row:
+ *   - departure_date: earliest in the group
+ *   - eta_date: latest in the group (last container arrives)
+ *   - destination: first non-TBD value (international > domestic > TBD)
+ *   - available_cbm: sum across all containers (null if none report space)
+ *   - total_capacity_cbm: sum across all containers
+ *   - container_type: uniform type or "Mixed"
+ *   - container_count: number of physical containers
+ */
+export function aggregateByProject(parsed: ParsedContainerRow[]): ParsedContainerRow[] {
+  const groups = new Map<string, ParsedContainerRow[]>();
+  for (const row of parsed) {
+    const existing = groups.get(row.project_number);
+    if (existing) {
+      existing.push(row);
+    } else {
+      groups.set(row.project_number, [row]);
+    }
+  }
+
+  const result: ParsedContainerRow[] = [];
+  for (const [, rows] of groups) {
+    if (rows.length === 1) {
+      result.push(rows[0]);
+      continue;
+    }
+
+    // Pick the best destination: first row with a non-TBD international destination
+    const bestDest = rows.find((r) => r.destination !== "TBD" && r.destination_country) ??
+      rows.find((r) => r.destination !== "TBD") ??
+      rows[0];
+
+    // Earliest departure date
+    const earliestDeparture = rows.reduce(
+      (best, r) => (r.departure_date < best ? r.departure_date : best),
+      rows[0].departure_date,
+    );
+
+    // Latest ETA (last container to arrive)
+    const latestEta = rows.reduce<string | null>((best, r) => {
+      if (!r.eta_date) return best;
+      if (!best) return r.eta_date;
+      return r.eta_date > best ? r.eta_date : best;
+    }, null);
+
+    // Container type: uniform or "Mixed"
+    const types = new Set(rows.map((r) => r.container_type));
+    const containerType = types.size === 1 ? rows[0].container_type : "Mixed";
+
+    // Capacity: sum across all containers
+    const totalCapacity = rows.reduce((sum, r) => sum + r.total_capacity_cbm, 0);
+
+    // Available space: sum if any report space, null if none do
+    const hasAnySpace = rows.some((r) => r.available_cbm !== null);
+    const availableCbm = hasAnySpace
+      ? rows.reduce((sum, r) => sum + (r.available_cbm ?? 0), 0)
+      : null;
+
+    // Best origin (prefer non-default)
+    const bestOrigin = rows.find((r) => r.origin !== "Albion, IA")?.origin ?? rows[0].origin;
+
+    // Notes: merge non-empty, deduplicate
+    const uniqueNotes = [...new Set(rows.map((r) => r.notes).filter(Boolean))];
+
+    // Status: available if any has space, departed if all departed, else full
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+    let status: "available" | "full" | "departed" = "full";
+    if (earliestDeparture < today) {
+      status = "departed";
+    } else if (availableCbm !== null && availableCbm > 0) {
+      status = "available";
+    }
+
+    result.push({
+      project_number: rows[0].project_number,
+      origin: bestOrigin,
+      destination: bestDest.destination,
+      destination_country: bestDest.destination_country,
+      departure_date: earliestDeparture,
+      eta_date: latestEta,
+      container_type: containerType,
+      total_capacity_cbm: totalCapacity,
+      available_cbm: availableCbm,
+      raw_space_value: rows.map((r) => r.raw_space_value).filter(Boolean).join("; ") || "",
+      sheet_row_number: rows[0].sheet_row_number,
+      notes: uniqueNotes.length > 0 ? uniqueNotes.join("; ") : null,
+      status,
+      container_count: rows.length,
+    });
+  }
+
+  return result;
 }
 
 // ---------- Main Sync Orchestrator ----------
@@ -612,30 +712,28 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
     return result;
   }
 
-  // 5. DEDUPLICATE by project_number — last sheet row wins
-  const projectCounts = new Map<string, number>();
-  for (const r of parsed) {
-    projectCounts.set(r.project_number, (projectCounts.get(r.project_number) ?? 0) + 1);
-  }
-  const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
-  const duplicateCount = parsed.length - deduped.length;
-  if (duplicateCount > 0) {
-    const duplicateValues = [...projectCounts.entries()]
+  // 5. AGGREGATE by project_number — multi-container shipments become one record
+  const aggregated = aggregateByProject(parsed);
+  if (aggregated.length < parsed.length) {
+    const groups = new Map<string, number>();
+    for (const r of parsed) {
+      groups.set(r.project_number, (groups.get(r.project_number) ?? 0) + 1);
+    }
+    const multiContainerGroups = [...groups.entries()]
       .filter(([, count]) => count > 1)
       .map(([proj, count]) => `${proj} (${count}x)`);
     log({
-      level: "warn",
-      msg: "duplicate_project_numbers_in_sheet",
+      level: "info",
+      msg: "multi_container_aggregation",
       route: "sync-containers",
-      duplicateCount,
-      total: parsed.length,
-      deduped: deduped.length,
-      duplicates: duplicateValues,
+      parsedRows: parsed.length,
+      aggregatedProjects: aggregated.length,
+      multiContainerGroups,
     });
   }
 
   // 6. UPSERT
-  const upsertResult = await upsertContainers(deduped);
+  const upsertResult = await upsertContainers(aggregated);
   if (!upsertResult.ok) {
     const result: SyncResult = {
       status: "failed",
@@ -651,15 +749,16 @@ export async function syncContainersFromSheet(): Promise<SyncResult> {
   }
 
   // 7. HANDLE STALE + AUTO-EXPIRE
-  const activeProjectNumbers = deduped.map((r) => r.project_number);
+  const activeProjectNumbers = aggregated.map((r) => r.project_number);
   await markStaleContainers(activeProjectNumbers);
 
   // 8. RESULT
+  const mergedCount = parsed.length - aggregated.length;
   const result: SyncResult = {
     status: errors.length > 0 ? "partial" : "success",
     rowsFetched: dataRows.length,
-    rowsUpserted: deduped.length,
-    rowsSkipped: skipped + duplicateCount,
+    rowsUpserted: aggregated.length,
+    rowsSkipped: skipped + mergedCount,
     rowsErrored: errors.length,
     errors,
     durationMs: Date.now() - startMs,

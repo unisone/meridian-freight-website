@@ -6,7 +6,9 @@ import {
   extractCountryCode,
   isUSLocation,
   parseRow,
+  aggregateByProject,
 } from "@/lib/sync-containers";
+import type { ParsedContainerRow } from "@/lib/types/shared-shipping";
 
 describe("detectColumns", () => {
   it("detects Russian headers", () => {
@@ -286,67 +288,174 @@ describe("parseRow", () => {
   });
 });
 
-describe("deduplication by project_number", () => {
-  const colMap = {
-    project_number: 0,
-    origin: 1,
-    destination: 2,
-    departure_date: 3,
-    eta_date: 4,
-    space_available: 5,
-  };
+describe("aggregateByProject", () => {
+  function makeRow(overrides: Partial<ParsedContainerRow> = {}): ParsedContainerRow {
+    return {
+      project_number: "TEST-001",
+      origin: "Albion, IA",
+      destination: "TBD",
+      destination_country: null,
+      departure_date: "2026-04-15",
+      eta_date: null,
+      container_type: "40HC",
+      total_capacity_cbm: 76,
+      available_cbm: null,
+      raw_space_value: "",
+      sheet_row_number: 1,
+      notes: null,
+      status: "full",
+      container_count: 1,
+      ...overrides,
+    };
+  }
 
-  it("last row wins when duplicate project_numbers exist", () => {
+  it("single-row groups pass through unchanged", () => {
     const rows = [
-      ["MF-2026-047", "Chicago, IL", "Santos, Brazil", "2026-04-15", "", "29"],
-      ["MF-2026-048", "Albion, IA", "Almaty, Kazakhstan", "2026-04-20", "", "40"],
-      ["MF-2026-047", "Albion, IA", "Montevideo, Uruguay", "2026-05-01", "", "15"],
+      makeRow({ project_number: "A", destination: "Brazil" }),
+      makeRow({ project_number: "B", destination: "Kazakhstan" }),
     ];
-
-    const parsed = rows
-      .map((row, i) => parseRow(row, i + 1, colMap).parsed)
-      .filter((r): r is NonNullable<typeof r> => r !== null);
-
-    expect(parsed).toHaveLength(3);
-
-    // Dedup using the same logic as syncContainersFromSheet
-    const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
-
-    expect(deduped).toHaveLength(2);
-    // Last row (Uruguay) should win over first row (Brazil) for MF-2026-047
-    const mf047 = deduped.find((r) => r.project_number === "MF-2026-047");
-    expect(mf047).toBeDefined();
-    expect(mf047!.destination).toBe("Montevideo, Uruguay");
-    expect(mf047!.departure_date).toBe("2026-05-01");
+    const result = aggregateByProject(rows);
+    expect(result).toHaveLength(2);
+    expect(result[0].container_count).toBe(1);
+    expect(result[1].container_count).toBe(1);
   });
 
-  it("no duplicates passes through unchanged", () => {
+  it("multi-container group aggregates with container_count", () => {
     const rows = [
-      ["MF-001", "Chicago, IL", "Santos, Brazil", "2026-04-15", "", "29"],
-      ["MF-002", "Albion, IA", "Almaty, Kazakhstan", "2026-04-20", "", "40"],
+      makeRow({ project_number: "LION-1", departure_date: "2026-04-10" }),
+      makeRow({ project_number: "LION-1", departure_date: "2026-04-12" }),
+      makeRow({ project_number: "LION-1", departure_date: "2026-04-08" }),
     ];
-
-    const parsed = rows
-      .map((row, i) => parseRow(row, i + 1, colMap).parsed)
-      .filter((r): r is NonNullable<typeof r> => r !== null);
-
-    const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
-    expect(deduped).toHaveLength(2);
+    const result = aggregateByProject(rows);
+    expect(result).toHaveLength(1);
+    expect(result[0].container_count).toBe(3);
+    expect(result[0].project_number).toBe("LION-1");
   });
 
-  it("handles triple duplicate — last one wins", () => {
+  it("picks earliest departure_date from group", () => {
     const rows = [
-      ["MF-DUP", "Chicago", "Brazil", "2026-04-15", "", "10"],
-      ["MF-DUP", "Albion", "Uruguay", "2026-04-20", "", "20"],
-      ["MF-DUP", "Houston", "Argentina", "2026-05-01", "", "30"],
+      makeRow({ project_number: "X", departure_date: "2026-04-20" }),
+      makeRow({ project_number: "X", departure_date: "2026-04-10" }),
+      makeRow({ project_number: "X", departure_date: "2026-04-15" }),
     ];
+    const result = aggregateByProject(rows);
+    expect(result[0].departure_date).toBe("2026-04-10");
+  });
 
-    const parsed = rows
-      .map((row, i) => parseRow(row, i + 1, colMap).parsed)
-      .filter((r): r is NonNullable<typeof r> => r !== null);
+  it("picks latest eta_date from group", () => {
+    const rows = [
+      makeRow({ project_number: "X", eta_date: "2026-05-01" }),
+      makeRow({ project_number: "X", eta_date: "2026-05-15" }),
+      makeRow({ project_number: "X", eta_date: null }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].eta_date).toBe("2026-05-15");
+  });
 
-    const deduped = [...new Map(parsed.map((r) => [r.project_number, r])).values()];
-    expect(deduped).toHaveLength(1);
-    expect(deduped[0].available_cbm).toBe(30);
+  it("prefers non-TBD destination with country code", () => {
+    const rows = [
+      makeRow({ project_number: "X", destination: "TBD", destination_country: null }),
+      makeRow({ project_number: "X", destination: "Almaty, Kazakhstan", destination_country: "KZ" }),
+      makeRow({ project_number: "X", destination: "TBD", destination_country: null }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].destination).toBe("Almaty, Kazakhstan");
+    expect(result[0].destination_country).toBe("KZ");
+  });
+
+  it("falls back to non-TBD without country if no international dest", () => {
+    const rows = [
+      makeRow({ project_number: "X", destination: "TBD", destination_country: null }),
+      makeRow({ project_number: "X", destination: "Warwick, NY (local)", destination_country: null }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].destination).toBe("Warwick, NY (local)");
+  });
+
+  it("sums total_capacity_cbm across containers", () => {
+    const rows = [
+      makeRow({ project_number: "X", total_capacity_cbm: 76 }),
+      makeRow({ project_number: "X", total_capacity_cbm: 76 }),
+      makeRow({ project_number: "X", total_capacity_cbm: 28 }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].total_capacity_cbm).toBe(180);
+    expect(result[0].container_count).toBe(3);
+  });
+
+  it("sums available_cbm when any container reports space", () => {
+    const rows = [
+      makeRow({ project_number: "X", available_cbm: 20 }),
+      makeRow({ project_number: "X", available_cbm: null }),
+      makeRow({ project_number: "X", available_cbm: 10 }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].available_cbm).toBe(30);
+    expect(result[0].status).toBe("available");
+  });
+
+  it("keeps available_cbm null when no container reports space", () => {
+    const rows = [
+      makeRow({ project_number: "X", available_cbm: null }),
+      makeRow({ project_number: "X", available_cbm: null }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].available_cbm).toBeNull();
+    expect(result[0].status).toBe("full");
+  });
+
+  it("marks container_type as Mixed when heterogeneous", () => {
+    const rows = [
+      makeRow({ project_number: "X", container_type: "40HC" }),
+      makeRow({ project_number: "X", container_type: "Flatrack" }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].container_type).toBe("Mixed");
+  });
+
+  it("keeps uniform container_type", () => {
+    const rows = [
+      makeRow({ project_number: "X", container_type: "Flatrack" }),
+      makeRow({ project_number: "X", container_type: "Flatrack" }),
+      makeRow({ project_number: "X", container_type: "Flatrack" }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].container_type).toBe("Flatrack");
+  });
+
+  it("prefers non-default origin", () => {
+    const rows = [
+      makeRow({ project_number: "X", origin: "Albion, IA" }),
+      makeRow({ project_number: "X", origin: "Norfolk, VA" }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].origin).toBe("Norfolk, VA");
+  });
+
+  it("merges unique notes", () => {
+    const rows = [
+      makeRow({ project_number: "X", notes: "Fragile" }),
+      makeRow({ project_number: "X", notes: "Fragile" }),
+      makeRow({ project_number: "X", notes: "Heavy" }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result[0].notes).toBe("Fragile; Heavy");
+  });
+
+  it("mixes single and multi-container groups correctly", () => {
+    const rows = [
+      makeRow({ project_number: "SINGLE", destination: "Brazil", container_count: 1 }),
+      makeRow({ project_number: "MULTI", departure_date: "2026-04-10" }),
+      makeRow({ project_number: "MULTI", departure_date: "2026-04-05" }),
+    ];
+    const result = aggregateByProject(rows);
+    expect(result).toHaveLength(2);
+
+    const single = result.find((r) => r.project_number === "SINGLE")!;
+    expect(single.container_count).toBe(1);
+
+    const multi = result.find((r) => r.project_number === "MULTI")!;
+    expect(multi.container_count).toBe(2);
+    expect(multi.departure_date).toBe("2026-04-05");
   });
 });
