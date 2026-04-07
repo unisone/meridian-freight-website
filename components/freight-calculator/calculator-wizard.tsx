@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/sheet";
 import { track as vercelTrack } from "@vercel/analytics";
 import { trackGA4Event, trackPixelEvent, trackCalcFunnel, trackContactClick, trackGoogleAdsConversion } from "@/lib/tracking";
+import { hashUserDataForGoogleAds } from "@/lib/hash";
 import { TRACKING } from "@/lib/constants";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
 import { getCalculatorData } from "@/app/actions/calculator-data";
@@ -198,7 +199,9 @@ export function CalculatorWizard() {
           value: 300,
           currency: "USD",
         });
-        trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 300);
+        // Enhanced Conversions: hash email for better Google Ads matching
+        hashUserDataForGoogleAds({ email })
+          .then((userData) => trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 300, "USD", userData));
         vercelTrack("generate_lead", { source: "calculator", value: 300 });
         if (res.eventId) {
           trackPixelEvent(
