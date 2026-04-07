@@ -24,7 +24,7 @@ jobs:
 
       # Wait for Vercel preview deployment to be ready
       - name: Wait for Vercel deployment
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.2
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.3
         id: vercel
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
