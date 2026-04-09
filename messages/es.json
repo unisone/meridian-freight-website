@@ -88,7 +88,7 @@
     "termsOfService": "Terminos de Servicio",
     "getAQuote": "Solicitar Cotizacion",
     "quoteDescription": "Diganos lo que necesita enviar — cotizacion gratis en 24 horas.",
-    "trustSignals": "Totalmente Asegurado · Mas de 1,000 Exportaciones Completadas · Agente de Flete Licenciado",
+    "trustSignals": "Totalmente Asegurado · Mas de 1,000 Exportaciones Completadas · Agente de Flete Licenciado · Sirviendo a mas de 40 Paises Desde 2013",
     "copyright": "© {year} {company} Todos los derechos reservados.",
     "languagesSpoken": "Hablamos ingles, espanol, ruso y arabe",
     "homeAriaLabel": "Meridian Freight Inc. — Inicio",
@@ -342,7 +342,9 @@
     "eyebrow": "Contactenos",
     "heading": "Obtenga Su <accent>Cotizacion</accent> en 24 Horas",
     "description": "Diganos el equipo, donde esta y a donde va. Le enviamos cada partida — flete terrestre, embalaje, envio maritimo — para que sepa exactamente lo que esta pagando.",
-    "requestYourQuote": "Solicite Su Cotizacion"
+    "requestYourQuote": "Solicite Su Cotizacion",
+    "facilityHeading": "Nuestra Instalacion de Embalaje",
+    "mapTitle": "Ubicacion de las instalaciones de Meridian Freight — Albion, Iowa"
   },
   "FaqPage": {
     "breadcrumb": "Preguntas Frecuentes",
@@ -827,6 +829,22 @@
     "pendingRequests": "{count, plural, one {# otra solicitud pendiente} other {# otras solicitudes pendientes}}",
     "cbmAvailable": "{cbm} CBM",
     "availablePercent": "disponible ({percent}% libre)",
-    "cbmTotal": "{cbm} CBM total"
+    "cbmTotal": "{cbm} CBM en total"
+  },
+  "PartnersStrip": {
+    "carriers": "Enviamos Via",
+    "brands": "Equipos en los que nos Especializamos"
+  },
+  "Guarantees": {
+    "heading": "Nuestros Compromisos",
+    "description": "Estas no son promesas de marketing — asi es como operamos en cada envio.",
+    "quoteTitle": "Cotizacion en 24 Horas",
+    "quoteDescription": "Envienos los detalles del equipo y destino. Recibira una cotizacion detallada y desglosada en un dia habil — garantizado.",
+    "feesTitle": "Sin Cargos Ocultos",
+    "feesDescription": "Cada cotizacion es linea por linea: flete terrestre, embalaje, envio maritimo. Lo que cotizamos es lo que paga.",
+    "insuredTitle": "Totalmente Asegurado",
+    "insuredDescription": "Cada envio esta cubierto por un seguro integral desde la recogida del equipo hasta la llegada al puerto. Certificado de seguro disponible a solicitud.",
+    "clearanceTitle": "Despacho Casi Perfecto",
+    "clearanceDescription": "Mas de 1,000 exportaciones en mas de 40 paises con una tasa de despacho aduanero casi perfecta a la primera. Manejamos cada documento."
   }
 }

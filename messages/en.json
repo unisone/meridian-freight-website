@@ -88,7 +88,7 @@
     "termsOfService": "Terms of Service",
     "getAQuote": "Get a Quote",
     "quoteDescription": "Tell us what you need shipped — free quote within 24 hours.",
-    "trustSignals": "Fully Insured · 1,000+ Exports Completed · Licensed Freight Forwarder",
+    "trustSignals": "Fully Insured · 1,000+ Exports Completed · Licensed Freight Forwarder · Serving 40+ Countries Since 2013",
     "copyright": "© {year} {company} All rights reserved.",
     "languagesSpoken": "We speak English, Spanish, Russian & Arabic",
     "homeAriaLabel": "Meridian Freight Inc. — Home",
@@ -342,7 +342,9 @@
     "eyebrow": "Get in Touch",
     "heading": "Get Your <accent>Quote</accent> in 24 Hours",
     "description": "Tell us the equipment, where it is, and where it's going. We send back every line item — inland freight, packing, ocean shipping — so you know exactly what you're paying for.",
-    "requestYourQuote": "Request Your Quote"
+    "requestYourQuote": "Request Your Quote",
+    "facilityHeading": "Our Packing Facility",
+    "mapTitle": "Meridian Freight facility location — Albion, Iowa"
   },
   "FaqPage": {
     "breadcrumb": "FAQ",
@@ -828,5 +830,21 @@
     "cbmAvailable": "{cbm} CBM",
     "availablePercent": "available ({percent}% free)",
     "cbmTotal": "{cbm} CBM total"
+  },
+  "PartnersStrip": {
+    "carriers": "We Ship Via",
+    "brands": "Equipment We Specialize In"
+  },
+  "Guarantees": {
+    "heading": "Our Commitments",
+    "description": "These are not marketing claims — they're how we operate on every shipment.",
+    "quoteTitle": "24-Hour Quote Response",
+    "quoteDescription": "Send us equipment details and destination. You receive a detailed, itemized quote within one business day — guaranteed.",
+    "feesTitle": "No Hidden Fees",
+    "feesDescription": "Every quote is line-by-line: inland freight, packing, ocean shipping. What we quote is what you pay.",
+    "insuredTitle": "Fully Insured",
+    "insuredDescription": "Every shipment is covered by comprehensive insurance from equipment pickup through port arrival. COI available on request.",
+    "clearanceTitle": "Near-Perfect Clearance",
+    "clearanceDescription": "1,000+ exports across 40+ countries with a near-perfect first-time customs clearance rate. We handle every document."
   }
 }

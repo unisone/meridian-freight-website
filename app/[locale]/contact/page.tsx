@@ -101,6 +101,31 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           </div>
         </div>
       </section>
+
+      {/* Facility location */}
+      <section className="py-12 md:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-2 text-lg font-bold text-foreground">
+            {t("facilityHeading")}
+          </h2>
+          <p className="mb-6 text-sm text-muted-foreground">
+            {CONTACT.address.full}
+          </p>
+          <div className="overflow-hidden rounded-xl shadow-md">
+            <iframe
+              title={t("mapTitle")}
+              src="https://www.google.com/maps?q=42.1172,-92.9835&z=14&output=embed"
+              width="100%"
+              height="350"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full"
+            />
+          </div>
+        </div>
+      </section>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { MapPin, ArrowRight, Clock, Globe, Shield, Star, MessageCircle } from "l
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageHero } from "@/components/page-hero";
+import { Guarantees } from "@/components/guarantees";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { COMPANY, CONTACT, SITE, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -140,6 +141,9 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </div>
         </div>
       </section>
+
+      {/* Guarantees */}
+      <Guarantees />
 
       {/* Warehouse locations */}
       <ScrollReveal>
