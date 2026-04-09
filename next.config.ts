@@ -40,7 +40,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://www.facebook.com https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com",
       "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://*.sentry.io https://graph.facebook.com https://*.supabase.co https://cdn.jsdelivr.net https://googleads.g.doubleclick.net https://www.googleadservices.com",
-      "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://td.doubleclick.net https://www.google.com",
+      "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://td.doubleclick.net https://www.google.com https://maps.google.com",
       "font-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",
