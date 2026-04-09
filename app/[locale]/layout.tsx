@@ -15,6 +15,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { MotionProvider } from "@/components/motion-provider";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { MetaPixel } from "@/components/meta-pixel";
+import { EngagementTracking } from "@/components/engagement-tracking";
 
 import { COMPANY, CONTACT, SITE, SOCIAL } from "@/lib/constants";
 import { routing } from "@/i18n/routing";
@@ -200,6 +201,7 @@ export default async function LocaleLayout({
           <MetaPixel />
           <VercelAnalytics />
           <SpeedInsights />
+          <EngagementTracking />
         </NextIntlClientProvider>
       </body>
     </html>

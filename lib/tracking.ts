@@ -203,3 +203,149 @@ export function trackScheduleEvent(
   }
 }
 
+// ─── Enterprise analytics: engagement & UX tracking ────────────────────────
+
+/** Track scroll depth at 25/50/75/100% milestones (fires once per milestone per page). */
+export function initScrollDepthTracking(): () => void {
+  if (typeof window === "undefined") return () => {};
+  const fired = new Set<number>();
+
+  const handler = () => {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollHeight <= 0) return;
+    const depth = Math.round((window.scrollY / scrollHeight) * 100);
+    for (const milestone of [25, 50, 75, 100]) {
+      if (depth >= milestone && !fired.has(milestone)) {
+        fired.add(milestone);
+        trackGA4Event("scroll_depth", {
+          percent: milestone,
+          page: window.location.pathname,
+        });
+      }
+    }
+  };
+
+  window.addEventListener("scroll", handler, { passive: true });
+  return () => window.removeEventListener("scroll", handler);
+}
+
+/** Track page engagement time on beforeunload (fires for sessions >= 5s). */
+export function initEngagementTimeTracking(): () => void {
+  if (typeof window === "undefined") return () => {};
+  const startTime = Date.now();
+
+  const handler = () => {
+    const seconds = Math.round((Date.now() - startTime) / 1000);
+    if (seconds >= 5) {
+      trackGA4Event("engagement_time", {
+        time_seconds: seconds,
+        page: window.location.pathname,
+      });
+    }
+  };
+
+  window.addEventListener("beforeunload", handler);
+  return () => window.removeEventListener("beforeunload", handler);
+}
+
+/** Detect rage clicks (3+ clicks within 1 second on the same area). */
+export function initRageClickDetection(): () => void {
+  if (typeof window === "undefined") return () => {};
+  const clicks: { time: number; x: number; y: number }[] = [];
+
+  const handler = (e: MouseEvent) => {
+    const now = Date.now();
+    clicks.push({ time: now, x: e.clientX, y: e.clientY });
+
+    // Keep only clicks within last 1 second
+    while (clicks.length > 0 && now - clicks[0].time > 1000) clicks.shift();
+
+    // Check if 3+ clicks are within 50px radius
+    if (clicks.length >= 3) {
+      const last = clicks[clicks.length - 1];
+      const nearby = clicks.filter(
+        (c) => Math.abs(c.x - last.x) < 50 && Math.abs(c.y - last.y) < 50
+      );
+      if (nearby.length >= 3) {
+        const target = e.target as HTMLElement;
+        trackGA4Event("rage_click", {
+          element: target.tagName.toLowerCase(),
+          class: (target.className || "").toString().slice(0, 100),
+          page: window.location.pathname,
+        });
+        clicks.length = 0; // Reset to avoid spamming
+      }
+    }
+  };
+
+  document.addEventListener("click", handler, true);
+  return () => document.removeEventListener("click", handler, true);
+}
+
+/** Track outbound link clicks (links leaving meridianexport.com). */
+export function initOutboundLinkTracking(): () => void {
+  if (typeof window === "undefined") return () => {};
+
+  const handler = (e: MouseEvent) => {
+    const link = (e.target as HTMLElement)?.closest("a") as HTMLAnchorElement | null;
+    if (!link?.href) return;
+    try {
+      const url = new URL(link.href);
+      if (url.hostname && url.hostname !== window.location.hostname) {
+        trackGA4Event("outbound_click", {
+          url: link.href.slice(0, 500),
+          text: (link.textContent || "").trim().slice(0, 100),
+          page: window.location.pathname,
+        });
+      }
+    } catch {
+      // Invalid URL — ignore
+    }
+  };
+
+  document.addEventListener("click", handler);
+  return () => document.removeEventListener("click", handler);
+}
+
+/** Track 404 page views with referrer context. */
+export function trackNotFound(): void {
+  trackGA4Event("not_found", {
+    requested_path: typeof window !== "undefined" ? window.location.pathname : "",
+    referrer: typeof document !== "undefined" ? document.referrer : "",
+  });
+  vercelTrack("not_found", {
+    path: typeof window !== "undefined" ? window.location.pathname : "",
+  });
+}
+
+/** Track form abandonment — call when user starts filling a form. Returns cleanup function. */
+export function initFormAbandonmentTracking(
+  formName: string,
+  getCurrentStep?: () => number,
+): () => void {
+  if (typeof window === "undefined") return () => {};
+  let isDirty = false;
+  let isSubmitted = false;
+
+  const markDirty = () => { isDirty = true; };
+
+  const markSubmitted = () => { isSubmitted = true; };
+
+  const handler = () => {
+    if (isDirty && !isSubmitted) {
+      trackGA4Event("form_abandonment", {
+        form_name: formName,
+        step: getCurrentStep?.()?.toString() ?? "unknown",
+        page: window.location.pathname,
+      });
+    }
+  };
+
+  window.addEventListener("beforeunload", handler);
+
+  return Object.assign(
+    () => window.removeEventListener("beforeunload", handler),
+    { markDirty, markSubmitted }
+  );
+}
+
