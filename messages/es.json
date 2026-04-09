@@ -35,6 +35,8 @@
     "projectsDescription": "Mas de 1,000 exportaciones de maquinaria completadas. Vea nuestro portafolio — cosechadoras John Deere, cabezales Case IH, excavadoras CAT enviadas a Brasil, EAU, Turquia y mas.",
     "pricingTitle": "Precios — Tarifas de Embalaje y Envio de Equipos",
     "pricingDescription": "Precios transparentes de exportacion de maquinaria — mas de 60 tipos de equipos, mas de 20 rutas de envio. Cotizaciones desglosadas sin cargos ocultos. Pruebe nuestra calculadora de flete.",
+    "equipmentTitle": "Tipos de Equipos que Enviamos — Cosechadoras, Tractores, Excavadoras y Mas",
+    "equipmentDescription": "Exportamos cosechadoras, tractores, excavadoras, sembradoras, pulverizadoras, cabezales, bulldozers y cargadores a todo el mundo. Embalaje completo, documentacion y flete maritimo desde EE.UU.",
     "calculatorTitle": "Calculadora de Costos de Flete — Estimacion Instantanea",
     "calculatorDescription": "Calculadora de flete gratis — estimacion instantanea para exportacion de maquinaria. Seleccione equipo, codigo postal y destino. Costos de embalaje y envio en 60 segundos.",
     "destinationsTitle": "Destinos de Envio — Exportacion Mundial de Maquinaria",
@@ -699,6 +701,16 @@
     "noDataDescription": "Se agregan nuevos envios regularmente. Contactenos para discutir sus necesidades de envio o vuelva pronto.",
     "whatsAppUs": "Escribanos por WhatsApp",
     "orCall": "o llame al {phone}"
+  },
+  "EquipmentPage": {
+    "breadcrumb": "Equipos",
+    "eyebrow": "Equipos que Exportamos",
+    "heading": "<accent>Tipos</accent> de Equipos que Enviamos",
+    "description": "Exportamos todo tipo de maquinaria pesada y equipo agricola desde EE.UU. y Canada. Seleccione su tipo de equipo para ver precios, marcas, detalles de embalaje y rutas de envio disponibles.",
+    "from": "Desde",
+    "ctaHeading": "No Ve Su Equipo?",
+    "ctaDescription": "Enviamos cualquier tipo de maquinaria pesada o equipo agricola. Envienos los detalles y le cotizaremos en 24 horas.",
+    "ctaButton": "Solicitar Cotizacion"
   },
   "EquipmentDetailPage": {
     "eyebrow": "Exportacion de Equipos",

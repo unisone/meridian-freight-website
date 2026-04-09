@@ -35,6 +35,8 @@
     "projectsDescription": "1,000+ machinery exports completed. See our portfolio — John Deere combines, Case IH headers, CAT excavators shipped to Brazil, UAE, Turkey & beyond.",
     "pricingTitle": "Pricing — Equipment Packing & Shipping Rates",
     "pricingDescription": "Transparent machinery export pricing — 60+ equipment types, 20+ shipping routes. Itemized quotes with no hidden fees. Try our instant freight calculator.",
+    "equipmentTitle": "Equipment Types We Ship — Combines, Tractors, Excavators & More",
+    "equipmentDescription": "We export combines, tractors, excavators, planters, sprayers, headers, bulldozers, and loaders worldwide. Full-service packing, documentation, and ocean freight from the USA.",
     "calculatorTitle": "Freight Cost Calculator — Instant Estimate",
     "calculatorDescription": "Free freight calculator — instant estimate for machinery export. Select equipment, ZIP code & destination. Packing + shipping costs in 60 seconds.",
     "destinationsTitle": "Shipping Destinations — Worldwide Machinery Export",
@@ -699,6 +701,16 @@
     "noDataDescription": "New shipments are added regularly. Contact us to discuss your shipping needs or check back soon.",
     "whatsAppUs": "WhatsApp Us",
     "orCall": "or call {phone}"
+  },
+  "EquipmentPage": {
+    "breadcrumb": "Equipment",
+    "eyebrow": "Equipment We Export",
+    "heading": "Equipment <accent>Types</accent> We Ship",
+    "description": "We export every type of heavy machinery and agricultural equipment from the USA and Canada. Select your equipment type for pricing, brands we handle, packing details, and available shipping routes.",
+    "from": "From",
+    "ctaHeading": "Don't See Your Equipment?",
+    "ctaDescription": "We ship any type of heavy machinery or agricultural equipment. Send us the details and we'll quote it within 24 hours.",
+    "ctaButton": "Get a Quote"
   },
   "EquipmentDetailPage": {
     "eyebrow": "Equipment Export",
