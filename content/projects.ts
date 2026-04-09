@@ -910,3 +910,48 @@ export const projectCategories: Record<string, string[]> = {
 export function getProjectCategories(locale: string = 'en'): string[] {
   return projectCategories[locale] ?? projectCategories.en;
 }
+
+const equipmentSlugToTypes: Record<string, Record<string, string[]>> = {
+  en: {
+    combines: ["Combine Harvester", "Combine Harvesters", "Combine Components"],
+    tractors: ["Compact Tractor"],
+    sprayers: ["Self-Propelled Sprayer"],
+    headers: ["Stripper Header", "Stripper Headers", "Draper Header", "HydraFlex Header", "Rigid Platform Header"],
+    planters: ["Row Planter", "Air Seeder Cart"],
+    bulldozers: [],
+    excavators: [],
+    loaders: [],
+  },
+  es: {
+    combines: ["Cosechadora", "Cosechadoras", "Componentes de Cosechadora"],
+    tractors: ["Tractor Compacto"],
+    sprayers: ["Pulverizadora Autopropulsada"],
+    headers: ["Cabezal Stripper", "Cabezales Stripper", "Cabezal Draper", "Cabezal HydraFlex", "Cabezal Plataforma Rígida"],
+    planters: ["Sembradora de Hileras", "Carro Sembrador"],
+    bulldozers: [],
+    excavators: [],
+    loaders: [],
+  },
+  ru: {
+    combines: ["Зерноуборочный комбайн", "Зерноуборочные комбайны", "Комплектующие комбайна"],
+    tractors: ["Компактный трактор"],
+    sprayers: ["Самоходный опрыскиватель"],
+    headers: ["Очёсывающая жатка", "Очёсывающие жатки", "Draper-жатка", "HydraFlex-жатка", "Жёсткая платформенная жатка"],
+    planters: ["Рядковая сеялка", "Посевной бункер"],
+    bulldozers: [],
+    excavators: [],
+    loaders: [],
+  },
+};
+
+export function getProjectsByEquipmentSlug(
+  slug: string,
+  locale: string = "en",
+  limit: number = 6,
+): Project[] {
+  const localeMap = equipmentSlugToTypes[locale] ?? equipmentSlugToTypes.en;
+  const types = localeMap[slug];
+  if (!types || types.length === 0) return [];
+  const all = getAllProjects(locale);
+  return all.filter((p) => types.includes(p.equipmentType)).slice(0, limit);
+}

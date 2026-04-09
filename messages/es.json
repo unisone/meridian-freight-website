@@ -716,7 +716,17 @@
     "readyToShip": "Listo para Enviar su {equipment}?",
     "ctaDescription": "Obtenga una cotizacion gratis en 24 horas, o <calculatorLink>pruebe nuestra calculadora</calculatorLink> para una estimacion de costos ahora mismo.",
     "getAQuote": "Solicitar Cotizacion",
-    "chatOnWhatsApp": "Chatear por WhatsApp"
+    "chatOnWhatsApp": "Chatear por WhatsApp",
+    "trustEyebrow": "Licencia FMC #024914NF · 1,000+ Exportaciones · 5.0 en Google",
+    "callUs": "Llamar",
+    "pricingFrom": "Costo total tipico: {range}",
+    "recentExports": "Exportaciones Recientes de {equipment}",
+    "recentExportsDescription": "Envios reales desde nuestra instalacion a compradores en todo el mundo. Cada proyecto incluye recoleccion, desmontaje, empaque en contenedor y flete maritimo.",
+    "viewAllProjects": "Ver todos los proyectos",
+    "formEyebrow": "Solicite su Cotizacion",
+    "formHeading": "Solicite una Cotizacion Gratis para Envio de {equipment}",
+    "formDescription": "Diganos que necesita enviar y a donde va. Recibira una cotizacion detallada y desglosada en 24 horas — sin cargos ocultos.",
+    "requestYourQuote": "Solicitar Cotizacion"
   },
   "SchedulePage": {
     "breadcrumb": "Calendario de Envios",
