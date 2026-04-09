@@ -8,6 +8,8 @@ export const COMPANY = {
   description:
     "Full-service machinery export from USA & Canada — equipment pickup, professional dismantling, secure container packing, export documentation, and air or ocean shipping worldwide. 1,000+ exports completed.",
   foundedYear: 2013,
+  fmcLicense: "024914NF",
+  iataCns: "01108380000",
 } as const;
 
 export const CONTACT = {
