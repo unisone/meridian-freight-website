@@ -5,6 +5,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Hero } from "@/components/hero";
 import { TrustBar } from "@/components/trust-bar";
+import { PartnersStrip } from "@/components/partners-strip";
 import { ServicesGrid } from "@/components/services-grid";
 import { ProcessSteps } from "@/components/process-steps";
 import { ProjectGrid } from "@/components/project-grid";
@@ -113,6 +114,7 @@ export default async function HomePage({
       />
       <Hero />
       <TrustBar />
+      <PartnersStrip />
 
       {/* ServicesGrid handles its own stagger internally */}
       <ServicesGrid />
