@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import {
   ArrowRight,
@@ -8,15 +9,25 @@ import {
   Wrench,
   Container,
   Truck,
+  Phone,
+  MessageCircle,
+  MapPin,
+  Clock,
+  Weight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
+import { TrustBar } from "@/components/trust-bar";
+import { ContactForm } from "@/components/contact-form";
+import { ContactInfo } from "@/components/contact-info";
+import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { getEquipmentBySlug, getAllEquipmentTypes } from "@/content/equipment";
 import { getServiceBySlug } from "@/content/services";
 import { getAllDestinations } from "@/content/destinations";
+import { getProjectsByEquipmentSlug } from "@/content/projects";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
@@ -86,6 +97,12 @@ export default async function EquipmentPage({
     d.commonEquipment.includes(equipment.pluralName)
   );
 
+  const equipmentProjects = getProjectsByEquipmentSlug(slug, locale, 6);
+
+  const whatsappHref = `${CONTACT.whatsappUrl}?text=${encodeURIComponent(
+    `Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`
+  )}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemPage",
@@ -154,28 +171,131 @@ export default async function EquipmentPage({
         />
       )}
 
+      {/* 1. Hero — trust eyebrow, pricing, 3 CTAs */}
       <PageHero
         variant="dark"
         breadcrumbs={[
           { label: "Equipment", href: "/equipment" },
           { label: equipment.pluralName },
         ]}
-        eyebrow={te("eyebrow")}
+        eyebrow={te("trustEyebrow")}
         heading={equipment.title}
         description={equipment.heroDescription}
       >
-        <Button
-          render={<Link href="/contact" />}
-          size="lg"
-          className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
-        >
-          {te("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        {equipment.typicalPriceRange && (
+          <p className="text-sm font-medium text-sky-300">
+            {te("pricingFrom", { range: equipment.typicalPriceRange })}
+          </p>
+        )}
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button
+            render={<a href="#quote-form" />}
+            size="lg"
+            className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
+          >
+            {te("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <TrackedContactLink
+            href={whatsappHref}
+            type="whatsapp"
+            location="equipment_hero"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg transition-colors"
+          >
+            <MessageCircle className="mr-2 h-4 w-4" />
+            {te("chatOnWhatsApp")}
+          </TrackedContactLink>
+          <TrackedContactLink
+            href={CONTACT.phoneHref}
+            type="phone"
+            location="equipment_hero"
+            className="inline-flex items-center justify-center h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold transition-colors"
+          >
+            <Phone className="mr-2 h-4 w-4" />
+            {te("callUs")}
+          </TrackedContactLink>
+        </div>
       </PageHero>
 
+      {/* 2. Trust bar — animated stats */}
+      <TrustBar />
+
       <div>
-        {/* Brands We Handle */}
-        <section className="py-16 md:py-20">
+        {/* 3. Project gallery — social proof through real photos */}
+        {equipmentProjects.length > 0 && (
+          <ScrollReveal>
+            <section className="py-16 md:py-20">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
+                  {te("recentExports", { equipment: equipment.pluralName })}
+                </h2>
+                <p className="mt-3 max-w-2xl text-muted-foreground">
+                  {te("recentExportsDescription")}
+                </p>
+                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {equipmentProjects.map((project, idx) => (
+                    <StaggerItem key={project.id} index={idx} variant="fade">
+                      <article className="group flex h-full flex-col overflow-hidden rounded-xl border-0 bg-white shadow-sm transition-[transform,box-shadow] duration-300 hover:shadow-lg hover:-translate-y-0.5">
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <Image
+                            src={project.image}
+                            alt={`${project.title} — ${project.containerType} to ${project.destination}`}
+                            fill
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            quality={80}
+                          />
+                          <span className="absolute left-3 top-3 rounded-md bg-slate-900/80 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                            {project.category}
+                          </span>
+                        </div>
+                        <div className="flex flex-1 flex-col p-5">
+                          <h3 className="text-lg font-bold text-foreground leading-snug">
+                            {project.title}
+                          </h3>
+                          <p className="mt-1.5 flex-1 text-sm text-muted-foreground line-clamp-2">
+                            {project.description}
+                          </p>
+                          <div className="mt-4 grid grid-cols-2 gap-2 bg-muted -mx-5 px-5 py-3 rounded-b-xl">
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+                              <span className="font-mono">{project.destination}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <Container className="h-3.5 w-3.5" aria-hidden="true" />
+                              <span className="font-mono">{project.containerType}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                              <span className="font-mono">{project.transitTime}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <Weight className="h-3.5 w-3.5" aria-hidden="true" />
+                              <span className="font-mono">{project.weight}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                    </StaggerItem>
+                  ))}
+                </div>
+                <div className="mt-8 text-center">
+                  <Link
+                    href="/projects"
+                    className="group inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors link-underline"
+                  >
+                    {te("viewAllProjects")}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
+
+        {/* 4. Brands We Handle */}
+        <section className="bg-muted py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
               {te("brandsWeHandle")}
@@ -199,8 +319,8 @@ export default async function EquipmentPage({
           </div>
         </section>
 
-        {/* Common Models */}
-        <section className="bg-muted py-16 md:py-20">
+        {/* 5. Common Models */}
+        <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
               {te("commonModels")}
@@ -225,7 +345,35 @@ export default async function EquipmentPage({
           </div>
         </section>
 
-        {/* How We Pack */}
+        {/* 6. Inline contact form */}
+        <ScrollReveal>
+          <section id="quote-form" className="bg-muted py-16 md:py-24">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="mb-12 sm:mb-16">
+                <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+                  {te("formEyebrow")}
+                </p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl leading-tight">
+                  {te("formHeading", { equipment: equipment.singularName })}
+                </h2>
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
+                  {te("formDescription")}
+                </p>
+              </div>
+              <div className="grid gap-12 lg:grid-cols-2">
+                <div className="rounded-xl bg-white p-6 shadow-md sm:p-8">
+                  <h3 className="mb-6 text-2xl font-bold text-foreground">
+                    {te("requestYourQuote")}
+                  </h3>
+                  <ContactForm />
+                </div>
+                <ContactInfo />
+              </div>
+            </div>
+          </section>
+        </ScrollReveal>
+
+        {/* 7. How We Pack */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-start gap-4">
@@ -244,7 +392,7 @@ export default async function EquipmentPage({
           </div>
         </section>
 
-        {/* Container Options */}
+        {/* 8. Container Options */}
         <section className="bg-muted py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-start gap-4">
@@ -276,7 +424,7 @@ export default async function EquipmentPage({
           </div>
         </section>
 
-        {/* Related Services */}
+        {/* 9. Related Services */}
         {relatedServices.length > 0 && (
           <section className="py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -305,7 +453,7 @@ export default async function EquipmentPage({
           </section>
         )}
 
-        {/* Where We Ship */}
+        {/* 10. Where We Ship */}
         {relatedDestinations.length > 0 && (
           <section className="bg-muted py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -334,12 +482,12 @@ export default async function EquipmentPage({
           </section>
         )}
 
-        {/* FAQ */}
+        {/* 11. FAQ */}
         {equipment.faqs && equipment.faqs.length > 0 && (
           <FaqAccordion entries={equipment.faqs} />
         )}
 
-        {/* CTA */}
+        {/* 12. Bottom CTA — same 3 contact methods as hero */}
         <ScrollReveal variant="fade">
           <DarkCta
             heading={te("readyToShip", { equipment: equipment.singularName })}
@@ -355,27 +503,32 @@ export default async function EquipmentPage({
             })}
           >
             <Button
-              render={<Link href="/contact" />}
+              render={<a href="#quote-form" />}
               size="lg"
               className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
             >
               {te("getAQuote")}
             </Button>
-            <Button
-              render={
-                <a
-                  href={`${CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={te("chatOnWhatsApp")}
-                />
-              }
-              size="lg"
-              variant="outline"
-              className="h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold"
+            <TrackedContactLink
+              href={whatsappHref}
+              type="whatsapp"
+              location="equipment_cta"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg transition-colors"
             >
+              <MessageCircle className="mr-2 h-4 w-4" />
               {te("chatOnWhatsApp")}
-            </Button>
+            </TrackedContactLink>
+            <TrackedContactLink
+              href={CONTACT.phoneHref}
+              type="phone"
+              location="equipment_cta"
+              className="inline-flex items-center justify-center h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold transition-colors"
+            >
+              <Phone className="mr-2 h-4 w-4" />
+              {te("callUs")}
+            </TrackedContactLink>
           </DarkCta>
         </ScrollReveal>
       </div>

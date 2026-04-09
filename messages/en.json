@@ -716,7 +716,17 @@
     "readyToShip": "Ready to Ship Your {equipment}?",
     "ctaDescription": "Get a free quote within 24 hours, or <calculatorLink>try our instant calculator</calculatorLink> for a cost estimate right now.",
     "getAQuote": "Get a Quote",
-    "chatOnWhatsApp": "Chat on WhatsApp"
+    "chatOnWhatsApp": "Chat on WhatsApp",
+    "trustEyebrow": "FMC Licensed #024914NF · 1,000+ Exports · 5.0 Google Rating",
+    "callUs": "Call Us",
+    "pricingFrom": "Typical total cost: {range}",
+    "recentExports": "Recent {equipment} Exports",
+    "recentExportsDescription": "Real shipments from our facility to buyers worldwide. Every project includes pickup, dismantling, container packing, and ocean freight.",
+    "viewAllProjects": "View all projects",
+    "formEyebrow": "Get Your Quote",
+    "formHeading": "Get Your Free {equipment} Shipping Quote",
+    "formDescription": "Tell us what you need shipped and where it's going. You'll receive a detailed, itemized quote within 24 hours — no hidden fees.",
+    "requestYourQuote": "Request Your Quote"
   },
   "SchedulePage": {
     "breadcrumb": "Shipping Schedule",

@@ -716,7 +716,17 @@
     "readyToShip": "Готовы отправить {equipment}?",
     "ctaDescription": "Получите бесплатную расценку в течение 24 часов или <calculatorLink>воспользуйтесь калькулятором</calculatorLink> для мгновенной оценки стоимости.",
     "getAQuote": "Запросить расценку",
-    "chatOnWhatsApp": "Написать в WhatsApp"
+    "chatOnWhatsApp": "Написать в WhatsApp",
+    "trustEyebrow": "Лицензия FMC #024914NF · 1 000+ экспортов · 5.0 в Google",
+    "callUs": "Позвонить",
+    "pricingFrom": "Ориентировочная стоимость: {range}",
+    "recentExports": "Недавние экспорты {equipment}",
+    "recentExportsDescription": "Реальные отправки с нашего склада покупателям по всему миру. Каждый проект включает вывоз, разборку, упаковку в контейнер и морскую перевозку.",
+    "viewAllProjects": "Смотреть все проекты",
+    "formEyebrow": "Запросите расценку",
+    "formHeading": "Бесплатная расценка на отправку {equipment}",
+    "formDescription": "Расскажите нам, что нужно отправить и куда. Вы получите подробную постатейную расценку в течение 24 часов — без скрытых платежей.",
+    "requestYourQuote": "Запросить расценку"
   },
   "SchedulePage": {
     "breadcrumb": "Расписание отправок",

@@ -15,6 +15,7 @@ export interface EquipmentType {
   containerTypes: string[];
   relatedServiceSlugs: string[];
   faqs?: FaqEntry[];
+  typicalPriceRange?: string;
 }
 
 const equipmentTypesEn: EquipmentType[] = [
@@ -54,6 +55,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "Can a combine fit inside a standard 40ft container?", answer: "Most combines require a 40ft high-cube container after partial dismantling, or a flat rack for larger models. We measure your specific model and recommend the most cost-effective container option.", category: "Combines" },
       { question: "What combine brands do you export most frequently?", answer: "John Deere S-Series, Case IH Axial-Flow, Claas Lexion, and AGCO Gleaner are our most commonly shipped combines. We know the disassembly specs for each brand and carry the right rigging equipment.", category: "Combines" },
     ],
+    typicalPriceRange: "$12K – $25K",
   },
   {
     slug: "tractors",
@@ -91,6 +93,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "What is the cheapest way to ship a tractor internationally?", answer: "A 40ft high-cube container is usually the most cost-effective option. If you are buying multiple smaller tractors, we can fit 2-3 compact or utility models in a single container to significantly reduce per-unit cost.", category: "Tractors" },
       { question: "Do you ship both row-crop and utility tractors?", answer: "We ship everything from compact Kubota utility tractors to John Deere 9R four-wheel-drive row-crop machines. Each size class has different container and blocking requirements, and we handle them all.", category: "Tractors" },
     ],
+    typicalPriceRange: "$8K – $18K",
   },
   {
     slug: "excavators",
@@ -127,6 +130,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "What is the weight limit for shipping an excavator?", answer: "A standard flat rack supports up to 40 metric tons. Most mid-size excavators (20-35 ton class) fit within this limit. For larger machines, we use specialized heavy-lift services or breakbulk shipping.", category: "Excavators" },
       { question: "Do you drain all fluids before shipping an excavator?", answer: "Yes. Hydraulic oil, engine oil, coolant, and diesel are drained to meet international shipping regulations and prevent environmental hazards. We also disconnect the battery and secure all hydraulic lines.", category: "Excavators" },
     ],
+    typicalPriceRange: "$10K – $22K",
   },
   {
     slug: "planters",
@@ -163,6 +167,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "Can a 24-row planter fit in a container?", answer: "Yes. Large planters are folded into transport position and the row-unit wings are secured. A 24-row planter typically fits in a 40ft high-cube container or on a flat rack, depending on toolbar width and frame height.", category: "Planters" },
       { question: "Do you ship precision planters with variable-rate technology?", answer: "Absolutely. We handle Kinze, John Deere ExactEmerge, and Case IH Early Riser planters with variable-rate drives, hydraulic down-force systems, and precision-ag controllers. All electronics are removed and packed separately.", category: "Planters" },
     ],
+    typicalPriceRange: "$5K – $14K",
   },
   {
     slug: "sprayers",
@@ -199,6 +204,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "How are sprayer booms secured for ocean shipping?", answer: "Booms are folded into transport position and additionally secured with heavy-duty strapping to prevent accidental deployment during transit. Nozzle tips and boom ends are protected with foam wrapping.", category: "Sprayers" },
       { question: "Can a self-propelled sprayer fit in a container?", answer: "Smaller self-propelled sprayers can fit in a 40ft high-cube container after boom folding and mirror removal. Larger high-clearance models like the John Deere R4045 typically require flat rack shipping due to their height.", category: "Sprayers" },
     ],
+    typicalPriceRange: "$8K – $20K",
   },
   {
     slug: "headers",
@@ -235,6 +241,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "How do you protect knife sections during shipping?", answer: "Knife sections are covered with heavy-duty protective guards, and sickle bars are pinned in the retracted position. Draper belts are secured and tensioned to prevent sagging or damage during ocean transit.", category: "Headers" },
       { question: "Do you ship stripper headers and corn heads?", answer: "We ship all header types: draper platforms, flex headers, rigid cutterbar headers, stripper headers, and corn heads. Each type has specific crating requirements that we handle based on the manufacturer specs.", category: "Headers" },
     ],
+    typicalPriceRange: "$3K – $8K",
   },
   {
     slug: "bulldozers",
@@ -271,6 +278,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "What size bulldozers can you ship?", answer: "We ship everything from small D3/D4 class dozers that fit in containers to large D8/D9 class machines that require flat rack or breakbulk shipping. Weight limits for flat racks are approximately 40 metric tons.", category: "Bulldozers" },
       { question: "How long does it take to export a bulldozer?", answer: "From equipment pickup to port departure typically takes 7-14 days, including transport to our facility, securing on a flat rack, and documentation. Add 18-40 days of ocean transit depending on destination.", category: "Bulldozers" },
     ],
+    typicalPriceRange: "$10K – $25K",
   },
   {
     slug: "loaders",
@@ -307,6 +315,7 @@ const equipmentTypesEn: EquipmentType[] = [
       { question: "Do you export skid steer loaders?", answer: "Yes. Compact skid steers like the CAT 262D or John Deere 332G are among the easiest machines to containerize. We can often fit 2 skid steers in a single 40ft container, reducing your per-unit cost.", category: "Loaders" },
       { question: "How are loader buckets packed for shipping?", answer: "Buckets and attachments are removed, cleaned, and secured alongside the main machine inside the container or on the flat rack. Hydraulic quick-coupler lines are capped and protected from contamination.", category: "Loaders" },
     ],
+    typicalPriceRange: "$6K – $16K",
   },
 ];
 
@@ -347,6 +356,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Cabe una cosechadora en un contenedor estándar de 40ft?", answer: "La mayoría de las cosechadoras requieren un contenedor 40ft high-cube después del desmontaje parcial, o un flat rack para modelos más grandes. Medimos su modelo específico y recomendamos la opción de contenedor más económica.", category: "Cosechadoras" },
       { question: "¿Qué marcas de cosechadoras exportan con más frecuencia?", answer: "John Deere Serie S, Case IH Axial-Flow, Claas Lexion y AGCO Gleaner son nuestras cosechadoras más enviadas. Conocemos las especificaciones de desmontaje de cada marca y contamos con el equipo de maniobra adecuado.", category: "Cosechadoras" },
     ],
+    typicalPriceRange: "$12K – $25K",
   },
   {
     slug: "tractors",
@@ -384,6 +394,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Cuál es la forma más económica de enviar un tractor internacionalmente?", answer: "Un contenedor 40ft high-cube es generalmente la opción más económica. Si va a comprar varios tractores más pequeños, podemos acomodar 2-3 modelos compactos o utilitarios en un solo contenedor para reducir significativamente el costo por unidad.", category: "Tractores" },
       { question: "¿Envían tractores para cultivo en hilera y utilitarios?", answer: "Enviamos de todo, desde tractores utilitarios compactos Kubota hasta máquinas John Deere 9R de tracción integral para cultivos en hilera. Cada clase de tamaño tiene diferentes requisitos de contenedor y bloqueo, y los manejamos todos.", category: "Tractores" },
     ],
+    typicalPriceRange: "$8K – $18K",
   },
   {
     slug: "excavators",
@@ -420,6 +431,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Cuál es el límite de peso para enviar una excavadora?", answer: "Un flat rack estándar soporta hasta 40 toneladas métricas. La mayoría de las excavadoras medianas (clase 20-35 toneladas) están dentro de este límite. Para máquinas más grandes, utilizamos servicios especializados de elevación pesada o envío breakbulk.", category: "Excavadoras" },
       { question: "¿Drenan todos los fluidos antes de enviar una excavadora?", answer: "Sí. El aceite hidráulico, aceite de motor, refrigerante y diésel se drenan para cumplir con las regulaciones internacionales de envío y prevenir riesgos ambientales. También desconectamos la batería y aseguramos todas las líneas hidráulicas.", category: "Excavadoras" },
     ],
+    typicalPriceRange: "$10K – $22K",
   },
   {
     slug: "planters",
@@ -456,6 +468,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Cabe una sembradora de 24 hileras en un contenedor?", answer: "Sí. Las sembradoras grandes se pliegan en posición de transporte y las alas de las unidades de hilera se aseguran. Una sembradora de 24 hileras típicamente cabe en un contenedor 40ft high-cube o en un flat rack, dependiendo del ancho de la barra y la altura del bastidor.", category: "Sembradoras" },
       { question: "¿Envían sembradoras de precisión con tecnología de dosis variable?", answer: "Por supuesto. Manejamos sembradoras Kinze, John Deere ExactEmerge y Case IH Early Riser con accionamientos de dosis variable, sistemas hidráulicos de presión descendente y controladores de agricultura de precisión. Toda la electrónica se retira y empaca por separado.", category: "Sembradoras" },
     ],
+    typicalPriceRange: "$5K – $14K",
   },
   {
     slug: "sprayers",
@@ -492,6 +505,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Cómo se aseguran las barras de la pulverizadora para el envío marítimo?", answer: "Las barras se pliegan en posición de transporte y se aseguran adicionalmente con cintas de servicio pesado para evitar el despliegue accidental durante el tránsito. Las boquillas y extremos de las barras se protegen con envoltura de espuma.", category: "Pulverizadoras" },
       { question: "¿Cabe una pulverizadora autopropulsada en un contenedor?", answer: "Las pulverizadoras autopropulsadas más pequeñas caben en un contenedor 40ft high-cube después del plegado de barras y remoción de espejos. Los modelos más grandes de alto despeje como la John Deere R4045 típicamente requieren envío en flat rack debido a su altura.", category: "Pulverizadoras" },
     ],
+    typicalPriceRange: "$8K – $20K",
   },
   {
     slug: "headers",
@@ -528,6 +542,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Cómo protegen las secciones de cuchilla durante el envío?", answer: "Las secciones de cuchilla se cubren con protectores de servicio pesado, y las barras de hoz se fijan en posición retraída. Las bandas draper se aseguran y tensionan para evitar pandeo o daño durante el tránsito marítimo.", category: "Cabezales" },
       { question: "¿Envían cabezales stripper y cabezales de maíz?", answer: "Enviamos todos los tipos de cabezales: plataformas draper, cabezales flexibles, cabezales de barra de corte rígida, cabezales stripper y cabezales de maíz. Cada tipo tiene requisitos específicos de embalaje que manejamos según las especificaciones del fabricante.", category: "Cabezales" },
     ],
+    typicalPriceRange: "$3K – $8K",
   },
   {
     slug: "bulldozers",
@@ -564,6 +579,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Qué tamaño de bulldozers pueden enviar?", answer: "Enviamos de todo, desde dozers pequeños clase D3/D4 que caben en contenedores hasta máquinas grandes clase D8/D9 que requieren flat rack o envío breakbulk. Los límites de peso para flat racks son aproximadamente 40 toneladas métricas.", category: "Bulldozers" },
       { question: "¿Cuánto tiempo toma exportar un bulldozer?", answer: "Desde la recolección del equipo hasta la salida del puerto típicamente toma 7-14 días, incluyendo transporte a nuestra instalación, aseguramiento en flat rack y documentación. Agregue 18-40 días de tránsito marítimo dependiendo del destino.", category: "Bulldozers" },
     ],
+    typicalPriceRange: "$10K – $25K",
   },
   {
     slug: "loaders",
@@ -600,6 +616,7 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Exportan minicargadores?", answer: "Sí. Los minicargadores compactos como el CAT 262D o el John Deere 332G son de las máquinas más fáciles de contenedorizar. Frecuentemente podemos acomodar 2 minicargadores en un solo contenedor de 40ft, reduciendo su costo por unidad.", category: "Cargadores" },
       { question: "¿Cómo se empacan los cucharones de cargador para el envío?", answer: "Los cucharones y accesorios se retiran, limpian y aseguran junto a la máquina principal dentro del contenedor o en el flat rack. Las líneas de acoplamiento rápido hidráulico se tapan y protegen contra contaminación.", category: "Cargadores" },
     ],
+    typicalPriceRange: "$6K – $16K",
   },
 ];
 
@@ -640,6 +657,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Помещается ли комбайн в стандартный 40-футовый контейнер?", answer: "Большинство комбайнов требуют 40-футовый контейнер high-cube после частичного демонтажа, или flat rack для более крупных моделей. Мы измеряем вашу конкретную модель и рекомендуем наиболее экономичный вариант контейнера.", category: "Комбайны" },
       { question: "Какие марки комбайнов вы экспортируете чаще всего?", answer: "John Deere S-Series, Case IH Axial-Flow, Claas Lexion и AGCO Gleaner — наши наиболее часто отправляемые комбайны. Мы знаем спецификации разборки каждой марки и располагаем подходящим грузоподъёмным оборудованием.", category: "Комбайны" },
     ],
+    typicalPriceRange: "$12K – $25K",
   },
   {
     slug: "tractors",
@@ -677,6 +695,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Какой самый экономичный способ отправить трактор за рубеж?", answer: "40-футовый контейнер high-cube обычно самый экономичный вариант. Если вы покупаете несколько небольших тракторов, мы можем разместить 2-3 компактные или утилитарные модели в одном контейнере, значительно снизив стоимость за единицу.", category: "Тракторы" },
       { question: "Вы отправляете и пропашные, и утилитарные тракторы?", answer: "Мы отправляем всё — от компактных утилитарных тракторов Kubota до полноприводных пропашных машин John Deere 9R. Каждый класс размера имеет свои требования к контейнеру и блокированию, и мы справляемся со всеми.", category: "Тракторы" },
     ],
+    typicalPriceRange: "$8K – $18K",
   },
   {
     slug: "excavators",
@@ -713,6 +732,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Каков предельный вес для отправки экскаватора?", answer: "Стандартный flat rack выдерживает до 40 метрических тонн. Большинство средних экскаваторов (класс 20-35 тонн) укладываются в этот лимит. Для более крупных машин мы используем специализированные тяжеловесные услуги или балковые перевозки.", category: "Экскаваторы" },
       { question: "Вы сливаете все жидкости перед отправкой экскаватора?", answer: "Да. Гидравлическое масло, моторное масло, антифриз и дизель сливаются для соответствия международным правилам перевозки и предотвращения экологических рисков. Мы также отключаем аккумулятор и фиксируем все гидравлические линии.", category: "Экскаваторы" },
     ],
+    typicalPriceRange: "$10K – $22K",
   },
   {
     slug: "planters",
@@ -749,6 +769,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Помещается ли 24-рядная сеялка в контейнер?", answer: "Да. Большие сеялки складываются в транспортное положение, и крылья высевающих секций фиксируются. 24-рядная сеялка обычно помещается в 40-футовый контейнер high-cube или на flat rack в зависимости от ширины рамы.", category: "Сеялки" },
       { question: "Вы отправляете сеялки точного высева с технологией переменной нормы?", answer: "Безусловно. Мы работаем с сеялками Kinze, John Deere ExactEmerge и Case IH Early Riser с приводами переменной нормы, гидравлическими системами прижима и контроллерами точного земледелия. Вся электроника снимается и упаковывается отдельно.", category: "Сеялки" },
     ],
+    typicalPriceRange: "$5K – $14K",
   },
   {
     slug: "sprayers",
@@ -785,6 +806,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Как закрепляются штанги опрыскивателя для морской перевозки?", answer: "Штанги складываются в транспортное положение и дополнительно закрепляются стяжками повышенной прочности для предотвращения случайного раскрытия при транзите. Форсунки и концы штанг защищаются пенной обёрткой.", category: "Опрыскиватели" },
       { question: "Помещается ли самоходный опрыскиватель в контейнер?", answer: "Небольшие самоходные опрыскиватели могут поместиться в 40-футовый контейнер high-cube после складывания штанг и снятия зеркал. Более крупные модели с высоким клиренсом, такие как John Deere R4045, обычно требуют перевозки на flat rack из-за высоты.", category: "Опрыскиватели" },
     ],
+    typicalPriceRange: "$8K – $20K",
   },
   {
     slug: "headers",
@@ -821,6 +843,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Как вы защищаете ножевые секции при доставке?", answer: "Ножевые секции закрываются защитными кожухами повышенной прочности, а серповидные ножи фиксируются в убранном положении. Ленты draper закрепляются и натягиваются для предотвращения провисания или повреждения при морском транзите.", category: "Жатки" },
       { question: "Вы отправляете очёсывающие жатки и кукурузные приставки?", answer: "Мы отправляем все типы жаток: платформы draper, флексовые жатки, жёсткие режущие жатки, очёсывающие жатки и кукурузные приставки. Каждый тип имеет специфические требования к упаковке, которые мы выполняем согласно спецификациям производителя.", category: "Жатки" },
     ],
+    typicalPriceRange: "$3K – $8K",
   },
   {
     slug: "bulldozers",
@@ -857,6 +880,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Бульдозеры какого размера вы можете отправить?", answer: "Мы отправляем всё — от малых бульдозеров класса D3/D4, помещающихся в контейнеры, до крупных машин класса D8/D9, требующих flat rack или балковой перевозки. Предельный вес для flat racks — примерно 40 метрических тонн.", category: "Бульдозеры" },
       { question: "Сколько времени занимает экспорт бульдозера?", answer: "От забора техники до отхода судна обычно проходит 7-14 дней, включая транспортировку на наше предприятие, крепление на flat rack и оформление документации. Прибавьте 18-40 дней морского транзита в зависимости от направления.", category: "Бульдозеры" },
     ],
+    typicalPriceRange: "$10K – $25K",
   },
   {
     slug: "loaders",
@@ -893,6 +917,7 @@ const equipmentTypesRu: EquipmentType[] = [
       { question: "Вы экспортируете мини-погрузчики?", answer: "Да. Компактные мини-погрузчики, такие как CAT 262D или John Deere 332G, одни из самых простых машин для контейнеризации. Мы часто можем разместить 2 мини-погрузчика в одном 40-футовом контейнере, снизив стоимость за единицу.", category: "Погрузчики" },
       { question: "Как упаковываются ковши погрузчиков для отправки?", answer: "Ковши и навесное оборудование снимаются, очищаются и крепятся рядом с основной машиной внутри контейнера или на flat rack. Быстроразъёмные гидравлические линии заглушаются и защищаются от загрязнения.", category: "Погрузчики" },
     ],
+    typicalPriceRange: "$6K – $16K",
   },
 ];
 
