@@ -44,7 +44,7 @@ const destinationsEn: Destination[] = [
       "Excavators",
       "Planters",
       "Sprayers",
-      "Tillage Equipment",
+
     ],
     shippingNotes:
       "Brazil requires fumigation certificates for all wood packaging materials (ISPM-15 compliant). Import licenses may be required for certain equipment categories — we handle the documentation so your shipment clears Santos customs without delays. Budget an additional $800–$1,200 for fumigation and phytosanitary certification. Allow 35–45 days total door-to-port including pickup, packing, documentation, and 25–30 days of ocean transit. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
@@ -192,7 +192,7 @@ const destinationsEn: Destination[] = [
       "Combines",
       "Loaders",
       "Sprayers",
-      "Tillage Equipment",
+
     ],
     shippingNotes:
       "Colombia requires a pre-shipment inspection for used equipment imports. Fumigation certificates are mandatory for wood packaging. We coordinate all inspections and documentation before departure to prevent port delays. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
@@ -264,7 +264,7 @@ const destinationsEn: Destination[] = [
       "Tractors",
       "Combines",
       "Planters",
-      "Tillage Equipment",
+
       "Headers",
       "Sprayers",
     ],
@@ -325,7 +325,7 @@ const destinationsEn: Destination[] = [
     heroDescription: "We ship machinery from the USA and Canada to San Antonio — Chile's largest cargo port serving Santiago and the central agricultural valley. Transit times average 25-32 days via the Panama Canal route with weekly sailings from US Gulf and East Coast ports.",
     transitDays: "25-32",
     carriers: ["Hapag-Lloyd", "Maersk", "CMA CGM", "MSC"],
-    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Headers", "Tillage Equipment"],
+    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Headers"],
     shippingNotes: "Chile has streamlined customs procedures and free trade agreements with the US. Most agricultural equipment enters duty-free or at reduced rates under the US-Chile FTA. ISPM-15 compliant wood packaging is required. We prepare bilingual documentation and coordinate with Chilean customs brokers. Air freight available for urgent parts with 7-14 day delivery.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
     faqs: [
@@ -345,7 +345,7 @@ const destinationsEn: Destination[] = [
     heroDescription: "We ship machinery from the USA and Canada to Callao — Peru's primary port serving Lima and the country's agricultural heartland. Transit times average 20-28 days with direct sailings from US Gulf and East Coast ports.",
     transitDays: "20-28",
     carriers: ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
-    commonEquipment: ["Combines", "Tractors", "Excavators", "Loaders", "Sprayers", "Tillage Equipment"],
+    commonEquipment: ["Combines", "Tractors", "Excavators", "Loaders", "Sprayers"],
     shippingNotes: "Peru requires a Certificado de Inspección for used equipment imports. SUNAT (Peruvian customs) mandates advance electronic filing of import declarations. We coordinate pre-shipment inspections and prepare all required documentation. ISPM-15 wood packaging compliance is mandatory. Air freight available for urgent parts with 5-10 day delivery.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
     faqs: [
@@ -365,7 +365,7 @@ const destinationsEn: Destination[] = [
     heroDescription: "We ship machinery from the USA and Canada to Montevideo — Uruguay's main port and gateway to one of South America's most productive agricultural economies. Transit times average 28-35 days with regular sailings from US East Coast and Gulf ports.",
     transitDays: "28-35",
     carriers: ["Maersk", "MSC", "Hapag-Lloyd", "CMA CGM"],
-    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Headers", "Tillage Equipment"],
+    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Headers"],
     shippingNotes: "Uruguay has relatively straightforward import procedures for agricultural equipment. A Declaración de Importación is required, and ISPM-15 compliant wood packaging is mandatory. Uruguay is a Mercosur member, which affects some tariff structures. We coordinate all documentation including consular legalization when required. Air freight available for urgent parts with 7-14 day delivery.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
     faqs: [
@@ -385,7 +385,7 @@ const destinationsEn: Destination[] = [
     heroDescription: "We ship machinery from the USA and Canada to Paraguay via Buenos Aires and river barge up the Paraná River to Asunción. As a landlocked country, Paraguay requires multimodal routing — we handle the full logistics chain from pickup to delivery at 35-45 days.",
     transitDays: "35-45",
     carriers: ["Maersk", "MSC", "Hapag-Lloyd", "Hamburg Süd"],
-    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Headers", "Tillage Equipment"],
+    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Headers"],
     shippingNotes: "Paraguay is landlocked — shipments travel by ocean to Buenos Aires, then transfer to river barges for the Paraná River route to Asunción. We handle the full multimodal chain including transshipment coordination. Paraguay is a Mercosur member with simplified import procedures for agricultural equipment. ISPM-15 wood packaging is mandatory. Air freight available for urgent parts via Asunción airport with 7-14 day delivery.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top"],
     faqs: [
@@ -425,7 +425,7 @@ const destinationsEn: Destination[] = [
     heroDescription: "We ship machinery from the USA and Canada to Bolivia via Arica, Chile — Bolivia's designated Pacific transit port under a bilateral agreement. As a landlocked country, shipments travel by ocean to Arica then overland to Santa Cruz or La Paz at 35-45 days total.",
     transitDays: "35-45",
     carriers: ["Hapag-Lloyd", "Maersk", "CMA CGM", "MSC"],
-    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Excavators", "Tillage Equipment"],
+    commonEquipment: ["Combines", "Tractors", "Planters", "Sprayers", "Excavators"],
     shippingNotes: "Bolivia is landlocked — shipments travel by ocean to Arica, Chile, then overland by truck to Santa Cruz, Cochabamba, or La Paz. Bolivia has a bilateral agreement with Chile granting duty-free transit through Arica. We handle the full logistics chain including Chilean transit documentation and Bolivian customs coordination. ISPM-15 wood packaging is mandatory. Air freight available for urgent parts via Santa Cruz airport.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top"],
     faqs: [
@@ -501,7 +501,7 @@ const destinationsEs: Destination[] = [
       "Cosechadoras",
       "Cargadores",
       "Pulverizadoras",
-      "Equipo de Labranza",
+
     ],
     shippingNotes:
       "Colombia requiere una inspección previa al embarque para importaciones de equipo usado. Los certificados de fumigación son obligatorios para embalaje de madera. Coordinamos todas las inspecciones y documentación antes de la partida para prevenir retrasos en puerto. Para repuestos urgentes o envíos sensibles al tiempo, disponemos de flete aéreo con entrega típica en 7-14 días.",
@@ -538,7 +538,7 @@ const destinationsEs: Destination[] = [
       "Excavadoras",
       "Sembradoras",
       "Pulverizadoras",
-      "Equipo de Labranza",
+
     ],
     shippingNotes:
       "Brasil requiere certificados de fumigación para todos los materiales de embalaje de madera (cumplimiento ISPM-15). Pueden requerirse licencias de importación para ciertas categorías de equipo — nosotros manejamos la documentación para que su envío pase la aduana de Santos sin retrasos. Presupueste $800–$1,200 adicionales para fumigación y certificación fitosanitaria. Permita 35-45 días totales puerta a puerto incluyendo recolección, embalaje, documentación y 25-30 días de tránsito marítimo. Para repuestos urgentes o envíos sensibles al tiempo, disponemos de flete aéreo con entrega típica en 7-14 días.",
@@ -560,7 +560,7 @@ const destinationsEs: Destination[] = [
     heroDescription: "Enviamos maquinaria desde USA y Canadá a San Antonio — el puerto de carga más grande de Chile que sirve a Santiago y el valle agrícola central. Los tiempos de tránsito promedian 25-32 días por la ruta del Canal de Panamá con salidas semanales desde puertos del Golfo y Costa Este de EE.UU.",
     transitDays: "25-32",
     carriers: ["Hapag-Lloyd", "Maersk", "CMA CGM", "MSC"],
-    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Cabezales", "Equipo de Labranza"],
+    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Cabezales"],
     shippingNotes: "Chile tiene procedimientos aduaneros simplificados y tratados de libre comercio con EE.UU. La mayoría del equipo agrícola ingresa libre de aranceles o con tarifas reducidas bajo el TLC EE.UU.-Chile. Se requiere embalaje de madera certificado ISPM-15. Preparamos documentación bilingüe y coordinamos con agentes aduanales chilenos. Flete aéreo disponible para repuestos urgentes con entrega en 7-14 días.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Estándar"],
     faqs: [
@@ -580,7 +580,7 @@ const destinationsEs: Destination[] = [
     heroDescription: "Enviamos maquinaria desde USA y Canadá al Callao — el puerto principal de Perú que sirve a Lima y el corazón agrícola del país. Los tiempos de tránsito promedian 20-28 días con salidas directas desde puertos del Golfo y Costa Este de EE.UU.",
     transitDays: "20-28",
     carriers: ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
-    commonEquipment: ["Cosechadoras", "Tractores", "Excavadoras", "Cargadores", "Pulverizadoras", "Equipo de Labranza"],
+    commonEquipment: ["Cosechadoras", "Tractores", "Excavadoras", "Cargadores", "Pulverizadoras"],
     shippingNotes: "Perú requiere un Certificado de Inspección para importaciones de equipo usado. La SUNAT (aduanas peruanas) exige declaración electrónica anticipada de importaciones. Coordinamos inspecciones previas al embarque y preparamos toda la documentación requerida. El embalaje de madera ISPM-15 es obligatorio. Flete aéreo disponible para repuestos urgentes con entrega en 5-10 días.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Estándar"],
     faqs: [
@@ -600,7 +600,7 @@ const destinationsEs: Destination[] = [
     heroDescription: "Enviamos maquinaria desde USA y Canadá a Montevideo — el puerto principal de Uruguay y puerta de entrada a una de las economías agrícolas más productivas de Sudamérica. Los tiempos de tránsito promedian 28-35 días con salidas regulares desde puertos de la Costa Este y Golfo de EE.UU.",
     transitDays: "28-35",
     carriers: ["Maersk", "MSC", "Hapag-Lloyd", "CMA CGM"],
-    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Cabezales", "Equipo de Labranza"],
+    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Cabezales"],
     shippingNotes: "Uruguay tiene procedimientos de importación relativamente directos para equipo agrícola. Se requiere una Declaración de Importación, y el embalaje de madera certificado ISPM-15 es obligatorio. Uruguay es miembro del Mercosur, lo que afecta ciertas estructuras arancelarias. Coordinamos toda la documentación incluyendo legalización consular cuando se requiere. Flete aéreo disponible para repuestos urgentes con entrega en 7-14 días.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Estándar"],
     faqs: [
@@ -620,7 +620,7 @@ const destinationsEs: Destination[] = [
     heroDescription: "Enviamos maquinaria desde USA y Canadá a Paraguay vía Buenos Aires y barcaza fluvial por el río Paraná hasta Asunción. Como país sin litoral marítimo, Paraguay requiere enrutamiento multimodal — nosotros manejamos toda la cadena logística desde la recolección hasta la entrega en 35-45 días.",
     transitDays: "35-45",
     carriers: ["Maersk", "MSC", "Hapag-Lloyd", "Hamburg Süd"],
-    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Cabezales", "Equipo de Labranza"],
+    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Cabezales"],
     shippingNotes: "Paraguay es un país sin litoral marítimo — los envíos viajan por mar hasta Buenos Aires, luego se transbordan a barcazas fluviales por la ruta del río Paraná hasta Asunción. Manejamos toda la cadena multimodal incluyendo coordinación de trasbordo. Paraguay es miembro del Mercosur con procedimientos de importación simplificados para equipo agrícola. El embalaje de madera ISPM-15 es obligatorio. Flete aéreo disponible para repuestos urgentes vía aeropuerto de Asunción.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top"],
     faqs: [
@@ -660,7 +660,7 @@ const destinationsEs: Destination[] = [
     heroDescription: "Enviamos maquinaria desde USA y Canadá a Bolivia vía Arica, Chile — el puerto de tránsito pacífico designado de Bolivia bajo un acuerdo bilateral. Como país sin litoral marítimo, los envíos viajan por mar hasta Arica y luego por tierra a Santa Cruz o La Paz en 35-45 días totales.",
     transitDays: "35-45",
     carriers: ["Hapag-Lloyd", "Maersk", "CMA CGM", "MSC"],
-    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Excavadoras", "Equipo de Labranza"],
+    commonEquipment: ["Cosechadoras", "Tractores", "Sembradoras", "Pulverizadoras", "Excavadoras"],
     shippingNotes: "Bolivia es un país sin litoral marítimo — los envíos viajan por mar hasta Arica, Chile, luego por tierra hasta Santa Cruz, Cochabamba o La Paz. Bolivia tiene un acuerdo bilateral con Chile que otorga tránsito libre de aranceles a través de Arica. Manejamos toda la cadena logística incluyendo documentación de tránsito chilena y coordinación aduanera boliviana. El embalaje de madera ISPM-15 es obligatorio. Flete aéreo disponible para repuestos urgentes vía aeropuerto de Santa Cruz.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top"],
     faqs: [
@@ -804,7 +804,7 @@ const destinationsEs: Destination[] = [
       "Tractores",
       "Cosechadoras",
       "Sembradoras",
-      "Equipo de Labranza",
+
       "Cabezales",
       "Pulverizadoras",
     ],
@@ -994,7 +994,7 @@ const destinationsRu: Destination[] = [
       "Тракторы",
       "Комбайны",
       "Сеялки",
-      "Почвообрабатывающая техника",
+
       "Жатки",
       "Опрыскиватели",
     ],
@@ -1033,7 +1033,7 @@ const destinationsRu: Destination[] = [
       "Экскаваторы",
       "Сеялки",
       "Опрыскиватели",
-      "Почвообрабатывающая техника",
+
     ],
     shippingNotes:
       "Бразилия требует сертификаты фумигации для всех деревянных упаковочных материалов (соответствие ISPM-15). Для определённых категорий техники могут потребоваться импортные лицензии — мы берём на себя документацию, чтобы ваш груз прошёл таможню Сантуса без задержек. Заложите дополнительно $800-$1 200 на фумигацию и фитосанитарную сертификацию. Рассчитывайте на 35-45 дней от двери до порта, включая забор, упаковку, документацию и 25-30 дней морского транзита. Для срочных запчастей доступен авиафрахт с доставкой за 7-14 дней.",
@@ -1070,7 +1070,7 @@ const destinationsRu: Destination[] = [
       "Комбайны",
       "Погрузчики",
       "Опрыскиватели",
-      "Почвообрабатывающая техника",
+
     ],
     shippingNotes:
       "Колумбия требует предотгрузочную инспекцию для импорта б/у оборудования. Сертификаты фумигации обязательны для деревянной упаковки. Мы координируем все инспекции и документацию до отправки для предотвращения задержек в порту. Для срочных запчастей доступен авиафрахт с доставкой за 7-14 дней.",
@@ -1166,7 +1166,7 @@ const destinationsRu: Destination[] = [
     heroDescription: "Мы доставляем технику из США и Канады в Сан-Антонио — крупнейший грузовой порт Чили, обслуживающий Сантьяго и центральную сельскохозяйственную долину. Срок транзита в среднем 25-32 дня через Панамский канал с еженедельными отправками из портов Мексиканского залива и Восточного побережья.",
     transitDays: "25-32",
     carriers: ["Hapag-Lloyd", "Maersk", "CMA CGM", "MSC"],
-    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Жатки", "Почвообрабатывающая техника"],
+    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Жатки"],
     shippingNotes: "Чили имеет упрощённые таможенные процедуры и соглашение о свободной торговле с США. Большинство сельхозтехники ввозится беспошлинно или по сниженным тарифам в рамках ССТ. Требуется деревянная упаковка ISPM-15. Доступен авиафрахт для срочных запчастей с доставкой за 7-14 дней.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "Стандарт 20 футов"],
     faqs: [
@@ -1185,7 +1185,7 @@ const destinationsRu: Destination[] = [
     heroDescription: "Мы доставляем технику из США и Канады в Кальяо — главный порт Перу, обслуживающий Лиму и сельскохозяйственный центр страны. Срок транзита в среднем 20-28 дней с прямыми рейсами из портов Залива и Восточного побережья.",
     transitDays: "20-28",
     carriers: ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
-    commonEquipment: ["Комбайны", "Тракторы", "Экскаваторы", "Погрузчики", "Опрыскиватели", "Почвообрабатывающая техника"],
+    commonEquipment: ["Комбайны", "Тракторы", "Экскаваторы", "Погрузчики", "Опрыскиватели"],
     shippingNotes: "Перу требует сертификат инспекции для ввоза бывшей в употреблении техники. SUNAT (перуанская таможня) требует предварительную электронную декларацию. Мы координируем предотгрузочные инспекции и готовим всю документацию. Деревянная упаковка ISPM-15 обязательна. Доступен авиафрахт для срочных запчастей с доставкой за 5-10 дней.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "Стандарт 20 футов"],
     faqs: [
@@ -1204,7 +1204,7 @@ const destinationsRu: Destination[] = [
     heroDescription: "Мы доставляем технику из США и Канады в Монтевидео — главный порт Уругвая и ворота в одну из самых продуктивных сельскохозяйственных экономик Южной Америки. Срок транзита в среднем 28-35 дней.",
     transitDays: "28-35",
     carriers: ["Maersk", "MSC", "Hapag-Lloyd", "CMA CGM"],
-    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Жатки", "Почвообрабатывающая техника"],
+    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Жатки"],
     shippingNotes: "Уругвай имеет относительно простые процедуры импорта сельхозтехники. Требуется декларация на ввоз и деревянная упаковка ISPM-15. Уругвай — член Меркосур. Мы координируем всю документацию включая консульскую легализацию при необходимости.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "Стандарт 20 футов"],
     faqs: [
@@ -1223,7 +1223,7 @@ const destinationsRu: Destination[] = [
     heroDescription: "Мы доставляем технику из США и Канады в Парагвай через Буэнос-Айрес и речную баржу по реке Парана до Асунсьона. Парагвай — страна без выхода к морю, требующая мультимодальной маршрутизации — мы управляем всей логистической цепочкой за 35-45 дней.",
     transitDays: "35-45",
     carriers: ["Maersk", "MSC", "Hapag-Lloyd", "Hamburg Süd"],
-    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Жатки", "Почвообрабатывающая техника"],
+    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Жатки"],
     shippingNotes: "Парагвай — страна без выхода к морю. Грузы идут морем до Буэнос-Айреса, затем перегружаются на речные баржи по маршруту реки Парана до Асунсьона. Мы управляем всей мультимодальной цепочкой. Парагвай — член Меркосур с упрощёнными процедурами ввоза сельхозтехники. Деревянная упаковка ISPM-15 обязательна.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top"],
     faqs: [
@@ -1261,7 +1261,7 @@ const destinationsRu: Destination[] = [
     heroDescription: "Мы доставляем технику из США и Канады в Боливию через Арику, Чили — назначенный тихоокеанский транзитный порт Боливии по двустороннему соглашению. Грузы идут морем до Арики, затем по суше до Санта-Круса или Ла-Паса за 35-45 дней.",
     transitDays: "35-45",
     carriers: ["Hapag-Lloyd", "Maersk", "CMA CGM", "MSC"],
-    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Экскаваторы", "Почвообрабатывающая техника"],
+    commonEquipment: ["Комбайны", "Тракторы", "Сеялки", "Опрыскиватели", "Экскаваторы"],
     shippingNotes: "Боливия — страна без выхода к морю. Грузы идут морем до Арики (Чили), затем автотранспортом до Санта-Круса, Кочабамбы или Ла-Паса. Боливия имеет двустороннее соглашение с Чили на беспошлинный транзит через Арику. Мы управляем всей логистической цепочкой. Деревянная упаковка ISPM-15 обязательна.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top"],
     faqs: [
