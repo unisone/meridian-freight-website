@@ -49,9 +49,9 @@ export function GoogleAnalytics() {
           function gtag(){dataLayer.push(arguments);}
           gtag('consent', 'default', {
             'analytics_storage': 'granted',
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied',
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted',
             'wait_for_update': 500
           });
           gtag('consent', 'default', {
