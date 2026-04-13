@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0 # Full history needed for merge detection
 
       - name: Delete stale branches
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const protectedBranches = new Set(['main', 'production', 'staging']);
