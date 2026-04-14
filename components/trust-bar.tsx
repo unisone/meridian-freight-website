@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useInView } from "motion/react";
-import { TrendingUp, Clock, Ship, Star, FileText, Package } from "lucide-react";
+import { TrendingUp, Clock, Ship, Globe, FileText, Package } from "lucide-react";
 import { useCountUp } from "@/hooks/use-count-up";
 import { STATS } from "@/lib/constants";
 import { useTranslations } from "next-intl";
@@ -52,7 +52,7 @@ export function TrustBar() {
     { icon: TrendingUp, labelKey: "machinesShipped", value: STATS.projectsCompleted, suffix: "+" },
     { icon: Clock, labelKey: "yearsInBusiness", value: STATS.yearsExperience, suffix: "+" },
     { icon: Ship, labelKey: "airOceanFreight", value: null, suffix: null },
-    { icon: Star, labelKey: "googleRating", value: null, suffix: null },
+    { icon: Globe, labelKey: "multilingualTeam", value: null, suffix: null },
     { icon: FileText, labelKey: "exportDocs", value: null, suffix: null },
     { icon: Package, labelKey: "fullyInsured", value: null, suffix: null },
   ];
