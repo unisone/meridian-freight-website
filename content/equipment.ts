@@ -16,28 +16,36 @@ export interface EquipmentType {
   relatedServiceSlugs: string[];
   faqs?: FaqEntry[];
   typicalPriceRange?: string;
+  // Soft secondary line addressing buyers still searching for the right machine.
+  // The {link} placeholder is replaced at render time with a Link to /services/equipment-sales,
+  // wrapping `sourcingLinkLabel` as the anchor text.
+  sourcingNote?: string;
+  sourcingLinkLabel?: string;
 }
 
 const equipmentTypesEn: EquipmentType[] = [
   {
     slug: "combines",
-    title: "Combine Harvester Export & Shipping",
+    title: "Used Combines from USA — Turnkey Export to Your Country",
     pluralName: "Combines",
     singularName: "Combine",
-    metaTitle: "Combine Export & Shipping | Meridian Export",
+    metaTitle: "Used Combine Export from USA | Meridian Export",
     metaDescription:
-      "Export your combine harvester worldwide. Professional dismantling, container packing, and ocean shipping for John Deere, Case IH, Claas, and AGCO combines.",
+      "Import used John Deere, Case IH, and Claas combines from USA. We handle pickup at the seller, dismantling, container loading, export docs, and ocean freight.",
     keywords: [
-      "combine harvester export",
-      "ship combine overseas",
-      "John Deere combine shipping",
-      "Case IH combine export",
+      "import used combine from USA",
+      "used John Deere combine for export",
+      "buy combine harvester USA",
+      "Case IH combine export to LATAM",
       "used combine international shipping",
       "combine harvester container packing",
       "export combine from USA",
     ],
     heroDescription:
-      "Your combine represents a major investment, and shipping it overseas demands specialized handling. We export John Deere, Case IH, Claas, and AGCO combines to buyers across Africa, South America, Central Asia, and the Middle East with full dismantling, packing, and documentation.",
+      "We handle the full export of used combines from the USA to your country. Pickup at the seller, professional dismantling, container loading, export documentation, and door-to-door ocean or air freight — one contract, one team, one invoice.",
+    sourcingNote:
+      "Still searching for the right combine? We can also help you find one through our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["John Deere", "Case IH", "Claas", "AGCO"],
     commonModels: [
       "John Deere S780",
@@ -59,23 +67,26 @@ const equipmentTypesEn: EquipmentType[] = [
   },
   {
     slug: "tractors",
-    title: "Tractor Export & Shipping",
+    title: "Used Tractors from USA — Turnkey Export Worldwide",
     pluralName: "Tractors",
     singularName: "Tractor",
-    metaTitle: "Tractor Export & Shipping | Meridian Export",
+    metaTitle: "Used Tractor Export from USA | Meridian Export",
     metaDescription:
-      "Ship tractors from the USA worldwide. We handle John Deere, Case IH, Kubota, and New Holland tractor export with professional packing and ocean freight.",
+      "Import used John Deere, Case IH, Kubota, and New Holland tractors from USA. We pick up, pack, load, document, and ship door-to-door to your farm.",
     keywords: [
-      "tractor export USA",
-      "ship tractor overseas",
-      "John Deere tractor shipping",
+      "import used tractor from USA",
+      "buy used John Deere tractor for export",
+      "ship tractor from USA to my country",
       "used tractor international export",
       "tractor container loading",
       "farm tractor ocean freight",
       "export tractor to Africa",
     ],
     heroDescription:
-      "Whether you are buying a single utility tractor or a fleet of row-crop machines, we get your equipment from any US or Canadian location to your farm overseas. We handle John Deere, Case IH, Kubota, and New Holland tractors of every size and configuration.",
+      "From a single utility tractor to a fleet of row-crop machines, we move your purchase from any US or Canadian seller to your farm. Pickup, professional packing, container loading, export documentation, and ocean or air freight — all in one contract.",
+    sourcingNote:
+      "Need help finding the right tractor? We can source it for you from our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["John Deere", "Case IH", "Kubota", "New Holland"],
     commonModels: [
       "John Deere 8R 410",
@@ -97,23 +108,26 @@ const equipmentTypesEn: EquipmentType[] = [
   },
   {
     slug: "excavators",
-    title: "Excavator Export & Shipping",
+    title: "Used Excavators from USA — Turnkey Export Service",
     pluralName: "Excavators",
     singularName: "Excavator",
-    metaTitle: "Excavator Export & Shipping | Meridian Export",
+    metaTitle: "Used Excavator Export from USA | Meridian Export",
     metaDescription:
-      "Export excavators from the USA. We ship CAT, Komatsu, Hitachi, and Volvo excavators worldwide with flat rack loading, tie-down, and full documentation.",
+      "Import used CAT, Komatsu, Hitachi, and Volvo excavators from USA. Flat-rack loading, professional securing, export documentation, and ocean freight worldwide.",
     keywords: [
-      "excavator export shipping",
-      "ship excavator overseas",
-      "CAT excavator international shipping",
-      "Komatsu excavator export",
+      "import used excavator from USA",
+      "buy used CAT excavator for export",
+      "Komatsu excavator export from USA",
       "used excavator ocean freight",
       "heavy equipment export USA",
       "excavator flat rack shipping",
+      "ship excavator from USA to my country",
     ],
     heroDescription:
-      "Excavators are among the most commonly exported heavy machines, and getting them secured for ocean transit takes experience. We ship CAT, Komatsu, Hitachi, and Volvo excavators on flat racks and in open-top containers to construction sites worldwide.",
+      "We export used CAT, Komatsu, Hitachi, and Volvo excavators from the USA to construction sites worldwide. Seller pickup, flat-rack loading and professional securing, export documentation, and ocean freight — handled end-to-end by one team.",
+    sourcingNote:
+      "Still hunting for a specific excavator? We can locate one for you through our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["CAT", "Komatsu", "Hitachi", "Volvo"],
     commonModels: [
       "CAT 330 GC",
@@ -134,23 +148,26 @@ const equipmentTypesEn: EquipmentType[] = [
   },
   {
     slug: "planters",
-    title: "Planter Export & Shipping",
+    title: "Used Planters from USA — Turnkey Export to Your Farm",
     pluralName: "Planters",
     singularName: "Planter",
-    metaTitle: "Planter Export & Shipping | Meridian Export",
+    metaTitle: "Used Planter Export from USA | Meridian Export",
     metaDescription:
-      "Export planters and seeding equipment worldwide. We ship Kinze, John Deere, Case IH, and Great Plains planters with careful row-unit protection and packing.",
+      "Import used Kinze, John Deere, Case IH, and Great Plains planters from USA. Careful row-unit handling, documentation, and door-to-door ocean freight.",
     keywords: [
-      "planter export shipping",
-      "ship planter overseas",
-      "John Deere planter export",
-      "Kinze planter international shipping",
+      "import used planter from USA",
+      "buy used Kinze planter for export",
+      "John Deere planter export from USA",
       "precision planter ocean freight",
       "seed drill export USA",
       "row planter container packing",
+      "ship planter from USA to my country",
     ],
     heroDescription:
-      "Precision planters have delicate row units, seed meters, and GPS components that need careful handling during export. We ship Kinze, John Deere, Case IH, and Great Plains planters to farms worldwide, protecting every component from seed tubes to closing wheels.",
+      "We export used precision planters from the USA — Kinze, John Deere, Case IH, and Great Plains — to farms worldwide. Seller pickup, careful row-unit and electronics protection, container loading, export paperwork, and door-to-door freight under one contract.",
+    sourcingNote:
+      "Looking for a specific planter model or row count? We can source it through our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["Kinze", "John Deere", "Case IH", "Great Plains"],
     commonModels: [
       "Kinze 3660",
@@ -171,23 +188,26 @@ const equipmentTypesEn: EquipmentType[] = [
   },
   {
     slug: "sprayers",
-    title: "Sprayer Export & Shipping",
+    title: "Used Sprayers from USA — Turnkey Export Worldwide",
     pluralName: "Sprayers",
     singularName: "Sprayer",
-    metaTitle: "Sprayer Export & Shipping | Meridian Export",
+    metaTitle: "Used Sprayer Export from USA | Meridian Export",
     metaDescription:
-      "Export self-propelled and pull-type sprayers worldwide. Boom folding, tank cleaning, and secure shipping for John Deere, Case IH, and Apache sprayers.",
+      "Import used John Deere, Case IH, Apache, and Hagie sprayers from USA. Tank cleaning, boom folding, documentation, and ocean freight to your country.",
     keywords: [
-      "sprayer export shipping",
-      "self-propelled sprayer export",
-      "John Deere sprayer shipping",
-      "Case IH Patriot export",
+      "import used sprayer from USA",
+      "buy used self-propelled sprayer for export",
+      "Case IH Patriot export from USA",
+      "John Deere sprayer export to LATAM",
       "agricultural sprayer ocean freight",
       "spray boom container packing",
       "Apache sprayer international shipping",
     ],
     heroDescription:
-      "Self-propelled sprayers have wide booms, tall clearances, and chemical residue requirements that make export logistics complex. We ship John Deere, Case IH, Apache, and Hagie sprayers with proper boom folding, tank cleaning, and secure container loading.",
+      "We export used self-propelled sprayers — John Deere, Case IH, Apache, and Hagie — from the USA. Tank cleaning and certification, boom folding, flat-rack or container loading, full export documentation, and ocean freight handled in one workflow.",
+    sourcingNote:
+      "Still looking for the right sprayer? We can find one for you in our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["John Deere", "Case IH", "Apache", "Hagie"],
     commonModels: [
       "John Deere R4045",
@@ -208,23 +228,26 @@ const equipmentTypesEn: EquipmentType[] = [
   },
   {
     slug: "headers",
-    title: "Header Export & Shipping",
+    title: "Used Combine Headers from USA — Turnkey Export",
     pluralName: "Headers",
     singularName: "Header",
-    metaTitle: "Header Export & Shipping | Meridian Export",
+    metaTitle: "Used Header Export from USA | Meridian Export",
     metaDescription:
-      "Export combine headers and draper platforms worldwide. We ship Shelbourne, MacDon, John Deere, and Draper headers with custom crating and container packing.",
+      "Import used MacDon, Shelbourne, Draper, and John Deere headers from USA. Custom crating, multi-header consolidation, documentation, and ocean freight.",
     keywords: [
-      "combine header export",
+      "import used combine header from USA",
+      "buy MacDon header for export",
+      "Shelbourne header export from USA",
       "draper header shipping",
-      "MacDon header international shipping",
-      "Shelbourne header export USA",
       "grain header ocean freight",
       "corn header container packing",
       "flex header export shipping",
     ],
     heroDescription:
-      "Headers are wide, awkward to handle, and easy to damage during shipping if not packed correctly. We export Shelbourne, MacDon, Draper, and John Deere headers with custom-built crating that protects knife sections, auger fingers, and draper belts throughout ocean transit.",
+      "We export used combine headers from the USA — MacDon, Shelbourne, Draper, John Deere — with custom-built crating that protects knife sections, draper belts, and reel components through ocean transit. Pickup, packing, paperwork, and freight all in one contract.",
+    sourcingNote:
+      "Need a specific header for your combine? We can source it through our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["Shelbourne", "MacDon", "Draper", "John Deere"],
     commonModels: [
       "Shelbourne Reynolds CVS32",
@@ -245,23 +268,26 @@ const equipmentTypesEn: EquipmentType[] = [
   },
   {
     slug: "bulldozers",
-    title: "Bulldozer Export & Shipping",
+    title: "Used Bulldozers from USA — Turnkey Export Worldwide",
     pluralName: "Bulldozers",
     singularName: "Bulldozer",
-    metaTitle: "Bulldozer Export & Shipping | Meridian Export",
+    metaTitle: "Used Bulldozer Export from USA | Meridian Export",
     metaDescription:
-      "Export bulldozers from the USA worldwide. We ship CAT, Komatsu, John Deere, and Case bulldozers on flat racks with professional securing and documentation.",
+      "Import used CAT, Komatsu, John Deere, and Case bulldozers from USA. Flat-rack securing, weight-balanced loading, documentation, and ocean freight.",
     keywords: [
-      "bulldozer export shipping",
-      "ship bulldozer overseas",
-      "CAT bulldozer international shipping",
-      "Komatsu dozer export",
+      "import used bulldozer from USA",
+      "buy used CAT dozer for export",
+      "Komatsu dozer export from USA",
       "used bulldozer ocean freight",
       "heavy dozer flat rack shipping",
+      "ship bulldozer from USA to my country",
       "bulldozer export from USA",
     ],
     heroDescription:
-      "Bulldozers are some of the heaviest machines we ship, and their weight demands careful load planning and flat rack securing. We export CAT, Komatsu, John Deere, and Case bulldozers to mining and construction operations on every continent.",
+      "We export used CAT, Komatsu, John Deere, and Case bulldozers from the USA to mining and construction operations on every continent. Seller pickup, flat-rack securing with center-of-gravity calculation, export documentation, and ocean freight — one team, one contract.",
+    sourcingNote:
+      "Hunting for a specific dozer class or model? We can locate one through our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["CAT", "Komatsu", "John Deere", "Case"],
     commonModels: [
       "CAT D6T",
@@ -282,23 +308,26 @@ const equipmentTypesEn: EquipmentType[] = [
   },
   {
     slug: "loaders",
-    title: "Loader Export & Shipping",
+    title: "Used Wheel Loaders from USA — Turnkey Export",
     pluralName: "Loaders",
     singularName: "Loader",
-    metaTitle: "Loader Export & Shipping | Meridian Export",
+    metaTitle: "Used Loader Export from USA | Meridian Export",
     metaDescription:
-      "Export wheel loaders and skid steers worldwide. We ship CAT, John Deere, Volvo, and Komatsu loaders in containers and on flat racks with full export support.",
+      "Import used CAT, John Deere, Volvo, and Komatsu wheel loaders and skid steers from USA. Container or flat-rack loading, documentation, and ocean freight.",
     keywords: [
-      "loader export shipping",
-      "wheel loader international shipping",
-      "CAT loader export USA",
-      "skid steer export overseas",
+      "import used wheel loader from USA",
+      "buy used CAT loader for export",
+      "skid steer export from USA",
       "John Deere loader ocean freight",
       "front loader container packing",
+      "ship loader from USA to my country",
       "Volvo loader export shipping",
     ],
     heroDescription:
-      "From compact skid steers that fit inside a container to large wheel loaders that require flat rack shipping, we handle every size. We export CAT, John Deere, Volvo, and Komatsu loaders to construction and agriculture operations worldwide.",
+      "We export used wheel loaders and skid steers from the USA — CAT, John Deere, Volvo, and Komatsu — in containers or on flat racks depending on size. Pickup, packing, loading, full export paperwork, and door-to-door freight handled by one team.",
+    sourcingNote:
+      "Still searching for the right loader? We can source it from our {link} across the USA and Canada.",
+    sourcingLinkLabel: "network of dealers, auctions, and private sellers",
     brands: ["CAT", "John Deere", "Volvo", "Komatsu"],
     commonModels: [
       "CAT 950 GC",
@@ -322,23 +351,26 @@ const equipmentTypesEn: EquipmentType[] = [
 const equipmentTypesEs: EquipmentType[] = [
   {
     slug: "combines",
-    title: "Exportación y Envío de Cosechadoras",
+    title: "Cosechadoras Usadas desde EE.UU. — Exportación Llave en Mano",
     pluralName: "Cosechadoras",
     singularName: "Cosechadora",
-    metaTitle: "Exportación y Envío de Cosechadoras | Meridian Export",
+    metaTitle: "Cosechadoras Usadas desde EE.UU. | Meridian Export",
     metaDescription:
-      "Exporte su cosechadora a todo el mundo. Desmontaje profesional, embalaje en contenedor y flete marítimo para cosechadoras John Deere, Case IH, Claas y AGCO.",
+      "Importe cosechadoras John Deere, Case IH y Claas usadas desde EE.UU. Retiro en el vendedor, desmontaje, contenedor, documentos y flete puerta a puerta.",
     keywords: [
-      "exportación de cosechadora",
-      "enviar cosechadora al exterior",
-      "envío de cosechadora John Deere",
-      "exportación de cosechadora Case IH",
+      "importar cosechadora usada desde USA",
+      "comprar cosechadora John Deere usada",
+      "exportación de cosechadora desde USA a Latinoamérica",
       "envío internacional de cosechadora usada",
       "embalaje de cosechadora en contenedor",
       "exportar cosechadora desde USA",
+      "cosechadora Case IH usada para exportación",
     ],
     heroDescription:
-      "Su cosechadora representa una inversión importante, y enviarla al exterior requiere manejo especializado. Exportamos cosechadoras John Deere, Case IH, Claas y AGCO a compradores en África, Sudamérica, Asia Central y Medio Oriente con desmontaje completo, embalaje y documentación.",
+      "Organizamos la exportación completa de cosechadoras usadas desde Estados Unidos hasta su país. Retiro en el vendedor, desmontaje profesional, carga en contenedor, documentación de exportación y entrega marítima o aérea puerta a puerta — un solo contrato, un solo equipo, una sola factura.",
+    sourcingNote:
+      "¿Aún busca la cosechadora adecuada? También podemos ayudarle a encontrarla a través de nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["John Deere", "Case IH", "Claas", "AGCO"],
     commonModels: [
       "John Deere S780",
@@ -360,23 +392,26 @@ const equipmentTypesEs: EquipmentType[] = [
   },
   {
     slug: "tractors",
-    title: "Exportación y Envío de Tractores",
+    title: "Tractores Usados desde EE.UU. — Exportación Llave en Mano",
     pluralName: "Tractores",
     singularName: "Tractor",
-    metaTitle: "Exportación y Envío de Tractores | Meridian Export",
+    metaTitle: "Tractores Usados desde EE.UU. | Meridian Export",
     metaDescription:
-      "Envíe tractores desde USA a todo el mundo. Manejamos la exportación de tractores John Deere, Case IH, Kubota y New Holland con embalaje profesional y flete marítimo.",
+      "Importe tractores John Deere, Case IH, Kubota y New Holland usados desde EE.UU. Retiro, embalaje, carga, documentación y flete marítimo a su campo.",
     keywords: [
-      "exportación de tractor USA",
-      "enviar tractor al exterior",
-      "envío de tractor John Deere",
-      "exportación internacional de tractor usado",
+      "importar tractor usado desde USA",
+      "comprar tractor John Deere usado",
+      "exportación de tractor desde USA a Latinoamérica",
+      "tractor agrícola usado para exportación",
       "carga de tractor en contenedor",
       "flete marítimo de tractor agrícola",
       "exportar tractor a Latinoamérica",
     ],
     heroDescription:
-      "Ya sea que compre un solo tractor utilitario o una flota de máquinas para cultivos en hilera, llevamos su equipo desde cualquier ubicación en USA o Canadá a su campo en el exterior. Manejamos tractores John Deere, Case IH, Kubota y New Holland de todos los tamaños y configuraciones.",
+      "Desde un solo tractor utilitario hasta una flota de máquinas para cultivos en hilera, llevamos su compra desde cualquier vendedor en USA o Canadá hasta su campo. Retiro, embalaje profesional, carga en contenedor, documentación de exportación y flete marítimo o aéreo — todo en un solo contrato.",
+    sourcingNote:
+      "¿Necesita ayuda para encontrar el tractor adecuado? Podemos buscarlo en nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["John Deere", "Case IH", "Kubota", "New Holland"],
     commonModels: [
       "John Deere 8R 410",
@@ -398,23 +433,26 @@ const equipmentTypesEs: EquipmentType[] = [
   },
   {
     slug: "excavators",
-    title: "Exportación y Envío de Excavadoras",
+    title: "Excavadoras Usadas desde EE.UU. — Exportación Llave en Mano",
     pluralName: "Excavadoras",
     singularName: "Excavadora",
-    metaTitle: "Exportación y Envío de Excavadoras | Meridian Export",
+    metaTitle: "Excavadoras Usadas desde EE.UU. | Meridian Export",
     metaDescription:
-      "Exporte excavadoras desde USA. Enviamos excavadoras CAT, Komatsu, Hitachi y Volvo a todo el mundo con carga en flat rack, amarre y documentación completa.",
+      "Importe excavadoras CAT, Komatsu, Hitachi y Volvo usadas desde EE.UU. Carga en flat rack, amarre profesional, documentación y flete marítimo mundial.",
     keywords: [
-      "exportación y envío de excavadora",
-      "enviar excavadora al exterior",
-      "envío internacional de excavadora CAT",
-      "exportación de excavadora Komatsu",
+      "importar excavadora usada desde USA",
+      "comprar excavadora CAT usada",
+      "exportación de excavadora Komatsu desde USA",
       "flete marítimo de excavadora usada",
       "exportación de equipo pesado USA",
       "envío de excavadora en flat rack",
+      "excavadora usada para exportación",
     ],
     heroDescription:
-      "Las excavadoras están entre las máquinas pesadas más exportadas, y asegurarlas para el tránsito marítimo requiere experiencia. Enviamos excavadoras CAT, Komatsu, Hitachi y Volvo en flat racks y contenedores open-top a obras de construcción en todo el mundo.",
+      "Exportamos excavadoras CAT, Komatsu, Hitachi y Volvo usadas desde Estados Unidos a obras de construcción en todo el mundo. Retiro en el vendedor, carga en flat rack con amarre profesional, documentación de exportación y flete marítimo — gestionado de extremo a extremo por un solo equipo.",
+    sourcingNote:
+      "¿Aún busca una excavadora específica? Podemos localizarla a través de nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["CAT", "Komatsu", "Hitachi", "Volvo"],
     commonModels: [
       "CAT 330 GC",
@@ -435,23 +473,26 @@ const equipmentTypesEs: EquipmentType[] = [
   },
   {
     slug: "planters",
-    title: "Exportación y Envío de Sembradoras",
+    title: "Sembradoras Usadas desde EE.UU. — Exportación Llave en Mano",
     pluralName: "Sembradoras",
     singularName: "Sembradora",
-    metaTitle: "Exportación y Envío de Sembradoras | Meridian Export",
+    metaTitle: "Sembradoras Usadas desde EE.UU. | Meridian Export",
     metaDescription:
-      "Exporte sembradoras y equipo de siembra a todo el mundo. Enviamos sembradoras Kinze, John Deere, Case IH y Great Plains con protección cuidadosa de unidades de hilera.",
+      "Importe sembradoras Kinze, John Deere, Case IH y Great Plains usadas desde EE.UU. Cuidado de unidades de hilera, embalaje, documentación y flete marítimo.",
     keywords: [
-      "exportación y envío de sembradora",
-      "enviar sembradora al exterior",
-      "exportación de sembradora John Deere",
-      "envío internacional de sembradora Kinze",
+      "importar sembradora usada desde USA",
+      "comprar sembradora John Deere usada",
+      "sembradora Kinze para exportación desde USA",
       "flete marítimo de sembradora de precisión",
       "exportación de sembradora desde USA",
       "embalaje de sembradora en contenedor",
+      "sembradora de precisión usada para exportación",
     ],
     heroDescription:
-      "Las sembradoras de precisión tienen unidades de hilera delicadas, dosificadores de semilla y componentes GPS que necesitan manejo cuidadoso durante la exportación. Enviamos sembradoras Kinze, John Deere, Case IH y Great Plains a campos en todo el mundo, protegiendo cada componente desde tubos de semilla hasta ruedas cerradoras.",
+      "Exportamos sembradoras de precisión usadas desde Estados Unidos — Kinze, John Deere, Case IH y Great Plains — a campos en todo el mundo. Retiro en el vendedor, protección de unidades de hilera y electrónica, carga en contenedor, documentación de exportación y flete puerta a puerta en un solo contrato.",
+    sourcingNote:
+      "¿Busca un modelo o número de hileras específico de sembradora? Podemos conseguirla en nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["Kinze", "John Deere", "Case IH", "Great Plains"],
     commonModels: [
       "Kinze 3660",
@@ -472,23 +513,26 @@ const equipmentTypesEs: EquipmentType[] = [
   },
   {
     slug: "sprayers",
-    title: "Exportación y Envío de Pulverizadoras",
+    title: "Pulverizadoras Usadas desde EE.UU. — Servicio Llave en Mano",
     pluralName: "Pulverizadoras",
     singularName: "Pulverizadora",
-    metaTitle: "Exportación y Envío de Pulverizadoras | Meridian Export",
+    metaTitle: "Pulverizadoras Usadas desde EE.UU. | Meridian Export",
     metaDescription:
-      "Exporte pulverizadoras autopropulsadas y de arrastre a todo el mundo. Plegado de barras, limpieza de tanques y envío seguro para pulverizadoras John Deere, Case IH y Apache.",
+      "Importe pulverizadoras autopropulsadas John Deere, Case IH, Apache y Hagie usadas desde EE.UU. Limpieza de tanques, plegado de barras y flete marítimo.",
     keywords: [
-      "exportación y envío de pulverizadora",
-      "exportación de pulverizadora autopropulsada",
-      "envío de pulverizadora John Deere",
-      "exportación de Case IH Patriot",
+      "importar pulverizadora usada desde USA",
+      "comprar pulverizadora autopropulsada usada",
+      "exportación de Case IH Patriot desde USA",
+      "pulverizadora John Deere para exportación",
       "flete marítimo de pulverizadora agrícola",
       "embalaje de barra de pulverización en contenedor",
       "envío internacional de pulverizadora Apache",
     ],
     heroDescription:
-      "Las pulverizadoras autopropulsadas tienen barras anchas, alta despeje y requisitos de residuos químicos que hacen compleja la logística de exportación. Enviamos pulverizadoras John Deere, Case IH, Apache y Hagie con plegado adecuado de barras, limpieza de tanques y carga segura en contenedor.",
+      "Exportamos pulverizadoras autopropulsadas usadas desde Estados Unidos — John Deere, Case IH, Apache y Hagie. Limpieza y certificación de tanques, plegado de barras, carga en flat rack o contenedor, documentación completa de exportación y flete marítimo gestionados en un solo flujo de trabajo.",
+    sourcingNote:
+      "¿Aún busca la pulverizadora correcta? Podemos encontrarla en nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["John Deere", "Case IH", "Apache", "Hagie"],
     commonModels: [
       "John Deere R4045",
@@ -509,23 +553,26 @@ const equipmentTypesEs: EquipmentType[] = [
   },
   {
     slug: "headers",
-    title: "Exportación y Envío de Cabezales",
+    title: "Cabezales Usados desde EE.UU. — Exportación Llave en Mano",
     pluralName: "Cabezales",
     singularName: "Cabezal",
-    metaTitle: "Exportación y Envío de Cabezales | Meridian Export",
+    metaTitle: "Cabezales Usados desde EE.UU. | Meridian Export",
     metaDescription:
-      "Exporte cabezales de cosechadora y plataformas draper a todo el mundo. Enviamos cabezales Shelbourne, MacDon, John Deere y Draper con embalaje personalizado.",
+      "Importe cabezales MacDon, Shelbourne, Draper y John Deere usados desde EE.UU. Embalaje a medida, consolidación, documentación y flete marítimo.",
     keywords: [
-      "exportación de cabezal de cosechadora",
+      "importar cabezal de cosechadora desde USA",
+      "comprar cabezal MacDon usado",
+      "cabezal Shelbourne para exportación desde USA",
       "envío de cabezal draper",
-      "envío internacional de cabezal MacDon",
-      "exportación de cabezal Shelbourne USA",
       "flete marítimo de cabezal de grano",
       "embalaje de cabezal de maíz en contenedor",
       "exportación de cabezal flexible",
     ],
     heroDescription:
-      "Los cabezales son anchos, difíciles de manejar y fáciles de dañar durante el envío si no se empacan correctamente. Exportamos cabezales Shelbourne, MacDon, Draper y John Deere con embalaje a medida que protege las secciones de cuchilla, dedos de sin-fin y bandas draper durante todo el tránsito marítimo.",
+      "Exportamos cabezales de cosechadora usados desde Estados Unidos — MacDon, Shelbourne, Draper, John Deere — con embalaje a medida que protege secciones de cuchilla, bandas draper y componentes del molinete durante todo el tránsito marítimo. Manejamos retiro, embalaje, papeleo y flete.",
+    sourcingNote:
+      "¿Necesita un cabezal específico para su cosechadora? Podemos conseguirlo en nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["Shelbourne", "MacDon", "Draper", "John Deere"],
     commonModels: [
       "Shelbourne Reynolds CVS32",
@@ -546,23 +593,26 @@ const equipmentTypesEs: EquipmentType[] = [
   },
   {
     slug: "bulldozers",
-    title: "Exportación y Envío de Bulldozers",
+    title: "Bulldozers Usados desde EE.UU. — Exportación Llave en Mano",
     pluralName: "Bulldozers",
     singularName: "Bulldozer",
-    metaTitle: "Exportación y Envío de Bulldozers | Meridian Export",
+    metaTitle: "Bulldozers Usados desde EE.UU. | Meridian Export",
     metaDescription:
-      "Exporte bulldozers desde USA a todo el mundo. Enviamos bulldozers CAT, Komatsu, John Deere y Case en flat racks con aseguramiento profesional y documentación.",
+      "Importe bulldozers CAT, Komatsu, John Deere y Case usados desde EE.UU. Aseguramiento en flat rack, carga balanceada, documentación y flete marítimo.",
     keywords: [
-      "exportación y envío de bulldozer",
-      "enviar bulldozer al exterior",
-      "envío internacional de bulldozer CAT",
-      "exportación de dozer Komatsu",
+      "importar bulldozer usado desde USA",
+      "comprar dozer CAT usado",
+      "exportación de dozer Komatsu desde USA",
       "flete marítimo de bulldozer usado",
       "envío de dozer pesado en flat rack",
+      "enviar bulldozer desde USA a Latinoamérica",
       "exportación de bulldozer desde USA",
     ],
     heroDescription:
-      "Los bulldozers son algunas de las máquinas más pesadas que enviamos, y su peso exige una planificación cuidadosa de la carga y aseguramiento en flat rack. Exportamos bulldozers CAT, Komatsu, John Deere y Case a operaciones de minería y construcción en todos los continentes.",
+      "Exportamos bulldozers CAT, Komatsu, John Deere y Case usados desde Estados Unidos a operaciones mineras y de construcción en todos los continentes. Retiro en el vendedor, aseguramiento en flat rack con cálculo de centro de gravedad, documentación de exportación y flete marítimo — un solo equipo, un solo contrato.",
+    sourcingNote:
+      "¿Busca una clase o modelo específico de bulldozer? Podemos localizarlo a través de nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["CAT", "Komatsu", "John Deere", "Case"],
     commonModels: [
       "CAT D6T",
@@ -583,23 +633,26 @@ const equipmentTypesEs: EquipmentType[] = [
   },
   {
     slug: "loaders",
-    title: "Exportación y Envío de Cargadores",
+    title: "Cargadores Frontales Usados desde EE.UU. — Exportación",
     pluralName: "Cargadores",
     singularName: "Cargador",
-    metaTitle: "Exportación y Envío de Cargadores | Meridian Export",
+    metaTitle: "Cargadores Usados desde EE.UU. | Meridian Export",
     metaDescription:
-      "Exporte cargadores frontales y minicargadores a todo el mundo. Enviamos cargadores CAT, John Deere, Volvo y Komatsu en contenedores y flat racks con soporte de exportación completo.",
+      "Importe cargadores frontales y minicargadores CAT, John Deere, Volvo y Komatsu usados desde EE.UU. Carga en contenedor o flat rack y flete marítimo.",
     keywords: [
-      "exportación y envío de cargador",
-      "envío internacional de cargador frontal",
-      "exportación de cargador CAT USA",
-      "exportación de minicargador al exterior",
+      "importar cargador frontal usado desde USA",
+      "comprar cargador CAT usado",
+      "exportación de minicargador desde USA",
       "flete marítimo de cargador John Deere",
       "embalaje de cargador frontal en contenedor",
+      "cargador para exportación desde USA",
       "exportación de cargador Volvo",
     ],
     heroDescription:
-      "Desde minicargadores compactos que caben dentro de un contenedor hasta grandes cargadores frontales que requieren envío en flat rack, manejamos todos los tamaños. Exportamos cargadores CAT, John Deere, Volvo y Komatsu a operaciones de construcción y agricultura en todo el mundo.",
+      "Exportamos cargadores frontales y minicargadores usados desde Estados Unidos — CAT, John Deere, Volvo y Komatsu — en contenedores o flat racks según el tamaño. Retiro, embalaje, carga, documentación de exportación y flete puerta a puerta gestionados por un solo equipo.",
+    sourcingNote:
+      "¿Aún busca el cargador adecuado? Podemos conseguirlo en nuestra {link} en USA y Canadá.",
+    sourcingLinkLabel: "red de distribuidores, subastas y vendedores privados",
     brands: ["CAT", "John Deere", "Volvo", "Komatsu"],
     commonModels: [
       "CAT 950 GC",
@@ -623,23 +676,26 @@ const equipmentTypesEs: EquipmentType[] = [
 const equipmentTypesRu: EquipmentType[] = [
   {
     slug: "combines",
-    title: "Экспорт и доставка комбайнов",
+    title: "Б/у комбайны из США — экспорт под ключ в вашу страну",
     pluralName: "Комбайны",
     singularName: "Комбайн",
-    metaTitle: "Экспорт и доставка комбайнов | Meridian Export",
+    metaTitle: "Б/у комбайны из США — экспорт под ключ | Meridian",
     metaDescription:
-      "Экспортируйте ваш зерноуборочный комбайн по всему миру. Профессиональный демонтаж, упаковка в контейнер и морской фрахт для комбайнов John Deere, Case IH, Claas и AGCO.",
+      "Импортируйте подержанные комбайны John Deere, Case IH и Claas из США. Забор у продавца, разборка, погрузка, документы и доставка дверь-в-дверь.",
     keywords: [
-      "экспорт зерноуборочного комбайна",
-      "доставка комбайна за рубеж",
-      "доставка комбайна John Deere",
-      "экспорт комбайна Case IH",
+      "купить б/у комбайн из США",
+      "импорт комбайна John Deere из США",
+      "экспорт комбайна из США в Казахстан",
+      "доставка б/у комбайна за рубеж",
       "международная доставка б/у комбайна",
       "упаковка комбайна в контейнер",
       "экспорт комбайна из США",
     ],
     heroDescription:
-      "Ваш комбайн — серьёзная инвестиция, и его отправка за рубеж требует специализированного обращения. Мы экспортируем комбайны John Deere, Case IH, Claas и AGCO покупателям в Африку, Южную Америку, Центральную Азию и на Ближний Восток с полным демонтажем, упаковкой и документацией.",
+      "Мы организуем полный экспорт подержанных комбайнов из США в вашу страну. Забор у продавца, профессиональная разборка, погрузка в контейнер, экспортная документация и доставка дверь-в-дверь морем или авиа — один договор, одна команда, один счёт.",
+    sourcingNote:
+      "Ещё ищете подходящий комбайн? Мы поможем найти его через нашу {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["John Deere", "Case IH", "Claas", "AGCO"],
     commonModels: [
       "John Deere S780",
@@ -661,23 +717,26 @@ const equipmentTypesRu: EquipmentType[] = [
   },
   {
     slug: "tractors",
-    title: "Экспорт и доставка тракторов",
+    title: "Б/у тракторы из США — экспорт под ключ",
     pluralName: "Тракторы",
     singularName: "Трактор",
-    metaTitle: "Экспорт и доставка тракторов | Meridian Export",
+    metaTitle: "Б/у тракторы из США — экспорт под ключ | Meridian",
     metaDescription:
-      "Отправляйте тракторы из США по всему миру. Мы занимаемся экспортом тракторов John Deere, Case IH, Kubota и New Holland с профессиональной упаковкой и морским фрахтом.",
+      "Импортируйте подержанные тракторы John Deere, Case IH, Kubota и New Holland из США. Забор, упаковка, погрузка, документы и морской фрахт.",
     keywords: [
-      "экспорт трактора из США",
-      "доставка трактора за рубеж",
-      "доставка трактора John Deere",
+      "купить б/у трактор из США",
+      "импорт трактора John Deere из США",
+      "экспорт трактора из США в Казахстан",
       "международный экспорт б/у трактора",
       "загрузка трактора в контейнер",
       "морской фрахт сельхозтрактора",
       "экспорт трактора в Казахстан",
     ],
     heroDescription:
-      "Покупаете ли вы один утилитарный трактор или парк пропашных машин — мы доставим вашу технику из любой точки США или Канады на ваше хозяйство за рубежом. Мы работаем с тракторами John Deere, Case IH, Kubota и New Holland всех размеров и конфигураций.",
+      "От одного утилитарного трактора до парка пропашных машин — мы доставим вашу покупку от любого продавца в США или Канаде до вашего хозяйства. Забор у продавца, профессиональная упаковка, погрузка в контейнер, экспортные документы и доставка морем или авиа — всё в одном договоре.",
+    sourcingNote:
+      "Нужна помощь с поиском нужного трактора? Мы найдём его в нашей {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["John Deere", "Case IH", "Kubota", "New Holland"],
     commonModels: [
       "John Deere 8R 410",
@@ -699,23 +758,26 @@ const equipmentTypesRu: EquipmentType[] = [
   },
   {
     slug: "excavators",
-    title: "Экспорт и доставка экскаваторов",
+    title: "Б/у экскаваторы из США — экспорт под ключ",
     pluralName: "Экскаваторы",
     singularName: "Экскаватор",
-    metaTitle: "Экспорт и доставка экскаваторов | Meridian Export",
+    metaTitle: "Б/у экскаваторы из США — под ключ | Meridian",
     metaDescription:
-      "Экспортируйте экскаваторы из США. Мы доставляем экскаваторы CAT, Komatsu, Hitachi и Volvo по всему миру с погрузкой на flat rack, креплением и полной документацией.",
+      "Импортируйте подержанные экскаваторы CAT, Komatsu, Hitachi и Volvo из США. Погрузка на flat rack, крепление, документы и морская доставка.",
     keywords: [
-      "экспорт и доставка экскаватора",
-      "доставка экскаватора за рубеж",
-      "международная доставка экскаватора CAT",
-      "экспорт экскаватора Komatsu",
+      "купить б/у экскаватор из США",
+      "импорт экскаватора CAT из США",
+      "экспорт экскаватора Komatsu из США",
       "морской фрахт б/у экскаватора",
       "экспорт тяжёлой техники из США",
       "доставка экскаватора на flat rack",
+      "экскаватор б/у для импорта",
     ],
     heroDescription:
-      "Экскаваторы — одни из наиболее часто экспортируемых тяжёлых машин, и их крепление для морского транзита требует опыта. Мы доставляем экскаваторы CAT, Komatsu, Hitachi и Volvo на flat racks и в open-top контейнерах на строительные площадки по всему миру.",
+      "Мы экспортируем подержанные экскаваторы CAT, Komatsu, Hitachi и Volvo из США на строительные объекты по всему миру. Забор у продавца, погрузка на flat rack с профессиональным креплением, экспортная документация и морской фрахт — всё под ключ от одной команды.",
+    sourcingNote:
+      "Ещё ищете конкретный экскаватор? Мы найдём его через нашу {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["CAT", "Komatsu", "Hitachi", "Volvo"],
     commonModels: [
       "CAT 330 GC",
@@ -736,23 +798,26 @@ const equipmentTypesRu: EquipmentType[] = [
   },
   {
     slug: "planters",
-    title: "Экспорт и доставка сеялок",
+    title: "Б/у сеялки из США — экспорт под ключ на ваше поле",
     pluralName: "Сеялки",
     singularName: "Сеялка",
-    metaTitle: "Экспорт и доставка сеялок | Meridian Export",
+    metaTitle: "Б/у сеялки из США — экспорт под ключ | Meridian",
     metaDescription:
-      "Экспортируйте сеялки и посевную технику по всему миру. Мы доставляем сеялки Kinze, John Deere, Case IH и Great Plains с тщательной защитой высевающих секций.",
+      "Импортируйте подержанные сеялки точного высева Kinze, John Deere, Case IH и Great Plains из США. Бережная погрузка, документы и морской фрахт.",
     keywords: [
-      "экспорт и доставка сеялки",
-      "доставка сеялки за рубеж",
-      "экспорт сеялки John Deere",
-      "международная доставка сеялки Kinze",
+      "купить б/у сеялку из США",
+      "импорт сеялки John Deere из США",
+      "сеялка Kinze из США для импорта",
       "морской фрахт сеялки точного высева",
       "экспорт сеялки из США",
       "упаковка сеялки в контейнер",
+      "сеялка точного высева б/у",
     ],
     heroDescription:
-      "Сеялки точного высева имеют деликатные высевающие секции, дозаторы семян и GPS-компоненты, требующие аккуратного обращения при экспорте. Мы доставляем сеялки Kinze, John Deere, Case IH и Great Plains на фермы по всему миру, защищая каждый компонент от семяпроводов до прикатывающих колёс.",
+      "Мы экспортируем подержанные сеялки точного высева из США — Kinze, John Deere, Case IH и Great Plains — на фермы по всему миру. Забор у продавца, защита высевающих секций и электроники, погрузка в контейнер, экспортные документы и доставка дверь-в-дверь по одному договору.",
+    sourcingNote:
+      "Ищете конкретную модель сеялки или количество рядов? Мы найдём её в нашей {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["Kinze", "John Deere", "Case IH", "Great Plains"],
     commonModels: [
       "Kinze 3660",
@@ -773,23 +838,26 @@ const equipmentTypesRu: EquipmentType[] = [
   },
   {
     slug: "sprayers",
-    title: "Экспорт и доставка опрыскивателей",
+    title: "Б/у опрыскиватели из США — экспорт под ключ",
     pluralName: "Опрыскиватели",
     singularName: "Опрыскиватель",
-    metaTitle: "Экспорт и доставка опрыскивателей | Meridian Export",
+    metaTitle: "Б/у опрыскиватели из США | Meridian Export",
     metaDescription:
-      "Экспортируйте самоходные и прицепные опрыскиватели по всему миру. Складывание штанг, очистка баков и безопасная доставка опрыскивателей John Deere, Case IH и Apache.",
+      "Импортируйте подержанные самоходные опрыскиватели John Deere, Case IH, Apache и Hagie из США. Промывка баков, складывание штанг, документы, морской фрахт.",
     keywords: [
-      "экспорт и доставка опрыскивателя",
-      "экспорт самоходного опрыскивателя",
-      "доставка опрыскивателя John Deere",
-      "экспорт Case IH Patriot",
+      "купить б/у опрыскиватель из США",
+      "импорт самоходного опрыскивателя из США",
+      "опрыскиватель Case IH Patriot из США",
+      "опрыскиватель John Deere для импорта",
       "морской фрахт сельскохозяйственного опрыскивателя",
       "упаковка штанги опрыскивателя в контейнер",
       "международная доставка опрыскивателя Apache",
     ],
     heroDescription:
-      "Самоходные опрыскиватели имеют широкие штанги, высокий клиренс и требования по остаткам химикатов, что усложняет экспортную логистику. Мы доставляем опрыскиватели John Deere, Case IH, Apache и Hagie с правильным складыванием штанг, очисткой баков и надёжной загрузкой в контейнер.",
+      "Мы экспортируем подержанные самоходные опрыскиватели из США — John Deere, Case IH, Apache и Hagie. Промывка и сертификация баков, складывание штанг, погрузка на flat rack или в контейнер, полная экспортная документация и морской фрахт — всё в одном рабочем процессе.",
+    sourcingNote:
+      "Ещё подбираете нужный опрыскиватель? Мы найдём его в нашей {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["John Deere", "Case IH", "Apache", "Hagie"],
     commonModels: [
       "John Deere R4045",
@@ -810,23 +878,26 @@ const equipmentTypesRu: EquipmentType[] = [
   },
   {
     slug: "headers",
-    title: "Экспорт и доставка жаток",
+    title: "Б/у жатки для комбайнов из США — экспорт под ключ",
     pluralName: "Жатки",
     singularName: "Жатка",
-    metaTitle: "Экспорт и доставка жаток | Meridian Export",
+    metaTitle: "Б/у жатки из США — экспорт под ключ | Meridian",
     metaDescription:
-      "Экспортируйте жатки комбайнов и платформы draper по всему миру. Мы доставляем жатки Shelbourne, MacDon, John Deere и Draper с изготовлением упаковки на заказ.",
+      "Импортируйте подержанные жатки MacDon, Shelbourne, Draper и John Deere из США. Упаковка на заказ, консолидация, документы и морской фрахт.",
     keywords: [
-      "экспорт жатки комбайна",
+      "купить б/у жатку из США",
+      "импорт жатки MacDon из США",
+      "жатка Shelbourne из США для импорта",
       "доставка жатки draper",
-      "международная доставка жатки MacDon",
-      "экспорт жатки Shelbourne из США",
       "морской фрахт зерновой жатки",
       "упаковка кукурузной жатки в контейнер",
       "экспорт флексовой жатки",
     ],
     heroDescription:
-      "Жатки широкие, неудобные в обращении и легко повреждаются при доставке без правильной упаковки. Мы экспортируем жатки Shelbourne, MacDon, Draper и John Deere с изготовлением упаковки на заказ, которая защищает ножевые секции, пальцы шнека и ленты draper на протяжении всего морского транзита.",
+      "Мы экспортируем подержанные жатки комбайнов из США — MacDon, Shelbourne, Draper, John Deere — с изготовлением упаковки на заказ, защищающей ножевые секции, ленты draper и компоненты мотовила на протяжении всего морского транзита. Забор, упаковка, документы и фрахт под ключ.",
+    sourcingNote:
+      "Нужна конкретная жатка для вашего комбайна? Мы найдём её через нашу {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["Shelbourne", "MacDon", "Draper", "John Deere"],
     commonModels: [
       "Shelbourne Reynolds CVS32",
@@ -847,23 +918,26 @@ const equipmentTypesRu: EquipmentType[] = [
   },
   {
     slug: "bulldozers",
-    title: "Экспорт и доставка бульдозеров",
+    title: "Б/у бульдозеры из США — экспорт под ключ",
     pluralName: "Бульдозеры",
     singularName: "Бульдозер",
-    metaTitle: "Экспорт и доставка бульдозеров | Meridian Export",
+    metaTitle: "Б/у бульдозеры из США — под ключ | Meridian",
     metaDescription:
-      "Экспортируйте бульдозеры из США по всему миру. Мы доставляем бульдозеры CAT, Komatsu, John Deere и Case на flat racks с профессиональным креплением и документацией.",
+      "Импортируйте подержанные бульдозеры CAT, Komatsu, John Deere и Case из США. Крепление на flat rack, балансировка, документы и морская доставка.",
     keywords: [
-      "экспорт и доставка бульдозера",
-      "доставка бульдозера за рубеж",
-      "международная доставка бульдозера CAT",
-      "экспорт бульдозера Komatsu",
+      "купить б/у бульдозер из США",
+      "импорт бульдозера CAT из США",
+      "экспорт бульдозера Komatsu из США",
       "морской фрахт б/у бульдозера",
       "доставка тяжёлого бульдозера на flat rack",
+      "бульдозер из США для импорта",
       "экспорт бульдозера из США",
     ],
     heroDescription:
-      "Бульдозеры — одни из самых тяжёлых машин, которые мы отправляем, и их вес требует тщательного планирования загрузки и крепления на flat rack. Мы экспортируем бульдозеры CAT, Komatsu, John Deere и Case на горнодобывающие и строительные объекты на всех континентах.",
+      "Мы экспортируем подержанные бульдозеры CAT, Komatsu, John Deere и Case из США на горнодобывающие и строительные объекты на всех континентах. Забор у продавца, крепление на flat rack с расчётом центра тяжести, экспортная документация и морской фрахт — одна команда, один договор.",
+    sourcingNote:
+      "Ищете конкретный класс или модель бульдозера? Мы найдём его через нашу {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["CAT", "Komatsu", "John Deere", "Case"],
     commonModels: [
       "CAT D6T",
@@ -884,23 +958,26 @@ const equipmentTypesRu: EquipmentType[] = [
   },
   {
     slug: "loaders",
-    title: "Экспорт и доставка погрузчиков",
+    title: "Б/у фронтальные погрузчики из США — экспорт под ключ",
     pluralName: "Погрузчики",
     singularName: "Погрузчик",
-    metaTitle: "Экспорт и доставка погрузчиков | Meridian Export",
+    metaTitle: "Б/у погрузчики из США — под ключ | Meridian",
     metaDescription:
-      "Экспортируйте фронтальные погрузчики и мини-погрузчики по всему миру. Мы доставляем погрузчики CAT, John Deere, Volvo и Komatsu в контейнерах и на flat racks с полной экспортной поддержкой.",
+      "Импортируйте подержанные фронтальные погрузчики и мини-погрузчики CAT, John Deere, Volvo и Komatsu из США. Контейнер или flat rack, документы, фрахт.",
     keywords: [
-      "экспорт и доставка погрузчика",
-      "международная доставка фронтального погрузчика",
-      "экспорт погрузчика CAT из США",
-      "экспорт мини-погрузчика за рубеж",
+      "купить б/у фронтальный погрузчик из США",
+      "импорт погрузчика CAT из США",
+      "экспорт мини-погрузчика из США",
       "морской фрахт погрузчика John Deere",
       "упаковка фронтального погрузчика в контейнер",
+      "погрузчик из США для импорта",
       "экспорт погрузчика Volvo",
     ],
     heroDescription:
-      "От компактных мини-погрузчиков, помещающихся в контейнер, до крупных фронтальных погрузчиков, требующих перевозки на flat rack, мы работаем с любым размером. Мы экспортируем погрузчики CAT, John Deere, Volvo и Komatsu на строительные и сельскохозяйственные объекты по всему миру.",
+      "Мы экспортируем подержанные фронтальные погрузчики и мини-погрузчики из США — CAT, John Deere, Volvo и Komatsu — в контейнерах или на flat racks в зависимости от размера. Забор, упаковка, погрузка, экспортные документы и доставка дверь-в-дверь от одной команды.",
+    sourcingNote:
+      "Ещё ищете подходящий погрузчик? Мы найдём его в нашей {link} в США и Канаде.",
+    sourcingLinkLabel: "сеть дилеров, аукционов и частных продавцов",
     brands: ["CAT", "John Deere", "Volvo", "Komatsu"],
     commonModels: [
       "CAT 950 GC",
