@@ -206,16 +206,36 @@ export default async function EquipmentPage({
             <MessageCircle className="mr-2 h-4 w-4" />
             {te("chatOnWhatsApp")}
           </TrackedContactLink>
+          {/* Hidden on mobile to keep Quote + WhatsApp above the fold on 375×667. */}
+          {/* Phone is still reachable from the inline ContactInfo block, the bottom CTA, and the header. */}
           <TrackedContactLink
             href={CONTACT.phoneHref}
             type="phone"
             location="equipment_hero"
-            className="inline-flex items-center justify-center h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold transition-colors"
+            className="hidden sm:inline-flex items-center justify-center h-12 px-8 rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-foreground font-semibold transition-colors"
           >
             <Phone className="mr-2 h-4 w-4" />
             {te("callUs")}
           </TrackedContactLink>
         </div>
+        <p className="mt-4 max-w-2xl text-xs font-medium text-sky-300/90 leading-relaxed">
+          {te("heroReassurance")}
+        </p>
+        {equipment.sourcingNote && equipment.sourcingLinkLabel && (() => {
+          const [before, after] = equipment.sourcingNote.split("{link}");
+          return (
+            <p className="mt-5 max-w-2xl text-sm text-sky-200/90 leading-relaxed">
+              {before}
+              <Link
+                href="/services/equipment-sales"
+                className="font-medium text-white underline underline-offset-4 decoration-sky-400 hover:decoration-white transition-colors"
+              >
+                {equipment.sourcingLinkLabel}
+              </Link>
+              {after}
+            </p>
+          );
+        })()}
       </PageHero>
 
       {/* 2. Trust bar — animated stats */}
