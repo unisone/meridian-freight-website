@@ -218,6 +218,9 @@ export default async function EquipmentPage({
             {te("callUs")}
           </TrackedContactLink>
         </div>
+        <p className="mt-4 max-w-2xl text-xs font-medium text-sky-300/90 leading-relaxed">
+          {te("heroReassurance")}
+        </p>
         {equipment.sourcingNote && equipment.sourcingLinkLabel && (() => {
           const [before, after] = equipment.sourcingNote.split("{link}");
           return (
