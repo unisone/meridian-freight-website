@@ -365,9 +365,11 @@ const equipmentTypesEs: EquipmentType[] = [
       "embalaje de cosechadora en contenedor",
       "exportar cosechadora desde EE.UU.",
       "cosechadora Case IH usada para exportación",
+      "importar cosechadora usada a Argentina",
+      "cosechadora usada desde EE.UU. para Argentina",
     ],
     heroDescription:
-      "Encontró la cosechadora. Nosotros la traemos hasta su puerto. Desde el vendedor en Iowa o Saskatchewan: retiro en origen, desarme cuidadoso con cada perno identificado, carga en contenedor y los documentos que pasan aduana al primer intento.",
+      "Encontró la cosechadora. Nosotros coordinamos retiro en origen, desmontaje, carga en contenedor y documentos para llevarla hasta su puerto. Desde el vendedor en Iowa o Saskatchewan, ordenamos el tramo puerta a puerto sin dejar piezas ni papeles sueltos.",
     sourcingNote:
       "¿Todavía no encontró la cosechadora adecuada? {link} puede revisar listados en Estados Unidos y Canadá y enviarle fotos de inspección en 48 horas.",
     sourcingLinkLabel: "Nuestro equipo de búsqueda",
@@ -387,6 +389,9 @@ const equipmentTypesEs: EquipmentType[] = [
       { question: "¿Retiran el cabezal antes de enviar una cosechadora?", answer: "Sí. El cabezal, la descarga, el domo GPS y otros componentes salientes se retiran, etiquetan y empacan por separado. El cuerpo principal se posiciona dentro de un contenedor 40ft high-cube o se asegura en un flat rack.", category: "Cosechadoras" },
       { question: "¿Cabe una cosechadora en un contenedor estándar de 40ft?", answer: "La mayoría de las cosechadoras requieren un contenedor 40ft high-cube después del desmontaje parcial, o un flat rack para modelos más grandes. Medimos su modelo específico y recomendamos la opción de contenedor más económica.", category: "Cosechadoras" },
       { question: "¿Qué marcas de cosechadoras exportan con más frecuencia?", answer: "John Deere Serie S, Case IH Axial-Flow, Claas Lexion y AGCO Gleaner son nuestras cosechadoras más enviadas. Conocemos las especificaciones de desmontaje de cada marca y contamos con el equipo de maniobra adecuado.", category: "Cosechadoras" },
+      { question: "¿Qué incluye una cotización puerta a puerto para Argentina?", answer: "Nuestra cotización normalmente cubre coordinación con el vendedor, retiro en origen, desmontaje, embalaje de exportación, documentos de salida y reserva marítima hasta puerto. Despachante, tributos, tasas locales, AFIDI o controles de SENASA cuando correspondan y el flete interior en Argentina se revisan aparte para que el costo final no quede mezclado.", category: "Argentina" },
+      { question: "¿Qué debo validar antes de comprar una cosechadora usada para traer a Argentina?", answer: "Antes de señar la máquina conviene validar horas reales, número de serie, estado del cabezal y de la plataforma draper, documentación de propiedad y dimensiones para definir contenedor o flat rack. También es importante revisar limpieza, condición general y la estructura completa puesta en puerto antes de comprometerse con el vendedor.", category: "Argentina" },
+      { question: "¿Siempre conviene importar una cosechadora desde EE.UU. a Argentina?", answer: "No siempre. Conviene cuando la unidad, la disponibilidad y el costo puerta a puerto cierran bien frente a la alternativa local. El valor real está en encontrar la máquina correcta, estructurar bien el desmontaje y separar con claridad el tramo de exportación desde EE.UU. de los costos y gestiones del lado argentino.", category: "Argentina" },
     ],
     typicalPriceRange: "$12K – $25K",
   },

@@ -24,7 +24,10 @@ import { TrustBar } from "@/components/trust-bar";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
-import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
+import {
+  ArgentinaCombineDecisionBlock,
+  ArgentinaCombineHeroBridge,
+} from "@/components/argentina-combine-paid-landing";
 import { getEquipmentBySlug, getAllEquipmentTypes } from "@/content/equipment";
 import { getServiceBySlug } from "@/content/services";
 import { getAllDestinations } from "@/content/destinations";
@@ -89,6 +92,11 @@ export default async function EquipmentPage({
   const te = await getTranslations("EquipmentDetailPage");
   const equipment = getEquipmentBySlug(slug, locale);
   if (!equipment) notFound();
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  const isArgentinaCombinePage = locale === "es" && slug === "combines";
+  const homeLabel =
+    locale === "es" ? "Inicio" : locale === "ru" ? "Главная" : "Home";
+  const homeUrl = localePath ? `${SITE.url}${localePath}` : SITE.url;
 
   const relatedServices = equipment.relatedServiceSlugs
     .map((s) => getServiceBySlug(s, locale))
@@ -100,8 +108,11 @@ export default async function EquipmentPage({
 
   const equipmentProjects = getProjectsByEquipmentSlug(slug, locale, 6);
 
+  const whatsappMessage = isArgentinaCombinePage
+    ? "Hola, quiero cotizar una cosechadora usada desde EE.UU. para Argentina."
+    : `Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`;
   const whatsappHref = `${CONTACT.whatsappUrl}?text=${encodeURIComponent(
-    `Hi! I'm interested in shipping a ${equipment.singularName.toLowerCase()}.`
+    whatsappMessage
   )}`;
 
   const jsonLd = {
@@ -111,21 +122,21 @@ export default async function EquipmentPage({
     name: equipment.title,
     description: equipment.metaDescription,
     image: `${SITE.url}${SITE.ogImage}`,
-    url: `${SITE.url}/equipment/${slug}`,
+    url: `${SITE.url}${localePath}/equipment/${slug}`,
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
         {
           "@type": "ListItem",
           position: 1,
-          name: "Home",
-          item: SITE.url,
+          name: homeLabel,
+          item: homeUrl,
         },
         {
           "@type": "ListItem",
           position: 2,
-          name: "Equipment",
-          item: `${SITE.url}/equipment`,
+          name: te("equipmentIndex"),
+          item: `${SITE.url}${localePath}/equipment`,
         },
         {
           "@type": "ListItem",
@@ -176,13 +187,14 @@ export default async function EquipmentPage({
       <PageHero
         variant="dark"
         breadcrumbs={[
-          { label: "Equipment", href: "/equipment" },
+          { label: te("equipmentIndex"), href: "/equipment" },
           { label: equipment.pluralName },
         ]}
         eyebrow={te("trustEyebrow")}
         heading={equipment.title}
         description={equipment.heroDescription}
       >
+        {isArgentinaCombinePage && <ArgentinaCombineHeroBridge />}
         {equipment.typicalPriceRange && (
           <p className="text-sm font-medium text-sky-300">
             {te("pricingFrom", { range: equipment.typicalPriceRange })}
@@ -199,7 +211,11 @@ export default async function EquipmentPage({
           <TrackedContactLink
             href={whatsappHref}
             type="whatsapp"
-            location="equipment_hero"
+            location={
+              isArgentinaCombinePage
+                ? "combines_hero_argentina_whatsapp"
+                : "equipment_hero"
+            }
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg transition-colors"
@@ -219,9 +235,11 @@ export default async function EquipmentPage({
             {te("callUs")}
           </TrackedContactLink>
         </div>
-        <p className="mt-4 max-w-2xl text-xs font-medium text-sky-300/90 leading-relaxed">
-          {te("heroReassurance")}
-        </p>
+        {!isArgentinaCombinePage && (
+          <p className="mt-4 max-w-2xl text-xs font-medium text-sky-300/90 leading-relaxed">
+            {te("heroReassurance")}
+          </p>
+        )}
         {equipment.sourcingNote && equipment.sourcingLinkLabel && (() => {
           const [before, after] = equipment.sourcingNote.split("{link}");
           return (
@@ -243,17 +261,8 @@ export default async function EquipmentPage({
       <TrustBar />
 
       <div>
-        {locale === "es" && slug === "combines" && (
-          <section className="py-10 md:py-12">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <ArgentinaGuideCallout
-                locale={locale}
-                showCalculator
-                title="Comprando una cosechadora desde Argentina?"
-                description="Vea la guia para compradores argentinos que necesitan separar bien la compra, el tramo puerta a puerto y el costo local con despachante antes de cerrar una cosechadora usada en EE.UU."
-              />
-            </div>
-          </section>
+        {isArgentinaCombinePage && (
+          <ArgentinaCombineDecisionBlock whatsappHref={whatsappHref} />
         )}
 
         {/* 3. Project gallery — social proof through real photos */}
@@ -546,7 +555,11 @@ export default async function EquipmentPage({
             <TrackedContactLink
               href={whatsappHref}
               type="whatsapp"
-              location="equipment_cta"
+              location={
+                isArgentinaCombinePage
+                  ? "combines_cta_argentina_whatsapp"
+                  : "equipment_cta"
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center h-12 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg transition-colors"

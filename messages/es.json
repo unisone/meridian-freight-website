@@ -739,7 +739,8 @@
     "formEyebrow": "Solicite su Cotizacion",
     "formHeading": "Solicite una Cotizacion Gratis para Envio de {equipment}",
     "formDescription": "Diganos que necesita enviar y a donde va. Recibira una cotizacion detallada y desglosada en 24 horas — sin cargos ocultos.",
-    "requestYourQuote": "Solicitar Cotizacion"
+    "requestYourQuote": "Solicitar Cotizacion",
+    "equipmentIndex": "Equipos"
   },
   "SchedulePage": {
     "breadcrumb": "Calendario de Envios",
