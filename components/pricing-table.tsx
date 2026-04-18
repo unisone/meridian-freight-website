@@ -19,6 +19,7 @@ import {
   equipmentCategories,
   translateType,
 } from "@/content/pricing";
+import { STANDARD_INLAND_DELIVERY_RATE } from "@/lib/freight-policy";
 
 const categoryKeyMap: Record<string, string> = {
   all: "allEquipment",
@@ -109,7 +110,9 @@ export function PricingTable() {
                 <TableRow key={item.type}>
                   <TableCell className="font-medium">{translateType(item.type, locale)}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{item.model}</TableCell>
-                  <TableCell className="text-right font-mono text-sm">{item.delivery}</TableCell>
+                  <TableCell className="text-right font-mono text-sm">
+                    ${STANDARD_INLAND_DELIVERY_RATE}
+                  </TableCell>
                   <TableCell className="text-right font-mono text-sm font-semibold">{item.containerized}</TableCell>
                   <TableCell className="text-right font-mono text-sm">{item.container}</TableCell>
                 </TableRow>

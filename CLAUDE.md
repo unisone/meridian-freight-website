@@ -96,91 +96,96 @@ The calculator at `/pricing/calculator` uses real freight rates from the shared 
 - `components/freight-calculator/calculator-wizard.tsx` — Multi-step wizard UI
 - `components/freight-calculator/calculator-estimate-card.tsx` — Live estimate sidebar/card
 
-#### Calculation Formulas (Definitive — verified by 69 tests)
+#### Calculation Formulas (Current contract)
 
-**INVARIANT: `estimatedTotal = usInlandTransport + packingAndLoading + oceanFreight` (always)**
+**INVARIANT: `estimatedTotal = (usInlandTransport ?? 0) + packingAndLoading + oceanFreight`**
 
-**40HC Container** — equipment packed at Albion, IA, shipped via Chicago rail to ocean:
+**Routing rule:** resolve `container_type` through `lib/freight-policy.ts`, not the raw DB value alone. Protected equipment types override stale rows:
+- combines and self-propelled sprayers => `flatrack`
+- tractors, headers, and current tillage exact-types => `fortyhc`
+- explicit DB `container_type` is used only when there is no protected override
+
+**40HC Container** — equipment packed at Albion, IA and quoted as three customer-visible lines:
 ```
 Total = US Inland Transport + Packing & Loading + Ocean Freight
 
 Inland (with ZIP):
-  roadMiles = haversine(ZIP coords → Albion, IA) × 1.3 road factor
-  usInlandTransport = round(roadMiles × equipment.delivery_per_mile) + $1,800 Chicago drayage
+  roadMiles = round(haversine(ZIP coords → Albion, IA) × 1.3)
+  usInlandTransport = roadMiles × $7/mile
 
 Inland (no ZIP):
-  usInlandTransport = $1,800  (Chicago drayage only)
+  usInlandTransport = null
+  totalExcludesInland = true
+  note = "Enter ZIP for inland transport estimate."
 
 Packing:
   If packing_unit = "flat":     packingAndLoading = equipment.packing_cost
   If packing_unit = "per_row":  packingAndLoading = equipment.packing_cost × equipmentSize
   If packing_unit = "per_foot": packingAndLoading = equipment.packing_cost × equipmentSize
   (same for per_shank, per_bottom)
-  If equipmentSize is null/0:   packingAndLoading = equipment.packing_cost (base only)
 
 Ocean:
-  oceanFreight = bestRate.ocean_rate + bestRate.drayage
-  Rate selection: filter by origin_port containing "Chicago" + container_type="fortyhc" + destination_country
-    → non-Chicago 40HC rates are excluded (they exist in DB but are not used)
-    → sort by carrier preference (HAPAG > Maersk > CMA > others)
-    → tiebreaker: cheapest (ocean_rate + drayage)
-  originPort is always "Chicago, IL"
+  oceanFreight = bestChicagoRate.ocean_rate + bestChicagoRate.drayage
+  bestChicagoRate is selected from Chicago-origin `fortyhc` rows for the destination,
+  preferring carriers in order HAPAG > Maersk > CMA, then the cheapest row within that carrier
 ```
 
-**Flatrack** — equipment shipped directly to nearest US port, packed at port:
+**Flatrack** — equipment moves dealer/farm → US port and customer sees one opaque sea bundle:
 ```
 Total = US Inland Transport + $0 Packing + Sea Freight & Loading
 
-Inland (with ZIP — port optimization):
-  For each of 4 ports (Houston, Savannah, Baltimore, Charleston):
-    roadMiles = haversine(ZIP coords → port) × 1.3 road factor
-    localCost = roadMiles × equipment.delivery_per_mile
-    seaCost = rate.ocean_rate + rate.packing_drayage
-    total = localCost + seaCost
-  Pick cheapest total; carrier preference breaks ties
+Inland (with ZIP):
+  Evaluate Houston, Savannah, Baltimore, Charleston
+  roadMiles = round(haversine(ZIP coords → port) × 1.3)
+  localCost = roadMiles × $7/mile
+  total = localCost + Sea Freight & Loading
+  Pick the cheapest total; carrier preference breaks ties
 
 Inland (no ZIP):
-  usInlandTransport = null (excluded from total)
+  usInlandTransport = null
   totalExcludesInland = true
+  note = "Enter ZIP for inland transport estimate."
 
 Packing:
-  packingAndLoading = 0  (ALWAYS — packing is bundled into packing_drayage)
-  equipment.packing_cost is IGNORED for flatrack — do NOT display it
+  packingAndLoading = 0
+  equipment.packing_cost is ignored for flatrack and must never surface as a customer line
 
-Ocean (Sea Freight & Loading):
-  oceanFreight = bestRate.ocean_rate + bestRate.packing_drayage
-  Rate selection (no ZIP / fallback): filter by container_type="flatrack" + destination_country
-    → sort by carrier preference (HAPAG > Maersk > CMA > others)
-    → tiebreaker: cheapest (ocean_rate + packing_drayage)  ← NOT drayage
+Sea Freight & Loading (customer-visible single line):
+  ocean_rate
+  + packing_drayage
+  + NCB per port
+  + internal flatrack bundle surcharge
+  + marine insurance
 ```
 
 #### Key Constants
 | Constant | Value | Used For |
 |----------|-------|----------|
-| `DRAYAGE_CHICAGO` | $1,800 | Added to 40HC inland for Chicago rail drayage |
+| `STANDARD_INLAND_DELIVERY_RATE` | $7 | Canonical inland rate across website surfaces |
 | `ROAD_FACTOR` | 1.3 | Haversine → estimated road miles multiplier |
-| `ALBION_IA` | 42.1172, -92.9835 | Packing facility coordinates |
-| `CARRIER_PREFERENCE` | HAPAG, Maersk, CMA | Sort order (index 0 = most preferred) |
+| `ALBION_IA` | 42.1172, -92.9835 | 40HC packing origin |
+| `FORTYHC_ORIGIN_PORT` | Chicago, IL | 40HC quoted ocean origin |
 | `FLATRACK_PORTS` | Houston, Savannah, Baltimore, Charleston | Ports evaluated for flatrack routing |
+| `FLATRACK_INTERNAL_BUNDLE_USD` | $2,000 | Internal-only flatrack bundle component |
+| `FLATRACK_INSURANCE_MIN_USD` | $150 | Default insurance floor when equipment value is unknown |
 
 #### Key DB Fields
 | Table | Field | Type | Notes |
 |-------|-------|------|-------|
-| `equipment_packing_rates` | `delivery_per_mile` | number | Per-equipment rate (varies: 2.5–10.0) |
-| `equipment_packing_rates` | `packing_cost` | number | Base packing cost (ignored for flatrack) |
+| `equipment_packing_rates` | `delivery_per_mile` | number | Legacy field; website calculator no longer uses it for customer totals |
+| `equipment_packing_rates` | `packing_cost` | number | Base packing cost for 40HC only |
 | `equipment_packing_rates` | `packing_unit` | enum | flat, per_row, per_foot, per_shank, per_bottom |
-| `equipment_packing_rates` | `container_type` | enum | "fortyhc" or "flatrack" |
+| `equipment_packing_rates` | `container_type` | enum | Routed through `lib/freight-policy.ts` before display/calculation |
 | `ocean_freight_rates` | `ocean_rate` | number | Base ocean shipping cost |
-| `ocean_freight_rates` | `drayage` | number\|null | Port drayage for 40HC (null for flatrack) |
-| `ocean_freight_rates` | `packing_drayage` | number\|null | Port packing+drayage for flatrack (null for 40HC) |
+| `ocean_freight_rates` | `drayage` | number\|null | Port drayage for 40HC |
+| `ocean_freight_rates` | `packing_drayage` | number\|null | Port prep + loading bundle input for flatrack |
 
 #### UI Display Rules
-- **40HC**: Show "Packing & Loading" line + "Ocean Freight" label
-- **Flatrack**: Hide "Packing & Loading" line (it's $0), show "Sea Freight & Loading" label
-- **Flatrack Section 02**: Show "Packing & loading included in sea freight" info message, NOT the packing cost number
-- **40HC Section 02 tooltip**: "...at our Albion, IA facility"
-- **No ZIP (flatrack)**: Show "Enter US ZIP code for inland transport estimate" note, `totalExcludesInland = true`
-- **No ZIP (40HC)**: Show Chicago drayage only ($1,800), note: "Enter ZIP for full estimate"
+- **40HC**: Show `Packing & Loading` + `Ocean Freight`
+- **Flatrack**: Hide `Packing & Loading`; show `Sea Freight & Loading`
+- **Flatrack selection UI**: show "Packing & loading included in sea freight" helper, never the packing cost number
+- **40HC selection UI**: packing tooltip references Albion, IA
+- **No ZIP**: show `Enter ZIP for inland transport estimate.` and mark total as excluding inland for both modes
 
 #### Data Pipeline
 ```

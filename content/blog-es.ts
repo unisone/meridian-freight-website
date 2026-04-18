@@ -37,9 +37,9 @@ Enviar una cosechadora o un tractor al exterior no es lo mismo que enviar un pal
 
 ### Paso 1: Recogida del Equipo y Transporte Terrestre
 
-Una vez que usted ha comprado su equipo — ya sea de un distribuidor, subasta o vendedor privado — necesita trasladarlo desde su ubicacion actual hasta una instalacion de empaque. Para la mayoria de los envios desde EE.UU., esto significa transportarlo en un trailer de plataforma baja (lowboy) o conducirlo a un trailer de plataforma escalonada (step-deck).
+Una vez que usted ha comprado su equipo — ya sea de un distribuidor, subasta o vendedor privado — necesita trasladarlo desde su ubicacion actual hasta el punto correcto de salida para exportacion. Para maquinaria que cabe en contenedor, normalmente es una instalacion de empaque; para maquinaria sobredimensionada en flat rack, es el puerto de salida. En ambos casos, esa etapa normalmente significa transportarlo en un trailer de plataforma baja (lowboy) o conducirlo a un trailer de plataforma escalonada (step-deck).
 
-**Costos tipicos:** Aproximadamente **$6.50 por milla** para cargas sobredimensionadas, mas una **tarifa de acarreo de $1,800** para la conexion ferroviaria/portuaria del area de Chicago si se envia desde el Medio Oeste. Un tractor ubicado en una finca en Iowa podria costar entre $1,500 y $3,000 en transporte terrestre hasta llegar a una instalacion de empaque; una cosechadora en Dakota del Norte podria costar entre $2,500 y $4,500.
+**Costos tipicos:** Las cotizaciones actuales para clientes usan una tarifa estandar de planificacion de **$7 por milla** para el transporte terrestre en EE.UU. La maquinaria que cabe en contenedor normalmente va a nuestro flujo de empaque en Albion, IA y luego a Chicago para la salida maritima, mientras que la maquinaria sobredimensionada en flat rack va directo al puerto de salida con la preparacion portuaria incluida en la linea de flete maritimo. Un tractor ubicado en una finca en Iowa todavia podria costar entre $1,500 y $3,000 en transporte terrestre segun la distancia; una cosechadora en Dakota del Norte puede costar bastante mas porque viaja como carga sobredimensionada hasta el puerto.
 
 ### Paso 2: Desmantelamiento y Preparacion
 
@@ -154,13 +154,13 @@ Exportar una cosechadora desde EE.UU. tipicamente cuesta entre **$10,000 y $25,0
 
 ## Componente de Costo 1: Transporte Terrestre
 
-Su cosechadora necesita llegar desde su ubicacion actual hasta una instalacion de empaque y carga. La mayoria de las cosechadoras se transportan en trailers de plataforma baja (lowboy).
+Su cosechadora necesita llegar desde su ubicacion actual hasta el puerto de salida. La mayoria de las cosechadoras se transportan en trailers de plataforma baja (lowboy) y siguen el flujo de flat rack en lugar del flujo de empaque 40HC de Albion, IA.
 
-- **Tarifa:** Aproximadamente **$6.50 por milla cargada** para maquinaria agricola sobredimensionada
-- **Acarreo Chicago:** Agregar **$1,800** si el envio pasa por el centro ferroviario/portuario de Chicago (comun para origenes del Medio Oeste)
-- **Rango tipico:** $1,500-$4,500 dependiendo de la distancia
+- **Tarifa:** Las cotizaciones actuales para clientes usan **$7 por milla** para el transporte terrestre en EE.UU.
+- **Preparacion portuaria:** Para cosechadoras en flat rack, el desmantelamiento, la carga, el arriostramiento, el NCB y el seguro maritimo normalmente se agrupan en una sola linea visible al cliente de **Flete Maritimo y Carga**
+- **Rango tipico de transporte terrestre:** $1,500-$4,500 dependiendo de la distancia
 
-**Ejemplo:** Una John Deere S780 ubicada en una finca en el centro de Iowa, enviandose a nuestra instalacion en Albion, IA — aproximadamente 50 millas — costaria alrededor de $325 en transporte local. La misma cosechadora ubicada en Ohio costaria cerca de $4,000.
+**Ejemplo:** Una John Deere S780 ubicada en una finca en el centro de Iowa y saliendo por Houston o Savannah puede tener un tramo terrestre relativamente corto. La misma maquina ubicada en Ohio o en las Llanuras del Norte normalmente costara bastante mas porque viaja como carga sobredimensionada hasta el puerto.
 
 ## Componente de Costo 2: Desmantelamiento, Empaque y Carga
 
@@ -196,17 +196,15 @@ La certificacion fitosanitaria es obligatoria para maquinaria agricola que ingre
 
 ## Componente de Costo 5: Seguro
 
-El seguro de carga maritima tipicamente cuesta **1-2% del valor declarado del equipo**. Para una cosechadora valorada en $50,000, eso es $500-$1,000. Recomendamos firmemente asegurar cada envio — el transito maritimo es generalmente seguro, pero pueden ocurrir imprevistos.
+Para las cotizaciones de cosechadoras en flat rack, el seguro maritimo frecuentemente se incluye dentro de la linea visible al cliente de **Flete Maritimo y Carga** en lugar de aparecer como un cargo separado. Cuando el seguro se modela por separado, debe tomarse como referencia de planificacion y no como una linea publica garantizada.
 
 ## Sumando Todo
 
 A continuacion un ejemplo realista para una cosechadora de tamano mediano (como una Case IH 8250 o John Deere S770) enviandose desde Iowa a Santos, Brasil:
 
 - Transporte terrestre (local): $500
-- Desmantelamiento, empaque, carga: $5,500
-- Flete maritimo (40 pies HC a Santos): $4,800
+- Flete Maritimo y Carga: $10,900
 - Documentacion y cumplimiento: $900
-- Seguro: $600
 - **Total: aproximadamente $12,300**
 
 Para una cosechadora mas grande enviandose desde la Costa Este a Asia Central, el total podria alcanzar $20,000-$25,000.

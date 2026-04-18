@@ -1,7 +1,7 @@
 export interface EquipmentPricing {
   type: string;
   model: string;
-  /** Domestic delivery cost per mile (not included in ocean freight estimates) */
+  /** Historical reference field. Customer-facing pricing renders the canonical $7/mile rule. */
   delivery: string;
   containerized: string;
   container: string;
