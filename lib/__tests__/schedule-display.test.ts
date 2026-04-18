@@ -51,6 +51,7 @@ function makeContainer(overrides: Partial<SharedContainer> = {}): SharedContaine
     source: "google_sheets",
     sheet_row_number: 1,
     raw_space_value: "30",
+    container_count: 1,
     synced_at: new Date().toISOString(),
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
