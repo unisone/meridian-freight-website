@@ -7,7 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { formatDollar } from "@/lib/freight-engine-v2";
-import type { FreightEstimateV2, EquipmentPackingRate } from "@/lib/types/calculator";
+import type {
+  ContainerType,
+  EquipmentPackingRate,
+  FreightEstimateV2,
+} from "@/lib/types/calculator";
 import type { CalculatorResult } from "@/app/actions/calculator";
 
 import { CONTACT } from "@/lib/constants";
@@ -19,7 +23,9 @@ interface EstimateCardProps {
   preview: FreightEstimateV2 | null;
   result: CalculatorResult | null;
   selectedEquipment: EquipmentPackingRate | null;
+  resolvedContainerType: ContainerType | null;
   destinationCountry: string;
+  routeIssueMessage: string | null;
   isComplete: boolean;
   // Email gate state (lifted to parent)
   email: string;
@@ -42,7 +48,9 @@ export function CalculatorEstimateCard({
   preview,
   result,
   selectedEquipment,
+  resolvedContainerType,
   destinationCountry,
+  routeIssueMessage,
   isComplete,
   email,
   onEmailChange,
@@ -263,7 +271,7 @@ export function CalculatorEstimateCard({
   // State: Preview (equipment selected, possibly with destination)
   // ---------------------------------------------------------------------------
   const containerLabel =
-    selectedEquipment.container_type === "fortyhc"
+    (preview?.containerType ?? resolvedContainerType) === "fortyhc"
       ? t("fortyHCShort")
       : t("flatRack");
 
@@ -295,7 +303,9 @@ export function CalculatorEstimateCard({
           <div className="mb-1 font-mono text-4xl font-bold tracking-tight text-slate-600">
             $—,———
           </div>
-          <p className="mb-5 text-xs text-slate-600">{t("selectDestination")}</p>
+          <p className="mb-5 text-xs text-slate-600">
+            {routeIssueMessage ? t("routeUnavailableEstimate") : t("selectDestination")}
+          </p>
         </>
       )}
 
@@ -306,7 +316,11 @@ export function CalculatorEstimateCard({
         <DetailRow label={t("carrier")} value={preview?.carrier ?? "—"} highlight mono />
         <DetailRow
           label={t("loadingType")}
-          value={selectedEquipment.container_type === "fortyhc" ? t("containerLoading") : t("roroLoading")}
+          value={
+            (preview?.containerType ?? resolvedContainerType) === "fortyhc"
+              ? t("containerLoading")
+              : t("flatRackLoading")
+          }
         />
         {destinationCountry && (
           <DetailRow
@@ -315,6 +329,13 @@ export function CalculatorEstimateCard({
           />
         )}
       </div>
+
+      {routeIssueMessage && !preview && (
+        <div className="mt-4 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-200">
+          <div className="font-medium">{t("routeUnavailableTitle")}</div>
+          <p className="mt-1 text-xs text-amber-100/90">{routeIssueMessage}</p>
+        </div>
+      )}
 
       {/* Email gate section */}
       {emailGateOpen && !hasResult ? (

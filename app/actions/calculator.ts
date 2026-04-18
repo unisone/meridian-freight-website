@@ -3,6 +3,12 @@
 import { Resend } from "resend";
 import { calculatorV2Schema, type CalculatorV2Data } from "@/lib/schemas";
 import { calculateFreightV2, formatDollar } from "@/lib/freight-engine-v2";
+import {
+  buildCountryAvailability,
+  isSupportedCountryForContainer,
+} from "@/lib/calculator-contract";
+import { buildRateBookSignature } from "@/lib/calculator-contract.server";
+import { resolveQuoteContainerType } from "@/lib/freight-policy";
 import { fetchEquipmentRates, fetchOceanRates } from "@/lib/supabase-rates";
 import { COUNTRY_NAMES, type FreightEstimateV2 } from "@/lib/types/calculator";
 import { after } from "next/server";
@@ -50,6 +56,8 @@ export type CalculatorResult = {
   error?: string;
   estimate?: FreightEstimateV2;
   eventId?: string;
+  rateBookChanged?: boolean;
+  currentRateBookSignature?: string;
 };
 
 const CALC_REPLY_SUBJECTS: Record<string, string> = {
@@ -57,6 +65,65 @@ const CALC_REPLY_SUBJECTS: Record<string, string> = {
   es: `Su Cotizacion de Flete — ${COMPANY.name}`,
   ru: `Ваш расчет стоимости доставки — ${COMPANY.name}`,
 };
+
+const CALCULATOR_ERROR_COPY = {
+  en: {
+    rateDataUnavailable:
+      "Rate data is temporarily unavailable. Please try again.",
+    equipmentNotFound: "The selected equipment is no longer available. Please refresh and try again.",
+    equipmentValueRequired:
+      "Equipment value is required for flat rack estimates.",
+    unsupportedRoute:
+      "No live freight rate is currently published for this equipment and destination. Please request a manual quote.",
+    rateBookChanged:
+      "Freight rates were updated while you were using the calculator. Review the refreshed estimate and submit again.",
+    emailServiceUnavailable: "Email service is not configured.",
+    ownerEmailFailed: "Failed to send email.",
+    unexpected: "An unexpected error occurred.",
+  },
+  es: {
+    rateDataUnavailable:
+      "Las tarifas de flete no estan disponibles temporalmente. Intente nuevamente.",
+    equipmentNotFound:
+      "El equipo seleccionado ya no esta disponible. Actualice la pagina e intente nuevamente.",
+    equipmentValueRequired:
+      "El valor del equipo es obligatorio para los calculos de flat rack.",
+    unsupportedRoute:
+      "No hay una tarifa de flete publicada en este momento para este equipo y destino. Solicite una cotizacion manual.",
+    rateBookChanged:
+      "Las tarifas de flete se actualizaron mientras usaba la calculadora. Revise la cotizacion actualizada y envie de nuevo.",
+    emailServiceUnavailable: "El servicio de correo no esta configurado.",
+    ownerEmailFailed: "No se pudo enviar el correo.",
+    unexpected: "Ocurrio un error inesperado.",
+  },
+  ru: {
+    rateDataUnavailable:
+      "Тарифы на фрахт временно недоступны. Повторите попытку позже.",
+    equipmentNotFound:
+      "Выбранная техника больше недоступна. Обновите страницу и попробуйте снова.",
+    equipmentValueRequired:
+      "Для расчета flat rack требуется стоимость техники.",
+    unsupportedRoute:
+      "Для этой техники и страны назначения сейчас нет опубликованной ставки. Запросите ручной расчет.",
+    rateBookChanged:
+      "Тарифы обновились, пока вы пользовались калькулятором. Проверьте обновленную оценку и отправьте форму еще раз.",
+    emailServiceUnavailable: "Почтовый сервис не настроен.",
+    ownerEmailFailed: "Не удалось отправить письмо.",
+    unexpected: "Произошла непредвиденная ошибка.",
+  },
+} as const;
+
+function getCalculatorError(
+  locale: string,
+  key: keyof (typeof CALCULATOR_ERROR_COPY)["en"],
+): string {
+  const normalizedLocale = locale.toLowerCase();
+  return (
+    CALCULATOR_ERROR_COPY[
+      normalizedLocale as keyof typeof CALCULATOR_ERROR_COPY
+    ]?.[key] ?? CALCULATOR_ERROR_COPY.en[key]
+  );
+}
 
 const CALC_REPLY_INTRO: Record<string, (name: string) => string> = {
   en: (name) => `<p>Hi${name ? ` ${name}` : ""},</p><p>Thanks for using the ${COMPANY.name} freight calculator. Here&rsquo;s your estimate:</p>`,
@@ -108,24 +175,86 @@ export async function submitCalculator(
   ]);
 
   if (!equipmentRates || !oceanRates) {
-    return { success: false, error: "Rate data temporarily unavailable. Please try again." };
+    return {
+      success: false,
+      error: getCalculatorError(locale, "rateDataUnavailable"),
+    };
   }
 
-  const equipment = equipmentRates.find((e) => e.equipment_type === data.equipmentType);
+  const equipment = equipmentRates.find((e) => e.id === data.equipmentId);
   if (!equipment) {
-    return { success: false, error: "Equipment type not found in current rates." };
+    return {
+      success: false,
+      error: getCalculatorError(locale, "equipmentNotFound"),
+    };
+  }
+
+  const countryAvailability = buildCountryAvailability(oceanRates);
+  const currentRateBookSignature = buildRateBookSignature({
+    equipmentRates,
+    oceanRates,
+  });
+  const resolvedContainerType = resolveQuoteContainerType({
+    equipmentType: equipment.equipment_type,
+    dbContainerType: equipment.container_type,
+  }).containerType;
+
+  if (
+    !isSupportedCountryForContainer(
+      countryAvailability,
+      resolvedContainerType,
+      data.destinationCountry,
+    )
+  ) {
+    return {
+      success: false,
+      error: getCalculatorError(locale, "unsupportedRoute"),
+      currentRateBookSignature,
+    };
+  }
+
+  if (resolvedContainerType === "flatrack" && data.equipmentValueUsd == null) {
+    return {
+      success: false,
+      error: getCalculatorError(locale, "equipmentValueRequired"),
+      currentRateBookSignature,
+    };
   }
 
   const estimate = calculateFreightV2({
     equipment,
     equipmentSize: data.equipmentSize,
+    equipmentValueUsd: data.equipmentValueUsd,
     destinationCountry: data.destinationCountry,
     zipCode: data.zipCode || null,
     oceanRates,
   });
 
   if (!estimate) {
-    return { success: false, error: "No shipping rates available for this destination." };
+    return {
+      success: false,
+      error: getCalculatorError(locale, "unsupportedRoute"),
+      currentRateBookSignature,
+    };
+  }
+
+  if (data.rateBookSignature !== currentRateBookSignature) {
+    log({
+      level: "warn",
+      msg: "calculator_ratebook_changed",
+      route: "action:calculator",
+      clientRateBookSignature: data.rateBookSignature,
+      currentRateBookSignature,
+      equipmentId: data.equipmentId,
+      destinationCountry: data.destinationCountry,
+    });
+    return {
+      success: false,
+      error: getCalculatorError(locale, "rateBookChanged"),
+      estimate,
+      rateBookChanged: true,
+      currentRateBookSignature,
+    };
   }
 
   const countryName = COUNTRY_NAMES[data.destinationCountry] ?? data.destinationCountry;
@@ -135,7 +264,7 @@ export async function submitCalculator(
     name: data.name || null,
     email: data.email,
     company: data.company || null,
-    message: `[Calculator V2] ${estimate.equipmentDisplayName} → ${countryName} | ${estimate.containerType === "fortyhc" ? "40HC" : "Flatrack"} | Est: ${formatDollar(estimate.estimatedTotal)}`,
+    message: `[Calculator V2 ${currentRateBookSignature}] ${estimate.equipmentDisplayName} → ${countryName} | ${estimate.containerType === "fortyhc" ? "40HC" : "Flatrack"} | Est: ${formatDollar(estimate.estimatedTotal)}${data.equipmentValueUsd ? ` | Value: ${formatDollar(data.equipmentValueUsd)}` : ""}`,
     source_page: data.source_page || "corporate: /pricing/calculator",
     utm_source: data.utm_source || null,
     utm_medium: data.utm_medium || null,
@@ -149,7 +278,11 @@ export async function submitCalculator(
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     timer.error("RESEND_API_KEY is not configured");
-    return { success: false, error: "Email service not configured." };
+    return {
+      success: false,
+      error: getCalculatorError(locale, "emailServiceUnavailable"),
+      currentRateBookSignature,
+    };
   }
 
   const resend = new Resend(apiKey);
@@ -174,6 +307,7 @@ export async function submitCalculator(
             <hr style="border:none;border-top:1px dashed #e5e7eb;margin:16px 0"/>
             <p><strong>Equipment:</strong> ${escapeHtml(estimate.equipmentDisplayName)}</p>
             ${data.equipmentSize ? `<p><strong>Size:</strong> ${data.equipmentSize} units</p>` : ""}
+            ${data.equipmentValueUsd ? `<p><strong>Declared Value:</strong> ${formatDollar(data.equipmentValueUsd)}</p>` : ""}
             <p><strong>Container:</strong> ${containerLabel}</p>
             <p><strong>Route:</strong> ${escapeHtml(estimate.originPort)} → ${escapeHtml(estimate.destinationPort)}, ${escapeHtml(countryName)}</p>
             ${data.zipCode ? `<p><strong>ZIP:</strong> ${escapeHtml(data.zipCode)}</p>` : ""}
@@ -197,12 +331,19 @@ export async function submitCalculator(
       timer.error(error, { step: "owner_email" });
       return {
         success: false,
-        error: (error as { message?: string })?.message || "Failed to send email.",
+        error:
+          (error as { message?: string })?.message ||
+          getCalculatorError(locale, "ownerEmailFailed"),
+        currentRateBookSignature,
       };
     }
   } catch (err) {
     timer.error(err, { step: "owner_email" });
-    return { success: false, error: "An unexpected error occurred." };
+    return {
+      success: false,
+      error: getCalculatorError(locale, "unexpected"),
+      currentRateBookSignature,
+    };
   }
 
   // Generate event ID before returning (needed for Pixel/CAPI dedup)
@@ -272,8 +413,12 @@ export async function submitCalculator(
       `*New calculator lead (V2${locale !== "en" ? ` — ${locale.toUpperCase()}` : ""}):* ${data.name || "Anonymous"} <${data.email}>`,
       data.company ? `Company: ${data.company}` : null,
       `Equipment: ${estimate.equipmentDisplayName} (${containerLabel})`,
+      data.equipmentValueUsd
+        ? `Declared value: ${formatDollar(data.equipmentValueUsd)}`
+        : null,
       `Route: ${estimate.originPort} → ${estimate.destinationPort}, ${countryName}`,
       `Estimate: ${formatDollar(estimate.estimatedTotal)} (Inland: ${estimate.usInlandTransport !== null ? formatDollar(estimate.usInlandTransport) : "N/A"} + Packing: ${formatDollar(estimate.packingAndLoading)} + Ocean: ${formatDollar(estimate.oceanFreight)})`,
+      `Rate book: ${currentRateBookSignature}`,
     ]
       .filter(Boolean)
       .join("\n");
@@ -289,7 +434,7 @@ export async function submitCalculator(
         lead_source: "freight_calculator_v2",
         equipment_type: data.equipmentType,
         destination_country: data.destinationCountry,
-        container_type: data.containerType,
+        container_type: estimate.containerType,
       },
     });
 
@@ -298,10 +443,15 @@ export async function submitCalculator(
       source: "calculator",
       equipment: data.equipmentType,
       destination: data.destinationCountry,
-      container: data.containerType,
+      container: estimate.containerType,
     }).catch(() => {});
   });
 
   timer.done({ email: data.email, equipment: data.equipmentType, destination: data.destinationCountry });
-  return { success: true, estimate, eventId };
+  return {
+    success: true,
+    estimate,
+    eventId,
+    currentRateBookSignature,
+  };
 }

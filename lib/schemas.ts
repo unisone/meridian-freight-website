@@ -46,14 +46,17 @@ export const calculatorV2Schema = z.object({
   name: z.string().max(200).optional().default(""),
   company: z.string().max(200).optional().default(""),
   // Equipment selection
+  equipmentId: z.string().min(1),
   equipmentCategory: z.string().min(1),
   equipmentType: z.string().min(1),
   equipmentDisplayName: z.string().min(1),
   equipmentSize: z.number().positive().nullable().default(null),
+  equipmentValueUsd: z.number().positive().nullable().default(null),
   containerType: z.enum(["fortyhc", "flatrack"]),
   // Destination
   destinationCountry: z.string().min(1),
   zipCode: z.string().max(10).optional().default(""),
+  rateBookSignature: z.string().min(8),
   // Honeypot — bots fill hidden fields, humans don't
   website: z.string().max(500).optional().default(""),
   // UTM attribution (auto-captured on client)
@@ -63,6 +66,14 @@ export const calculatorV2Schema = z.object({
   utm_campaign: z.string().max(200).optional().default(""),
   utm_term: z.string().max(200).optional().default(""),
   utm_content: z.string().max(200).optional().default(""),
+}).superRefine((data, ctx) => {
+  if (data.containerType === "flatrack" && data.equipmentValueUsd == null) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["equipmentValueUsd"],
+      message: "Equipment value is required for flat rack estimates.",
+    });
+  }
 });
 
 export type CalculatorV2Data = z.infer<typeof calculatorV2Schema>;

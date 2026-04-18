@@ -213,6 +213,7 @@ export function findBestOceanRate(
   rates: OceanFreightRate[],
   containerType: ContainerType,
   destinationCountry: string,
+  flatrackInsuranceUsd: number = FLATRACK_INSURANCE_MIN_USD,
 ): OceanFreightRate | null {
   const matching = rates.filter(
     (r) =>
@@ -223,23 +224,24 @@ export function findBestOceanRate(
   if (matching.length === 0) return null;
 
   matching.sort((a, b) => {
-    const rankDiff = carrierRank(a.carrier) - carrierRank(b.carrier);
-    if (rankDiff !== 0) return rankDiff;
     const costA =
       containerType === "flatrack"
         ? getFlatrackSeaBundle({
             rate: a,
-            insuranceUsd: FLATRACK_INSURANCE_MIN_USD,
+            insuranceUsd: flatrackInsuranceUsd,
           })
         : (a.ocean_rate ?? 0) + (a.drayage ?? 0);
     const costB =
       containerType === "flatrack"
         ? getFlatrackSeaBundle({
             rate: b,
-            insuranceUsd: FLATRACK_INSURANCE_MIN_USD,
+            insuranceUsd: flatrackInsuranceUsd,
           })
         : (b.ocean_rate ?? 0) + (b.drayage ?? 0);
-    return costA - costB;
+
+    if (costA !== costB) return costA - costB;
+
+    return carrierRank(a.carrier) - carrierRank(b.carrier);
   });
 
   return matching[0];
@@ -261,7 +263,14 @@ export function formatDollar(n: number): string {
 // ---------------------------------------------------------------------------
 
 export function calculateFreightV2(params: CalculateFreightParams): FreightEstimateV2 | null {
-  const { equipment, equipmentSize, destinationCountry, zipCode, oceanRates } = params;
+  const {
+    equipment,
+    equipmentSize,
+    equipmentValueUsd = null,
+    destinationCountry,
+    zipCode,
+    oceanRates,
+  } = params;
   const { containerType } = resolveQuoteContainerType({
     equipmentType: equipment.equipment_type,
     dbContainerType: equipment.container_type,
@@ -318,7 +327,7 @@ export function calculateFreightV2(params: CalculateFreightParams): FreightEstim
       notes.push("Enter ZIP for inland transport estimate.");
     }
   } else {
-    const flatrackInsuranceUsd = getFlatrackInsuranceUsd();
+    const flatrackInsuranceUsd = getFlatrackInsuranceUsd(equipmentValueUsd);
     let bestTotal = Infinity;
     let bestRate: OceanFreightRate | null = null;
     let bestPortName = "";
@@ -356,7 +365,12 @@ export function calculateFreightV2(params: CalculateFreightParams): FreightEstim
     }
 
     if (!bestRate) {
-      const generalRate = findBestOceanRate(oceanRates, "flatrack", destinationCountry);
+      const generalRate = findBestOceanRate(
+        oceanRates,
+        "flatrack",
+        destinationCountry,
+        flatrackInsuranceUsd,
+      );
       if (!generalRate) return null;
 
       const matchedPort = Object.keys(FLATRACK_PORTS).find((portName) =>

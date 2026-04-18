@@ -126,8 +126,8 @@ Packing:
 
 Ocean:
   oceanFreight = bestChicagoRate.ocean_rate + bestChicagoRate.drayage
-  bestChicagoRate is selected from Chicago-origin `fortyhc` rows for the destination,
-  preferring carriers in order HAPAG > Maersk > CMA, then the cheapest row within that carrier
+  bestChicagoRate is selected from Chicago-origin `fortyhc` rows for the destination
+  by cheapest total first, then carrier preference as a tie-breaker
 ```
 
 **Flatrack** — equipment moves dealer/farm → US port and customer sees one opaque sea bundle:
@@ -154,8 +154,12 @@ Sea Freight & Loading (customer-visible single line):
   ocean_rate
   + packing_drayage
   + NCB per port
-  + internal flatrack bundle surcharge
+  + non-customer-visible internal bundle components
   + marine insurance
+
+Marine insurance:
+  insurance = max($150, declared equipment value × 0.003)
+  declared equipment value is required for flatrack submissions
 ```
 
 #### Key Constants
@@ -166,13 +170,12 @@ Sea Freight & Loading (customer-visible single line):
 | `ALBION_IA` | 42.1172, -92.9835 | 40HC packing origin |
 | `FORTYHC_ORIGIN_PORT` | Chicago, IL | 40HC quoted ocean origin |
 | `FLATRACK_PORTS` | Houston, Savannah, Baltimore, Charleston | Ports evaluated for flatrack routing |
-| `FLATRACK_INTERNAL_BUNDLE_USD` | $2,000 | Internal-only flatrack bundle component |
-| `FLATRACK_INSURANCE_MIN_USD` | $150 | Default insurance floor when equipment value is unknown |
+| `FLATRACK_INSURANCE_MIN_USD` | $150 | Minimum bundled marine insurance floor |
 
 #### Key DB Fields
 | Table | Field | Type | Notes |
 |-------|-------|------|-------|
-| `equipment_packing_rates` | `delivery_per_mile` | number | Legacy field; website calculator no longer uses it for customer totals |
+| `equipment_packing_rates` | `delivery_per_mile` | number | Legacy field; excluded from customer estimate logic and ratebook parity checks |
 | `equipment_packing_rates` | `packing_cost` | number | Base packing cost for 40HC only |
 | `equipment_packing_rates` | `packing_unit` | enum | flat, per_row, per_foot, per_shank, per_bottom |
 | `equipment_packing_rates` | `container_type` | enum | Routed through `lib/freight-policy.ts` before display/calculation |
@@ -184,24 +187,31 @@ Sea Freight & Loading (customer-visible single line):
 - **40HC**: Show `Packing & Loading` + `Ocean Freight`
 - **Flatrack**: Hide `Packing & Loading`; show `Sea Freight & Loading`
 - **Flatrack selection UI**: show "Packing & loading included in sea freight" helper, never the packing cost number
+- **Flatrack selection UI**: require declared equipment value before submission so bundled insurance is exact
 - **40HC selection UI**: packing tooltip references Albion, IA
 - **No ZIP**: show `Enter ZIP for inland transport estimate.` and mark total as excluding inland for both modes
 
 #### Data Pipeline
 ```
 1. Mount → getCalculatorData() → fetches equipment_packing_rates + ocean_freight_rates from Supabase
+   and returns countryAvailability, contractVersion, and rateBookSignature
 2. User selects equipment + size + country + ZIP → calculateFreightV2() runs CLIENT-SIDE (preview)
 3. User submits email → submitCalculator() SERVER ACTION:
    a. Zod validation (calculatorV2Schema)
    b. Honeypot check
    c. Re-fetch rates from Supabase (fresh)
-   d. Re-calculate server-side (integrity check — client estimate is NOT trusted)
-   e. Supabase INSERT → leads table
-   f. Resend email to owner (MUST succeed)
-   g. Resend auto-reply to visitor (best-effort)
-   h. Slack notification (best-effort)
-   i. Meta CAPI Lead event (best-effort)
-4. Server returns estimate → UI shows detailed line-item breakdown
+   d. Re-resolve canonical container type from policy (do not trust raw DB/client mode)
+   e. Reject unsupported route combinations before quoting
+   f. Require declared equipment value for flatrack on the server side
+   g. Re-calculate server-side (client estimate is NOT trusted)
+   h. Compare client rateBookSignature to the current server signature
+      - if changed, return a refreshed estimate and require resubmission
+   i. Supabase INSERT → leads table
+   j. Resend email to owner (MUST succeed)
+   k. Resend auto-reply to visitor (best-effort)
+   l. Slack notification (best-effort)
+   m. Meta CAPI Lead event (best-effort)
+4. Server returns estimate or a refreshed preview-state error → UI stays aligned with current rates
 ```
 
 **Graceful degradation:** If `SUPABASE_URL` not configured, shows "Calculator unavailable" with contact CTAs. The `/pricing` static table (from `content/pricing.ts`) is unaffected.
@@ -209,7 +219,7 @@ Sea Freight & Loading (customer-visible single line):
 **Old engine (`lib/freight-engine.ts`) is deprecated** — kept only for the static pricing table page and its tests.
 
 #### DB Data Maintenance
-**Source of truth for flatrack rates:** PDF rate sheet "Mark Instructions - Shipping" (provides bundled "Sea Freight and loading" totals per route). In the DB, this is split into `ocean_rate` + `packing_drayage`.
+**Source of truth for flatrack rates:** PDF rate sheet "Mark Instructions - Shipping" (provides bundled "Sea Freight and loading" totals per route). In the DB, this is modeled as `ocean_rate` + `packing_drayage` plus internal server-side bundle policy inputs.
 
 **Port-standard packing_drayage (flatrack only):**
 | US Port | packing_drayage | Notes |
@@ -240,16 +250,16 @@ The website V2 engine was ported from `mf-chatbot-ui/lib/kz-calculator/calculate
 - Road factor: `1.3` (haversine → estimated road miles)
 - Albion, IA coordinates: `42.1172, -92.9835`
 - Flatrack ports: Houston, Savannah, Baltimore, Charleston (same coordinates)
-- Chicago drayage: `$1,800`
+- Standard inland delivery rate: `$7/mile`
 
 **Intentional divergences:**
 | Component | Website V2 | Chatbot KZ | Reason |
 |-----------|-----------|------------|--------|
-| Delivery rate | Per-equipment from DB (`2.5–10.0`) | Flat `$6.50/mi` all equipment | Website has richer Supabase data |
+| Delivery rate | Flat `$7/mi` canonical inland rule | Flat `$6.50/mi` all equipment | Website follows the shared freight contract |
 | Ocean rates | Dynamic from `ocean_freight_rates` table | Hardcoded `$12K`/`$18K` for KZ only | Chatbot is KZ-specific; website serves all destinations |
 | Packing (40HC) | `packing_cost × size` from DB | Hardcoded `$3,500` | Same reason — dynamic vs fixed |
-| Packing (flatrack) | `$0` (bundled into `packing_drayage`) | `$2,500` as separate line | Different categorization, same net cost |
-| Carrier selection | HAPAG > Maersk > CMA preference sort | N/A (hardcoded rates) | Website has per-carrier rates |
+| Packing (flatrack) | `$0` customer-facing line; bundled into `Sea Freight & Loading` | `$2,500` as separate line | Different categorization, same net cost |
+| Carrier selection | Cheapest total first, carrier preference only breaks ties | N/A (hardcoded rates) | Website uses live per-carrier route data |
 | KZ customs/inland | Not included | Duty + VAT + broker + Aktau→city delivery | Website scope ends at ocean |
 | Currency | USD only | USD + KZT (475 rate) | Chatbot serves KZ buyers directly |
 
