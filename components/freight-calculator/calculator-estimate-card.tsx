@@ -114,7 +114,6 @@ export function CalculatorEstimateCard({
                 {estimate.distanceMiles !== null && (
                   <div className="text-xs text-slate-400">
                     {estimate.distanceMiles} mi × ${estimate.deliveryRatePerMile}/mi
-                    {estimate.containerType === "fortyhc" ? " + $1,800 drayage" : ""}
                   </div>
                 )}
               </div>
@@ -200,7 +199,9 @@ export function CalculatorEstimateCard({
         )}
 
         <p className="mt-4 text-xs text-slate-400">
-          {t("coversNote")}
+          {estimate.containerType === "flatrack"
+            ? t("coversNoteFlatrack")
+            : t("coversNoteFortyhc")}
         </p>
 
         {/* CTAs */}

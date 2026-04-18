@@ -49,9 +49,9 @@ Shipping a combine harvester or tractor overseas is not the same as shipping a p
 
 ### Step 1: Equipment Pickup and Inland Transport
 
-Once you have purchased your equipment — whether from a dealer, auction, or private seller — it needs to get from its current location to a packing facility. For most shipments from the USA, that means trucking it on a lowboy trailer or driving it onto a step-deck.
+Once you have purchased your equipment — whether from a dealer, auction, or private seller — it needs to get from its current location to the correct export handoff point. For container-fit machinery that is usually a packing facility; for oversize flatrack machinery it is the departure port. In either case, that leg usually means trucking it on a lowboy trailer or driving it onto a step-deck.
 
-**Typical costs:** Around **$6.50 per mile** for oversize loads, plus a **$1,800 drayage fee** for the Chicago-area rail/port connection if shipping from the Midwest. A tractor sitting on a farm in Iowa might cost $1,500-$3,000 in inland transport to reach a packing facility; a combine in North Dakota might run $2,500-$4,500.
+**Typical costs:** Current customer quotes use a standard planning rate of **$7 per road mile** for U.S. inland transport. Container-fit machinery usually routes to our Albion, IA packing workflow and then Chicago for ocean loading, while oversize flatrack machinery moves directly to the departure port with port-side preparation bundled into the sea freight line. A tractor sitting on a farm in Iowa might still cost $1,500-$3,000 in inland transport depending on distance; a combine in North Dakota can run materially higher because it moves as oversize freight to port.
 
 ### Step 2: Dismantling and Preparation
 
@@ -166,13 +166,13 @@ Exporting a combine harvester from the USA typically costs between **$10,000 and
 
 ## Cost Component 1: Inland Transport
 
-Your combine needs to get from its current location to a packing and loading facility. Most combines ship on lowboy trailers.
+Your combine needs to get from its current location to the departure port. Most combines ship on lowboy trailers and follow the flatrack workflow rather than the Albion, IA 40HC packing path.
 
-- **Rate:** Approximately **$6.50 per loaded mile** for oversize agricultural equipment
-- **Chicago drayage:** Add **$1,800** if the shipment routes through the Chicago rail/port hub (common for Midwest origins)
-- **Typical range:** $1,500-$4,500 depending on distance
+- **Rate:** Current customer quotes use **$7 per road mile** for U.S. inland transport
+- **Port-side prep:** For flatrack combines, dismantling, loading, bracing, NCB, and marine insurance are typically bundled into one customer-facing **Sea Freight & Loading** line instead of broken out separately
+- **Typical inland range:** $1,500-$4,500 depending on distance
 
-**Example:** A John Deere S780 sitting on a farm in central Iowa, shipping to our Albion, IA facility — about 50 miles — would cost roughly $325 in local transport. The same combine sitting in Ohio would run closer to $4,000.
+**Example:** A John Deere S780 sitting on a farm in central Iowa and routing to Houston or Savannah can have a relatively short inland leg. The same machine sitting in Ohio or the Northern Plains will usually run much higher because it is moving oversize all the way to port.
 
 ## Cost Component 2: Dismantling, Packing, and Loading
 
@@ -208,17 +208,15 @@ Phytosanitary certification is mandatory for agricultural equipment entering mos
 
 ## Cost Component 5: Insurance
 
-Marine cargo insurance typically runs **1-2% of the declared equipment value**. For a combine valued at $50,000, that is $500-$1,000. We strongly recommend insuring every shipment — ocean transit is generally safe, but things can happen.
+For flat rack combine quotes, marine insurance is often bundled inside the customer-facing **Sea Freight & Loading** line instead of appearing as a separate charge. When insurance is modeled separately, use it as a planning item rather than a guaranteed public line.
 
 ## Putting It All Together
 
 Here is a realistic example for a mid-size combine (like a Case IH 8250 or John Deere S770) shipping from Iowa to Santos, Brazil:
 
 - Inland transport (local): $500
-- Dismantling, packing, loading: $5,500
-- Ocean freight (40ft HC to Santos): $4,800
+- Sea Freight & Loading: $10,900
 - Documentation and compliance: $900
-- Insurance: $600
 - **Total: approximately $12,300**
 
 For a larger combine shipping from the East Coast to Central Asia, the total could reach $20,000-$25,000.

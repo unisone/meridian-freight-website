@@ -36,6 +36,7 @@ import { TRACKING } from "@/lib/constants";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
 import { getCalculatorData } from "@/app/actions/calculator-data";
 import { calculateFreightV2, formatDollar } from "@/lib/freight-engine-v2";
+import { resolveQuoteContainerType } from "@/lib/freight-policy";
 import type {
   CalculatorData,
   EquipmentPackingRate,
@@ -56,6 +57,13 @@ import { CalculatorEstimateCard } from "@/components/freight-calculator/calculat
 import { CATEGORY_ICONS } from "@/components/freight-calculator/category-icons";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function getResolvedContainerType(equipment: EquipmentPackingRate) {
+  return resolveQuoteContainerType({
+    equipmentType: equipment.equipment_type,
+    dbContainerType: equipment.container_type,
+  }).containerType;
+}
 
 export function CalculatorWizard() {
   const t = useTranslations("Calculator");
@@ -132,9 +140,12 @@ export function CalculatorWizard() {
     : null;
   const needsSize =
     selectedEquipment !== null && selectedEquipment.packing_unit !== "flat";
-  const isFlatrack = selectedEquipment?.container_type === "flatrack";
+  const resolvedContainerType = selectedEquipment
+    ? getResolvedContainerType(selectedEquipment)
+    : null;
+  const isFlatrack = resolvedContainerType === "flatrack";
   const containerLabel =
-    selectedEquipment?.container_type === "fortyhc"
+    resolvedContainerType === "fortyhc"
       ? t("fortyHC")
       : t("flatRack");
 
@@ -178,7 +189,7 @@ export function CalculatorWizard() {
         equipmentType: selectedEquipment.equipment_type,
         equipmentDisplayName: selectedEquipment.display_name_en,
         equipmentSize: needsSize ? equipmentSize : null,
-        containerType: selectedEquipment.container_type,
+        containerType: resolvedContainerType ?? selectedEquipment.container_type,
         destinationCountry,
         zipCode,
         website,
@@ -415,6 +426,7 @@ export function CalculatorWizard() {
                   <div className="space-y-1 p-2">
                     {filteredEquipment.map((eq) => {
                       const isSelected = selectedEquipment?.id === eq.id;
+                      const eqContainerType = getResolvedContainerType(eq);
                       return (
                         <button
                           key={eq.id}
@@ -423,7 +435,7 @@ export function CalculatorWizard() {
                             setEquipmentSize(null);
                             trackCalcFunnel("start", {
                               equipment_type: eq.display_name_en,
-                              container_type: eq.container_type,
+                              container_type: eqContainerType,
                             });
                           }}
                           className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
@@ -456,7 +468,7 @@ export function CalculatorWizard() {
                                 : ""
                             }`}
                           >
-                            {eq.container_type === "fortyhc" ? (
+                            {eqContainerType === "fortyhc" ? (
                               <>
                                 <Ship className="mr-0.5 h-2.5 w-2.5" /> 40&apos;HC
                               </>
@@ -577,7 +589,7 @@ export function CalculatorWizard() {
                   )}
                   <div className="mt-2">
                     <Badge variant="secondary" className="text-xs">
-                      {selectedEquipment.container_type === "fortyhc" ? (
+                      {resolvedContainerType === "fortyhc" ? (
                         <>
                           <Ship className="mr-1 h-3 w-3" /> 40&apos; High Cube
                         </>
@@ -637,7 +649,8 @@ export function CalculatorWizard() {
                           trackCalcFunnel("complete", {
                             equipment_type: selectedEquipment.display_name_en,
                             destination_country: country,
-                            container_type: selectedEquipment.container_type,
+                            container_type:
+                              resolvedContainerType ?? selectedEquipment.container_type,
                           });
                         }
                       }}
@@ -693,7 +706,7 @@ export function CalculatorWizard() {
                       {t("shippingRouteLabel")}
                     </div>
                     <div className="mt-1 text-muted-foreground">
-                      {selectedEquipment.container_type === "fortyhc" ? (
+                      {resolvedContainerType === "fortyhc" ? (
                         <>
                           {zipCode ? `ZIP ${zipCode}` : t("pickupLocation")} →
                           Albion, IA {t("packingLabel")} → Chicago, IL {t("railLabel")} →{" "}
@@ -728,7 +741,7 @@ export function CalculatorWizard() {
                     originPort={preview?.originPort ?? null}
                     destinationPort={preview?.destinationPort ?? null}
                     destinationCountry={destinationCountry || null}
-                    containerType={selectedEquipment?.container_type ?? null}
+                    containerType={resolvedContainerType}
                   />
                 </div>
               </div>

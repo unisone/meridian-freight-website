@@ -64,10 +64,22 @@ const CALC_REPLY_INTRO: Record<string, (name: string) => string> = {
   ru: (name) => `<p>Здравствуйте${name ? `, ${name}` : ""},</p><p>Спасибо за использование калькулятора доставки ${COMPANY.name}. Вот ваш расчет:</p>`,
 };
 
-const CALC_REPLY_FOOTER: Record<string, string> = {
-  en: `<p style="font-size:13px;color:#6b7280">This estimate covers packing, loading, and ocean freight. Customs duties, import taxes, insurance, and destination inland transport are not included.</p><p>Ready for a detailed quote? Reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">WhatsApp us</a>.</p>`,
-  es: `<p style="font-size:13px;color:#6b7280">Esta cotizacion cubre embalaje, carga y flete maritimo. Aranceles aduaneros, impuestos de importacion, seguro y transporte terrestre en destino no estan incluidos.</p><p>Listo para una cotizacion detallada? Responda a este correo o <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">escribanos por WhatsApp</a>.</p>`,
-  ru: `<p style="font-size:13px;color:#6b7280">Данный расчет включает упаковку, погрузку и морской фрахт. Таможенные пошлины, импортные налоги, страхование и доставка по стране назначения не включены.</p><p>Готовы к детальному расчету? Ответьте на это письмо или <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">напишите нам в WhatsApp</a>.</p>`,
+const CALC_REPLY_FOOTER: Record<
+  string,
+  Record<FreightEstimateV2["containerType"], string>
+> = {
+  en: {
+    fortyhc: `<p style="font-size:13px;color:#6b7280">This estimate covers U.S. inland transport, packing and loading, and ocean freight. Customs duties, import taxes, insurance, and destination inland transport are not included.</p><p>Ready for a detailed quote? Reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">WhatsApp us</a>.</p>`,
+    flatrack: `<p style="font-size:13px;color:#6b7280">This estimate covers U.S. inland transport and Sea Freight &amp; Loading. Customs duties, import taxes, destination inland transport, and any destination-specific wash or fumigation requirements are not included.</p><p>Ready for a detailed quote? Reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">WhatsApp us</a>.</p>`,
+  },
+  es: {
+    fortyhc: `<p style="font-size:13px;color:#6b7280">Esta cotizacion cubre transporte terrestre en EE.UU., embalaje y carga, y flete maritimo. Aranceles aduaneros, impuestos de importacion, seguro y transporte terrestre en destino no estan incluidos.</p><p>Listo para una cotizacion detallada? Responda a este correo o <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">escribanos por WhatsApp</a>.</p>`,
+    flatrack: `<p style="font-size:13px;color:#6b7280">Esta cotizacion cubre transporte terrestre en EE.UU. y Flete Maritimo y Carga. Aranceles aduaneros, impuestos de importacion, transporte terrestre en destino y cualquier lavado o fumigacion requerido en destino no estan incluidos.</p><p>Listo para una cotizacion detallada? Responda a este correo o <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">escribanos por WhatsApp</a>.</p>`,
+  },
+  ru: {
+    fortyhc: `<p style="font-size:13px;color:#6b7280">Данный расчет включает наземный транспорт по США, упаковку и погрузку, а также морской фрахт. Таможенные пошлины, импортные налоги, страхование и доставка по стране назначения не включены.</p><p>Готовы к детальному расчету? Ответьте на это письмо или <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">напишите нам в WhatsApp</a>.</p>`,
+    flatrack: `<p style="font-size:13px;color:#6b7280">Данный расчет включает наземный транспорт по США и Морской фрахт и загрузку. Таможенные пошлины, импортные налоги, доставка по стране назначения и любые требования по мойке или фумигации в стране назначения не включены.</p><p>Готовы к детальному расчету? Ответьте на это письмо или <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">напишите нам в WhatsApp</a>.</p>`,
+  },
 };
 
 export async function submitCalculator(
@@ -203,7 +215,9 @@ export async function submitCalculator(
     try {
       const calcSubject = CALC_REPLY_SUBJECTS[locale] ?? CALC_REPLY_SUBJECTS.en;
       const calcIntro = (CALC_REPLY_INTRO[locale] ?? CALC_REPLY_INTRO.en)(data.name ? escapeHtml(data.name) : "");
-      const calcFooter = CALC_REPLY_FOOTER[locale] ?? CALC_REPLY_FOOTER.en;
+      const calcFooter =
+        CALC_REPLY_FOOTER[locale]?.[estimate.containerType] ??
+        CALC_REPLY_FOOTER.en[estimate.containerType];
       await resend.emails.send({
         from: CONTACT.fromEmail,
         to: data.email,

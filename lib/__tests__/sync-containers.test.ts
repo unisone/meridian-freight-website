@@ -11,13 +11,10 @@ import {
 import type { ParsedContainerRow } from "@/lib/types/shared-shipping";
 
 function localDatePlusDays(days: number): string {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  d.setDate(d.getDate() + days);
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
+  const base = new Date();
+  base.setHours(12, 0, 0, 0);
+  base.setDate(base.getDate() + days);
+  return base.toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
 }
 
 describe("detectColumns", () => {
@@ -227,8 +224,8 @@ describe("parseRow", () => {
       "MF-2026-047",
       "Chicago, IL",
       "Almaty, Kazakhstan",
-      localDatePlusDays(7),
-      localDatePlusDays(42),
+      localDatePlusDays(14),
+      localDatePlusDays(49),
       "29",
     ];
     const { parsed, error } = parseRow(row, 1, colMap);
@@ -241,14 +238,14 @@ describe("parseRow", () => {
   });
 
   it("skips row with empty project number", () => {
-    const row = ["", "Chicago, IL", "Almaty", localDatePlusDays(7), "", "29"];
+    const row = ["", "Chicago, IL", "Almaty", localDatePlusDays(14), "", "29"];
     const { parsed, error } = parseRow(row, 1, colMap);
     expect(parsed).toBeNull();
     expect(error).toBeNull(); // Silent skip
   });
 
   it("parses row with missing destination as TBD", () => {
-    const row = ["MF-001", "Chicago", "", localDatePlusDays(7), "", "29"];
+    const row = ["MF-001", "Chicago", "", localDatePlusDays(14), "", "29"];
     const { parsed, error } = parseRow(row, 1, colMap);
     expect(error).toBeNull();
     expect(parsed).not.toBeNull();
@@ -264,13 +261,13 @@ describe("parseRow", () => {
   });
 
   it("defaults origin to Albion, IA when empty", () => {
-    const row = ["MF-001", "", "Almaty, KZ", localDatePlusDays(7), "", "29"];
+    const row = ["MF-001", "", "Almaty, KZ", localDatePlusDays(14), "", "29"];
     const { parsed } = parseRow(row, 1, colMap);
     expect(parsed!.origin).toBe("Albion, IA");
   });
 
   it("treats US location destination as TBD", () => {
-    const row = ["LionH1126", "Houston,TX", "Houston, TX", localDatePlusDays(7), "", "0"];
+    const row = ["LionH1126", "Houston,TX", "Houston, TX", localDatePlusDays(14), "", "0"];
     const { parsed } = parseRow(row, 1, colMap);
     expect(parsed).not.toBeNull();
     expect(parsed!.destination).toBe("TBD");
@@ -278,36 +275,29 @@ describe("parseRow", () => {
   });
 
   it("treats Norfolk, VA destination as TBD", () => {
-    const row = ["LionN1127", "Norfolk, VA", "Norfolk, VA", localDatePlusDays(7), "", "0"];
+    const row = ["LionN1127", "Norfolk, VA", "Norfolk, VA", localDatePlusDays(14), "", "0"];
     const { parsed } = parseRow(row, 1, colMap);
     expect(parsed!.destination).toBe("TBD");
   });
 
   it("preserves valid international destination", () => {
-    const row = [
-      "NRD68",
-      "Minneapolis",
-      "Kokshetau, Kazakhstan",
-      localDatePlusDays(7),
-      "",
-      "29",
-    ];
+    const row = ["NRD68", "Minneapolis", "Kokshetau, Kazakhstan", localDatePlusDays(14), "", "29"];
     const { parsed } = parseRow(row, 1, colMap);
     expect(parsed!.destination).toBe("Kokshetau, Kazakhstan");
     expect(parsed!.destination_country).toBe("KZ");
   });
 
   it("nullifies ETA when it equals departure date", () => {
-    const sameDay = localDatePlusDays(7);
-    const row = ["LionH1126", "Houston,TX", "", sameDay, sameDay, "0"];
+    const departure = localDatePlusDays(14);
+    const row = ["LionH1126", "Houston,TX", "", departure, departure, "0"];
     const { parsed } = parseRow(row, 1, colMap);
-    expect(parsed!.departure_date).toBe(sameDay);
+    expect(parsed!.departure_date).toBe(departure);
     expect(parsed!.eta_date).toBeNull();
   });
 
   it("keeps ETA when it differs from departure date", () => {
-    const departure = localDatePlusDays(7);
-    const eta = localDatePlusDays(26);
+    const departure = localDatePlusDays(14);
+    const eta = localDatePlusDays(33);
     const row = ["NRD66", "Albion,IA", "", departure, eta, "0"];
     const { parsed } = parseRow(row, 1, colMap);
     expect(parsed!.departure_date).toBe(departure);
@@ -322,8 +312,8 @@ describe("aggregateByProject", () => {
       origin: "Albion, IA",
       destination: "TBD",
       destination_country: null,
-      departure_date: localDatePlusDays(7),
-      eta_date: null,
+      departure_date: localDatePlusDays(14),
+      eta_date: localDatePlusDays(49),
       container_type: "40HC",
       total_capacity_cbm: 76,
       available_cbm: null,
@@ -349,9 +339,9 @@ describe("aggregateByProject", () => {
 
   it("multi-container group aggregates with container_count", () => {
     const rows = [
-      makeRow({ project_number: "LION-1", departure_date: "2026-04-10" }),
-      makeRow({ project_number: "LION-1", departure_date: "2026-04-12" }),
-      makeRow({ project_number: "LION-1", departure_date: "2026-04-08" }),
+      makeRow({ project_number: "LION-1", departure_date: localDatePlusDays(10) }),
+      makeRow({ project_number: "LION-1", departure_date: localDatePlusDays(12) }),
+      makeRow({ project_number: "LION-1", departure_date: localDatePlusDays(8) }),
     ];
     const result = aggregateByProject(rows);
     expect(result).toHaveLength(1);
@@ -361,22 +351,22 @@ describe("aggregateByProject", () => {
 
   it("picks earliest departure_date from group", () => {
     const rows = [
-      makeRow({ project_number: "X", departure_date: "2026-04-20" }),
-      makeRow({ project_number: "X", departure_date: "2026-04-10" }),
-      makeRow({ project_number: "X", departure_date: "2026-04-15" }),
+      makeRow({ project_number: "X", departure_date: localDatePlusDays(20) }),
+      makeRow({ project_number: "X", departure_date: localDatePlusDays(10) }),
+      makeRow({ project_number: "X", departure_date: localDatePlusDays(15) }),
     ];
     const result = aggregateByProject(rows);
-    expect(result[0].departure_date).toBe("2026-04-10");
+    expect(result[0].departure_date).toBe(localDatePlusDays(10));
   });
 
   it("picks latest eta_date from group", () => {
     const rows = [
-      makeRow({ project_number: "X", eta_date: "2026-05-01" }),
-      makeRow({ project_number: "X", eta_date: "2026-05-15" }),
+      makeRow({ project_number: "X", eta_date: localDatePlusDays(25) }),
+      makeRow({ project_number: "X", eta_date: localDatePlusDays(39) }),
       makeRow({ project_number: "X", eta_date: null }),
     ];
     const result = aggregateByProject(rows);
-    expect(result[0].eta_date).toBe("2026-05-15");
+    expect(result[0].eta_date).toBe(localDatePlusDays(39));
   });
 
   it("prefers non-TBD destination with country code", () => {
@@ -472,8 +462,8 @@ describe("aggregateByProject", () => {
   it("mixes single and multi-container groups correctly", () => {
     const rows = [
       makeRow({ project_number: "SINGLE", destination: "Brazil", container_count: 1 }),
-      makeRow({ project_number: "MULTI", departure_date: "2026-04-10" }),
-      makeRow({ project_number: "MULTI", departure_date: "2026-04-05" }),
+      makeRow({ project_number: "MULTI", departure_date: localDatePlusDays(10) }),
+      makeRow({ project_number: "MULTI", departure_date: localDatePlusDays(5) }),
     ];
     const result = aggregateByProject(rows);
     expect(result).toHaveLength(2);
@@ -483,6 +473,6 @@ describe("aggregateByProject", () => {
 
     const multi = result.find((r) => r.project_number === "MULTI")!;
     expect(multi.container_count).toBe(2);
-    expect(multi.departure_date).toBe("2026-04-05");
+    expect(multi.departure_date).toBe(localDatePlusDays(5));
   });
 });
