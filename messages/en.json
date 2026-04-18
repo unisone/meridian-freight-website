@@ -739,7 +739,8 @@
     "formEyebrow": "Get Your Quote",
     "formHeading": "Get Your Free {equipment} Shipping Quote",
     "formDescription": "Tell us what you need shipped and where it's going. You'll receive a detailed, itemized quote within 24 hours — no hidden fees.",
-    "requestYourQuote": "Request Your Quote"
+    "requestYourQuote": "Request Your Quote",
+    "equipmentIndex": "Equipment"
   },
   "SchedulePage": {
     "breadcrumb": "Shipping Schedule",
