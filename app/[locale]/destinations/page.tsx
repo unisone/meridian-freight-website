@@ -293,8 +293,8 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
               <ArgentinaGuideCallout
                 locale={locale}
                 showCalculator
-                title="Argentina es prioridad, pero esta pagina no la presenta como destino probado"
-                description="Si usted esta evaluando maquinaria usada desde EE.UU. hacia Argentina, entre por la guia dedicada. Ahi explicamos el cambio regulatorio de 2025, el alcance puerta a puerto y lo que queda del lado del despachante argentino."
+                title="Argentina es prioridad, pero esta página no la presenta como destino probado"
+                description="Si usted está evaluando maquinaria usada desde EE.UU. hacia Argentina, entre por la guía dedicada. Ahí explicamos el cambio regulatorio de 2025, el alcance puerta a puerto y lo que queda del lado del despachante argentino."
               />
             </div>
           </section>
