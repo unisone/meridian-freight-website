@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   ChevronDown,
@@ -35,10 +35,12 @@ import { trackGA4Event, trackPixelEvent, trackCalcFunnel, trackContactClick, tra
 import { TRACKING } from "@/lib/constants";
 import { submitCalculator, type CalculatorResult } from "@/app/actions/calculator";
 import { getCalculatorData } from "@/app/actions/calculator-data";
+import { getSupportedCountriesForContainer } from "@/lib/calculator-contract";
 import { calculateFreightV2, formatDollar } from "@/lib/freight-engine-v2";
 import { resolveQuoteContainerType } from "@/lib/freight-policy";
 import type {
   CalculatorData,
+  ContainerType,
   EquipmentPackingRate,
   FreightEstimateV2,
 } from "@/lib/types/calculator";
@@ -79,8 +81,10 @@ export function CalculatorWizard() {
   const [selectedEquipment, setSelectedEquipment] =
     useState<EquipmentPackingRate | null>(null);
   const [equipmentSize, setEquipmentSize] = useState<number | null>(null);
+  const [equipmentValueUsd, setEquipmentValueUsd] = useState<number | null>(null);
   const [destinationCountry, setDestinationCountry] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [rateBookSignature, setRateBookSignature] = useState("");
 
   // ─── Email gate state ──────────────────────────────────────────────────
   const [email, setEmail] = useState("");
@@ -105,7 +109,10 @@ export function CalculatorWizard() {
   useEffect(() => {
     getCalculatorData()
       .then((d) => {
-        if (d) setData(d);
+        if (d) {
+          setData(d);
+          setRateBookSignature(d.rateBookSignature);
+        }
         else setDataError(true);
       })
       .catch(() => setDataError(true))
@@ -121,12 +128,20 @@ export function CalculatorWizard() {
     const est = calculateFreightV2({
       equipment: selectedEquipment,
       equipmentSize,
+      equipmentValueUsd,
       destinationCountry,
       zipCode: zipCode || null,
       oceanRates: data.oceanRates,
     });
     setPreview(est);
-  }, [selectedEquipment, equipmentSize, destinationCountry, zipCode, data]);
+  }, [
+    selectedEquipment,
+    equipmentSize,
+    equipmentValueUsd,
+    destinationCountry,
+    zipCode,
+    data,
+  ]);
 
   // ─── Derived state ─────────────────────────────────────────────────────
   const filteredEquipment = data
@@ -144,17 +159,56 @@ export function CalculatorWizard() {
     ? getResolvedContainerType(selectedEquipment)
     : null;
   const isFlatrack = resolvedContainerType === "flatrack";
+  const requiresEquipmentValue = isFlatrack;
+  const supportedCountries = useMemo(
+    () =>
+      data && resolvedContainerType
+        ? getSupportedCountriesForContainer(
+            data.countryAvailability,
+            resolvedContainerType,
+          )
+        : [],
+    [data, resolvedContainerType],
+  );
+  const hasSupportedCountries =
+    resolvedContainerType === null ? true : supportedCountries.length > 0;
   const containerLabel =
     resolvedContainerType === "fortyhc"
       ? t("fortyHC")
       : t("flatRack");
 
+  useEffect(() => {
+    if (
+      destinationCountry &&
+      resolvedContainerType &&
+      !supportedCountries.includes(destinationCountry)
+    ) {
+      setDestinationCountry("");
+      setPreview(null);
+    }
+  }, [destinationCountry, resolvedContainerType, supportedCountries]);
+
+  useEffect(() => {
+    if (resolvedContainerType !== "flatrack" && equipmentValueUsd !== null) {
+      setEquipmentValueUsd(null);
+    }
+  }, [resolvedContainerType, equipmentValueUsd]);
+
   // Progress: how many steps are complete?
   const step1Done = selectedEquipment !== null;
+  const equipmentValueDone =
+    !requiresEquipmentValue ||
+    (equipmentValueUsd !== null && Number.isFinite(equipmentValueUsd) && equipmentValueUsd > 0);
   const step2Done =
-    step1Done && (!needsSize || (equipmentSize !== null && equipmentSize > 0));
+    step1Done &&
+    (!needsSize || (equipmentSize !== null && equipmentSize > 0)) &&
+    equipmentValueDone;
   const step3Done = step2Done && destinationCountry !== "" && preview !== null;
   const step4Done = result?.success === true;
+  const routeIssueMessage =
+    !step2Done || !destinationCountry || preview
+      ? null
+      : t("unsupportedRouteMessage");
   const completedSteps =
     (step1Done ? 1 : 0) +
     (step2Done ? 1 : 0) +
@@ -185,13 +239,16 @@ export function CalculatorWizard() {
         email,
         name,
         company,
+        equipmentId: selectedEquipment.id,
         equipmentCategory: selectedEquipment.equipment_category,
         equipmentType: selectedEquipment.equipment_type,
         equipmentDisplayName: selectedEquipment.display_name_en,
         equipmentSize: needsSize ? equipmentSize : null,
+        equipmentValueUsd: isFlatrack ? equipmentValueUsd : null,
         containerType: resolvedContainerType ?? selectedEquipment.container_type,
         destinationCountry,
         zipCode,
+        rateBookSignature,
         website,
         source_page: window.location.pathname,
         utm_source: params.get("utm_source") || "",
@@ -202,6 +259,10 @@ export function CalculatorWizard() {
       });
 
       if (res.success && res.estimate) {
+        setPreview(res.estimate);
+        if (res.currentRateBookSignature) {
+          setRateBookSignature(res.currentRateBookSignature);
+        }
         setResult(res);
         trackGA4Event("generate_lead", {
           event_category: "calculator",
@@ -219,6 +280,12 @@ export function CalculatorWizard() {
           );
         }
       } else {
+        if (res.estimate) {
+          setPreview(res.estimate);
+        }
+        if (res.currentRateBookSignature) {
+          setRateBookSignature(res.currentRateBookSignature);
+        }
         setError(res.error || "Something went wrong");
       }
     } catch {
@@ -233,6 +300,7 @@ export function CalculatorWizard() {
     setCategory("");
     setSelectedEquipment(null);
     setEquipmentSize(null);
+    setEquipmentValueUsd(null);
     setDestinationCountry("");
     setZipCode("");
     setEmail("");
@@ -331,7 +399,9 @@ export function CalculatorWizard() {
     preview,
     result,
     selectedEquipment,
+    resolvedContainerType: resolvedContainerType as ContainerType | null,
     destinationCountry,
+    routeIssueMessage,
     isComplete,
     email,
     onEmailChange: setEmail,
@@ -377,6 +447,9 @@ export function CalculatorWizard() {
                       setCategory(cat);
                       setSelectedEquipment(null);
                       setEquipmentSize(null);
+                      setEquipmentValueUsd(null);
+                      setDestinationCountry("");
+                      setZipCode("");
                     }}
                     className={`group flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                       isSelected
@@ -433,6 +506,8 @@ export function CalculatorWizard() {
                           onClick={() => {
                             setSelectedEquipment(eq);
                             setEquipmentSize(null);
+                            setEquipmentValueUsd(null);
+                            setDestinationCountry("");
                             trackCalcFunnel("start", {
                               equipment_type: eq.display_name_en,
                               container_type: eqContainerType,
@@ -601,6 +676,36 @@ export function CalculatorWizard() {
                     </Badge>
                   </div>
                 </div>
+
+                {isFlatrack && (
+                  <div>
+                    <Label htmlFor="equipment-value-usd" className="text-sm">
+                      {t("equipmentValueUsd")}
+                    </Label>
+                    <Input
+                      id="equipment-value-usd"
+                      name="equipment-value-usd"
+                      type="number"
+                      inputMode="decimal"
+                      min={1}
+                      step={100}
+                      value={equipmentValueUsd ?? ""}
+                      onChange={(e) => {
+                        const parsed = Number.parseFloat(e.target.value);
+                        setEquipmentValueUsd(
+                          Number.isFinite(parsed) && parsed > 0
+                            ? parsed
+                            : null
+                        );
+                      }}
+                      placeholder={t("equipmentValuePlaceholder")}
+                      className="mt-1.5 max-w-56"
+                    />
+                    <p className="mt-1.5 text-xs text-muted-foreground">
+                      {t("equipmentValueHint")}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </section>
@@ -622,7 +727,46 @@ export function CalculatorWizard() {
               </p>
             ) : (
               <div className="mt-4 space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
+                {!hasSupportedCountries && resolvedContainerType ? (
+                  <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+                    <div className="font-semibold">
+                      {t("noPublishedRoutesTitle")}
+                    </div>
+                    <p className="mt-1 text-amber-900/80">
+                      {t("noPublishedRoutesDescription", {
+                        container: resolvedContainerType === "fortyhc" ? "40HC" : "Flat Rack",
+                      })}
+                    </p>
+                    <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+                      <Button
+                        render={<Link href="/contact" />}
+                        className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
+                      >
+                        {tc("contactUs")}
+                      </Button>
+                      <Button
+                        render={
+                          <a
+                            href={CONTACT.whatsappUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() =>
+                              trackContactClick(
+                                "whatsapp",
+                                "calculator_no_published_route"
+                              )
+                            }
+                          />
+                        }
+                        variant="outline"
+                        className="border-emerald-600 font-semibold text-emerald-600 hover:bg-emerald-50"
+                      >
+                        {tc("whatsAppUs")}
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2">
                   {/* Country */}
                   <div>
                     <Label
@@ -657,7 +801,7 @@ export function CalculatorWizard() {
                       className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-base md:text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     >
                       <option value="">{t("selectCountry")}</option>
-                      {data.countries.map((code) => (
+                      {supportedCountries.map((code) => (
                         <option key={code} value={code}>
                           {COUNTRY_NAMES[code] ?? code}
                         </option>
@@ -698,6 +842,7 @@ export function CalculatorWizard() {
                     </p>
                   </div>
                 </div>
+                )}
 
                 {/* Route preview */}
                 {destinationCountry && selectedEquipment && (
@@ -730,6 +875,11 @@ export function CalculatorWizard() {
                             {t("exclInland")}
                           </span>
                         )}
+                      </div>
+                    )}
+                    {routeIssueMessage && !preview && (
+                      <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+                        {routeIssueMessage}
                       </div>
                     )}
                   </div>

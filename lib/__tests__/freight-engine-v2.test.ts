@@ -206,6 +206,38 @@ describe('findBestOceanRate', () => {
     expect(best?.id).toBe('o1');
   });
 
+  it('chooses the cheapest rate before carrier preference when totals differ', () => {
+    const rates: OceanFreightRate[] = [
+      {
+        id: 'cheap',
+        container_type: 'fortyhc',
+        origin_port: 'Chicago, IL',
+        destination_port: 'Montevideo',
+        destination_country: 'UY',
+        carrier: 'MSC',
+        ocean_rate: 2000,
+        drayage: 500,
+        packing_drayage: null,
+        transit_time_days: '40',
+      },
+      {
+        id: 'preferred',
+        container_type: 'fortyhc',
+        origin_port: 'Chicago, IL',
+        destination_port: 'Montevideo',
+        destination_country: 'UY',
+        carrier: 'HAPAG',
+        ocean_rate: 2600,
+        drayage: 700,
+        packing_drayage: null,
+        transit_time_days: '35',
+      },
+    ];
+
+    const best = findBestOceanRate(rates, 'fortyhc', 'UY');
+    expect(best?.id).toBe('cheap');
+  });
+
   it('compares flatrack rows using the full sea bundle inputs', () => {
     const rates: OceanFreightRate[] = [
       {
@@ -357,6 +389,29 @@ describe('calculateFreightV2 — flatrack', () => {
     expect(est?.distanceMiles).toBeLessThan(5);
     expect(est?.usInlandTransport).toBe(0);
     expect(est?.totalExcludesInland).toBe(false);
+    expect(est?.oceanFreight).toBe(expectedSeaBundle);
+    expect(est?.estimatedTotal).toBe(expectedSeaBundle);
+  });
+
+  it('uses declared equipment value to calculate bundled flatrack insurance', () => {
+    const est = calculateFreightV2({
+      equipment: mockCombine,
+      equipmentSize: null,
+      equipmentValueUsd: 100000,
+      destinationCountry: 'UY',
+      zipCode: null,
+      oceanRates: mockOceanRates,
+    });
+
+    const expectedSeaBundle =
+      4500 +
+      800 +
+      FLATRACK_NCB_BY_POL['Houston, TX'] +
+      FLATRACK_INTERNAL_BUNDLE_USD +
+      300;
+
+    expect(est).not.toBeNull();
+    expect(est?.containerType).toBe('flatrack');
     expect(est?.oceanFreight).toBe(expectedSeaBundle);
     expect(est?.estimatedTotal).toBe(expectedSeaBundle);
   });

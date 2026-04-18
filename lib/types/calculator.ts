@@ -45,6 +45,12 @@ export interface CalculatorData {
   oceanRates: OceanFreightRate[];
   categories: string[];
   countries: string[];
+  countryAvailability: {
+    fortyhc: string[];
+    flatrack: string[];
+  };
+  contractVersion: string;
+  rateBookSignature: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -54,6 +60,7 @@ export interface CalculatorData {
 export interface CalculateFreightParams {
   equipment: EquipmentPackingRate;
   equipmentSize: number | null;
+  equipmentValueUsd?: number | null;
   destinationCountry: string;
   zipCode: string | null;
   oceanRates: OceanFreightRate[];
