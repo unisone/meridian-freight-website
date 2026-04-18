@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
+import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
 import { CalculatorWizard } from "@/components/freight-calculator/calculator-wizard";
 import { COMPANY, SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -95,6 +96,12 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
 
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ArgentinaGuideCallout
+            locale={locale}
+            className="mb-8"
+            title="Compradores de Argentina: usen la calculadora como apoyo, no como costo final"
+            description="La calculadora ayuda a estimar el tramo logístico que Meridian controla. Para una compra seria hacia Argentina, compleméntela con nuestra guia sobre alcance puerta a puerto, AFIDI/SENASA y costos que quedan del lado local."
+          />
           <CalculatorWizard />
         </div>
       </section>

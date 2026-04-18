@@ -24,6 +24,7 @@ import { TrustBar } from "@/components/trust-bar";
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
+import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
 import { getEquipmentBySlug, getAllEquipmentTypes } from "@/content/equipment";
 import { getServiceBySlug } from "@/content/services";
 import { getAllDestinations } from "@/content/destinations";
@@ -242,6 +243,19 @@ export default async function EquipmentPage({
       <TrustBar />
 
       <div>
+        {locale === "es" && slug === "combines" && (
+          <section className="py-10 md:py-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <ArgentinaGuideCallout
+                locale={locale}
+                showCalculator
+                title="Comprando una cosechadora desde Argentina?"
+                description="Vea la guia para compradores argentinos que necesitan separar bien la compra, el tramo puerta a puerto y el costo local con despachante antes de cerrar una cosechadora usada en EE.UU."
+              />
+            </div>
+          </section>
+        )}
+
         {/* 3. Project gallery — social proof through real photos */}
         {equipmentProjects.length > 0 && (
           <ScrollReveal>

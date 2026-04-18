@@ -8,6 +8,7 @@ import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { DestinationsGlobe } from "@/components/destinations-globe";
 import { DarkCta } from "@/components/dark-cta";
+import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
 import { getAllDestinations } from "@/content/destinations";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
@@ -66,7 +67,6 @@ const ADDITIONAL_REGIONS = [
   {
     regionKey: "regionLatinAmerica" as const,
     countries: [
-      "Argentina",
       "Chile",
       "Peru",
       "Ecuador",
@@ -286,6 +286,19 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
             </section>
           );
         })}
+
+        {locale === "es" && (
+          <section className="pb-4">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <ArgentinaGuideCallout
+                locale={locale}
+                showCalculator
+                title="Argentina es prioridad, pero esta página no la presenta como destino probado"
+                description="Si usted está evaluando maquinaria usada desde EE.UU. hacia Argentina, entre por la guía dedicada. Ahí explicamos el cambio regulatorio de 2025, el alcance puerta a puerto y lo que queda del lado del despachante argentino."
+              />
+            </div>
+          </section>
+        )}
 
         {/* ─── We Ship Worldwide ───────────────────────────────────────── */}
         <section className="bg-muted py-16 md:py-20">

@@ -14,18 +14,6 @@ export interface Project {
 const projectsEn: Project[] = [
   // Row 1 — high-impact opening
   {
-    id: 1,
-    title: "John Deere 9650STS Combine Export",
-    description: "We loaded a John Deere 9650STS combine onto a UASC flat rack, securing the detached tires alongside for safe ocean transit to Santos, Brazil. The header and unloading auger were removed, labeled, and strapped to the flat rack deck — total prep time was 3 days from arrival to port departure. The buyer had the combine field-ready within a week of clearing Santos customs.",
-    image: "/images/project-jd-9650sts-combine.jpg",
-    equipmentType: "Combine Harvester",
-    destination: "Santos, Brazil",
-    containerType: "40ft Flat Rack",
-    weight: "15,000 kg",
-    transitTime: "28 days",
-    category: "Harvesting",
-  },
-  {
     id: 8,
     title: "John Deere Sprayer — Port Crane Loading",
     description: "We used a Contmaster reach stacker to crane-lift a John Deere self-propelled sprayer directly onto a flat rack at the container yard, threading the machine between stacked Maersk containers with less than a foot of clearance on each side. The 90-foot boom sections were removed and crated in custom wooden frames shipped alongside. The flat rack cleared St. Petersburg in 18 days with the buyer's customs broker pre-cleared for agricultural equipment import.",
@@ -309,18 +297,6 @@ const projectsEn: Project[] = [
 
 // ES: Projects with LATAM destinations first
 const projectsEs: Project[] = [
-  {
-    id: 1,
-    title: "Exportación de Cosechadora John Deere 9650STS",
-    description: "Cargamos una cosechadora John Deere 9650STS en un flat rack UASC, asegurando las llantas desmontadas junto a ella para un tránsito marítimo seguro a Santos, Brasil. El cabezal y la descarga se retiraron, etiquetaron y aseguraron en la plataforma del flat rack — el tiempo total de preparación fue de 3 días desde la llegada hasta la salida del puerto. El comprador tuvo la cosechadora lista para el campo dentro de una semana de pasar la aduana de Santos.",
-    image: "/images/project-jd-9650sts-combine.jpg",
-    equipmentType: "Cosechadora",
-    destination: "Santos, Brasil",
-    containerType: "40ft Flat Rack",
-    weight: "15,000 kg",
-    transitTime: "28 días",
-    category: "Cosecha",
-  },
   {
     id: 8,
     title: "Pulverizadora John Deere — Carga con Grúa en Puerto",
@@ -672,18 +648,6 @@ const projectsRu: Project[] = [
     weight: "14 000 кг",
     transitTime: "20 дней",
     category: "Опрыскивание",
-  },
-  {
-    id: 1,
-    title: "Экспорт комбайна John Deere 9650STS",
-    description: "Мы загрузили комбайн John Deere 9650STS на flat rack UASC, закрепив снятые шины рядом для безопасного морского транзита в Сантус, Бразилия. Жатка и выгрузной шнек были сняты, промаркированы и закреплены на платформе flat rack — общее время подготовки составило 3 дня от прибытия до отхода судна. Покупатель получил комбайн готовым к работе в поле в течение недели после прохождения таможни Сантуса.",
-    image: "/images/project-jd-9650sts-combine.jpg",
-    equipmentType: "Зерноуборочный комбайн",
-    destination: "Сантус, Бразилия",
-    containerType: "40 футов Flat Rack",
-    weight: "15 000 кг",
-    transitTime: "28 дней",
-    category: "Уборка",
   },
   {
     id: 2,

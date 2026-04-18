@@ -33,6 +33,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8, alternates: withAlternates("/blog") },
     { url: `${SITE.url}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3, alternates: withAlternates("/privacy") },
     { url: `${SITE.url}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3, alternates: withAlternates("/terms") },
+    {
+      url: `${SITE.url}/es/destinations/argentina`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
+      alternates: {
+        languages: {
+          es: `${SITE.url}/es/destinations/argentina`,
+        },
+      },
+    },
   ];
 
   const servicePages: MetadataRoute.Sitemap = getAllServices('en').map((s) => ({

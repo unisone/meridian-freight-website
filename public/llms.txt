@@ -22,6 +22,7 @@ Our key differentiator: one company handles the entire chain from seller to port
 - [Homepage](https://meridianexport.com/): Overview of all services and company capabilities
 - [Pricing](https://meridianexport.com/pricing): Reference rates for 60+ equipment types and 20+ shipping routes
 - [Freight Calculator](https://meridianexport.com/pricing/calculator): Free instant cost estimator for machinery export
+- [Argentina Buyer Guide](https://meridianexport.com/es/destinations/argentina): Spanish guide for Argentine buyers evaluating used U.S. ag equipment, port-to-port scope, and local-import handoff
 - [Projects](https://meridianexport.com/projects): Portfolio of completed exports — John Deere combines, Case IH headers, sprayers, excavators
 - [FAQ](https://meridianexport.com/faq): Answers to common questions about shipping timelines, container sizes, pricing, documentation
 - [About](https://meridianexport.com/about): Company history, locations, and differentiators
@@ -33,7 +34,7 @@ Combines (John Deere, Case IH, Claas), Tractors (John Deere, Case IH, Kubota), E
 
 ## Shipping Destinations
 
-Latin America (Brazil, Colombia, Mexico, Argentina), Middle East (UAE, Turkey, Saudi Arabia, Iraq), Africa (Nigeria, Kenya, South Africa, Ghana), Central Asia (Kazakhstan, Uzbekistan), Eastern Europe (Romania, Ukraine, Georgia), and anywhere with a seaport.
+Latin America (Brazil, Colombia, Mexico), Middle East (UAE, Turkey, Saudi Arabia, Iraq), Africa (Nigeria, Kenya, South Africa, Ghana), Central Asia (Kazakhstan, Uzbekistan), Eastern Europe (Romania, Ukraine, Georgia), and anywhere with a seaport.
 
 ## Languages
 

@@ -157,6 +157,22 @@ export function trackContactClick(
   vercelTrack("contact_click", { type, location });
 }
 
+/** Track a non-contact CTA click with GA4 + Vercel Analytics. */
+export function trackCtaClick(
+  location: string,
+  text: string,
+  destination: string,
+): void {
+  trackGA4Event("cta_click", {
+    event_category: "cta",
+    cta_location: location,
+    cta_text: text,
+    destination,
+    locale: getLocaleFromPath(),
+  });
+  vercelTrack("cta_click", { location, text, destination });
+}
+
 /** Track a calculator funnel step with GA4 + Vercel Analytics. */
 export function trackCalcFunnel(
   step: "start" | "step" | "complete",
@@ -348,4 +364,3 @@ export function initFormAbandonmentTracking(
     { markDirty, markSubmitted }
   );
 }
-
