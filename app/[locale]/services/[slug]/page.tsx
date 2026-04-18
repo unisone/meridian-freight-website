@@ -16,6 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
+import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
 import { getServiceBySlug, getRelatedServices, getAllServices } from "@/content/services";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
@@ -148,6 +149,19 @@ export default async function ServicePage({
       </PageHero>
 
       <div>
+        {locale === "es" && slug === "equipment-sales" && (
+          <section className="py-10 md:py-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <ArgentinaGuideCallout
+                locale={locale}
+                showCalculator
+                title="Comprando desde Argentina y todavia sin maquina cerrada?"
+                description="Esta guia explica como encarar compra asistida, cotizacion puerta a puerto y coordinacion con despachante argentino antes de comprometerse con un dealer, subasta o vendedor privado."
+              />
+            </div>
+          </section>
+        )}
+
         {/* What We Do */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
