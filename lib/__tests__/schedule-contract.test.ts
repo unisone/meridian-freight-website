@@ -8,13 +8,15 @@ import {
 } from "@/lib/schedule-contract";
 import type { ContainerWithPendingCount, SharedContainer } from "@/lib/types/shared-shipping";
 
-function localDatePlusDays(days: number): string {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + days);
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
+const FIXED_TODAY = "2026-04-18";
+
+function localDatePlusDays(days: number, baseDate: string = FIXED_TODAY): string {
+  const [year, month, day] = baseDate.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  date.setUTCDate(date.getUTCDate() + days);
+  const yyyy = date.getUTCFullYear();
+  const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(date.getUTCDate()).padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
 }
 
@@ -113,15 +115,15 @@ describe("normalizeScheduleRoute", () => {
 
 describe("getBookabilityState", () => {
   it("marks future available containers with positive CBM as bookable", () => {
-    expect(getBookabilityState(makeSharedContainer()).bookabilityStatus).toBe("bookable");
+    expect(getBookabilityState(makeSharedContainer(), FIXED_TODAY).bookabilityStatus).toBe("bookable");
   });
 
   it("marks zero or null capacity as non-bookable", () => {
     expect(
-      getBookabilityState(makeSharedContainer({ available_cbm: 0 })).bookabilityReason,
+      getBookabilityState(makeSharedContainer({ available_cbm: 0 }), FIXED_TODAY).bookabilityReason,
     ).toBe("no_capacity");
     expect(
-      getBookabilityState(makeSharedContainer({ available_cbm: null })).bookabilityReason,
+      getBookabilityState(makeSharedContainer({ available_cbm: null }), FIXED_TODAY).bookabilityReason,
     ).toBe("no_capacity");
   });
 
@@ -133,6 +135,7 @@ describe("getBookabilityState", () => {
           eta_date: localDatePlusDays(20),
           status: "available",
         }),
+        FIXED_TODAY,
       ),
     ).toMatchObject({
       shippingState: "in-transit",
@@ -143,17 +146,17 @@ describe("getBookabilityState", () => {
 
   it("distinguishes cancelled and unlisted containers", () => {
     expect(
-      getBookabilityState(makeSharedContainer({ status: "cancelled" })).bookabilityReason,
+      getBookabilityState(makeSharedContainer({ status: "cancelled" }), FIXED_TODAY).bookabilityReason,
     ).toBe("cancelled");
     expect(
-      getBookabilityState(makeSharedContainer({ status: "unlisted" })).bookabilityReason,
+      getBookabilityState(makeSharedContainer({ status: "unlisted" }), FIXED_TODAY).bookabilityReason,
     ).toBe("unlisted");
   });
 });
 
 describe("getBookingDecision", () => {
   it("accepts matching bookable containers", () => {
-    expect(getBookingDecision(makeSharedContainer(), "MF-2026-001")).toEqual({
+    expect(getBookingDecision(makeSharedContainer(), "MF-2026-001", FIXED_TODAY)).toEqual({
       ok: true,
       shippingState: "upcoming",
       bookabilityStatus: "bookable",
@@ -163,9 +166,11 @@ describe("getBookingDecision", () => {
   });
 
   it("returns explicit rejection codes", () => {
-    expect(getBookingDecision(null, "MF-2026-001").rejectionCode).toBe("CONTAINER_UNAVAILABLE");
+    expect(getBookingDecision(null, "MF-2026-001", FIXED_TODAY).rejectionCode).toBe(
+      "CONTAINER_UNAVAILABLE",
+    );
     expect(
-      getBookingDecision(makeSharedContainer(), "MF-2026-XYZ").rejectionCode,
+      getBookingDecision(makeSharedContainer(), "MF-2026-XYZ", FIXED_TODAY).rejectionCode,
     ).toBe("CONTAINER_MISMATCH");
     expect(
       getBookingDecision(
@@ -175,12 +180,14 @@ describe("getBookingDecision", () => {
           status: "departed",
         }),
         "MF-2026-001",
+        FIXED_TODAY,
       ).rejectionCode,
     ).toBe("CONTAINER_DEPARTED");
     expect(
       getBookingDecision(
         makeSharedContainer({ status: "full", available_cbm: 0 }),
         "MF-2026-001",
+        FIXED_TODAY,
       ).rejectionCode,
     ).toBe("CONTAINER_FULL");
   });
@@ -194,7 +201,7 @@ describe("toPublicScheduleContainer", () => {
         destination: "Almata, Kazakhstan",
         destination_country: null,
       }),
-      localDatePlusDays(0),
+      FIXED_TODAY,
     );
 
     expect(publicContainer.originDisplay).toBe("Albion, IA");
