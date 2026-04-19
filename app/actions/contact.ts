@@ -184,7 +184,7 @@ export async function submitContactForm(
       await resend.emails.send({
         from: CONTACT.fromEmail,
         to: email,
-        replyTo: CONTACT.email,
+        replyTo: CONTACT.replyToEmails as unknown as string[],
         subject: replySubject,
         html: `
           <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">

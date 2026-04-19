@@ -61,7 +61,7 @@ describe("submitContactForm", () => {
     mocks.sendCAPIEvent.mockResolvedValue(undefined);
   });
 
-  it("routes lead notifications to the CEO with alex.z cc and sets auto-replies to contact inbox", async () => {
+  it("routes lead notifications to the CEO with alex.z cc and sets auto-replies to both Alex inboxes", async () => {
     const result = await submitContactForm(
       {
         name: "Jane Buyer",
@@ -95,7 +95,7 @@ describe("submitContactForm", () => {
       2,
       expect.objectContaining({
         to: "jane@example.com",
-        replyTo: "contact@meridianexport.com",
+        replyTo: ["alex.r@meridianexport.com", "alex.z@meridianexport.com"],
       }),
     );
   });

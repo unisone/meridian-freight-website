@@ -16,12 +16,16 @@ export const CONTACT = {
   phone: "+1 (641) 516-1616",
   phoneRaw: "+16415161616",
   phoneHref: "tel:+16415161616",
-  email: "contact@meridianexport.com",
-  emailHref: "mailto:contact@meridianexport.com",
+  email: "alex.r@meridianexport.com",
+  emailHref: "mailto:alex.r@meridianexport.com?cc=alex.z@meridianexport.com",
   partsEmail: "parts@meridianexport.com",
   partsEmailHref: "mailto:parts@meridianexport.com",
   notificationEmail: "alex.r@meridianexport.com",
   notificationCc: ["alex.z@meridianexport.com"] as readonly string[],
+  replyToEmails: [
+    "alex.r@meridianexport.com",
+    "alex.z@meridianexport.com",
+  ] as readonly string[],
   bookingNotificationEmail: "svetlana.g@meridianexport.com",
   bookingNotificationCc: [
     "alex.z@meridianexport.com",
