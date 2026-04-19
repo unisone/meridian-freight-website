@@ -221,7 +221,7 @@ const faqEntriesEs: FaqEntry[] = [
   },
   {
     question: "¿Puedo contactarlos por WhatsApp para consultas y cotizaciones?",
-    answer: "Sí — atendemos consultas en español por WhatsApp. Envíenos un mensaje con los detalles de su equipo (marca, modelo, año) y destino, y le respondemos con una cotización detallada dentro de 24 horas. También puede llamarnos o enviar un correo a info@meridianexport.com.",
+    answer: "Sí — atendemos consultas en español por WhatsApp. Envíenos un mensaje con los detalles de su equipo (marca, modelo, año) y destino, y le respondemos con una cotización detallada dentro de 24 horas. También puede llamarnos o enviar un correo a contact@meridianexport.com.",
     category: "General",
   },
 ];
