@@ -3,6 +3,7 @@
  * Branded, multilingual (en/es/ru), with full container details.
  */
 import { CONTACT, COMPANY, SITE, SOCIAL } from "@/lib/constants";
+import { localizePath } from "@/lib/i18n-utils";
 
 export interface BookingEmailParams {
   name: string;
@@ -167,8 +168,6 @@ function formatDate(dateStr: string, locale: string): string {
 // ---------------------------------------------------------------------------
 
 const LOGO_URL = `${SITE.url}/logos/MF%20Logos%20White/meridianFreight-logo-W-250.png`;
-const SCHEDULE_URL = `${SITE.url}/schedule`;
-
 export function buildBookingConfirmationEmail(params: BookingEmailParams): {
   subject: string;
   html: string;
@@ -185,6 +184,7 @@ export function buildBookingConfirmationEmail(params: BookingEmailParams): {
   const containerLabel = container.containerType === "fortyhc" || container.containerType === "40HC"
     ? "40HC"
     : container.containerType;
+  const scheduleUrl = `${SITE.url}${localizePath(locale, "/schedule")}`;
 
   const subject = `${t.subject(container.destination)} | ${COMPANY.name}`;
 
@@ -309,7 +309,7 @@ export function buildBookingConfirmationEmail(params: BookingEmailParams): {
           <a href="${CONTACT.phoneHref}" style="display:inline-block;padding:10px 20px;background:#f1f5f9;color:#334155;font-size:14px;font-weight:600;text-decoration:none;border-radius:8px;border:1px solid #cbd5e1">${t.callUs} ${CONTACT.phone}</a>
         </td>
         <td>
-          <a href="${CONTACT.emailHref}" style="display:inline-block;padding:10px 20px;background:#f1f5f9;color:#334155;font-size:14px;font-weight:600;text-decoration:none;border-radius:8px;border:1px solid #cbd5e1">${t.emailUs}</a>
+        <a href="${CONTACT.emailHref}" style="display:inline-block;padding:10px 20px;background:#f1f5f9;color:#334155;font-size:14px;font-weight:600;text-decoration:none;border-radius:8px;border:1px solid #cbd5e1">${t.emailUs}</a>
         </td>
       </tr>
     </table>
@@ -317,7 +317,7 @@ export function buildBookingConfirmationEmail(params: BookingEmailParams): {
     <!-- Track schedule CTA -->
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr><td align="center">
-        <a href="${SCHEDULE_URL}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;letter-spacing:0.3px">${t.trackSchedule} &rarr;</a>
+        <a href="${scheduleUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;letter-spacing:0.3px">${t.trackSchedule} &rarr;</a>
       </td></tr>
     </table>
 

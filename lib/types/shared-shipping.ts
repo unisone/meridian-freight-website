@@ -53,6 +53,21 @@ export type BookingRequestStatus =
   | "booked"
   | "cancelled";
 
+export type ScheduleLifecycleState = "upcoming" | "in-transit" | "delivered";
+
+export type BookabilityStatus = "bookable" | "non-bookable";
+
+export type BookabilityReason =
+  | "available"
+  | "full"
+  | "no_capacity"
+  | "departed"
+  | "cancelled"
+  | "unlisted"
+  | "unknown";
+
+export type RouteQuality = "clean" | "fallback" | "pending";
+
 /** Row from sync_log */
 export interface SyncLogEntry {
   id: string;
@@ -90,6 +105,19 @@ export interface ContainerDisplayState {
 /** Data passed to the container grid from the server */
 export interface ContainerWithPendingCount extends SharedContainer {
   pending_count: number;
+}
+
+/** Canonical server-owned public contract for the /schedule surface */
+export interface PublicScheduleContainer extends ContainerWithPendingCount {
+  shippingState: ScheduleLifecycleState;
+  bookabilityStatus: BookabilityStatus;
+  bookabilityReason: BookabilityReason;
+  originDisplay: string;
+  destinationDisplay: string;
+  countryDisplay: string | null;
+  isDestinationPending: boolean;
+  routeQuality: RouteQuality;
+  routeFallbackReason: string | null;
 }
 
 /** Result from the sync pipeline */

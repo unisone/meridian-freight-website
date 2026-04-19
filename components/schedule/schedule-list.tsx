@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { StaleDataBanner } from "@/components/shared-shipping/stale-data-banner";
 import type {
-  ContainerWithPendingCount,
+  PublicScheduleContainer,
 } from "@/lib/types/shared-shipping";
 import {
   type FilterTab,
@@ -29,7 +29,7 @@ import { ScheduleEmptyState } from "@/components/schedule/schedule-empty-state";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface ScheduleListProps {
-  containers: ContainerWithPendingCount[];
+  containers: PublicScheduleContainer[];
   lastSyncTime: string | null;
 }
 
@@ -37,7 +37,7 @@ interface ScheduleListProps {
 
 interface TimeGroup {
   label: string;
-  containers: ContainerWithPendingCount[];
+  containers: PublicScheduleContainer[];
 }
 
 function localDatePlusDays(days: number): string {
@@ -50,15 +50,15 @@ function localDatePlusDays(days: number): string {
 }
 
 function subGroupByTime(
-  bookable: ContainerWithPendingCount[],
+  bookable: PublicScheduleContainer[],
   t: ReturnType<typeof useTranslations>,
 ): TimeGroup[] {
   const weekStr = localDatePlusDays(7);
   const monthStr = localDatePlusDays(30);
 
-  const thisWeek: ContainerWithPendingCount[] = [];
-  const thisMonth: ContainerWithPendingCount[] = [];
-  const later: ContainerWithPendingCount[] = [];
+  const thisWeek: PublicScheduleContainer[] = [];
+  const thisMonth: PublicScheduleContainer[] = [];
+  const later: PublicScheduleContainer[] = [];
 
   for (const c of bookable) {
     if (c.departure_date <= weekStr) {
@@ -204,8 +204,8 @@ export function ScheduleList({ containers, lastSyncTime }: ScheduleListProps) {
       {/* AC1: Screen reader announcement for filter results */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         {hasContent
-          ? `${resultCount} containers shown`
-          : "No containers match your filters"}
+          ? t("resultsShown", { count: resultCount })
+          : t("noResultsLive")}
       </div>
 
       {!hasContent ? (

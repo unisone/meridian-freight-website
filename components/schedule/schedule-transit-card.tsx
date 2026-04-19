@@ -8,14 +8,12 @@ import { useLocale, useTranslations } from "next-intl";
 import { countryFlag, transitDays } from "@/lib/container-display";
 import {
   computeTransitProgress,
-  cleanOriginText,
-  formatDestination,
   shortDate,
 } from "@/lib/schedule-display";
-import type { SharedContainer } from "@/lib/types/shared-shipping";
+import type { PublicScheduleContainer } from "@/lib/types/shared-shipping";
 
 interface ScheduleTransitCardProps {
-  container: SharedContainer;
+  container: PublicScheduleContainer;
   index: number;
 }
 
@@ -34,8 +32,9 @@ export const ScheduleTransitCard = memo(function ScheduleTransitCard({
   );
   const transitDayCount = transitDays(container.departure_date, container.eta_date);
   const flag = countryFlag(container.destination_country);
-  const { text: destText, isPending: destPending } = formatDestination(container.destination);
-  const origin = cleanOriginText(container.origin);
+  const destText = container.destinationDisplay;
+  const destPending = container.isDestinationPending;
+  const origin = container.originDisplay;
   const progressPercent = transit?.progressPercent ?? 50;
 
   return (
