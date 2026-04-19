@@ -425,8 +425,15 @@ export function toPublicScheduleContainer(
   const { countryCode, ...route } = normalizeScheduleRoute(container);
 
   return {
-    ...container,
+    id: container.id,
+    project_number: container.project_number,
     destination_country: countryCode ?? container.destination_country,
+    departure_date: container.departure_date,
+    eta_date: container.eta_date,
+    container_type: container.container_type,
+    total_capacity_cbm: container.total_capacity_cbm,
+    available_cbm: container.available_cbm,
+    pending_count: container.pending_count,
     ...bookability,
     ...route,
   };

@@ -107,8 +107,20 @@ export interface ContainerWithPendingCount extends SharedContainer {
   pending_count: number;
 }
 
-/** Canonical server-owned public contract for the /schedule surface */
-export interface PublicScheduleContainer extends ContainerWithPendingCount {
+/** Canonical browser-safe contract for the /schedule surface */
+export interface PublicScheduleContainer
+  extends Pick<
+    ContainerWithPendingCount,
+    | "id"
+    | "project_number"
+    | "destination_country"
+    | "departure_date"
+    | "eta_date"
+    | "container_type"
+    | "total_capacity_cbm"
+    | "available_cbm"
+    | "pending_count"
+  > {
   shippingState: ScheduleLifecycleState;
   bookabilityStatus: BookabilityStatus;
   bookabilityReason: BookabilityReason;
