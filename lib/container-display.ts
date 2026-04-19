@@ -1,3 +1,5 @@
+import { parseLocalDate } from "@/lib/schedule-contract";
+
 /**
  * Converts an ISO 3166-1 alpha-2 country code to a flag emoji.
  * Returns "🌍" for null or invalid input.
@@ -30,8 +32,8 @@ export function transitDays(
 ): number | null {
   if (!etaDate) return null;
 
-  const departure = new Date(departureDate);
-  const eta = new Date(etaDate);
+  const departure = parseLocalDate(departureDate);
+  const eta = parseLocalDate(etaDate);
 
   if (isNaN(departure.getTime()) || isNaN(eta.getTime())) return null;
 

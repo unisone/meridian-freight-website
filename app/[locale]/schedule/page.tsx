@@ -10,7 +10,7 @@ import { ScheduleEmptyState } from "@/components/schedule/schedule-empty-state";
 import { fetchScheduleContainersWithBookingData, getLastSyncTime } from "@/lib/supabase-containers";
 import { computeScheduleStats } from "@/lib/schedule-display";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, localizePath } from "@/lib/i18n-utils";
 
 export const revalidate = 900; // 15 min ISR (cron also triggers on-demand revalidation)
 
@@ -20,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const localePath = locale === "en" ? "" : `/${locale}`;
+  const schedulePath = localizePath(locale, "/schedule");
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   const title = t("scheduleTitle");
@@ -40,18 +40,18 @@ export async function generateMetadata({
       "shipping timeline",
     ],
     alternates: {
-      canonical: `${SITE.url}${localePath}/schedule`,
+      canonical: `${SITE.url}${schedulePath}`,
       languages: {
-        en: `${SITE.url}/schedule`,
-        es: `${SITE.url}/es/schedule`,
-        ru: `${SITE.url}/ru/schedule`,
+        en: `${SITE.url}${localizePath("en", "/schedule")}`,
+        es: `${SITE.url}${localizePath("es", "/schedule")}`,
+        ru: `${SITE.url}${localizePath("ru", "/schedule")}`,
       },
     },
     openGraph: {
       locale: getOgLocale(locale),
       title: `${title} | ${SITE.name}`,
       description,
-      url: `${SITE.url}${localePath}/schedule`,
+      url: `${SITE.url}${schedulePath}`,
       images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: title }],
     },
     twitter: {
@@ -70,6 +70,7 @@ export default async function SchedulePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const schedulePath = localizePath(locale, "/schedule");
 
   const [containers, lastSyncTime, t] = await Promise.all([
     fetchScheduleContainersWithBookingData(),
@@ -113,7 +114,7 @@ export default async function SchedulePage({
         "@type": "ListItem",
         position: 2,
         name: t("breadcrumb"),
-        item: `${SITE.url}/schedule`,
+        item: `${SITE.url}${schedulePath}`,
       },
     ],
   };

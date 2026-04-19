@@ -11,8 +11,11 @@ import {
   markStaleContainers,
   insertSyncLog,
 } from "@/lib/supabase-containers";
+import { extractCountryCode, isUSLocation } from "@/lib/shared-shipping-route";
 import type { ParsedContainerRow, SyncError, SyncResult } from "@/lib/types/shared-shipping";
 import { log } from "@/lib/logger";
+
+export { extractCountryCode, isUSLocation } from "@/lib/shared-shipping-route";
 
 // ---------- Column Detection ----------
 
@@ -240,107 +243,6 @@ export function parseSpaceAvailable(
 
   // Can't parse
   return { cbm: null, rawValue: rawStr };
-}
-
-// ---------- Country Extraction ----------
-
-const COUNTRY_MAP: Record<string, string> = {
-  // English
-  kazakhstan: "KZ", brazil: "BR", uruguay: "UY", argentina: "AR",
-  colombia: "CO", chile: "CL", peru: "PE", ecuador: "EC",
-  mexico: "MX", "south africa": "ZA", australia: "AU",
-  "new zealand": "NZ", nigeria: "NG", ghana: "GH",
-  kenya: "KE", tanzania: "TZ", uganda: "UG",
-  ethiopia: "ET", mozambique: "MZ", zambia: "ZM",
-  thailand: "TH", vietnam: "VN", indonesia: "ID",
-  philippines: "PH", malaysia: "MY", turkey: "TR",
-  georgia: "GE", uzbekistan: "UZ", kyrgyzstan: "KG", kyrgystan: "KG",
-  tajikistan: "TJ", turkmenistan: "TM", mongolia: "MN",
-  paraguay: "PY", bolivia: "BO", guatemala: "GT",
-  // New — from actual sheet data
-  ukraine: "UA", france: "FR", russia: "RU",
-  romania: "RO", poland: "PL", egypt: "EG", lithuania: "LT",
-  germany: "DE", belgium: "BE", netherlands: "NL",
-  italy: "IT", spain: "ES", "united kingdom": "GB",
-  china: "CN", japan: "JP", "south korea": "KR",
-  india: "IN", pakistan: "PK", bangladesh: "BD",
-  // Russian city/port names that indicate country
-  novorossiysk: "RU", новороссийск: "RU",
-  kokshetau: "KZ", кокшетау: "KZ",
-  kostanai: "KZ", костанай: "KZ",
-  almaty: "KZ", алматы: "KZ",
-  aktau: "KZ", актау: "KZ",
-  bishkek: "KG", бишкек: "KG",
-  batumi: "GE", батуми: "GE",
-  poti: "GE", поти: "GE",
-  odessa: "UA", одесса: "UA",
-  gdynia: "PL", alexandria: "EG",
-  constanta: "RO",
-  istanbul: "TR", стамбул: "TR",
-  // Russian
-  казахстан: "KZ", бразилия: "BR", уругвай: "UY",
-  аргентина: "AR", колумбия: "CO", чили: "CL",
-  перу: "PE", эквадор: "EC", мексика: "MX",
-  "южная африка": "ZA", австралия: "AU",
-  нигерия: "NG", кения: "KE", гана: "GH",
-  турция: "TR", грузия: "GE", узбекистан: "UZ",
-  кыргызстан: "KG", парагвай: "PY", боливия: "BO",
-  украина: "UA", франция: "FR", россия: "RU",
-  румыния: "RO", польша: "PL", египет: "EG",
-  германия: "DE",
-};
-
-/** US state abbreviations that must not be treated as ISO country codes. */
-const US_STATE_CODES = new Set([
-  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
-  "DC",
-]);
-
-/**
- * Detect US locations that are NOT valid international destinations.
- * These are US port cities or "City, STATE" patterns that the ops team
- * sometimes enters as "Final Destination" when the international leg
- * hasn't been determined yet.
- */
-const US_PORT_CITIES = new Set([
-  "houston", "savannah", "norfolk", "baltimore", "charleston",
-  "tacoma", "los angeles", "long beach", "new york", "newark",
-  "jacksonville", "miami", "new orleans", "oakland", "seattle",
-  "minneapolis", "st louis", "st. louis", "albion",
-]);
-
-export function isUSLocation(destination: string): boolean {
-  const trimmed = destination.trim();
-  if (!trimmed) return false;
-
-  // Pattern: "City, XX" where XX is a US state code
-  const stateMatch = trimmed.match(/,\s*([A-Z]{2})$/);
-  if (stateMatch && US_STATE_CODES.has(stateMatch[1])) return true;
-
-  // Known US port city names (without state suffix)
-  const lower = trimmed.toLowerCase();
-  for (const city of US_PORT_CITIES) {
-    if (lower.includes(city)) return true;
-  }
-
-  return false;
-}
-
-export function extractCountryCode(destination: string): string | null {
-  const lower = destination.toLowerCase().trim();
-  // Try longest match first (e.g., "south africa" before "south")
-  const entries = Object.entries(COUNTRY_MAP).sort((a, b) => b[0].length - a[0].length);
-  for (const [name, code] of entries) {
-    if (lower.includes(name)) return code;
-  }
-  // Check for trailing ISO code: "Almaty, KZ" — but skip US state abbreviations
-  const isoMatch = destination.match(/\b([A-Z]{2})$/);
-  if (isoMatch && !US_STATE_CODES.has(isoMatch[1])) return isoMatch[1];
-  return null;
 }
 
 // ---------- Row Parsing ----------

@@ -32,8 +32,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 
 import { CONTACT } from "@/lib/constants";
+import { localizePath } from "@/lib/i18n-utils";
 import { buildWhatsAppUrl } from "@/lib/wa-attribution";
-import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
+import type { PublicScheduleContainer } from "@/lib/types/shared-shipping";
 import type { BookingRequestData } from "@/lib/schemas";
 import {
   submitBookingRequest,
@@ -72,7 +73,7 @@ const CARGO_TYPES: Array<{
 // ─── Props ───────────────────────────────────────────────────────────────────
 
 interface ScheduleBookingFormProps {
-  container: ContainerWithPendingCount;
+  container: PublicScheduleContainer;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -109,6 +110,9 @@ export function ScheduleBookingForm({
   }, [selectedCargoTypes]);
 
   const availableCbm = container.available_cbm ?? 0;
+  const localizedCalculatorPath = localizePath(locale, "/pricing/calculator");
+  const localizedTermsPath = localizePath(locale, "/terms");
+  const localizedPrivacyPath = localizePath(locale, "/privacy");
 
   // Client-side validation: "other" requires description
   const canSubmit = selectedCargoTypes.length > 0 &&
@@ -179,12 +183,21 @@ export function ScheduleBookingForm({
 
         trackBookingFunnel("request_submit", {
           project_number: container.project_number,
-          destination: container.destination,
+          destination: container.destinationDisplay,
         });
 
         onSuccess?.();
       } else {
-        const errorKey = res.error === "CONTAINER_UNAVAILABLE" ? "errorContainerUnavailable" : "errorDefault";
+        const errorKey =
+          res.error === "CONTAINER_UNAVAILABLE"
+            ? "errorContainerUnavailable"
+            : res.error === "CONTAINER_FULL"
+              ? "errorContainerFull"
+              : res.error === "CONTAINER_DEPARTED"
+                ? "errorContainerDeparted"
+                : res.error === "CONTAINER_MISMATCH"
+                  ? "errorContainerMismatch"
+                  : "errorDefault";
         setError(t(errorKey));
       }
     } catch {
@@ -206,7 +219,7 @@ export function ScheduleBookingForm({
         <p className="mt-1.5 text-sm text-muted-foreground">
           {t.rich("successMessage", {
             projectNum: container.project_number,
-            destName: container.destination,
+            destName: container.destinationDisplay,
             bold: (chunks) => (
               <span className="font-medium text-foreground">{chunks}</span>
             ),
@@ -222,7 +235,7 @@ export function ScheduleBookingForm({
               result.waRefCode
                 ? buildWhatsAppUrl(
                     result.waRefCode,
-                    `I just submitted a booking request for the ${container.destination} container (${container.project_number}), departing ${container.departure_date}.`,
+                    `I just submitted a booking request for the ${container.destinationDisplay} container (${container.project_number}), departing ${container.departure_date}.`,
                   )
                 : CONTACT.whatsappUrl
             }
@@ -388,7 +401,7 @@ export function ScheduleBookingForm({
             {t.rich("combineWarning", {
               calcLink: (chunks) => (
                 <Link
-                  href="/pricing/calculator"
+                  href={localizedCalculatorPath}
                   className="font-medium underline underline-offset-2"
                 >
                   {chunks}
@@ -525,7 +538,7 @@ export function ScheduleBookingForm({
         {t.rich("termsAgreement", {
           terms: (chunks) => (
             <a
-              href="/terms"
+              href={localizedTermsPath}
               target="_blank"
               rel="noopener noreferrer"
               className="underline underline-offset-2 hover:text-foreground"
@@ -535,7 +548,7 @@ export function ScheduleBookingForm({
           ),
           privacy: (chunks) => (
             <a
-              href="/privacy"
+              href={localizedPrivacyPath}
               target="_blank"
               rel="noopener noreferrer"
               className="underline underline-offset-2 hover:text-foreground"

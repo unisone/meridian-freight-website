@@ -5,10 +5,11 @@
 
 import type {
   SharedContainer,
-  ContainerWithPendingCount,
+  PublicScheduleContainer,
   ParsedContainerRow,
 } from "@/lib/types/shared-shipping";
 import { log } from "@/lib/logger";
+import { toPublicScheduleContainer } from "@/lib/schedule-contract";
 
 function getSupabaseConfig() {
   const url = process.env.SUPABASE_URL;
@@ -98,7 +99,7 @@ export async function getLastSyncTime(): Promise<string | null> {
           ...buildHeaders(config.key),
           Accept: "application/vnd.pgrst.object+json",
         },
-        next: { revalidate: 0 },
+        next: { revalidate: 900 },
       },
     );
 
@@ -559,7 +560,7 @@ export async function insertSyncLog(entry: {
  * Used by the unified /schedule page (replaces separate fetch functions).
  * Merges pending_count for available containers so bookable rows can show demand.
  */
-export async function fetchScheduleContainersWithBookingData(): Promise<ContainerWithPendingCount[] | null> {
+export async function fetchScheduleContainersWithBookingData(): Promise<PublicScheduleContainer[] | null> {
   const config = getSupabaseConfig();
   if (!config) return null;
 
@@ -579,7 +580,7 @@ export async function fetchScheduleContainersWithBookingData(): Promise<Containe
       `${config.url}/rest/v1/shared_containers?${params}`,
       {
         headers: buildHeaders(config.key),
-        next: { revalidate: 0 },
+        next: { revalidate: 900 },
       },
     );
 
@@ -623,10 +624,29 @@ export async function fetchScheduleContainersWithBookingData(): Promise<Containe
       }
     }
 
-    return containers.map((c) => ({
-      ...c,
-      pending_count: countMap.get(c.id) ?? 0,
-    }));
+    return containers.map((container) => {
+      const publicContainer = toPublicScheduleContainer({
+        ...container,
+        pending_count: countMap.get(container.id) ?? 0,
+      });
+
+      if (publicContainer.routeQuality === "fallback") {
+        log({
+          level: "warn",
+          msg: "schedule_route_fallback",
+          route: "supabase-containers",
+          containerId: publicContainer.id,
+          projectNumber: publicContainer.project_number,
+          reason: publicContainer.routeFallbackReason,
+          originRaw: container.origin,
+          destinationRaw: container.destination,
+          originDisplay: publicContainer.originDisplay,
+          destinationDisplay: publicContainer.destinationDisplay,
+        });
+      }
+
+      return publicContainer;
+    });
   } catch (e) {
     log({
       level: "error",

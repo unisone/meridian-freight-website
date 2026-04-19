@@ -9,6 +9,8 @@ import { track } from "@vercel/analytics/server";
 import { notifySlack } from "@/lib/slack";
 import { sendCAPIEvent } from "@/lib/meta-capi";
 import { startTimer, log } from "@/lib/logger";
+import { localizePath } from "@/lib/i18n-utils";
+import { getBookingDecision, normalizeScheduleRoute } from "@/lib/schedule-contract";
 import {
   fetchContainerById,
   countRecentRequests,
@@ -72,13 +74,23 @@ export async function submitBookingRequest(
 
   // 4. Container status + departure date re-check (after email config verified)
   const container = await fetchContainerById(containerId);
-  const todayStr = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
-  if (!container || container.status !== "available" || container.departure_date < todayStr) {
+  const bookingDecision = getBookingDecision(container, projectNumber);
+  if (!bookingDecision.ok || !container) {
+    log({
+      level: "warn",
+      msg: "booking_rejected",
+      route: "action:booking-request",
+      locale,
+      containerId,
+      projectNumber,
+      rejectionCode: bookingDecision.rejectionCode,
+    });
     return {
       success: false,
-      error: "CONTAINER_UNAVAILABLE",
+      error: bookingDecision.rejectionCode ?? "CONTAINER_UNAVAILABLE",
     };
   }
+  const routeDisplay = normalizeScheduleRoute(container);
 
   // 5. Dedup check — if same email submitted for same container within 5 minutes, return success (idempotent)
   const recentCount = await countRecentRequests(email, containerId, 5);
@@ -122,7 +134,7 @@ export async function submitBookingRequest(
   const safeCargo = escapeHtml(cargoDescription);
   const safePhone = escapeHtml(phone);
 
-  const route = `${escapeHtml(container.origin)} → ${escapeHtml(container.destination)}`;
+  const route = `${escapeHtml(routeDisplay.originDisplay)} → ${escapeHtml(routeDisplay.destinationDisplay)}`;
   const departureDate = container.departure_date;
   const availableCbm = container.available_cbm != null ? `${container.available_cbm} CBM` : "N/A";
 
@@ -132,7 +144,7 @@ export async function submitBookingRequest(
       to: CONTACT.bookingNotificationEmail,
       cc: CONTACT.bookingNotificationCc as unknown as string[],
       replyTo: email,
-      subject: `New Booking Request: ${name} — ${container.destination}${locale !== "en" ? ` [${locale.toUpperCase()}]` : ""}`,
+      subject: `New Booking Request: ${name} — ${routeDisplay.destinationDisplay}${locale !== "en" ? ` [${locale.toUpperCase()}]` : ""}`,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto">
           <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;padding:24px;border-radius:8px 8px 0 0">
@@ -197,8 +209,8 @@ export async function submitBookingRequest(
         locale,
         bookingRef,
         container: {
-          origin: escapeHtml(container.origin),
-          destination: escapeHtml(container.destination),
+          origin: escapeHtml(routeDisplay.originDisplay),
+          destination: escapeHtml(routeDisplay.destinationDisplay),
           departureDate: container.departure_date,
           etaDate: container.eta_date ?? null,
           containerType: escapeHtml(container.container_type),
@@ -221,7 +233,7 @@ export async function submitBookingRequest(
       `*New shared container booking request${locale !== "en" ? ` (${locale.toUpperCase()})` : ""}:*`,
       `Customer: ${name} <${email}> | ${phone}`,
       `Cargo: ${cargoDescription.length > 200 ? cargoDescription.slice(0, 200) + "..." : cargoDescription}`,
-      `Container: ${container.project_number} | ${container.origin} → ${container.destination}`,
+      `Container: ${container.project_number} | ${routeDisplay.originDisplay} → ${routeDisplay.destinationDisplay}`,
       `Departure: ${container.departure_date} | Available: ${availableCbm}`,
       `Pending requests: ${pendingCount}`,
     ].join("\n");
@@ -244,7 +256,7 @@ export async function submitBookingRequest(
     // e. WhatsApp attribution — enables chatbot to correlate booking with WhatsApp conversation
     await storeWaAttribution({
       ref_code: waRefCode,
-      source_page: `/schedule#${projectNumber}`,
+      source_page: localizePath(locale, `/schedule#${projectNumber}`),
       utm_source: "website",
       utm_medium: "booking_success",
       utm_campaign: "container_booking",

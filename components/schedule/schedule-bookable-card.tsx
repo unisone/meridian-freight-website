@@ -22,17 +22,15 @@ import { countryFlag, transitDays } from "@/lib/container-display";
 import {
   computeDepartureCountdown,
   computeCapacityFill,
-  cleanOriginText,
-  formatDestination,
   shortDate,
 } from "@/lib/schedule-display";
 import { cn } from "@/lib/utils";
 import { trackScheduleEvent } from "@/lib/tracking";
-import type { ContainerWithPendingCount } from "@/lib/types/shared-shipping";
+import type { PublicScheduleContainer } from "@/lib/types/shared-shipping";
 import { ScheduleBookingForm } from "@/components/schedule/schedule-booking-form";
 
 interface ScheduleBookableCardProps {
-  container: ContainerWithPendingCount;
+  container: PublicScheduleContainer;
   index: number;
   isExpanded: boolean;
   onToggle: () => void;
@@ -54,9 +52,10 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
 
   const countdown = computeDepartureCountdown(container.departure_date);
   const transitDayCount = transitDays(container.departure_date, container.eta_date);
-  const { text: destText, isPending: destPending } = formatDestination(container.destination);
   const flag = countryFlag(container.destination_country);
-  const origin = cleanOriginText(container.origin);
+  const destText = container.destinationDisplay;
+  const destPending = container.isDestinationPending;
+  const origin = container.originDisplay;
   const availableCbm = container.available_cbm ?? 0;
   const totalCbm = container.total_capacity_cbm > 0 ? container.total_capacity_cbm : 76;
   const { fillPercent, label: capacityLabel } = computeCapacityFill(availableCbm, totalCbm);
@@ -96,9 +95,9 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
 
   function handleToggle() {
     if (!isExpanded) {
-      trackScheduleEvent("book_click", {
+        trackScheduleEvent("book_click", {
         project_number: container.project_number,
-        destination: container.destination_country ?? "",
+        destination: container.destination_country ?? container.countryDisplay ?? "",
       });
     }
     onToggle();
@@ -148,9 +147,9 @@ export const ScheduleBookableCard = memo(function ScheduleBookableCard({
                     {destPending ? "" : flag}
                   </span>
                   {destPending ? (
-                    <span className="text-muted-foreground italic font-normal">{t("destinationPending")}</span>
-                  ) : (
-                    destText
+                      <span className="text-muted-foreground italic font-normal">{t("destinationPending")}</span>
+                    ) : (
+                      destText
                   )}
                 </h4>
                 <p className="mt-0.5 text-sm text-muted-foreground truncate">

@@ -5,12 +5,12 @@ import { CheckCircle2, MinusCircle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { countryFlag } from "@/lib/container-display";
-import { cleanOriginText, formatDestination, shortDate } from "@/lib/schedule-display";
+import { shortDate } from "@/lib/schedule-display";
 import { cn } from "@/lib/utils";
-import type { SharedContainer } from "@/lib/types/shared-shipping";
+import type { PublicScheduleContainer } from "@/lib/types/shared-shipping";
 
 interface ScheduleDeliveredRowProps {
-  container: SharedContainer;
+  container: PublicScheduleContainer;
   variant?: "delivered" | "fully-booked";
 }
 
@@ -21,8 +21,9 @@ export const ScheduleDeliveredRow = memo(function ScheduleDeliveredRow({
   const locale = useLocale();
   const t = useTranslations("ScheduleList");
   const flag = countryFlag(container.destination_country);
-  const { text: destText, isPending: destPending } = formatDestination(container.destination);
-  const origin = cleanOriginText(container.origin);
+  const destText = container.destinationDisplay;
+  const destPending = container.isDestinationPending;
+  const origin = container.originDisplay;
 
   const isDelivered = variant === "delivered";
 

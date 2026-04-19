@@ -3,7 +3,8 @@
  * All functions are pure — no I/O, no side effects.
  */
 
-import type { SharedContainer, ContainerWithPendingCount } from "@/lib/types/shared-shipping";
+import { parseLocalDate } from "@/lib/schedule-contract";
+import type { PublicScheduleContainer } from "@/lib/types/shared-shipping";
 
 // ─── Date Utility ───────────────────────────────────────────────────────────
 
@@ -18,16 +19,6 @@ export function todayDateString(): string {
   const mm = String(now.getMonth() + 1).padStart(2, "0");
   const dd = String(now.getDate()).padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
-}
-
-/** Parse a YYYY-MM-DD date string as LOCAL midnight (not UTC).
- *  CRITICAL: new Date("2026-03-30") creates UTC midnight, which in US timezones
- *  becomes March 29 — causing off-by-one in date display and countdown logic.
- *  This function parses the components directly to create a local-time Date. */
-export function parseLocalDate(iso: string): Date {
-  const parts = iso.split("-");
-  if (parts.length !== 3) return new Date(iso); // fallback for non-ISO
-  return new Date(+parts[0], +parts[1] - 1, +parts[2]);
 }
 
 // ─── Transit Progress ────────────────────────────────────────────────────────
@@ -77,10 +68,9 @@ export interface ScheduleStats {
 }
 
 /** Compute aggregate stats from the full container list. */
-export function computeScheduleStats(containers: SharedContainer[]): ScheduleStats {
+export function computeScheduleStats(containers: PublicScheduleContainer[]): ScheduleStats {
   const now = new Date();
   const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
-  const todayStr = todayDateString();
 
   return {
     containersThisMonth: containers.filter(
@@ -88,18 +78,12 @@ export function computeScheduleStats(containers: SharedContainer[]): ScheduleSta
     ).length,
 
     countriesServed: new Set(
-      containers.map((c) => c.destination_country).filter(Boolean),
+      containers.map((c) => c.destination_country ?? c.countryDisplay).filter(Boolean),
     ).size,
 
-    inTransitNow: containers.filter((c) => {
-      const hasDeparted = c.status === "departed" || c.departure_date < todayStr;
-      return hasDeparted && (c.eta_date === null || c.eta_date > todayStr);
-    }).length,
+    inTransitNow: containers.filter((c) => c.shippingState === "in-transit").length,
 
-    bookableContainers: containers.filter((c) => {
-      const hasDeparted = c.status === "departed" || c.departure_date < todayStr;
-      return !hasDeparted && c.status === "available" && (c.available_cbm ?? 0) > 0;
-    }).length,
+    bookableContainers: containers.filter((c) => c.bookabilityStatus === "bookable").length,
   };
 }
 
@@ -110,25 +94,19 @@ export type FilterTab = "all" | "upcoming" | "in-transit" | "delivered";
 
 /** Count containers per filter tab. */
 export function computeTabCounts(
-  containers: SharedContainer[],
+  containers: PublicScheduleContainer[],
 ): Record<FilterTab, number> {
-  const todayStr = todayDateString();
-
   let upcoming = 0;
   let inTransit = 0;
   let delivered = 0;
 
   for (const c of containers) {
-    const hasDeparted = c.status === "departed" || c.departure_date < todayStr;
-
-    if (hasDeparted) {
-      if (c.eta_date && c.eta_date <= todayStr) {
-        delivered++;
-      } else {
-        inTransit++;
-      }
-    } else {
+    if (c.shippingState === "upcoming") {
       upcoming++;
+    } else if (c.shippingState === "in-transit") {
+      inTransit++;
+    } else {
+      delivered++;
     }
   }
 
@@ -142,17 +120,13 @@ export function computeTabCounts(
 
 /** Extract unique countries from container list, sorted alphabetically. */
 export function deriveCountryList(
-  containers: SharedContainer[],
+  containers: PublicScheduleContainer[],
 ): Array<{ code: string; name: string }> {
   const countryMap = new Map<string, string>();
 
   for (const c of containers) {
-    if (c.destination_country && !countryMap.has(c.destination_country)) {
-      // Extract country name from destination (e.g., "Almaty, Kazakhstan" → "Kazakhstan")
-      const parts = c.destination.split(",").map((s) => s.trim());
-      const countryName =
-        parts.length > 1 ? parts[parts.length - 1] : c.destination;
-      countryMap.set(c.destination_country, countryName);
+    if (c.destination_country && c.countryDisplay && !countryMap.has(c.destination_country)) {
+      countryMap.set(c.destination_country, c.countryDisplay);
     }
   }
 
@@ -190,30 +164,6 @@ export function computeDepartureCountdown(departureDate: string): DepartureCount
   return { daysUntil, urgency };
 }
 
-/** Strip operational notes from origin text and normalize formatting. */
-export function cleanOriginText(origin: string): string {
-  // Strip common operational prefixes
-  let cleaned = origin
-    .replace(/^(?:ROLLED\s+)?(?:customs?\s+hold\s+)?/i, "")
-    .trim();
-
-  // Normalize "Albion,IA" → "Albion, IA" (add space after comma if missing)
-  cleaned = cleaned.replace(/,([^\s])/g, ", $1");
-
-  return cleaned || origin;
-}
-
-/** Format destination for display — handle missing destinations gracefully. */
-export function formatDestination(destination: string): {
-  text: string;
-  isPending: boolean;
-} {
-  if (!destination || destination === "TBD" || destination === "---") {
-    return { text: "Destination pending", isPending: true };
-  }
-  return { text: destination, isPending: false };
-}
-
 /** Format ISO date to short display format (e.g., "Mar 30" / "30 мар."). */
 export function shortDate(iso: string, locale: string = "en-US"): string {
   const d = parseLocalDate(iso);
@@ -236,38 +186,29 @@ export function computeCapacityFill(
 // ─── Container Classification ───────────────────────────────────────────────
 
 export interface ClassifiedContainers {
-  bookable: ContainerWithPendingCount[];
-  nonBookableUpcoming: SharedContainer[];
-  inTransit: SharedContainer[];
-  delivered: SharedContainer[];
+  bookable: PublicScheduleContainer[];
+  nonBookableUpcoming: PublicScheduleContainer[];
+  inTransit: PublicScheduleContainer[];
+  delivered: PublicScheduleContainer[];
 }
 
 /** Classify containers into display buckets and sort each group.
- *  IMPORTANT: departure_date takes precedence over DB status. Between cron runs
- *  (15-min gap), a container can have status=available but departure_date in the past.
- *  We classify by date first to avoid showing departed containers as bookable. */
-export function classifyContainers(containers: ContainerWithPendingCount[]): ClassifiedContainers {
-  const today = todayDateString();
-  const bookable: ContainerWithPendingCount[] = [];
-  const nonBookableUpcoming: SharedContainer[] = [];
-  const inTransit: SharedContainer[] = [];
-  const delivered: SharedContainer[] = [];
+ *  The server-owned public contract already resolves shippingState and
+ *  bookability, so the client never has to reinterpret raw DB fields. */
+export function classifyContainers(containers: PublicScheduleContainer[]): ClassifiedContainers {
+  const bookable: PublicScheduleContainer[] = [];
+  const nonBookableUpcoming: PublicScheduleContainer[] = [];
+  const inTransit: PublicScheduleContainer[] = [];
+  const delivered: PublicScheduleContainer[] = [];
 
   for (const c of containers) {
-    // 1. Check if container has effectively departed (date-based, not status-based)
-    const hasDeparted = c.status === "departed" || c.departure_date < today;
-
-    if (hasDeparted) {
-      if (c.eta_date && c.eta_date <= today) {
-        delivered.push(c);
-      } else {
-        inTransit.push(c);
-      }
-    } else if (c.status === "available" && (c.available_cbm ?? 0) > 0) {
-      // Future departure + available space = bookable
+    if (c.shippingState === "in-transit") {
+      inTransit.push(c);
+    } else if (c.shippingState === "delivered") {
+      delivered.push(c);
+    } else if (c.bookabilityStatus === "bookable") {
       bookable.push(c);
     } else {
-      // Future departure but full or no space
       nonBookableUpcoming.push(c);
     }
   }
@@ -290,34 +231,22 @@ export function classifyContainers(containers: ContainerWithPendingCount[]): Cla
 /** Filter containers by tab and country. Departure date takes precedence over
  *  DB status since the cron only runs every 15 min. */
 export function filterContainers(
-  containers: ContainerWithPendingCount[],
+  containers: PublicScheduleContainer[],
   tab: FilterTab,
   country: string | null,
-): ContainerWithPendingCount[] {
+): PublicScheduleContainer[] {
   let filtered = containers;
-  const todayStr = todayDateString();
 
   if (country) {
     filtered = filtered.filter((c) => c.destination_country === country);
   }
 
   if (tab === "upcoming") {
-    filtered = filtered.filter(
-      (c) => c.departure_date >= todayStr && c.status !== "departed",
-    );
+    filtered = filtered.filter((c) => c.shippingState === "upcoming");
   } else if (tab === "in-transit") {
-    filtered = filtered.filter(
-      (c) =>
-        (c.status === "departed" || c.departure_date < todayStr) &&
-        (c.eta_date === null || c.eta_date > todayStr),
-    );
+    filtered = filtered.filter((c) => c.shippingState === "in-transit");
   } else if (tab === "delivered") {
-    filtered = filtered.filter(
-      (c) =>
-        (c.status === "departed" || c.departure_date < todayStr) &&
-        c.eta_date !== null &&
-        c.eta_date <= todayStr,
-    );
+    filtered = filtered.filter((c) => c.shippingState === "delivered");
   }
 
   return filtered;
