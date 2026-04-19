@@ -252,7 +252,7 @@ describe('submitCalculator', () => {
     expect(resendSendMock).not.toHaveBeenCalled();
   });
 
-  it('routes calculator emails to the CEO with alex.z cc and contact inbox replies', async () => {
+  it('routes calculator emails to the CEO with alex.z cc and reply-to to both Alex inboxes', async () => {
     afterMock.mockImplementation(async (callback: () => Promise<void>) => {
       await callback();
     });
@@ -273,7 +273,7 @@ describe('submitCalculator', () => {
       2,
       expect.objectContaining({
         to: 'customer@example.com',
-        replyTo: 'contact@meridianexport.com',
+        replyTo: ['alex.r@meridianexport.com', 'alex.z@meridianexport.com'],
       }),
     );
   });

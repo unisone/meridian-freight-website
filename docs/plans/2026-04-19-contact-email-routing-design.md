@@ -2,7 +2,7 @@
 
 ## Summary
 
-Change the website's public contact email from `info@meridianexport.com` to `contact@meridianexport.com` and update app-generated lead emails so they route to the CEO at `alex.r@meridianexport.com` with `alex.z@meridianexport.com` on CC.
+The intended target was to replace `info@meridianexport.com` with `contact@meridianexport.com`, but that mailbox was not provisioned in Google Workspace. The live fallback is to use `alex.r@meridianexport.com` as the public mailbox, prefill `alex.z@meridianexport.com` on CC from website mail links, and keep app-generated lead emails routed to `alex.r@meridianexport.com` with `alex.z@meridianexport.com` on CC.
 
 ## Constraints
 
@@ -14,10 +14,10 @@ Change the website's public contact email from `info@meridianexport.com` to `con
 
 Use a hybrid setup:
 
-1. Public website email becomes `contact@meridianexport.com`.
-2. Resend continues to send outbound app emails from `contact@meridianexport.com`.
-3. Contact-form and calculator notifications go to `alex.r@meridianexport.com` and CC `alex.z@meridianexport.com`.
-4. Customer-facing auto-replies use `replyTo: contact@meridianexport.com` so replies land in the shared contact inbox path.
+1. Resend continues to send outbound app emails from `contact@meridianexport.com`.
+2. Contact-form and calculator notifications go to `alex.r@meridianexport.com` and CC `alex.z@meridianexport.com`.
+3. Customer-facing auto-replies use `replyTo: [alex.r@meridianexport.com, alex.z@meridianexport.com]`.
+4. Public website mail links point to `alex.r@meridianexport.com` and prefill `alex.z@meridianexport.com` on CC until a real `contact@meridianexport.com` mailbox exists.
 5. Existing booking routing remains unchanged because it is an operations-specific workflow.
 
 ## Repo Changes
@@ -29,7 +29,7 @@ Use a hybrid setup:
 
 ## External Dependency
 
-`contact@meridianexport.com` must exist in the live mail system and forward to:
+To move back to a branded public inbox, `contact@meridianexport.com` must exist in the live mail system and forward to:
 
 - `alex.r@meridianexport.com`
 - `alex.z@meridianexport.com`
