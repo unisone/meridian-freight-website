@@ -134,6 +134,7 @@ export async function submitContactForm(
     const { error } = await resend.emails.send({
       from: CONTACT.fromEmail,
       to: CONTACT.notificationEmail,
+      cc: CONTACT.notificationCc as unknown as string[],
       replyTo: email,
       subject: `New Contact Form: ${name}${locale !== "en" ? ` [${locale.toUpperCase()}]` : ""}`,
       html: `
@@ -183,7 +184,7 @@ export async function submitContactForm(
       await resend.emails.send({
         from: CONTACT.fromEmail,
         to: email,
-        replyTo: CONTACT.notificationEmail,
+        replyTo: CONTACT.email,
         subject: replySubject,
         html: `
           <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">

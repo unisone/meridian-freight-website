@@ -40,11 +40,13 @@ vi.mock('@/lib/supabase-rates', () => ({
 }));
 
 vi.mock('resend', () => ({
-  Resend: vi.fn().mockImplementation(() => ({
-    emails: {
-      send: resendSendMock,
-    },
-  })),
+  Resend: vi.fn(function Resend() {
+    return {
+      emails: {
+        send: resendSendMock,
+      },
+    };
+  }),
 }));
 
 vi.mock('@vercel/analytics/server', () => ({
@@ -166,6 +168,7 @@ function buildPayload(
 describe('submitCalculator', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    process.env.RESEND_API_KEY = 'test-key';
     afterMock.mockImplementation(() => {});
     fetchEquipmentRatesMock.mockResolvedValue(equipmentRates);
     fetchOceanRatesMock.mockResolvedValue(oceanRates);
@@ -247,5 +250,31 @@ describe('submitCalculator', () => {
     expect(result.estimate?.containerType).toBe('fortyhc');
     expect(result.estimate?.estimatedTotal).toBeGreaterThan(0);
     expect(resendSendMock).not.toHaveBeenCalled();
+  });
+
+  it('routes calculator emails to the CEO with alex.z cc and contact inbox replies', async () => {
+    afterMock.mockImplementation(async (callback: () => Promise<void>) => {
+      await callback();
+    });
+
+    const result = await submitCalculator(buildPayload(), 'es');
+
+    expect(result.success).toBe(true);
+    expect(resendSendMock).toHaveBeenCalledTimes(2);
+    expect(resendSendMock).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        to: 'alex.r@meridianexport.com',
+        cc: ['alex.z@meridianexport.com'],
+        replyTo: 'customer@example.com',
+      }),
+    );
+    expect(resendSendMock).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        to: 'customer@example.com',
+        replyTo: 'contact@meridianexport.com',
+      }),
+    );
   });
 });

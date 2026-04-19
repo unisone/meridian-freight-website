@@ -293,6 +293,7 @@ export async function submitCalculator(
     const { error } = await resend.emails.send({
       from: CONTACT.fromEmail,
       to: CONTACT.notificationEmail,
+      cc: CONTACT.notificationCc as unknown as string[],
       replyTo: data.email,
       subject: `Calculator Lead: ${estimate.equipmentDisplayName} → ${countryName}${locale !== "en" ? ` [${locale.toUpperCase()}]` : ""}`,
       html: `
@@ -362,7 +363,7 @@ export async function submitCalculator(
       await resend.emails.send({
         from: CONTACT.fromEmail,
         to: data.email,
-        replyTo: CONTACT.notificationEmail,
+        replyTo: CONTACT.email,
         subject: calcSubject,
         html: `
           <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;line-height:1.6;color:#111827">
