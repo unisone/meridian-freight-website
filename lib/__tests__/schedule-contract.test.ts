@@ -210,4 +210,30 @@ describe("toPublicScheduleContainer", () => {
     expect(publicContainer.countryDisplay).toBe("Kazakhstan");
     expect(publicContainer.bookabilityStatus).toBe("bookable");
   });
+
+  it("omits raw source-only fields from the browser contract", () => {
+    const publicContainer = toPublicScheduleContainer(
+      makeContainerWithPending({
+        notes: "fragile",
+        source: "google_sheets",
+        raw_space_value: "30",
+        sheet_row_number: 22,
+      }),
+      FIXED_TODAY,
+    );
+
+    const serialized = JSON.parse(JSON.stringify(publicContainer)) as Record<string, unknown>;
+
+    expect(serialized).not.toHaveProperty("origin");
+    expect(serialized).not.toHaveProperty("destination");
+    expect(serialized).not.toHaveProperty("status");
+    expect(serialized).not.toHaveProperty("notes");
+    expect(serialized).not.toHaveProperty("source");
+    expect(serialized).not.toHaveProperty("sheet_row_number");
+    expect(serialized).not.toHaveProperty("raw_space_value");
+    expect(serialized).not.toHaveProperty("container_count");
+    expect(serialized).not.toHaveProperty("synced_at");
+    expect(serialized).not.toHaveProperty("created_at");
+    expect(serialized).not.toHaveProperty("updated_at");
+  });
 });
