@@ -69,18 +69,19 @@ const arCombineFlatrackProfile: LandedCostProfileRuntime = {
   countryName: "Argentina",
   landedEquipmentClass: "combine",
   shippingMode: "flatrack",
-  profileName: "Argentina combine flatrack test profile",
+  profileName: "Argentina combine flatrack v1",
   sourceLabel: "Approved Argentina customs budget",
   sourceKind: "broker_budget",
   currency: "USD",
   schemaVersion: 1,
-  rulesHash: "sha256:test-ar-combine-flatrack",
+  rulesHash: "sha256:argentina-combine-flatrack-v1-2026-04-16",
   assumptions: {
     approximateOnly: true,
     manualOverridesAllowed: false,
-    roundingMode: "nearest_dollar",
-    disclaimer: "Broker-confirmed estimate for testing.",
-    disclaimerKey: "landed.disclaimer.test",
+    roundingMode: "nearest_cent",
+    disclaimer:
+      "Approximate estimate normalized from the approved Argentina customs budget. Gross cash required includes recoverable taxes and perceptions. Final broker, customs, and inland destination costs may vary.",
+    disclaimerKey: "landed.disclaimer.argentina_combine_flatrack",
     notes: [],
   },
   rules: [
@@ -109,6 +110,18 @@ const arCombineFlatrackProfile: LandedCostProfileRuntime = {
       sortOrder: 20,
     },
     {
+      code: "packing_loading",
+      labelKey: "landed.input.packing",
+      label: "Packing and loading",
+      kind: "input",
+      group: "origin_logistics",
+      paymentBucket: "meridian_invoice",
+      inputKey: "packing_and_loading",
+      recoverable: false,
+      customerVisible: true,
+      sortOrder: 30,
+    },
+    {
       code: "ocean_freight",
       labelKey: "landed.input.ocean",
       label: "Sea freight and loading",
@@ -118,12 +131,12 @@ const arCombineFlatrackProfile: LandedCostProfileRuntime = {
       inputKey: "ocean_freight",
       recoverable: false,
       customerVisible: true,
-      sortOrder: 30,
+      sortOrder: 40,
     },
     {
-      code: "ar_duty",
+      code: "ar_import_duty",
       labelKey: "landed.ar.duty",
-      label: "Import duty",
+      label: "Argentina import duty estimate",
       kind: "charge",
       group: "import_taxes",
       paymentBucket: "destination_import",
@@ -132,7 +145,106 @@ const arCombineFlatrackProfile: LandedCostProfileRuntime = {
       value: 0.28,
       recoverable: false,
       customerVisible: true,
-      sortOrder: 40,
+      sortOrder: 50,
+    },
+    {
+      code: "ar_customs_admin_fee",
+      labelKey: "landed.ar.customs_admin",
+      label: "Argentina customs admin fee",
+      kind: "charge",
+      group: "import_taxes",
+      paymentBucket: "destination_import",
+      calcMode: "percent",
+      base: "cif_subtotal",
+      value: 0.03,
+      recoverable: false,
+      customerVisible: true,
+      sortOrder: 60,
+    },
+    {
+      code: "ar_import_vat",
+      labelKey: "landed.ar.vat",
+      label: "Argentina import VAT estimate",
+      kind: "credit",
+      group: "import_taxes",
+      paymentBucket: "recoverable_credit",
+      calcMode: "percent",
+      base: "cif_subtotal",
+      value: 0.105,
+      recoverable: true,
+      customerVisible: true,
+      sortOrder: 70,
+    },
+    {
+      code: "ar_additional_vat",
+      labelKey: "landed.ar.additional_vat",
+      label: "Argentina additional VAT estimate",
+      kind: "credit",
+      group: "import_taxes",
+      paymentBucket: "recoverable_credit",
+      calcMode: "percent",
+      base: "cif_subtotal",
+      value: 0.1,
+      recoverable: true,
+      customerVisible: true,
+      sortOrder: 80,
+    },
+    {
+      code: "ar_income_tax_perception",
+      labelKey: "landed.ar.income_tax_perception",
+      label: "Argentina income tax perception estimate",
+      kind: "credit",
+      group: "import_taxes",
+      paymentBucket: "recoverable_credit",
+      calcMode: "percent",
+      base: "cif_subtotal",
+      value: 0.11,
+      recoverable: true,
+      customerVisible: true,
+      sortOrder: 90,
+    },
+    {
+      code: "ar_iibb_perception",
+      labelKey: "landed.ar.iibb_perception",
+      label: "Argentina IIBB perception estimate",
+      kind: "credit",
+      group: "import_taxes",
+      paymentBucket: "recoverable_credit",
+      calcMode: "percent",
+      base: "cif_subtotal",
+      value: 0.025,
+      recoverable: true,
+      customerVisible: true,
+      sortOrder: 100,
+    },
+    {
+      code: "ar_local_customs_broker_fees",
+      labelKey: "landed.ar.local_customs_broker_fees",
+      label: "Argentina local customs and broker fees",
+      kind: "charge",
+      group: "destination_services",
+      paymentBucket: "destination_import",
+      calcMode: "fixed_usd",
+      base: "cif_subtotal",
+      value: 1800,
+      recoverable: false,
+      customerVisible: true,
+      sortOrder: 110,
+    },
+    {
+      code: "ar_vat_on_local_fees",
+      labelKey: "landed.ar.vat_on_local_fees",
+      label: "VAT on destination local fees",
+      kind: "credit",
+      group: "import_taxes",
+      paymentBucket: "recoverable_credit",
+      calcMode: "percent",
+      base: "prior_rule",
+      baseRef: "ar_local_customs_broker_fees",
+      value: 0.105,
+      recoverable: true,
+      customerVisible: true,
+      sortOrder: 120,
     },
   ],
 };
@@ -415,7 +527,7 @@ describe("calculateFreightV3", () => {
     );
   });
 
-  it("keeps Argentina compliance prep separate from freight and uses sourced landed-cost profile", () => {
+  it("keeps Argentina compliance prep separate and applies the full broker-budget profile", () => {
     const catalog = buildRouteCatalog(oceanRates);
     const estimate = calculateFreightV3({
       equipmentRates,
@@ -448,7 +560,23 @@ describe("calculateFreightV3", () => {
     );
     expect(estimate?.importCost.available).toBe(true);
     expect(estimate?.importCost.status).toBe("complete");
-    expect(estimate?.importCost.amountUsd).toBe(37215);
+    expect(estimate?.importCost.sourceLabel).toBe("Approved Argentina customs budget");
+    expect(estimate?.importCost.sourceVersion).toBe(
+      "sha256:argentina-combine-flatrack-v1-2026-04-16",
+    );
+    expect(estimate?.importCost.amountUsd).toBe(88380.5);
+    expect(estimate?.importCost.grossCashRequiredUsd).toBe(221290.5);
+    expect(estimate?.importCost.netAfterRecoverableUsd).toBe(175912.1);
+    expect(estimate?.importCost.recoverableCreditsUsd).toBe(45378.4);
+    expect(
+      estimate?.importCost.lineItems.find((item) => item.code === "ar_import_duty")
+        ?.amountUsd,
+    ).toBe(37214.8);
+    expect(
+      estimate?.importCost.lineItems.find(
+        (item) => item.code === "ar_local_customs_broker_fees",
+      )?.amountUsd,
+    ).toBe(1800);
   });
 
   it("matches the KZ Kokshetau price-list route freight and 4% heavy-equipment customs profile", () => {
