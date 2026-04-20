@@ -1,6 +1,8 @@
 import {
   landedCostAssumptionsSchema,
+  confidenceSchema,
   landedCostProfileRuntimeSchema,
+  type EstimateConfidence,
   type EquipmentQuoteProfile,
   type ImportCostEstimateV3,
   type ImportCostLineItemV3,
@@ -20,6 +22,14 @@ interface LandedCostProfileRowV3 {
   profile_name: string;
   source_label: string;
   source_kind: string;
+  source_url?: string | null;
+  source_reference?: string | null;
+  retrieved_at?: string | null;
+  reviewed_at?: string | null;
+  reviewed_by?: string | null;
+  owner?: string | null;
+  confidence?: string | null;
+  is_active?: boolean | null;
   currency: string;
   schema_version: number;
   rules_hash: string;
@@ -60,6 +70,53 @@ const CUSTOMER_INPUT_KEYS = new Set([
   "ocean_freight",
 ]);
 
+function extractDateToken(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const match = value.match(/\b\d{4}-\d{2}-\d{2}\b/);
+  return match?.[0] ?? null;
+}
+
+function normalizeConfidence(value: string | null | undefined): EstimateConfidence | null {
+  if (!value) return null;
+  const parsed = confidenceSchema.safeParse(value);
+  return parsed.success ? parsed.data : null;
+}
+
+function resolveSourceReference(profile: LandedCostProfileRuntime): string | null {
+  return profile.sourceReference ?? profile.sourceLabel ?? null;
+}
+
+function resolveSourceUrl(profile: LandedCostProfileRuntime): string | null {
+  return profile.sourceUrl ?? null;
+}
+
+function resolveRetrievedAt(profile: LandedCostProfileRuntime): string | null {
+  return (
+    profile.retrievedAt ??
+    profile.reviewedAt ??
+    extractDateToken(profile.sourceReference) ??
+    extractDateToken(profile.sourceUrl) ??
+    extractDateToken(profile.sourceLabel) ??
+    extractDateToken(profile.rulesHash) ??
+    null
+  );
+}
+
+function resolveReviewedBy(profile: LandedCostProfileRuntime): string | null {
+  return profile.reviewedBy ?? profile.owner ?? null;
+}
+
+function resolveActive(profile: LandedCostProfileRuntime): boolean | null {
+  return profile.active ?? true;
+}
+
+function hasReviewedSourceMetadata(profile: LandedCostProfileRuntime): boolean {
+  const sourceReference = resolveSourceReference(profile);
+  const retrievedAt = resolveRetrievedAt(profile);
+  const active = resolveActive(profile);
+  return Boolean(sourceReference && retrievedAt && active !== false);
+}
+
 export function mapLandedCostProfileRowV3(
   row: LandedCostProfileRowV3,
 ): LandedCostProfileRuntime {
@@ -72,6 +129,14 @@ export function mapLandedCostProfileRowV3(
     profileName: row.profile_name,
     sourceLabel: row.source_label,
     sourceKind: row.source_kind,
+    sourceUrl: row.source_url ?? null,
+    sourceReference: row.source_reference ?? null,
+    retrievedAt: row.retrieved_at ?? null,
+    reviewedAt: row.reviewed_at ?? null,
+    reviewedBy: row.reviewed_by ?? row.owner ?? null,
+    owner: row.owner ?? null,
+    confidence: normalizeConfidence(row.confidence),
+    active: row.is_active ?? true,
     currency: row.currency,
     schemaVersion: row.schema_version,
     rulesHash: row.rules_hash,
@@ -194,8 +259,11 @@ function emptyImportCostEstimate(input: {
     taxRatePct: null,
     confidence: null,
     sourceLabel: input.profile?.sourceLabel ?? null,
-    sourceUrl: null,
-    retrievedAt: null,
+    sourceUrl: input.profile ? resolveSourceUrl(input.profile) : null,
+    sourceReference: input.profile ? resolveSourceReference(input.profile) : null,
+    retrievedAt: input.profile ? resolveRetrievedAt(input.profile) : null,
+    reviewedBy: input.profile ? resolveReviewedBy(input.profile) : null,
+    active: input.profile ? resolveActive(input.profile) : null,
     sourceVersion: input.profile?.rulesHash ?? null,
     profileName: input.profile?.profileName ?? null,
     missingInputs: input.missingInputs ?? [],
@@ -310,6 +378,18 @@ export function calculateImportCostEstimateV3(input: {
     });
   }
 
+  if (!hasReviewedSourceMetadata(profile)) {
+    return emptyImportCostEstimate({
+      status: "unsupported",
+      note: {
+        en: "Import-cost pricing is not calculated online until Meridian has a source reference and review date on file for this profile. Broker/importer confirmation required.",
+        es: "El precio de importación no se calcula en línea hasta que Meridian tenga una referencia de fuente y una fecha de revisión para este perfil. Se requiere confirmación del broker/importador.",
+        ru: "Расчет импортной стоимости не выполняется онлайн, пока у Meridian нет ссылки на источник и даты проверки для этого профиля. Требуется подтверждение брокера/импортера.",
+      },
+      profile,
+    });
+  }
+
   const sumByBucket = (bucket: LandedCostPaymentBucket) =>
     lineItems
       .filter((item) => item.paymentBucket === bucket)
@@ -347,10 +427,13 @@ export function calculateImportCostEstimateV3(input: {
     hsCode: input.equipmentProfile.hsCode,
     dutyRatePct: null,
     taxRatePct: null,
-    confidence: "medium",
+    confidence: profile.confidence ?? "medium",
     sourceLabel: profile.sourceLabel,
-    sourceUrl: null,
-    retrievedAt: null,
+    sourceUrl: resolveSourceUrl(profile),
+    sourceReference: resolveSourceReference(profile),
+    retrievedAt: resolveRetrievedAt(profile),
+    reviewedBy: resolveReviewedBy(profile),
+    active: resolveActive(profile),
     sourceVersion: profile.rulesHash,
     profileName: profile.profileName,
     missingInputs: [],

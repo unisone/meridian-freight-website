@@ -306,9 +306,9 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
     label: text("Construction and forestry", "Construccion y forestal", "Строительная и лесная техника"),
     pluralLabel: text("Construction and forestry", "Construccion y forestal", "Строительная и лесная техника"),
     description: text(
-      "Oversized machines normally routed as whole units with port loading.",
-      "Maquinas sobredimensionadas normalmente enviadas completas con carga en puerto.",
-      "Крупногабаритные машины обычно отправляются целиком с погрузкой в порту.",
+      "Oversized machines require a manual dimensional and route review before quoting.",
+      "Maquinas sobredimensionadas requieren revision manual de dimensiones y ruta antes de cotizar.",
+      "Крупногабаритная техника требует ручной проверки габаритов и маршрута перед расчетом.",
     ),
     image: "/images/project-jd-aerial-container.jpg",
     quantityLabel: text("Number of units", "Número de unidades", "Количество единиц"),
@@ -320,7 +320,16 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
     defaultQuantity: 1,
     maxQuantity: 4,
     hsCode: "842952",
-    modes: [wholeMode("flatrack")],
+    modes: [
+      wholeMode("flatrack", {
+        enabled: false,
+        disabledReason: text(
+          "Manual quote required for oversized construction and forestry equipment.",
+          "Cotizacion manual requerida para equipos de construccion y forestales sobredimensionados.",
+          "Для крупногабаритной строительной и лесной техники требуется ручной расчет.",
+        ),
+      }),
+    ],
   },
 ].map((profile) => equipmentQuoteProfileSchema.parse(profile));
 
@@ -416,7 +425,7 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
     version: "uy-dgsa-2026-04",
     sourceLabel: "Uruguay MGAP DGSA Resolucion 98/016",
     sourceUrl:
-      "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-98016-1",
+      "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-98016-dgsa-requisitos-fitosanitarios-para-introduccion-pais",
     effectiveDate: "2026-04-20",
     summary: text(
       "Uruguay requires used machinery to be clean and subject to phytosanitary inspection; treatment may be required by DGSA.",
@@ -500,8 +509,9 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
   {
     country: "BO",
     version: "bo-policy-2026-04",
-    sourceLabel: "Bolivia SENASAG / VUCE import process",
-    sourceUrl: "https://www.vuce.gob.bo/es/SENASAG_importacion_fitozanitario_requisitos",
+    sourceLabel: "Bolivia SENASAG import permit procedure",
+    sourceUrl:
+      "https://www.senasag.gob.bo/index.php/institucional/unidades-nacionales/administracion/area-nacional-de-recursos-humano/category/25-consulta-publica?download=1917%3Aprocedimiento-de-emision-de-permiso-de-importacion-fitosanitaria-y-de-insumos-agricolas-en-sanidad-vegetal",
     effectiveDate: "2026-04-20",
     summary: text(
       "Bolivia-bound cargo needs broker/importer confirmation for phytosanitary import documentation; no used-machinery-specific automatic treatment profile is confirmed.",

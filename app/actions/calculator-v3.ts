@@ -11,6 +11,7 @@ import {
 } from "@/lib/calculator-v3/policy";
 import { buildRateBookSignature } from "@/lib/calculator-contract.server";
 import { mergeLandedCostProfiles } from "@/lib/calculator-v3/landed-cost-profiles";
+import { buildCalculatorV3LeadMetadata } from "@/lib/calculator-v3/lead-metadata";
 import { buildRouteCatalog } from "@/lib/calculator-v3/routes";
 import { CONTACT, COMPANY } from "@/lib/constants";
 import { formatDollar } from "@/lib/freight-engine-v2";
@@ -39,31 +40,75 @@ function escapeHtml(input: string | number | null | undefined): string {
     .replace(/'/g, "&#039;");
 }
 
-async function insertCalculatorV3Lead(data: Record<string, unknown>) {
+async function postCalculatorV3Lead(data: Record<string, unknown>) {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return;
+  if (!url || !key) return { ok: true, status: 0, body: "" };
 
+  const resp = await fetch(`${url}/rest/v1/leads`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return {
+    ok: resp.ok,
+    status: resp.status,
+    body: resp.ok ? "" : await resp.text(),
+  };
+}
+
+function isCalculatorV3MetadataColumnMissing(status: number, body: string): boolean {
+  return (
+    status === 400 &&
+    /calculator_v3_metadata/i.test(body) &&
+    /column|schema cache|PGRST204/i.test(body)
+  );
+}
+
+async function insertCalculatorV3Lead(data: Record<string, unknown>) {
   try {
-    const resp = await fetch(`${url}/rest/v1/leads`, {
-      method: "POST",
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify(data),
-    });
-    if (!resp.ok) {
+    const result = await postCalculatorV3Lead(data);
+    if (result.ok) return;
+
+    if (
+      "calculator_v3_metadata" in data &&
+      isCalculatorV3MetadataColumnMissing(result.status, result.body)
+    ) {
+      const legacyData = { ...data };
+      delete legacyData.calculator_v3_metadata;
+      log({
+        level: "warn",
+        msg: "supabase_insert_metadata_column_missing_retrying_legacy",
+        route: "action:calculator-v3",
+        status: result.status,
+      });
+
+      const retryResult = await postCalculatorV3Lead(legacyData);
+      if (retryResult.ok) return;
+
       log({
         level: "error",
         msg: "supabase_insert_failed",
         route: "action:calculator-v3",
-        status: resp.status,
-        body: await resp.text(),
+        status: retryResult.status,
+        body: retryResult.body,
       });
+      return;
     }
+
+    log({
+      level: "error",
+      msg: "supabase_insert_failed",
+      route: "action:calculator-v3",
+      status: result.status,
+      body: result.body,
+    });
   } catch (e) {
     log({
       level: "error",
@@ -524,6 +569,19 @@ export async function submitCalculatorV3(
   const emailLocale = normalizeCalculatorLocale(locale);
   const emailCopy = EMAIL_COPY[emailLocale];
   const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  const sourcePage = data.source_page || "corporate: /pricing/calculator";
+  const calculatorV3Metadata = buildCalculatorV3LeadMetadata({
+    estimate,
+    rateBookSignature: currentRateBookSignature,
+    policyVersion: CALCULATOR_V3_POLICY_VERSION,
+    sourcePage,
+    locale: emailLocale,
+    preferredContact: data.preferredContact,
+    routePreference: data.routePreference,
+    zipCode: data.zipCode,
+    equipmentValueUsd: data.equipmentValueUsd,
+    phoneProvided: data.phone.trim().length > 0,
+  });
 
   await insertCalculatorV3Lead({
     name: data.name || null,
@@ -531,13 +589,14 @@ export async function submitCalculatorV3(
     phone: data.phone || null,
     company: data.company || null,
     message: `[Calculator V3 ${currentRateBookSignature} / ${CALCULATOR_V3_POLICY_VERSION}] ${profileName} x ${estimate.quantity} -> ${countryName(destinationCountry)} | ${modeName} | ${estimate.route.id} | Freight: ${formatDollar(estimate.freightTotal)} | Compliance: ${estimate.compliancePrep.amountStatus}${estimate.freightPlusComplianceTotal != null ? ` / freight+compliance ${formatDollar(estimate.freightPlusComplianceTotal)}` : ""}${estimate.importCost.available && estimate.importCost.amountUsd != null ? ` | Import estimate: ${formatDollar(estimate.importCost.amountUsd)}` : ` | Import estimate: ${estimate.importCost.status}`} | Preferred contact: ${data.preferredContact}`,
-    source_page: data.source_page || "corporate: /pricing/calculator",
+    source_page: sourcePage,
     utm_source: data.utm_source || null,
     utm_medium: data.utm_medium || null,
     utm_campaign: data.utm_campaign || null,
     utm_term: data.utm_term || null,
     utm_content: data.utm_content || null,
     status: "new",
+    calculator_v3_metadata: calculatorV3Metadata,
   });
 
   const apiKey = process.env.RESEND_API_KEY;
