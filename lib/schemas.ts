@@ -78,6 +78,43 @@ export const calculatorV2Schema = z.object({
 
 export type CalculatorV2Data = z.infer<typeof calculatorV2Schema>;
 
+export const calculatorV3Schema = z.object({
+  email: z.string().email("Invalid email address"),
+  name: z.string().max(200).optional().default(""),
+  company: z.string().max(200).optional().default(""),
+  phone: z.string().max(50).optional().default(""),
+  preferredContact: z.enum(["email", "whatsapp"]).default("email"),
+  equipmentProfileId: z.string().min(1),
+  modeId: z.enum(["whole", "container"]),
+  quantity: z.number().int().positive().max(99),
+  equipmentValueUsd: z.number().positive().nullable().default(null),
+  destinationCountry: z.string().length(2),
+  destinationPortKey: z.string().max(80).nullable().default(null),
+  routeId: z.string().max(300).nullable().default(null),
+  routePreference: z.enum(["cheapest", "fastest"]).default("cheapest"),
+  zipCode: z.string().max(10).optional().default(""),
+  rateBookSignature: z.string().min(8),
+  // Honeypot — bots fill hidden fields, humans don't
+  website: z.string().max(500).optional().default(""),
+  // UTM attribution (auto-captured on client)
+  source_page: z.string().max(500).optional().default(""),
+  utm_source: z.string().max(200).optional().default(""),
+  utm_medium: z.string().max(200).optional().default(""),
+  utm_campaign: z.string().max(200).optional().default(""),
+  utm_term: z.string().max(200).optional().default(""),
+  utm_content: z.string().max(200).optional().default(""),
+}).superRefine((data, ctx) => {
+  if (data.preferredContact === "whatsapp" && !data.phone.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["phone"],
+      message: "Phone or WhatsApp number is required when WhatsApp is selected.",
+    });
+  }
+});
+
+export type CalculatorV3Data = z.infer<typeof calculatorV3Schema>;
+
 // --- Shared Shipping Booking Request ---
 
 export const bookingRequestSchema = z.object({

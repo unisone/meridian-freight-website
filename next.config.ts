@@ -24,6 +24,41 @@ for (const name of INLINE_SCRIPT_VARS) {
   }
 }
 
+const isDevelopment = process.env.NODE_ENV === "development";
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  ...(isDevelopment ? ["'unsafe-eval'"] : []),
+  "https://www.googletagmanager.com",
+  "https://connect.facebook.net",
+  "https://www.googleadservices.com",
+  "https://googleads.g.doubleclick.net",
+  "https://www.google.com",
+  "https://pagead2.googlesyndication.com",
+  "https://va.vercel-scripts.com",
+  "https://vercel.live",
+].join(" ");
+const connectSrc = [
+  "'self'",
+  "https://www.google-analytics.com",
+  "https://analytics.google.com",
+  "https://region1.google-analytics.com",
+  "https://www.googletagmanager.com",
+  "https://*.sentry.io",
+  "https://graph.facebook.com",
+  "https://*.supabase.co",
+  "https://cdn.jsdelivr.net",
+  "https://googleads.g.doubleclick.net",
+  "https://www.googleadservices.com",
+  "https://www.google.com",
+  "https://google.com",
+  "https://pagead2.googlesyndication.com",
+  "https://va.vercel-scripts.com",
+  "https://vitals.vercel-insights.com",
+  "https://vitals.vercel-analytics.com",
+  "https://vercel.live",
+].join(" ");
+
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -35,12 +70,12 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://pagead2.googlesyndication.com",
+      `script-src ${scriptSrc}`,
       "worker-src 'self' blob:",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://www.facebook.com https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://google.com https://pagead2.googlesyndication.com",
-      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.googletagmanager.com https://*.sentry.io https://graph.facebook.com https://*.supabase.co https://cdn.jsdelivr.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.google.com https://google.com https://pagead2.googlesyndication.com",
-      "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://td.doubleclick.net https://www.google.com https://maps.google.com",
+      "img-src 'self' data: https://img.youtube.com https://www.google-analytics.com https://www.facebook.com https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://google.com https://pagead2.googlesyndication.com https://vercel.live",
+      `connect-src ${connectSrc}`,
+      "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://td.doubleclick.net https://www.google.com https://maps.google.com https://vercel.live",
       "font-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",
