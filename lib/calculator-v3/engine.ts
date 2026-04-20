@@ -337,6 +337,22 @@ function calculateCompliance(input: {
   };
 }
 
+function formatTransitTime(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  if (!/\d/.test(trimmed) || /\bday(s)?\b/i.test(trimmed)) return trimmed;
+  return `${trimmed} days`;
+}
+
+function oceanFreightNote(route: RouteOption): string {
+  const routeLabel = `${route.origin.label} to ${route.destination.label}`;
+  const transitTime = route.transitTimeDays?.trim();
+  if (!transitTime) {
+    return `${routeLabel}. Transit time not published; confirm carrier schedule.`;
+  }
+  return `${routeLabel}. Estimated route transit: ${formatTransitTime(transitTime)}.`;
+}
+
 function buildLineItems(input: {
   usInlandTransport: number | null;
   packingAndLoading: number;
@@ -369,7 +385,7 @@ function buildLineItems(input: {
       id: "ocean_freight",
       label: `${freightLabel} (${input.route.carrier})`,
       amountUsd: input.oceanFreight,
-      note: `${input.route.origin.label} to ${input.route.destination.label}`,
+      note: oceanFreightNote(input.route),
       includedInTotal: true,
     },
   ];

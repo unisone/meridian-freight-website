@@ -470,6 +470,9 @@ describe("calculateFreightV3", () => {
     expect(estimate?.importCost.amountUsd).toBeNull();
     expect(estimate?.importCost.lineItems).toHaveLength(0);
     expect(estimate?.importCost.note?.en).toContain("not calculated online");
+    expect(
+      estimate?.lineItems.find((line) => line.id === "ocean_freight")?.note,
+    ).toContain("35-40 days");
     expect(estimate?.notes.map((entry) => entry.en).join(" ")).toContain(
       "two 40HC containers",
     );
@@ -528,6 +531,9 @@ describe("calculateFreightV3", () => {
     expect(estimate?.warnings.map((entry) => entry.en).join(" ")).toContain(
       "no published transit time",
     );
+    expect(
+      estimate?.lineItems.find((line) => line.id === "ocean_freight")?.note,
+    ).toContain("Transit time not published");
   });
 
   it("keeps Argentina compliance prep separate and applies the full broker-budget profile", () => {

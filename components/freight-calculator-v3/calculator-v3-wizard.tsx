@@ -367,7 +367,11 @@ function shortContainerLabel(containerType: ContainerType): string {
 }
 
 function formatTransit(route: RouteOption, locale: CalculatorLocale): string {
-  return route.transitTimeDays ?? COPY[locale].notPublished;
+  const value = route.transitTimeDays?.trim();
+  if (!value) return COPY[locale].notPublished;
+  if (!/\d/.test(value) || /\bday(s)?\b/i.test(value)) return value;
+  const unit = locale === "es" ? "dias" : locale === "ru" ? "дней" : "days";
+  return `${value} ${unit}`;
 }
 
 function routeSortCostLabel(input: {
