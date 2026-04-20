@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { calculateFreightV3, assertCalculatorV3Policy } from "@/lib/calculator-v3/engine";
+import { STATIC_LANDED_COST_PROFILES } from "@/lib/calculator-v3/landed-cost-profiles";
 import { EQUIPMENT_QUOTE_PROFILES } from "@/lib/calculator-v3/policy";
 import { buildRouteCatalog, selectRoute } from "@/lib/calculator-v3/routes";
 import type { LandedCostProfileRuntime } from "@/lib/calculator-v3/contracts";
@@ -222,6 +223,30 @@ const oceanRates: OceanFreightRate[] = [
     transit_time_days: "34-40",
   },
   {
+    id: "kz-houston-poti-kokshetau",
+    container_type: "flatrack",
+    origin_port: "Houston, TX",
+    destination_port: "Poti - Kokshetau",
+    destination_country: "KZ",
+    carrier: "MAERSK",
+    ocean_rate: 20785,
+    drayage: null,
+    packing_drayage: 4300,
+    transit_time_days: "75",
+  },
+  {
+    id: "kz-savannah-poti-kokshetau",
+    container_type: "flatrack",
+    origin_port: "Savannah, GA",
+    destination_port: "Poti - Kokshetau",
+    destination_country: "KZ",
+    carrier: "MAERSK",
+    ocean_rate: 17910,
+    drayage: null,
+    packing_drayage: 4500,
+    transit_time_days: "75",
+  },
+  {
     id: "py-chicago-40hc",
     container_type: "fortyhc",
     origin_port: "Chicago, IL",
@@ -424,6 +449,64 @@ describe("calculateFreightV3", () => {
     expect(estimate?.importCost.available).toBe(true);
     expect(estimate?.importCost.status).toBe("complete");
     expect(estimate?.importCost.amountUsd).toBe(37215);
+  });
+
+  it("matches the KZ Kokshetau price-list route freight and 4% heavy-equipment customs profile", () => {
+    const catalog = buildRouteCatalog(oceanRates);
+    const estimate = calculateFreightV3({
+      equipmentRates,
+      routes: catalog.routes,
+      importCostProfiles: STATIC_LANDED_COST_PROFILES,
+      equipmentProfileId: "combines",
+      modeId: "whole",
+      quantity: 1,
+      equipmentValueUsd: 78500,
+      destinationCountry: "KZ",
+      destinationPortKey: "poti_kokshetau",
+      routeId: null,
+      routePreference: "cheapest",
+      zipCode: "77001",
+    });
+
+    expect(estimate).not.toBeNull();
+    expect(estimate?.route.sourceRateId).toBe("kz-houston-poti-kokshetau");
+    expect(estimate?.oceanFreight).toBe(27085);
+    expect(estimate?.freightTotal).toBe(27085);
+    expect(estimate?.importCost.status).toBe("complete");
+    expect(estimate?.importCost.available).toBe(true);
+    expect(estimate?.importCost.amountUsd).toBe(27771);
+    expect(
+      estimate?.importCost.lineItems.find((item) => item.code === "kz_misc")?.amountUsd,
+    ).toBe(4240);
+    expect(
+      estimate?.importCost.lineItems.find((item) => item.code === "kz_vat")?.amountUsd,
+    ).toBe(17809);
+  });
+
+  it("uses the spreadsheet Savannah-Poti KZ route freight when no inland ZIP is available", () => {
+    const catalog = buildRouteCatalog(oceanRates);
+    const estimate = calculateFreightV3({
+      equipmentRates,
+      routes: catalog.routes,
+      importCostProfiles: STATIC_LANDED_COST_PROFILES,
+      equipmentProfileId: "combines",
+      modeId: "whole",
+      quantity: 1,
+      equipmentValueUsd: 78500,
+      destinationCountry: "KZ",
+      destinationPortKey: "poti_kokshetau",
+      routeId: null,
+      routePreference: "cheapest",
+      zipCode: null,
+    });
+
+    expect(estimate).not.toBeNull();
+    expect(estimate?.route.sourceRateId).toBe("kz-savannah-poti-kokshetau");
+    expect(estimate?.oceanFreight).toBe(24410);
+    expect(estimate?.freightTotal).toBe(24410);
+    expect(estimate?.totalExcludesInland).toBe(true);
+    expect(estimate?.importCost.status).toBe("partial");
+    expect(estimate?.importCost.missingInputs).toContain("local_transport");
   });
 
   it("returns partial import-cost status when a sourced profile exists but equipment value is missing", () => {

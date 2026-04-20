@@ -20,10 +20,9 @@ import {
 import { compareRoutes, getRouteServiceCostUsd, selectRoute } from "@/lib/calculator-v3/routes";
 import { estimateRoadMiles, formatDollar } from "@/lib/freight-engine-v2";
 import {
-  FLATRACK_INSURANCE_MIN_USD,
   FLATRACK_INTERNAL_BUNDLE_USD,
-  FLATRACK_INSURANCE_RATE,
   STANDARD_INLAND_DELIVERY_RATE,
+  getFlatrackFreightInsuranceUsd,
 } from "@/lib/freight-policy";
 import type { ContainerType, EquipmentPackingRate } from "@/lib/types/calculator";
 
@@ -230,19 +229,6 @@ function calculateInlandUsd(input: {
   };
 }
 
-function getFlatrackInsuranceUsd(
-  equipmentValueUsd: number | null,
-  quantity: number,
-): number {
-  if (equipmentValueUsd == null || equipmentValueUsd <= 0) {
-    return FLATRACK_INSURANCE_MIN_USD * quantity;
-  }
-  return Math.max(
-    FLATRACK_INSURANCE_MIN_USD * quantity,
-    equipmentValueUsd * FLATRACK_INSURANCE_RATE,
-  );
-}
-
 function calculateOceanUsd(input: {
   route: RouteOption;
   containerType: ContainerType;
@@ -255,7 +241,11 @@ function calculateOceanUsd(input: {
     return roundUsd(
       baseServiceCost * input.pricedContainerCount +
         FLATRACK_INTERNAL_BUNDLE_USD * input.quantity +
-        getFlatrackInsuranceUsd(input.equipmentValueUsd, input.quantity),
+        getFlatrackFreightInsuranceUsd({
+          destinationCountry: input.route.destinationCountry,
+          equipmentValueUsd: input.equipmentValueUsd,
+          quantity: input.quantity,
+        }),
     );
   }
   return roundUsd(baseServiceCost * input.pricedContainerCount);

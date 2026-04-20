@@ -162,6 +162,7 @@ export const landedCostBaseSchema = z.enum([
   "equipment_value",
   "origin_freight_subtotal",
   "cif_subtotal",
+  "cif_plus_prior_rule",
   "group_total",
   "prior_rule",
 ]);
@@ -180,6 +181,7 @@ export const landedCostRuleSchema = z
     baseRef: z.string().trim().min(1).max(120).nullable().optional(),
     inputKey: landedCostInputKeySchema.optional(),
     value: z.number().nonnegative().optional(),
+    minimumUsd: z.number().nonnegative().optional(),
     recoverable: z.boolean().default(false),
     customerVisible: z.boolean().default(true),
     sortOrder: z.number().int().nonnegative(),
@@ -219,11 +221,16 @@ export const landedCostRuleSchema = z
           message: "charge and credit rules require value",
         });
       }
-      if ((value.base === "group_total" || value.base === "prior_rule") && !value.baseRef) {
+      if (
+        (value.base === "group_total" ||
+          value.base === "prior_rule" ||
+          value.base === "cif_plus_prior_rule") &&
+        !value.baseRef
+      ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["baseRef"],
-          message: "group_total and prior_rule bases require baseRef",
+          message: "group_total, prior_rule, and cif_plus_prior_rule bases require baseRef",
         });
       }
     }

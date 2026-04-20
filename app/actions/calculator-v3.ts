@@ -10,6 +10,7 @@ import {
   getLocalizedText,
 } from "@/lib/calculator-v3/policy";
 import { buildRateBookSignature } from "@/lib/calculator-contract.server";
+import { mergeLandedCostProfiles } from "@/lib/calculator-v3/landed-cost-profiles";
 import { buildRouteCatalog } from "@/lib/calculator-v3/routes";
 import { CONTACT, COMPANY } from "@/lib/constants";
 import { formatDollar } from "@/lib/freight-engine-v2";
@@ -307,7 +308,7 @@ export async function submitCalculatorV3(
   const estimate = calculateFreightV3({
     equipmentRates,
     routes: catalog.routes,
-    importCostProfiles,
+    importCostProfiles: mergeLandedCostProfiles(importCostProfiles),
     equipmentProfileId: data.equipmentProfileId,
     modeId: data.modeId,
     quantity: data.quantity,

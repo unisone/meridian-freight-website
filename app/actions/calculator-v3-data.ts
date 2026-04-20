@@ -13,6 +13,7 @@ import {
   buildDestinationPortsByCountry,
   buildRouteCatalog,
 } from "@/lib/calculator-v3/routes";
+import { mergeLandedCostProfiles } from "@/lib/calculator-v3/landed-cost-profiles";
 import { buildRateBookSignature } from "@/lib/calculator-contract.server";
 import {
   fetchEquipmentRates,
@@ -52,7 +53,7 @@ export async function getCalculatorDataV3(): Promise<CalculatorDataV3 | null> {
     equipment,
     profiles,
     routes: catalog.routes,
-    importCostProfiles,
+    importCostProfiles: mergeLandedCostProfiles(importCostProfiles),
     quarantinedRateCount: catalog.quarantined.length,
     countries,
     destinationPortsByCountry: buildDestinationPortsByCountry(catalog.routes),

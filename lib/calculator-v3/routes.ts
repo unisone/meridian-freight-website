@@ -7,8 +7,8 @@ import {
   type RoutePreference,
 } from "@/lib/calculator-v3/contracts";
 import {
-  FLATRACK_NCB_BY_POL,
   FORTYHC_ORIGIN_PORT,
+  getFlatrackNcbUsd,
 } from "@/lib/freight-policy";
 import type { ContainerType, OceanFreightRate } from "@/lib/types/calculator";
 
@@ -286,7 +286,10 @@ export function getRouteServiceCostUsd(route: RouteOption): number {
   return (
     route.oceanRateUsd +
     route.packingDrayageUsd +
-    (FLATRACK_NCB_BY_POL[route.origin.label] ?? 0)
+    getFlatrackNcbUsd({
+      originPort: route.origin.label,
+      destinationCountry: route.destinationCountry,
+    })
   );
 }
 

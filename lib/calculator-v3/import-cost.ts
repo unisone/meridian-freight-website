@@ -128,15 +128,24 @@ function resolveBaseAmount(
   lineItems: ImportCostLineItemV3[],
   rule: LandedCostRule,
 ): number | null {
+  const cifSubtotal =
+    input.equipmentValueUsd == null
+      ? null
+      : input.equipmentValueUsd + sumByGroup(lineItems, "origin_logistics");
+
   switch (rule.base) {
     case "equipment_value":
       return input.equipmentValueUsd;
     case "origin_freight_subtotal":
       return sumByGroup(lineItems, "origin_logistics");
     case "cif_subtotal":
-      return input.equipmentValueUsd == null
-        ? null
-        : input.equipmentValueUsd + sumByGroup(lineItems, "origin_logistics");
+      return cifSubtotal;
+    case "cif_plus_prior_rule": {
+      const priorAmount = rule.baseRef
+        ? lineItems.find((item) => item.code === rule.baseRef)?.amountUsd ?? null
+        : null;
+      return cifSubtotal == null || priorAmount == null ? null : cifSubtotal + priorAmount;
+    }
     case "group_total":
       return rule.baseRef ? sumByGroup(lineItems, rule.baseRef) : null;
     case "prior_rule":
@@ -278,10 +287,14 @@ export function calculateImportCostEstimateV3(input: {
       continue;
     }
 
-    const amount =
+    const calculatedAmount =
       rule.calcMode === "fixed_usd"
         ? rule.value ?? 0
         : baseAmount * (rule.value ?? 0);
+    const amount =
+      rule.minimumUsd == null
+        ? calculatedAmount
+        : Math.max(calculatedAmount, rule.minimumUsd);
     lineItems.push(buildLineItem(profile, rule, amount));
   }
 
