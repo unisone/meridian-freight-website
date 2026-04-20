@@ -26,10 +26,11 @@ jobs:
       - name: Wait for Vercel deployment
         uses: patrickedqvist/wait-for-vercel-preview@v1.3.3
         id: vercel
+        timeout-minutes: 3
         continue-on-error: true
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 300
+          max_timeout: 120
           check_interval: 10
 
       # Run Lighthouse on key pages

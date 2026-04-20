@@ -95,11 +95,13 @@ const COPY = {
     whatsappOption: "WhatsApp",
     submit: "Email my estimate",
     submitting: "Sending...",
-    success: "Estimate sent. Meridian has the V3 route, policy, and contact details.",
+    success: "Estimate sent. Meridian has the route, policy, and contact details.",
     emailRequired: "Enter a valid email.",
     valueRequired: "Enter equipment value for this mode.",
     routeRequired: "Select a route before submitting.",
-    preview: "Preview route",
+    preview: "Selected route",
+    panelTitle: "Freight estimate",
+    emptyEstimate: "Select equipment, route, and quantity to show the freight estimate.",
     modeUnavailable: "Confirm with Meridian",
     policy: "Policy",
   },
@@ -141,11 +143,13 @@ const COPY = {
     whatsappOption: "WhatsApp",
     submit: "Enviar estimacion",
     submitting: "Enviando...",
-    success: "Estimacion enviada. Meridian tiene la ruta V3, politica y contacto.",
+    success: "Estimacion enviada. Meridian tiene la ruta, politica y contacto.",
     emailRequired: "Ingrese un email valido.",
     valueRequired: "Ingrese el valor del equipo para este modo.",
     routeRequired: "Seleccione una ruta antes de enviar.",
-    preview: "Ruta preliminar",
+    preview: "Ruta seleccionada",
+    panelTitle: "Estimacion de flete",
+    emptyEstimate: "Seleccione equipo, ruta y cantidad para ver la estimacion de flete.",
     modeUnavailable: "Confirmar con Meridian",
     policy: "Politica",
   },
@@ -187,11 +191,13 @@ const COPY = {
     whatsappOption: "WhatsApp",
     submit: "Отправить расчет",
     submitting: "Отправка...",
-    success: "Расчет отправлен. Meridian получил маршрут V3, политику и контакты.",
+    success: "Расчет отправлен. Meridian получил маршрут, политику и контакты.",
     emailRequired: "Укажите корректный email.",
     valueRequired: "Укажите стоимость техники для этого способа.",
     routeRequired: "Выберите маршрут перед отправкой.",
-    preview: "Предварительный маршрут",
+    preview: "Выбранный маршрут",
+    panelTitle: "Расчет фрахта",
+    emptyEstimate: "Выберите технику, маршрут и количество, чтобы увидеть расчет фрахта.",
     modeUnavailable: "Подтвердить с Meridian",
     policy: "Политика",
   },
@@ -279,9 +285,16 @@ function unavailablePanel(locale: CalculatorLocale) {
   );
 }
 
-export function CalculatorV3Wizard({ locale }: { locale: string }) {
+export function CalculatorV3Wizard({
+  locale,
+  surface = "public",
+}: {
+  locale: string;
+  surface?: "public" | "preview";
+}) {
   const lang = normalizeLocale(locale);
   const t = COPY[lang];
+  const isPreviewSurface = surface === "preview";
   const [data, setData] = useState<CalculatorDataV3 | null>(null);
   const [loading, setLoading] = useState(true);
   const [dataError, setDataError] = useState(false);
@@ -632,7 +645,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
               <h2 className="text-lg font-semibold">{t.stepEquipment}</h2>
               {profile && <p className="text-sm text-muted-foreground">{getLocalizedText(profile.description, lang)}</p>}
             </div>
-            {data.quarantinedRateCount > 0 && (
+            {isPreviewSurface && data.quarantinedRateCount > 0 && (
               <Badge variant="outline">{data.quarantinedRateCount} rates quarantined</Badge>
             )}
           </div>
@@ -932,7 +945,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
           <div className="border-b p-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-primary">
               <Route className="h-4 w-4" />
-              V3 preview
+              {isPreviewSurface ? "V3 preview" : t.panelTitle}
             </div>
             <div className="mt-4">
               <div className="text-sm text-muted-foreground">{t.freightTotal}</div>
@@ -1135,7 +1148,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
             </div>
           ) : (
             <div className="p-5 text-sm text-muted-foreground">
-              Select equipment, route, and quantity to show the V3 freight estimate.
+              {t.emptyEstimate}
             </div>
           )}
         </div>

@@ -120,7 +120,7 @@ export default async function CalculatorV3Page({
 
       <section className="pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <CalculatorV3Wizard locale={normalizedLocale} />
+          <CalculatorV3Wizard locale={normalizedLocale} surface="preview" />
         </div>
       </section>
     </>
