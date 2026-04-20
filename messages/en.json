@@ -870,8 +870,30 @@
     "cbmTotal": "{cbm} CBM total"
   },
   "PartnersStrip": {
+    "networkEyebrow": "Dealer & Auction Network",
+    "networkHeading": "Companies We Work With",
+    "networkDescription": "Meridian works with established U.S. machinery dealers, auctions, and sellers to help buyers source equipment before export.",
     "carriers": "We Ship Via",
     "brands": "Equipment We Specialize In"
+  },
+  "SourcingNetwork": {
+    "eyebrow": "Equipment Sourcing Network",
+    "heading": "Companies We Work With",
+    "description": "When a buyer needs a specific machine, Meridian can coordinate with dealer and auction partners we already work with. We help review listings, arrange inspection or pickup, and move the equipment into the export process.",
+    "steps": {
+      "listingReview": "Review the machine, seller details, photos, and export requirements before you commit.",
+      "pickup": "Coordinate pickup from the dealer, auction yard, or seller and move the equipment to the right handoff point.",
+      "export": "Handle dismantling, packing, ocean freight, and export documents through one Meridian workflow."
+    },
+    "focus": {
+      "dealerInventory": "Used farm equipment dealer inventory",
+      "johnDeereDealer": "John Deere dealer inventory",
+      "farmAuction": "Farm machinery auction partner",
+      "usedEquipmentSales": "Used agricultural equipment sales"
+    },
+    "ctaLead": "Already found a machine with one of these companies?",
+    "ctaDescription": "Send us the listing and destination. We will quote pickup, export packing, ocean freight, and documents before you purchase.",
+    "ctaButton": "Send Us the Listing"
   },
   "Guarantees": {
     "heading": "Our Commitments",

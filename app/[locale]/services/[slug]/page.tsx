@@ -20,6 +20,7 @@ import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
 import { getServiceBySlug, getRelatedServices, getAllServices } from "@/content/services";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
+import { SourcingNetworkSection } from "@/components/sourcing-network-section";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -197,6 +198,8 @@ export default async function ServicePage({
             </div>
           </section>
         )}
+
+        {slug === "equipment-sales" && <SourcingNetworkSection />}
 
         {/* Related Services */}
         {related.length > 0 && (
