@@ -559,45 +559,38 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
       .sort((a, b) => countryLabel(a).localeCompare(countryLabel(b)));
   }, [data, enabledMode]);
 
-  useEffect(() => {
-    if (!destinationCountry || eligibleCountries.includes(destinationCountry)) return;
-    setDestinationCountry("");
-    setDestinationPortKey(null);
-    setRouteId(null);
-  }, [destinationCountry, eligibleCountries]);
+  const activeDestinationCountry =
+    destinationCountry && eligibleCountries.includes(destinationCountry)
+      ? destinationCountry
+      : "";
 
   const routesForCountry = useMemo(() => {
-    if (!data || !enabledMode || !destinationCountry) return [];
+    if (!data || !enabledMode || !activeDestinationCountry) return [];
     return data.routes.filter(
       (route) =>
         route.containerType === enabledMode.containerType &&
-        route.destinationCountry === destinationCountry,
+        route.destinationCountry === activeDestinationCountry,
     );
-  }, [data, enabledMode, destinationCountry]);
+  }, [data, enabledMode, activeDestinationCountry]);
 
   const destinationPortKeys = useMemo(
     () => [...new Set(routesForCountry.map((route) => route.destination.key))].sort(),
     [routesForCountry],
   );
   const showPortTabs = destinationPortKeys.length > 1;
-
-  useEffect(() => {
-    if (!showPortTabs) {
-      setDestinationPortKey(null);
-      return;
-    }
-    if (!destinationPortKey || !destinationPortKeys.includes(destinationPortKey)) {
-      setDestinationPortKey(destinationPortKeys[0] ?? null);
-    }
-  }, [destinationPortKey, destinationPortKeys, showPortTabs]);
+  const selectedDestinationPortKey = showPortTabs
+    ? destinationPortKey && destinationPortKeys.includes(destinationPortKey)
+      ? destinationPortKey
+      : destinationPortKeys[0] ?? null
+    : null;
 
   const routeOptions = useMemo(
     () =>
       getRoutes({
         data,
         mode: enabledMode,
-        destinationCountry,
-        destinationPortKey: showPortTabs ? destinationPortKey : null,
+        destinationCountry: activeDestinationCountry,
+        destinationPortKey: selectedDestinationPortKey,
         preference: routePreference,
         quantity,
         equipmentValueUsd,
@@ -606,13 +599,12 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     [
       data,
       enabledMode,
-      destinationCountry,
-      destinationPortKey,
+      activeDestinationCountry,
+      selectedDestinationPortKey,
       routePreference,
       quantity,
       equipmentValueUsd,
       zipCode,
-      showPortTabs,
     ],
   );
 
@@ -624,14 +616,8 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     return routeOptions[0] ?? null;
   }, [routeId, routeOptions]);
 
-  useEffect(() => {
-    if (routeId && !routeOptions.some((route) => route.id === routeId)) {
-      setRouteId(null);
-    }
-  }, [routeId, routeOptions]);
-
   const preview = useMemo<FreightEstimateV3 | null>(() => {
-    if (!data || !profile || !enabledMode || !destinationCountry || !step2Done) {
+    if (!data || !profile || !enabledMode || !activeDestinationCountry || !step2Done) {
       return null;
     }
     return calculateFreightV3({
@@ -642,8 +628,8 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
       modeId: enabledMode.id,
       quantity,
       equipmentValueUsd,
-      destinationCountry,
-      destinationPortKey: showPortTabs ? destinationPortKey : null,
+      destinationCountry: activeDestinationCountry,
+      destinationPortKey: selectedDestinationPortKey,
       routeId: selectedRoute?.id ?? null,
       routePreference,
       zipCode: zipCode || null,
@@ -652,14 +638,13 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     data,
     profile,
     enabledMode,
-    destinationCountry,
-    destinationPortKey,
+    activeDestinationCountry,
+    selectedDestinationPortKey,
     selectedRoute,
     routePreference,
     quantity,
     equipmentValueUsd,
     zipCode,
-    showPortTabs,
     step2Done,
   ]);
 
@@ -679,7 +664,8 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     });
   }, [preview]);
 
-  const step3Done = step2Done && destinationCountry !== "" && preview !== null;
+  const step3Done =
+    step2Done && activeDestinationCountry !== "" && preview !== null;
   const step4Done = result?.success === true;
   const completedSteps =
     (step1Done ? 1 : 0) +
@@ -751,7 +737,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
       setError(t.validEmailError);
       return;
     }
-    if (!profile || !enabledMode || !destinationCountry || !selectedRoute || !preview) {
+    if (!profile || !enabledMode || !activeDestinationCountry || !selectedRoute || !preview) {
       setError(t.routeRequired);
       return;
     }
@@ -781,8 +767,8 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
           modeId: enabledMode.id,
           quantity,
           equipmentValueUsd,
-          destinationCountry,
-          destinationPortKey: showPortTabs ? destinationPortKey : null,
+          destinationCountry: activeDestinationCountry,
+          destinationPortKey: selectedDestinationPortKey,
           routeId: selectedRoute.id,
           routePreference,
           zipCode,
@@ -813,7 +799,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
         trackGA4Event("calculator_lead_submitted", {
           equipment_profile: profile.id,
           shipping_mode: enabledMode.id,
-          destination_country: destinationCountry,
+          destination_country: activeDestinationCountry,
           route_preference: routePreference,
         });
         trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 300);
@@ -821,7 +807,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
         vercelTrack("calculator_lead_submitted", {
           equipment_profile: profile.id,
           shipping_mode: enabledMode.id,
-          destination_country: destinationCountry,
+          destination_country: activeDestinationCountry,
         });
         if (res.eventId) {
           trackPixelEvent(
@@ -944,7 +930,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     result,
     profile,
     mode: enabledMode,
-    destinationCountry,
+    destinationCountry: activeDestinationCountry,
     selectedRoute,
     isComplete: step3Done,
     email,
@@ -1196,7 +1182,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                     <select
                       id="v3-dest-country"
                       aria-label={t.destinationCountry}
-                      value={destinationCountry}
+                      value={activeDestinationCountry}
                       onChange={(event) => {
                         const country = event.target.value;
                         setDestinationCountry(country);
@@ -1307,7 +1293,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                               resetEstimateState();
                             }}
                             className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
-                              destinationPortKey === key
+                              selectedDestinationPortKey === key
                                 ? "border-primary bg-primary text-primary-foreground"
                                 : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
                             }`}
@@ -1320,7 +1306,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                   )}
                 </div>
 
-                {destinationCountry && (
+                {activeDestinationCountry && (
                   <div>
                     <div className="mb-2 text-sm font-semibold text-foreground">
                       {t.routeOptions}
@@ -1407,7 +1393,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                       selectedRoute?.destination.label ??
                       null
                     }
-                    destinationCountry={destinationCountry || null}
+                    destinationCountry={activeDestinationCountry || null}
                     containerType={enabledMode?.containerType ?? null}
                   />
                 </div>
