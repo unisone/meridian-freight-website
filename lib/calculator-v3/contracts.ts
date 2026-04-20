@@ -256,6 +256,14 @@ export const landedCostProfileRuntimeSchema = z.object({
   profileName: z.string().trim().min(1).max(200),
   sourceLabel: z.string().trim().min(1).max(200),
   sourceKind: z.string().trim().min(1).max(80),
+  sourceUrl: z.string().trim().url().max(500).nullable().optional(),
+  sourceReference: z.string().trim().min(1).max(500).nullable().optional(),
+  retrievedAt: z.string().trim().min(1).max(40).nullable().optional(),
+  reviewedAt: z.string().trim().min(1).max(40).nullable().optional(),
+  reviewedBy: z.string().trim().min(1).max(120).nullable().optional(),
+  owner: z.string().trim().min(1).max(120).nullable().optional(),
+  confidence: confidenceSchema.nullable().optional(),
+  active: z.boolean().optional(),
   currency: z.literal("USD"),
   schemaVersion: z.number().int().positive(),
   rulesHash: z.string().trim().min(1).max(200),
@@ -297,6 +305,7 @@ export interface QuarantinedRate {
   reason:
     | "missing_country"
     | "missing_cost"
+    | "missing_transit"
     | "unknown_origin"
     | "unknown_destination"
     | "impossible_origin"
@@ -400,7 +409,10 @@ export interface ImportCostEstimateV3 {
   confidence: EstimateConfidence | null;
   sourceLabel: string | null;
   sourceUrl: string | null;
+  sourceReference: string | null;
   retrievedAt: string | null;
+  reviewedBy: string | null;
+  active: boolean | null;
   sourceVersion: string | null;
   profileName: string | null;
   missingInputs: string[];

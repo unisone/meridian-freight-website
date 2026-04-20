@@ -11,6 +11,10 @@ const KZ_PROFILE_IDS: Record<KzHeavyClass, string> = {
   sprayer: "44444444-4444-4444-8444-444444444444",
 };
 
+const KZ_SOURCE_REFERENCE = "Meridian KZ price-list / Zhanna broker guidance 2026-04-20";
+const KZ_REVIEWED_AT = "2026-04-20";
+const KZ_REVIEWED_BY = "Meridian operations";
+
 const KZ_DUTY_RATE_BY_CLASS: Record<KzHeavyClass, number> = {
   combine: 0.05,
   tractor: 0.1,
@@ -33,8 +37,15 @@ function kzHeavyEquipmentProfile(
     landedEquipmentClass: equipmentClass,
     shippingMode: "flatrack",
     profileName: `Kazakhstan ${equipmentClass} flatrack landed-cost reference`,
-    sourceLabel: "Meridian KZ price-list / Zhanna broker guidance 2026-04-20",
+    sourceLabel: KZ_SOURCE_REFERENCE,
     sourceKind: "internal_broker_reference",
+    sourceReference: KZ_SOURCE_REFERENCE,
+    retrievedAt: KZ_REVIEWED_AT,
+    reviewedAt: KZ_REVIEWED_AT,
+    reviewedBy: KZ_REVIEWED_BY,
+    owner: KZ_REVIEWED_BY,
+    confidence: "medium",
+    active: true,
     currency: "USD",
     schemaVersion: 1,
     rulesHash: `kz-${equipmentClass}-flatrack-2026-04-20-v1`,

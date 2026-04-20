@@ -82,6 +82,7 @@ const COPY = {
     shippingRoute: "Shipping route",
     completeEquipmentHint: "Complete equipment selection to configure routing.",
     shippingMode: "Shipping mode",
+    confirmWithMeridian: "Confirm with Meridian",
     quantity: "Quantity",
     equipmentValueUsd: "Equipment value",
     equipmentValuePlaceholder: "e.g. 125000",
@@ -93,11 +94,11 @@ const COPY = {
     usPickupZip: "U.S. Pickup ZIP",
     optional: "optional",
     zipPlaceholder: "e.g. 50005",
-    zipHint: "Used to estimate U.S. inland transport. Leave blank for port-only freight.",
+    zipHint: "Used to estimate U.S. inland transport. Leave blank for route-only freight.",
     routePreference: "Route preference",
     cheapest: "Cheapest",
     fastest: "Fastest",
-    destinationPort: "Destination port",
+    destinationPort: "Destination port / route",
     routeOptions: "Route options",
     route: "Route",
     transit: "Transit",
@@ -108,13 +109,13 @@ const COPY = {
       "This equipment mode and destination are not available in the automatic calculator yet. Meridian can quote it manually.",
     estimatedFreight: "Estimated freight",
     basedOnRates:
-      "Estimated from current route rates. Final pricing is confirmed by Meridian.",
+      "Estimated to the destination shown. Meridian confirms final pricing before booking.",
     optimizedRouteRate: "selected route estimate",
     exclInlandTransport: "excludes U.S. inland transport",
     selectDestination: "Select destination",
     routeUnavailableEstimate: "Route unavailable",
     emptyStateText: "Select equipment and destination to see an estimate",
-    freightTotal: "Estimated freight to destination port",
+    freightTotal: "Estimated freight to destination shown",
     compliancePrep: "Compliance prep",
     importEstimate: "Indicative import-cost estimate",
     importNotIncluded: "Separate from freight",
@@ -159,8 +160,10 @@ const COPY = {
     recoverableCredits: "Recoverable credits",
     warnings: "Warnings",
     notes: "Notes",
+    showAllCategories: "Show all categories",
+    usPickup: "U.S. pickup",
     disclaimer:
-      "Freight, compliance prep, and import costs are separate estimates. Freight is estimated to the destination port shown; final booking, compliance services, duties, taxes, destination charges, and any destination-specific wash or treatment must be confirmed before shipment.",
+      "Freight, compliance prep, and import costs are separate estimates. Freight is estimated to the destination shown; final booking, compliance services, duties, taxes, destination charges, and any destination-specific wash or treatment must be confirmed before shipment.",
   },
   es: {
     unavailableTitle: "Calculadora no disponible",
@@ -172,6 +175,7 @@ const COPY = {
     shippingRoute: "Ruta de envío",
     completeEquipmentHint: "Complete la selección del equipo para configurar la ruta.",
     shippingMode: "Modo de envío",
+    confirmWithMeridian: "Confirmar con Meridian",
     quantity: "Cantidad",
     equipmentValueUsd: "Valor del equipo",
     equipmentValuePlaceholder: "ej. 125000",
@@ -184,11 +188,11 @@ const COPY = {
     optional: "opcional",
     zipPlaceholder: "ej. 50005",
     zipHint:
-      "Se usa para estimar transporte interno en EE. UU. Déjelo vacío para flete desde puerto.",
+      "Se usa para estimar transporte interno en EE. UU. Déjelo vacío para flete de ruta sin retiro en EE. UU.",
     routePreference: "Preferencia de ruta",
     cheapest: "Más barata",
     fastest: "Más rápida",
-    destinationPort: "Puerto destino",
+    destinationPort: "Puerto / ruta destino",
     routeOptions: "Opciones de ruta",
     route: "Ruta",
     transit: "Tránsito",
@@ -199,13 +203,13 @@ const COPY = {
       "Este modo de equipo y destino aún no está disponible en la calculadora automática. Meridian puede cotizarlo manualmente.",
     estimatedFreight: "Flete estimado",
     basedOnRates:
-      "Estimado con tarifas actuales. El precio final lo confirma Meridian.",
+      "Estimado hasta el destino mostrado. Meridian confirma el precio final antes de reservar.",
     optimizedRouteRate: "estimación de la ruta seleccionada",
     exclInlandTransport: "sin transporte interno de EE. UU.",
     selectDestination: "Seleccione destino",
     routeUnavailableEstimate: "Ruta no disponible",
     emptyStateText: "Seleccione equipo y destino para ver una estimación",
-    freightTotal: "Flete estimado al puerto destino",
+    freightTotal: "Flete estimado al destino mostrado",
     compliancePrep: "Preparación de cumplimiento",
     importEstimate: "Estimación indicativa de importación",
     importNotIncluded: "Separado del flete",
@@ -250,8 +254,10 @@ const COPY = {
     recoverableCredits: "Créditos recuperables",
     warnings: "Avisos",
     notes: "Notas",
+    showAllCategories: "Mostrar todas las categorías",
+    usPickup: "Retiro en EE. UU.",
     disclaimer:
-      "Flete, preparación de cumplimiento y costos de importación son estimaciones separadas. El flete se estima hasta el puerto destino mostrado; reserva final, servicios de cumplimiento, derechos, impuestos, cargos en destino y cualquier lavado o tratamiento específico deben confirmarse antes del embarque.",
+      "Flete, preparación de cumplimiento y costos de importación son estimaciones separadas. El flete se estima hasta el destino mostrado; reserva final, servicios de cumplimiento, derechos, impuestos, cargos en destino y cualquier lavado o tratamiento específico deben confirmarse antes del embarque.",
   },
   ru: {
     unavailableTitle: "Калькулятор недоступен",
@@ -263,6 +269,7 @@ const COPY = {
     shippingRoute: "Маршрут отправки",
     completeEquipmentHint: "Завершите выбор техники, чтобы настроить маршрут.",
     shippingMode: "Способ отправки",
+    confirmWithMeridian: "Подтвердить с Meridian",
     quantity: "Количество",
     equipmentValueUsd: "Стоимость техники",
     equipmentValuePlaceholder: "например 125000",
@@ -274,11 +281,11 @@ const COPY = {
     usPickupZip: "ZIP забора в США",
     optional: "необязательно",
     zipPlaceholder: "например 50005",
-    zipHint: "Используется для оценки внутренней доставки по США. Оставьте пустым для фрахта от порта.",
+    zipHint: "Используется для оценки внутренней доставки по США. Оставьте пустым для расчета маршрута без забора в США.",
     routePreference: "Приоритет маршрута",
     cheapest: "Дешевле",
     fastest: "Быстрее",
-    destinationPort: "Порт назначения",
+    destinationPort: "Порт / маршрут назначения",
     routeOptions: "Варианты маршрута",
     route: "Маршрут",
     transit: "Транзит",
@@ -289,13 +296,13 @@ const COPY = {
       "Этот способ и направление пока не доступны в автоматическом калькуляторе. Meridian может подготовить ручной расчет.",
     estimatedFreight: "Оценка фрахта",
     basedOnRates:
-      "Расчет по текущим тарифам. Финальную цену подтверждает Meridian.",
+      "Расчет до указанного пункта назначения. Финальную цену Meridian подтверждает перед бронированием.",
     optimizedRouteRate: "оценка выбранного маршрута",
     exclInlandTransport: "без внутренней доставки по США",
     selectDestination: "Выберите направление",
     routeUnavailableEstimate: "Маршрут недоступен",
     emptyStateText: "Выберите технику и направление, чтобы увидеть расчет",
-    freightTotal: "Оценка фрахта до порта назначения",
+    freightTotal: "Оценка фрахта до указанного назначения",
     compliancePrep: "Подготовка к требованиям",
     importEstimate: "Ориентировочная импортная оценка",
     importNotIncluded: "Отдельно от фрахта",
@@ -340,8 +347,10 @@ const COPY = {
     recoverableCredits: "Возмещаемые кредиты",
     warnings: "Предупреждения",
     notes: "Примечания",
+    showAllCategories: "Показать все категории",
+    usPickup: "Забор в США",
     disclaimer:
-      "Фрахт, подготовка к требованиям и импортные расходы являются отдельными оценками. Фрахт рассчитан до указанного порта назначения; финальное бронирование, услуги по требованиям, пошлины, налоги, расходы в стране назначения и любая мойка или обработка должны быть подтверждены до отправки.",
+      "Фрахт, подготовка к требованиям и импортные расходы являются отдельными оценками. Фрахт рассчитан до указанного пункта назначения; финальное бронирование, услуги по требованиям, пошлины, налоги, расходы в стране назначения и любая мойка или обработка должны быть подтверждены до отправки.",
   },
 } as const;
 
@@ -1002,7 +1011,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                 onClick={() => setShowAllProfiles(true)}
                 className="mt-2 flex items-center gap-1 rounded py-2 text-xs font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               >
-                Show all categories <ChevronDown className="h-3 w-3" />
+                {t.showAllCategories} <ChevronDown className="h-3 w-3" />
               </button>
             )}
           </section>
@@ -1062,7 +1071,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                             <Badge variant="secondary" className="mt-2 text-[10px]">
                               {candidate.enabled
                                 ? containerLabel(candidate.containerType)
-                                : "Confirm with Meridian"}
+                                : t.confirmWithMeridian}
                             </Badge>
                           </span>
                         </button>
@@ -1369,7 +1378,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                       {t.shippingRoute}
                     </div>
                     <div className="mt-1 text-muted-foreground">
-                      {zipCode ? `ZIP ${zipCode}` : "U.S. pickup"} →{" "}
+                      {zipCode ? `ZIP ${zipCode}` : t.usPickup} →{" "}
                       {preview.route.origin.label} → {preview.route.destination.label}
                     </div>
                     <div className="mt-2 font-mono text-lg font-bold text-primary">
@@ -2015,7 +2024,7 @@ function SectionHeader({ num, title }: { num: number; title: string }) {
       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
         {String(num).padStart(2, "0")}
       </div>
-      <h3 className="text-lg font-bold text-foreground">{title}</h3>
+      <h2 className="text-lg font-bold text-foreground">{title}</h2>
     </div>
   );
 }

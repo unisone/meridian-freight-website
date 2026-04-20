@@ -77,28 +77,65 @@ export async function fetchOceanRates(): Promise<OceanFreightRate[] | null> {
 export async function fetchLandedCostProfilesV3(): Promise<LandedCostProfileRuntime[]> {
   const config = getSupabaseConfig();
   if (!config) return [];
+  const { url, key } = config;
 
   try {
     const today = new Date().toISOString().slice(0, 10);
-    const params = new URLSearchParams({
-      select:
-        "id,country_code,country_name,landed_equipment_class,shipping_mode,profile_name,source_label,source_kind,currency,schema_version,rules_hash,assumptions_json,rules_json",
-      is_active: "eq.true",
-      effective_from: `lte.${today}`,
-      or: `(effective_until.is.null,effective_until.gte.${today})`,
-      order: "country_code,landed_equipment_class,effective_from.desc",
-    });
+    const baseSelect =
+      "id,country_code,country_name,landed_equipment_class,shipping_mode,profile_name,source_label,source_kind,currency,schema_version,rules_hash,assumptions_json,rules_json";
+    const governanceSelect =
+      `${baseSelect},source_url,source_reference,retrieved_at,reviewed_at,reviewed_by,owner,confidence,is_active`;
 
-    const resp = await fetch(`${config.url}/rest/v1/landed_cost_profiles?${params}`, {
-      headers: buildHeaders(config.key),
-    });
+    async function fetchRows(select: string) {
+      const params = new URLSearchParams({
+        select,
+        is_active: "eq.true",
+        effective_from: `lte.${today}`,
+        or: `(effective_until.is.null,effective_until.gte.${today})`,
+        order: "country_code,landed_equipment_class,effective_from.desc",
+      });
 
-    if (!resp.ok) {
-      console.error("Failed to fetch landed cost profiles:", resp.status, await resp.text());
+      const resp = await fetch(`${url}/rest/v1/landed_cost_profiles?${params}`, {
+        headers: buildHeaders(key),
+      });
+
+      if (!resp.ok) {
+        return {
+          ok: false as const,
+          status: resp.status,
+          body: await resp.text(),
+          rows: [] as unknown[],
+        };
+      }
+
+      return {
+        ok: true as const,
+        status: resp.status,
+        body: "",
+        rows: (await resp.json()) as unknown[],
+      };
+    }
+
+    const firstAttempt = await fetchRows(governanceSelect);
+    const rows =
+      firstAttempt.ok
+        ? firstAttempt.rows
+        : firstAttempt.status === 400 &&
+            /source_url|source_reference|retrieved_at|reviewed_at|reviewed_by|owner|confidence|schema cache|column/i.test(
+              firstAttempt.body,
+            )
+          ? (await fetchRows(baseSelect)).rows
+          : [];
+
+    if (!firstAttempt.ok && rows.length === 0) {
+      console.error(
+        "Failed to fetch landed cost profiles:",
+        firstAttempt.status,
+        firstAttempt.body,
+      );
       return [];
     }
 
-    const rows = (await resp.json()) as unknown[];
     return rows.flatMap((row) => {
       const parsed = mapLandedCostProfileRowV3(row as Parameters<typeof mapLandedCostProfileRowV3>[0]);
       return parsed ? [parsed] : [];
