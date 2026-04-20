@@ -531,7 +531,7 @@ export async function submitCalculatorV3(
     phone: data.phone || null,
     company: data.company || null,
     message: `[Calculator V3 ${currentRateBookSignature} / ${CALCULATOR_V3_POLICY_VERSION}] ${profileName} x ${estimate.quantity} -> ${countryName(destinationCountry)} | ${modeName} | ${estimate.route.id} | Freight: ${formatDollar(estimate.freightTotal)} | Compliance: ${estimate.compliancePrep.amountStatus}${estimate.freightPlusComplianceTotal != null ? ` / freight+compliance ${formatDollar(estimate.freightPlusComplianceTotal)}` : ""}${estimate.importCost.available && estimate.importCost.amountUsd != null ? ` | Import estimate: ${formatDollar(estimate.importCost.amountUsd)}` : ` | Import estimate: ${estimate.importCost.status}`} | Preferred contact: ${data.preferredContact}`,
-    source_page: data.source_page || "corporate: /pricing/calculator-v3",
+    source_page: data.source_page || "corporate: /pricing/calculator",
     utm_source: data.utm_source || null,
     utm_medium: data.utm_medium || null,
     utm_campaign: data.utm_campaign || null,
