@@ -42,15 +42,15 @@ interface LandedCostInputV3 {
 type RoundingMode = LandedCostProfileRuntime["assumptions"]["roundingMode"];
 
 const unsupportedNote = {
-  en: "Import duties, taxes, broker fees, destination charges, and local customs costs are not calculated online for this selection because no source-backed profile is available. Confirm them with a licensed customs broker or importer.",
-  es: "Derechos, impuestos, honorarios de broker, cargos en destino y costos aduaneros locales no se calculan en linea para esta seleccion porque no hay un perfil con fuente. Confirmelos con un broker aduanero o importador autorizado.",
-  ru: "Пошлины, налоги, брокерские сборы, расходы в стране назначения и местные таможенные расходы не рассчитываются онлайн для этого выбора, потому что нет профиля с подтвержденным источником. Подтвердите их с лицензированным таможенным брокером или импортером.",
+  en: "Import duties, taxes, broker fees, destination charges, and local customs costs are not calculated online for this selection. Confirm them with a licensed customs broker or importer.",
+  es: "Derechos, impuestos, honorarios de broker, cargos en destino y costos aduaneros locales no se calculan en linea para esta seleccion. Confirmelos con un broker aduanero o importador autorizado.",
+  ru: "Пошлины, налоги, брокерские сборы, расходы в стране назначения и местные таможенные расходы не рассчитываются онлайн для этого выбора. Подтвердите их с лицензированным таможенным брокером или импортером.",
 };
 
 const partialNote = {
-  en: "A source-backed import-cost profile exists, but the calculator is missing required inputs. No import-cost number is shown until those inputs are available; confirm final duties, taxes, and local charges with a broker/importer.",
-  es: "Existe un perfil de costos de importacion con fuente, pero faltan datos requeridos. No se muestra un numero de importacion hasta tener esos datos; confirme derechos, impuestos y cargos locales finales con broker/importador.",
-  ru: "Профиль импортных расходов с подтвержденным источником есть, но калькулятору не хватает обязательных данных. Импортная сумма не показывается, пока этих данных нет; финальные пошлины, налоги и местные расходы подтвердите с брокером/импортером.",
+  en: "The calculator is missing required inputs for the import-cost estimate. No import-cost number is shown until those inputs are available; confirm final duties, taxes, and local charges with a broker/importer.",
+  es: "Faltan datos requeridos para la estimacion de importacion. No se muestra un numero de importacion hasta tener esos datos; confirme derechos, impuestos y cargos locales finales con broker/importador.",
+  ru: "Для импортной оценки не хватает обязательных данных. Импортная сумма не показывается, пока этих данных нет; финальные пошлины, налоги и местные расходы подтвердите с брокером/импортером.",
 };
 
 const CUSTOMER_INPUT_KEYS = new Set([

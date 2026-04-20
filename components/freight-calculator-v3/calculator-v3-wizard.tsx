@@ -106,7 +106,8 @@ const COPY = {
     noPublishedRoutesDescription:
       "This equipment mode and destination are not available in the automatic calculator yet. Meridian can quote it manually.",
     estimatedFreight: "Estimated Freight",
-    basedOnRates: "Based on live route rates and V3 freight policy.",
+    basedOnRates:
+      "Estimated from current route rates. Final pricing is confirmed by Meridian.",
     optimizedRouteRate: "optimized route rate",
     exclInlandTransport: "excludes U.S. inland transport",
     selectDestination: "Select destination",
@@ -117,6 +118,8 @@ const COPY = {
     compliancePrep: "Compliance prep",
     importEstimate: "Indicative import-cost estimate",
     importNotIncluded: "Not included in freight",
+    importBrokerNote:
+      "Final duties, taxes, broker fees, and destination charges must be confirmed with a licensed customs broker.",
     brokerConfirmed: "Broker confirmation required",
     quoteConfirmed: "Quote confirmation required",
     notAvailable: "Not included",
@@ -191,7 +194,8 @@ const COPY = {
     noPublishedRoutesDescription:
       "Este modo de equipo y destino aun no esta disponible en la calculadora automatica. Meridian puede cotizarlo manualmente.",
     estimatedFreight: "Flete estimado",
-    basedOnRates: "Basado en tarifas en vivo y politica V3.",
+    basedOnRates:
+      "Estimado con tarifas actuales. El precio final lo confirma Meridian.",
     optimizedRouteRate: "ruta optimizada",
     exclInlandTransport: "sin transporte interno de EE.UU.",
     selectDestination: "Seleccione destino",
@@ -202,6 +206,8 @@ const COPY = {
     compliancePrep: "Preparacion de cumplimiento",
     importEstimate: "Estimacion indicativa de importacion",
     importNotIncluded: "No incluido en flete",
+    importBrokerNote:
+      "Derechos, impuestos, honorarios del broker y cargos en destino deben confirmarse con un broker aduanal autorizado.",
     brokerConfirmed: "Requiere confirmacion del broker",
     quoteConfirmed: "Requiere confirmacion de cotizacion",
     notAvailable: "No incluido",
@@ -276,7 +282,8 @@ const COPY = {
     noPublishedRoutesDescription:
       "Этот способ и направление пока не доступны в автоматическом калькуляторе. Meridian может подготовить ручной расчет.",
     estimatedFreight: "Оценка фрахта",
-    basedOnRates: "На основе живых тарифов и политики V3.",
+    basedOnRates:
+      "Расчет по текущим тарифам. Финальную цену подтверждает Meridian.",
     optimizedRouteRate: "оптимальный маршрут",
     exclInlandTransport: "без внутренней доставки по США",
     selectDestination: "Выберите направление",
@@ -286,6 +293,8 @@ const COPY = {
     compliancePrep: "Подготовка к требованиям",
     importEstimate: "Ориентировочная импортная оценка",
     importNotIncluded: "Не включено во фрахт",
+    importBrokerNote:
+      "Пошлины, налоги, услуги брокера и расходы в стране назначения должен подтвердить лицензированный таможенный брокер.",
     brokerConfirmed: "Требуется подтверждение брокера",
     quoteConfirmed: "Требуется подтверждение квоты",
     notAvailable: "Не включено",
@@ -1917,17 +1926,11 @@ function ImportCostNote({
   if (importCost.available) {
     return (
       <div className="mt-2 space-y-1 text-xs leading-relaxed text-slate-400">
-        {importCost.sourceLabel && (
-          <p>
-            {importCost.sourceLabel}
-            {importCost.sourceVersion ? ` · ${importCost.sourceVersion}` : ""}
-          </p>
-        )}
+        <p>{t.importBrokerNote}</p>
         {importCost.recoverableCreditsUsd != null &&
           importCost.recoverableCreditsUsd > 0 && (
             <p>Recoverable credits: {formatDollar(importCost.recoverableCreditsUsd)}</p>
           )}
-        {importCost.note && <p>{getLocalizedText(importCost.note, locale)}</p>}
       </div>
     );
   }

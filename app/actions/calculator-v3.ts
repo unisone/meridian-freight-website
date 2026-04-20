@@ -168,7 +168,13 @@ function lineItemHtml(item: FreightLineItemV3): string {
   </tr>`;
 }
 
-function importCostHtml(estimate: FreightEstimateV3, locale: string): string {
+type EstimateEmailAudience = "customer" | "internal";
+
+function importCostHtml(
+  estimate: FreightEstimateV3,
+  locale: string,
+  audience: EstimateEmailAudience,
+): string {
   const importCost = estimate.importCost;
   if (!importCost.available || importCost.amountUsd == null) {
     const note = importCost.note
@@ -181,14 +187,23 @@ function importCostHtml(estimate: FreightEstimateV3, locale: string): string {
     return `<p style="font-size:13px;color:#6b7280"><strong>${escapeHtml(heading)}:</strong> ${escapeHtml(note)}</p>`;
   }
 
+  const sourceLine =
+    audience === "internal"
+      ? `HS ${escapeHtml(importCost.hsCode)}, ${escapeHtml(importCost.sourceLabel ?? "source on file")} (${escapeHtml(importCost.sourceVersion ?? "version unavailable")}).`
+      : `HS ${escapeHtml(importCost.hsCode)}. Final duties, taxes, broker fees, and destination charges must be confirmed with a licensed customs broker.`;
+  const note =
+    audience === "internal" && importCost.note
+      ? getLocalizedText(importCost.note, locale)
+      : "Import costs are indicative only and are not part of the freight total.";
+
   return `
     <div style="margin-top:18px;padding:14px;border:1px solid #dbeafe;border-radius:8px;background:#eff6ff">
       <p style="margin:0 0 8px;font-weight:bold">Indicative import-cost estimate: ${formatDollar(importCost.amountUsd)}</p>
       <p style="margin:0;color:#374151;font-size:13px">
-        HS ${escapeHtml(importCost.hsCode)}, ${escapeHtml(importCost.sourceLabel)} (${escapeHtml(importCost.sourceVersion)}).
+        ${sourceLine}
         ${importCost.recoverableCreditsUsd ? `Recoverable credits: ${formatDollar(importCost.recoverableCreditsUsd)}.` : ""}
       </p>
-      <p style="margin:8px 0 0;color:#6b7280;font-size:12px">${escapeHtml(importCost.note ? getLocalizedText(importCost.note, locale) : "")}</p>
+      <p style="margin:8px 0 0;color:#6b7280;font-size:12px">${escapeHtml(note)}</p>
     </div>
   `;
 }
@@ -226,7 +241,11 @@ function compliancePrepHtml(estimate: FreightEstimateV3, locale: string): string
   `;
 }
 
-function estimateSummaryHtml(estimate: FreightEstimateV3, locale: string): string {
+function estimateSummaryHtml(
+  estimate: FreightEstimateV3,
+  locale: string,
+  audience: EstimateEmailAudience,
+): string {
   const profileName = getLocalizedText(estimate.equipmentDisplayName, locale);
   const modeName = getLocalizedText(estimate.mode.label, locale);
   return `
@@ -251,7 +270,7 @@ function estimateSummaryHtml(estimate: FreightEstimateV3, locale: string): strin
     </table>
     ${estimate.dedicatedContainerFreightTotal != null ? `<p style="font-size:13px;color:#6b7280">Dedicated-container comparison: ${formatDollar(estimate.dedicatedContainerFreightTotal)}.</p>` : ""}
     ${compliancePrepHtml(estimate, locale)}
-    ${importCostHtml(estimate, locale)}
+    ${importCostHtml(estimate, locale, audience)}
   `;
 }
 
@@ -414,7 +433,7 @@ export async function submitCalculatorV3(
             ${data.zipCode ? `<p><strong>ZIP:</strong> ${escapeHtml(data.zipCode)}</p>` : ""}
             ${data.equipmentValueUsd ? `<p><strong>Declared equipment value:</strong> ${formatDollar(data.equipmentValueUsd)}</p>` : ""}
             <hr style="border:none;border-top:1px dashed #d1d5db;margin:18px 0"/>
-            ${estimateSummaryHtml(estimate, locale)}
+            ${estimateSummaryHtml(estimate, locale, "internal")}
             ${estimate.warnings.length > 0 ? `<h3 style="margin-top:18px">Warnings</h3><ul>${estimate.warnings.map((warning) => `<li>${escapeHtml(getLocalizedText(warning, locale))}</li>`).join("")}</ul>` : ""}
             <p style="font-size:12px;color:#6b7280;margin-top:16px">
               Route ID: ${escapeHtml(estimate.route.id)}<br/>
@@ -455,8 +474,8 @@ export async function submitCalculatorV3(
         html: `
           <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:680px;margin:0 auto;line-height:1.6;color:#111827">
             <p>Hi${data.name ? ` ${escapeHtml(data.name)}` : ""},</p>
-            <p>Thanks for using the ${COMPANY.name} freight calculator. Here is your V3 preview estimate:</p>
-            ${estimateSummaryHtml(estimate, locale)}
+            <p>Thanks for using the ${COMPANY.name} freight calculator. Here is your freight estimate:</p>
+            ${estimateSummaryHtml(estimate, locale, "customer")}
             <p style="font-size:13px;color:#6b7280">Freight, compliance prep, and import costs are shown separately. Compliance and import estimates are indicative only and must be confirmed by the importer or customs broker before shipment.</p>
             <p>For a confirmed quote, reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">continue on WhatsApp</a>.</p>
             <p style="margin-top:20px;color:#6b7280;font-size:13px">- ${COMPANY.name}</p>
