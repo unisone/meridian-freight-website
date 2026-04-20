@@ -1493,32 +1493,6 @@ function CalculatorV3EstimateCard({
   const isEmailValid = EMAIL_RE.test(email);
   const hasResult = result?.success && result.estimate;
   const estimate = result?.estimate ?? preview;
-  const [displayTotal, setDisplayTotal] = useState(0);
-  const prevTotal = useRef(0);
-
-  useEffect(() => {
-    if (!estimate) {
-      prevTotal.current = 0;
-      const id = requestAnimationFrame(() => setDisplayTotal(0));
-      return () => cancelAnimationFrame(id);
-    }
-    const target = estimate.freightTotal;
-    if (target === prevTotal.current) return;
-    const from = prevTotal.current;
-    prevTotal.current = target;
-    const duration = 300;
-    const startTime = performance.now();
-    let rafId: number;
-
-    function tick(now: number) {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayTotal(Math.round(from + (target - from) * eased));
-      if (progress < 1) rafId = requestAnimationFrame(tick);
-    }
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [estimate]);
 
   if (!profile) {
     return (
@@ -1567,7 +1541,7 @@ function CalculatorV3EstimateCard({
       {estimate ? (
         <>
           <div className="mb-1 font-mono tabular-nums text-4xl font-bold tracking-tight text-white">
-            {formatDollar(displayTotal)}
+            {formatDollar(estimate.freightTotal)}
           </div>
           <p className="mb-5 text-xs font-semibold uppercase tracking-wider text-primary">
             {estimate.totalExcludesInland
