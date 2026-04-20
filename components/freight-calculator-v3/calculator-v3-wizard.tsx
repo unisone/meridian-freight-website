@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/sheet";
 import { CalculatorProgressBar } from "@/components/freight-calculator/calculator-progress-bar";
 import { CATEGORY_ICONS } from "@/components/freight-calculator/category-icons";
+import { RouteGlobe } from "@/components/freight-calculator/route-globe";
 import { getCalculatorDataV3 } from "@/app/actions/calculator-v3-data";
 import {
   submitCalculatorV3,
@@ -1395,6 +1396,21 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                     </div>
                   </div>
                 )}
+
+                <div className="mt-4 overflow-hidden rounded-xl">
+                  <RouteGlobe
+                    originPort={
+                      preview?.route.origin.label ?? selectedRoute?.origin.label ?? null
+                    }
+                    destinationPort={
+                      preview?.route.destination.label ??
+                      selectedRoute?.destination.label ??
+                      null
+                    }
+                    destinationCountry={destinationCountry || null}
+                    containerType={enabledMode?.containerType ?? null}
+                  />
+                </div>
               </div>
             )}
           </section>
