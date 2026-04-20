@@ -26,6 +26,7 @@ jobs:
       - name: Wait for Vercel deployment
         uses: patrickedqvist/wait-for-vercel-preview@v1.3.3
         id: vercel
+        continue-on-error: true
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 300
@@ -33,6 +34,7 @@ jobs:
 
       # Run Lighthouse on key pages
       - name: Lighthouse audit
+        if: steps.vercel.outcome == 'success'
         uses: treosh/lighthouse-ci-action@v12
         id: lhci
         with:
@@ -47,12 +49,27 @@ jobs:
 
       # Post results as PR comment
       - name: Post results
-        if: always() && github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request' && steps.vercel.outcome == 'success'
         uses: actions/github-script@v9
         with:
           script: |
-            const results = ${{ steps.lhci.outputs.manifest }};
-            const links = ${{ steps.lhci.outputs.links }};
+            const manifestRaw = ${{ toJson(steps.lhci.outputs.manifest || '[]') }};
+            const linksRaw = ${{ toJson(steps.lhci.outputs.links || '{}') }};
+
+            let results = [];
+            let links = {};
+
+            try {
+              results = JSON.parse(manifestRaw);
+            } catch (error) {
+              console.log('Unable to parse Lighthouse manifest:', error.message);
+            }
+
+            try {
+              links = JSON.parse(linksRaw);
+            } catch (error) {
+              console.log('Unable to parse Lighthouse links:', error.message);
+            }
 
             if (!results || !Array.isArray(results)) {
               console.log('No Lighthouse results to post');
@@ -93,6 +110,45 @@ jobs:
             body += '\n*Budgets: Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 90*';
 
             // Find existing comment to update
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Lighthouse Performance Report')
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Post protected preview note
+        if: always() && github.event_name == 'pull_request' && steps.vercel.outcome != 'success'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const body = [
+              '## Lighthouse Performance Report',
+              '',
+              'Skipped for this PR because the Vercel preview is protected by Vercel Authentication and the workflow could not reach a `200` preview URL.',
+              '',
+              'The Vercel deployment checks still verify that the preview built successfully. Configure Vercel Protection Bypass for Automation and expose it as `VERCEL_AUTOMATION_BYPASS_SECRET` to run Lighthouse against protected previews.',
+            ].join('\n');
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
