@@ -870,8 +870,30 @@
     "cbmTotal": "{cbm} CBM en total"
   },
   "PartnersStrip": {
+    "networkEyebrow": "Red de Dealers y Subastas",
+    "networkHeading": "Empresas con las que Trabajamos",
+    "networkDescription": "Meridian trabaja con dealers, subastas y vendedores establecidos de maquinaria en EE.UU. para ayudar a compradores a conseguir equipos antes de exportarlos.",
     "carriers": "Enviamos Via",
     "brands": "Equipos en los que nos Especializamos"
+  },
+  "SourcingNetwork": {
+    "eyebrow": "Red de Busqueda de Equipos",
+    "heading": "Empresas con las que Trabajamos",
+    "description": "Cuando un comprador necesita una maquina especifica, Meridian puede coordinar con dealers y subastas con los que ya trabajamos. Ayudamos a revisar listings, coordinar inspeccion o recogida, y mover el equipo al proceso de exportacion.",
+    "steps": {
+      "listingReview": "Revisamos la maquina, los datos del vendedor, fotos y requisitos de exportacion antes de que usted se comprometa.",
+      "pickup": "Coordinamos la recogida desde el dealer, patio de subasta o vendedor y movemos el equipo al punto correcto de entrega.",
+      "export": "Manejamos desmontaje, embalaje, flete maritimo y documentos de exportacion en un solo flujo de Meridian."
+    },
+    "focus": {
+      "dealerInventory": "Inventario de dealer de equipos agricolas usados",
+      "johnDeereDealer": "Inventario de dealer John Deere",
+      "farmAuction": "Subasta de maquinaria agricola",
+      "usedEquipmentSales": "Venta de equipos agricolas usados"
+    },
+    "ctaLead": "Ya encontro una maquina con una de estas empresas?",
+    "ctaDescription": "Envienos el listing y destino. Cotizamos recogida, embalaje de exportacion, flete maritimo y documentos antes de que compre.",
+    "ctaButton": "Enviar el Listing"
   },
   "Guarantees": {
     "heading": "Nuestros Compromisos",
