@@ -467,6 +467,9 @@ describe("calculateFreightV3", () => {
     expect(estimate?.freightTotal).toBe(15150);
     expect(estimate?.freightPlusComplianceTotal).toBeNull();
     expect(estimate?.importCost.status).toBe("unsupported");
+    expect(estimate?.importCost.amountUsd).toBeNull();
+    expect(estimate?.importCost.lineItems).toHaveLength(0);
+    expect(estimate?.importCost.note?.en).toContain("not calculated online");
     expect(estimate?.notes.map((entry) => entry.en).join(" ")).toContain(
       "two 40HC containers",
     );
@@ -603,6 +606,10 @@ describe("calculateFreightV3", () => {
     expect(estimate?.importCost.status).toBe("complete");
     expect(estimate?.importCost.available).toBe(true);
     expect(estimate?.importCost.amountUsd).toBe(27771);
+    expect(estimate?.compliancePrep.status).toBe("unknown");
+    expect(estimate?.compliancePrep.amountUsd).toBeNull();
+    expect(estimate?.complianceServices).toBe(0);
+    expect(estimate?.freightPlusComplianceTotal).toBeNull();
     expect(
       estimate?.importCost.lineItems.find((item) => item.code === "kz_misc")?.amountUsd,
     ).toBe(4240);
@@ -657,7 +664,10 @@ describe("calculateFreightV3", () => {
     expect(estimate).not.toBeNull();
     expect(estimate?.importCost.status).toBe("partial");
     expect(estimate?.importCost.available).toBe(false);
+    expect(estimate?.importCost.amountUsd).toBeNull();
+    expect(estimate?.importCost.lineItems).toHaveLength(0);
     expect(estimate?.importCost.missingInputs).toContain("equipment_value");
+    expect(estimate?.importCost.note?.en).toContain("missing required inputs");
   });
 
   it("does not add Paraguay wash or treatment charges and hides missing tariff profiles", () => {
@@ -683,6 +693,8 @@ describe("calculateFreightV3", () => {
     expect(estimate?.lineItems.map((line) => String(line.id))).not.toContain("wash");
     expect(estimate?.importCost.available).toBe(false);
     expect(estimate?.importCost.status).toBe("unsupported");
+    expect(estimate?.importCost.amountUsd).toBeNull();
+    expect(estimate?.importCost.note?.en).toContain("licensed customs broker");
     expect(estimate?.freightTotal).toBeGreaterThan(0);
   });
 });

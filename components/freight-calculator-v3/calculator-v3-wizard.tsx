@@ -117,9 +117,12 @@ const COPY = {
     compliancePrep: "Compliance prep",
     importEstimate: "Indicative import-cost estimate",
     importNotIncluded: "Not included in freight",
-    brokerConfirmed: "Confirm with broker",
-    quoteConfirmed: "Quote-confirmed",
-    notAvailable: "Not available",
+    brokerConfirmed: "Broker confirmation required",
+    quoteConfirmed: "Quote confirmation required",
+    notAvailable: "Not included",
+    notCalculatedOnline: "Not calculated online",
+    noAutomaticCharge: "No automatic charge",
+    needsInput: "Needs input",
     missingInputs: "Missing inputs",
     dedicatedComparison: "Dedicated-container comparison",
     getYourDetailedEstimate: "Get your detailed estimate",
@@ -199,9 +202,12 @@ const COPY = {
     compliancePrep: "Preparacion de cumplimiento",
     importEstimate: "Estimacion indicativa de importacion",
     importNotIncluded: "No incluido en flete",
-    brokerConfirmed: "Confirmar con broker",
-    quoteConfirmed: "Confirmar cotizacion",
-    notAvailable: "No disponible",
+    brokerConfirmed: "Requiere confirmacion del broker",
+    quoteConfirmed: "Requiere confirmacion de cotizacion",
+    notAvailable: "No incluido",
+    notCalculatedOnline: "No calculado en linea",
+    noAutomaticCharge: "Sin cargo automatico",
+    needsInput: "Faltan datos",
     missingInputs: "Datos faltantes",
     dedicatedComparison: "Comparacion con contenedor dedicado",
     getYourDetailedEstimate: "Reciba su estimacion detallada",
@@ -280,9 +286,12 @@ const COPY = {
     compliancePrep: "Подготовка к требованиям",
     importEstimate: "Ориентировочная импортная оценка",
     importNotIncluded: "Не включено во фрахт",
-    brokerConfirmed: "Подтвердить с брокером",
-    quoteConfirmed: "Подтвердить в квоте",
-    notAvailable: "Недоступно",
+    brokerConfirmed: "Требуется подтверждение брокера",
+    quoteConfirmed: "Требуется подтверждение квоты",
+    notAvailable: "Не включено",
+    notCalculatedOnline: "Не рассчитывается онлайн",
+    noAutomaticCharge: "Нет автоматического начисления",
+    needsInput: "Нужны данные",
     missingInputs: "Не хватает данных",
     dedicatedComparison: "Сравнение с отдельным контейнером",
     getYourDetailedEstimate: "Получить подробный расчет",
@@ -442,7 +451,10 @@ function importAmountLabel(
   if (importCost.available && importCost.amountUsd != null) {
     return formatDollar(importCost.amountUsd);
   }
-  return COPY[locale].notAvailable;
+  if (importCost.status === "partial") {
+    return COPY[locale].needsInput;
+  }
+  return COPY[locale].notCalculatedOnline;
 }
 
 export function CalculatorV3Wizard({ locale }: { locale: string }) {
@@ -1650,7 +1662,7 @@ function CalculatorV3EstimateCard({
                 estimate.compliancePrep.amountUsd != null
                   ? formatDollar(estimate.compliancePrep.amountUsd)
                   : estimate.compliancePrep.amountStatus === "not_applicable"
-                    ? t.notAvailable
+                    ? t.noAutomaticCharge
                     : t.brokerConfirmed}
               </span>
             </div>

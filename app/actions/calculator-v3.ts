@@ -154,7 +154,7 @@ function lineItemHtml(item: FreightLineItemV3): string {
   const amount =
     item.amountUsd == null
       ? item.includedInTotal
-        ? "Quote-confirmed"
+        ? "Quote confirmation required"
         : "Not included"
       : item.includedInTotal
         ? formatDollar(item.amountUsd)
@@ -171,8 +171,14 @@ function lineItemHtml(item: FreightLineItemV3): string {
 function importCostHtml(estimate: FreightEstimateV3, locale: string): string {
   const importCost = estimate.importCost;
   if (!importCost.available || importCost.amountUsd == null) {
-    const note = importCost.note ? getLocalizedText(importCost.note, locale) : "Not available for this selection.";
-    return `<p style="font-size:13px;color:#6b7280"><strong>Indicative import-cost estimate (${escapeHtml(importCost.status)}):</strong> ${escapeHtml(note)}</p>`;
+    const note = importCost.note
+      ? getLocalizedText(importCost.note, locale)
+      : "Import costs are not calculated online for this selection.";
+    const heading =
+      importCost.status === "partial"
+        ? "Indicative import-cost estimate needs inputs"
+        : "Import costs not calculated online";
+    return `<p style="font-size:13px;color:#6b7280"><strong>${escapeHtml(heading)}:</strong> ${escapeHtml(note)}</p>`;
   }
 
   return `
@@ -193,7 +199,7 @@ function compliancePrepHtml(estimate: FreightEstimateV3, locale: string): string
     prep.amountStatus === "priced" && prep.amountUsd != null
       ? formatDollar(prep.amountUsd)
       : prep.amountStatus === "quote_confirmed"
-        ? "Broker-confirmed"
+        ? "Broker confirmation required"
         : "Not added";
   if (prep.lines.length === 0) {
     return `<p style="font-size:13px;color:#6b7280"><strong>Compliance prep:</strong> Broker/importer confirmation required.</p>`;
@@ -210,7 +216,7 @@ function compliancePrepHtml(estimate: FreightEstimateV3, locale: string): string
                 ${escapeHtml(getLocalizedText(line.label, locale))}
                 <div style="font-size:12px;color:#92400e">${escapeHtml(getLocalizedText(line.note, locale))}</div>
               </td>
-              <td style="padding:6px 0;border-top:1px solid #fde68a;text-align:right;font-weight:bold">${escapeHtml(line.amountUsd == null ? "Broker-confirmed" : formatDollar(line.amountUsd))}</td>
+              <td style="padding:6px 0;border-top:1px solid #fde68a;text-align:right;font-weight:bold">${escapeHtml(line.amountUsd == null ? "Broker confirmation required" : formatDollar(line.amountUsd))}</td>
             </tr>`,
           )
           .join("")}
@@ -477,7 +483,7 @@ export async function submitCalculatorV3(
       `Route: ${routeLabel(estimate)}`,
       `Transit: ${estimate.route.transitTimeDays ?? "not published"}`,
       `Freight: ${formatDollar(estimate.freightTotal)} (${estimate.lineItems.map((line) => `${line.label}: ${line.amountUsd == null ? (line.includedInTotal ? "quote-confirmed" : "not included") : formatDollar(line.amountUsd)}`).join(" + ")})`,
-      `Compliance prep: ${estimate.compliancePrep.status} / ${estimate.compliancePrep.amountStatus}${estimate.compliancePrep.amountUsd != null ? ` / ${formatDollar(estimate.compliancePrep.amountUsd)}` : " / broker-confirmed"}`,
+      `Compliance prep: ${estimate.compliancePrep.status} / ${estimate.compliancePrep.amountStatus}${estimate.compliancePrep.amountUsd != null ? ` / ${formatDollar(estimate.compliancePrep.amountUsd)}` : " / broker confirmation required"}`,
       estimate.importCost.available && estimate.importCost.amountUsd != null
         ? `Import estimate: ${formatDollar(estimate.importCost.amountUsd)} | ${estimate.importCost.status} | HS ${estimate.importCost.hsCode} | ${estimate.importCost.sourceVersion}`
         : `Import estimate: ${estimate.importCost.status}${estimate.importCost.missingInputs.length > 0 ? ` | missing ${estimate.importCost.missingInputs.join(", ")}` : ""}`,
