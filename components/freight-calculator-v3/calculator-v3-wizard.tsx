@@ -74,11 +74,11 @@ const COPY = {
   en: {
     unavailableTitle: "Calculator unavailable",
     unavailableDescription:
-      "Live rate data is temporarily unavailable. Meridian can still prepare a manual quote.",
-    selectEquipmentCategory: "Select Equipment Category",
+      "Current rate data is temporarily unavailable. Meridian can still prepare a manual quote.",
+    selectEquipmentCategory: "Select equipment category",
     selectEquipmentHint: "Select equipment above to see specifications.",
-    equipmentSpecs: "Equipment Specs",
-    shippingRoute: "Shipping Route",
+    equipmentSpecs: "Equipment specs",
+    shippingRoute: "Shipping route",
     completeEquipmentHint: "Complete equipment selection to configure routing.",
     shippingMode: "Shipping mode",
     quantity: "Quantity",
@@ -87,7 +87,7 @@ const COPY = {
     equipmentValueHint:
       "Used for flat rack insurance and indicative import-cost estimates.",
     valueRequired: "Enter equipment value for this mode.",
-    destinationCountry: "Destination Country",
+    destinationCountry: "Destination country",
     selectCountry: "Select country",
     usPickupZip: "U.S. Pickup ZIP",
     optional: "optional",
@@ -100,35 +100,34 @@ const COPY = {
     routeOptions: "Route options",
     route: "Route",
     transit: "Transit",
-    notPublished: "Not published",
+    notPublished: "To be confirmed",
     routeRequired: "Select a route before submitting.",
-    noPublishedRoutesTitle: "No published route for this selection",
+    noPublishedRoutesTitle: "No automatic route for this selection",
     noPublishedRoutesDescription:
       "This equipment mode and destination are not available in the automatic calculator yet. Meridian can quote it manually.",
-    estimatedFreight: "Estimated Freight",
+    estimatedFreight: "Estimated freight",
     basedOnRates:
       "Estimated from current route rates. Final pricing is confirmed by Meridian.",
-    optimizedRouteRate: "optimized route rate",
+    optimizedRouteRate: "selected route estimate",
     exclInlandTransport: "excludes U.S. inland transport",
     selectDestination: "Select destination",
     routeUnavailableEstimate: "Route unavailable",
-    emptyStateText:
-      "Select your equipment and destination to see a live freight estimate",
-    freightTotal: "Estimated freight to port",
+    emptyStateText: "Select equipment and destination to see an estimate",
+    freightTotal: "Estimated freight to destination port",
     compliancePrep: "Compliance prep",
     importEstimate: "Indicative import-cost estimate",
-    importNotIncluded: "Not included in freight",
+    importNotIncluded: "Separate from freight",
     importBrokerNote:
       "Final duties, taxes, broker fees, and destination charges must be confirmed with a licensed customs broker.",
     brokerConfirmed: "Broker confirmation required",
     quoteConfirmed: "Quote confirmation required",
-    notAvailable: "Not included",
+    notAvailable: "Not calculated online",
     notCalculatedOnline: "Not calculated online",
     noAutomaticCharge: "No automatic charge",
-    needsInput: "Needs input",
+    needsInput: "More info needed",
     missingInputs: "Missing inputs",
     dedicatedComparison: "Dedicated-container comparison",
-    getYourDetailedEstimate: "Get your detailed estimate",
+    getYourDetailedEstimate: "Send this estimate",
     emailLabel: "Email",
     nameLabel: "Name",
     companyLabel: "Company",
@@ -139,13 +138,13 @@ const COPY = {
     optionalPlaceholder: "Optional",
     emailPlaceholder: "you@company.com",
     validEmailError: "Enter a valid email.",
-    calculateAndSend: "Calculate & send",
+    calculateAndSend: "Send detailed estimate",
     calculating: "Calculating...",
-    emailBreakdownNote: "Email required to receive the detailed breakdown",
-    bookThisFreight: "Book this freight",
-    refineQuote: "Refine quote",
+    emailBreakdownNote: "Email is required to send the detailed breakdown.",
+    bookThisFreight: "Send detailed estimate",
+    refineQuote: "Adjust estimate",
     estimateSentTo: "Estimate sent to {email}",
-    getDetailedQuote: "Get detailed quote",
+    getDetailedQuote: "Request confirmed quote",
     whatsAppUs: "Chat on WhatsApp",
     calculateAnother: "Calculate another",
     viewEstimateDetails: "View estimate details",
@@ -154,103 +153,109 @@ const COPY = {
     selectEquipmentToBegin: "Select equipment to begin",
     yourFreightEstimate: "Your freight estimate",
     lineItems: "Line items",
+    container: "Container",
+    carrier: "Carrier",
+    recoverableCredits: "Recoverable credits",
     warnings: "Warnings",
     notes: "Notes",
     disclaimer:
-      "Estimates cover the freight lines shown on screen. Customs duties, import taxes, destination inland transport, and destination-specific wash or fumigation are separate estimates and must be confirmed with the destination broker/importer.",
+      "Freight, compliance prep, and import costs are separate estimates. Freight is estimated to the destination port shown; final booking, compliance services, duties, taxes, destination charges, and any destination-specific wash or treatment must be confirmed before shipment.",
   },
   es: {
     unavailableTitle: "Calculadora no disponible",
     unavailableDescription:
-      "Las tarifas en vivo no estan disponibles temporalmente. Meridian puede preparar una cotizacion manual.",
-    selectEquipmentCategory: "Seleccione categoria de equipo",
+      "Las tarifas actuales no están disponibles temporalmente. Meridian puede preparar una cotización manual.",
+    selectEquipmentCategory: "Seleccione categoría de equipo",
     selectEquipmentHint: "Seleccione equipo arriba para ver especificaciones.",
     equipmentSpecs: "Especificaciones",
-    shippingRoute: "Ruta de envio",
-    completeEquipmentHint: "Complete la seleccion del equipo para configurar la ruta.",
-    shippingMode: "Modo de envio",
+    shippingRoute: "Ruta de envío",
+    completeEquipmentHint: "Complete la selección del equipo para configurar la ruta.",
+    shippingMode: "Modo de envío",
     quantity: "Cantidad",
     equipmentValueUsd: "Valor del equipo",
     equipmentValuePlaceholder: "ej. 125000",
     equipmentValueHint:
-      "Se usa para seguro flat rack y estimaciones indicativas de importacion.",
+      "Se usa para seguro flat rack y estimaciones indicativas de importación.",
     valueRequired: "Ingrese el valor del equipo para este modo.",
-    destinationCountry: "Pais destino",
-    selectCountry: "Seleccione pais",
-    usPickupZip: "ZIP de retiro en EE.UU.",
+    destinationCountry: "País destino",
+    selectCountry: "Seleccione país",
+    usPickupZip: "ZIP de retiro en EE. UU.",
     optional: "opcional",
     zipPlaceholder: "ej. 50005",
-    zipHint: "Se usa para estimar transporte interno en EE.UU. Deje vacio para flete puerto.",
+    zipHint:
+      "Se usa para estimar transporte interno en EE. UU. Déjelo vacío para flete desde puerto.",
     routePreference: "Preferencia de ruta",
-    cheapest: "Mas barata",
-    fastest: "Mas rapida",
+    cheapest: "Más barata",
+    fastest: "Más rápida",
     destinationPort: "Puerto destino",
     routeOptions: "Opciones de ruta",
     route: "Ruta",
-    transit: "Transito",
-    notPublished: "No publicado",
+    transit: "Tránsito",
+    notPublished: "Por confirmar",
     routeRequired: "Seleccione una ruta antes de enviar.",
-    noPublishedRoutesTitle: "No hay ruta publicada para esta seleccion",
+    noPublishedRoutesTitle: "No hay ruta automática para esta selección",
     noPublishedRoutesDescription:
-      "Este modo de equipo y destino aun no esta disponible en la calculadora automatica. Meridian puede cotizarlo manualmente.",
+      "Este modo de equipo y destino aún no está disponible en la calculadora automática. Meridian puede cotizarlo manualmente.",
     estimatedFreight: "Flete estimado",
     basedOnRates:
       "Estimado con tarifas actuales. El precio final lo confirma Meridian.",
-    optimizedRouteRate: "ruta optimizada",
-    exclInlandTransport: "sin transporte interno de EE.UU.",
+    optimizedRouteRate: "estimación de la ruta seleccionada",
+    exclInlandTransport: "sin transporte interno de EE. UU.",
     selectDestination: "Seleccione destino",
     routeUnavailableEstimate: "Ruta no disponible",
-    emptyStateText:
-      "Seleccione equipo y destino para ver una estimacion en vivo",
-    freightTotal: "Flete estimado al puerto",
-    compliancePrep: "Preparacion de cumplimiento",
-    importEstimate: "Estimacion indicativa de importacion",
-    importNotIncluded: "No incluido en flete",
+    emptyStateText: "Seleccione equipo y destino para ver una estimación",
+    freightTotal: "Flete estimado al puerto destino",
+    compliancePrep: "Preparación de cumplimiento",
+    importEstimate: "Estimación indicativa de importación",
+    importNotIncluded: "Separado del flete",
     importBrokerNote:
       "Derechos, impuestos, honorarios del broker y cargos en destino deben confirmarse con un broker aduanal autorizado.",
-    brokerConfirmed: "Requiere confirmacion del broker",
-    quoteConfirmed: "Requiere confirmacion de cotizacion",
-    notAvailable: "No incluido",
-    notCalculatedOnline: "No calculado en linea",
-    noAutomaticCharge: "Sin cargo automatico",
+    brokerConfirmed: "Confirmación del broker requerida",
+    quoteConfirmed: "Confirmación de cotización requerida",
+    notAvailable: "No calculado en línea",
+    notCalculatedOnline: "No calculado en línea",
+    noAutomaticCharge: "Sin cargo automático",
     needsInput: "Faltan datos",
     missingInputs: "Datos faltantes",
-    dedicatedComparison: "Comparacion con contenedor dedicado",
-    getYourDetailedEstimate: "Reciba su estimacion detallada",
+    dedicatedComparison: "Comparación con contenedor dedicado",
+    getYourDetailedEstimate: "Enviar esta estimación",
     emailLabel: "Email",
     nameLabel: "Nombre",
     companyLabel: "Empresa",
-    phoneLabel: "Telefono / WhatsApp",
+    phoneLabel: "Teléfono / WhatsApp",
     preferredContact: "Contacto preferido",
     emailOption: "Email",
     whatsappOption: "WhatsApp",
     optionalPlaceholder: "Opcional",
     emailPlaceholder: "usted@empresa.com",
-    validEmailError: "Ingrese un email valido.",
-    calculateAndSend: "Calcular y enviar",
+    validEmailError: "Ingrese un email válido.",
+    calculateAndSend: "Enviar estimación detallada",
     calculating: "Calculando...",
-    emailBreakdownNote: "Email requerido para recibir el detalle",
-    bookThisFreight: "Reservar este flete",
-    refineQuote: "Ajustar cotizacion",
-    estimateSentTo: "Estimacion enviada a {email}",
-    getDetailedQuote: "Solicitar cotizacion detallada",
+    emailBreakdownNote: "El email es obligatorio para enviar el detalle.",
+    bookThisFreight: "Enviar estimación detallada",
+    refineQuote: "Ajustar estimación",
+    estimateSentTo: "Estimación enviada a {email}",
+    getDetailedQuote: "Solicitar cotización confirmada",
     whatsAppUs: "Chat por WhatsApp",
     calculateAnother: "Calcular otra",
     viewEstimateDetails: "Ver detalle",
-    viewEstimate: "Ver estimacion",
+    viewEstimate: "Ver estimación",
     selectDestinationForEstimate: "Seleccione destino",
     selectEquipmentToBegin: "Seleccione equipo",
-    yourFreightEstimate: "Su estimacion de flete",
-    lineItems: "Lineas",
+    yourFreightEstimate: "Su estimación de flete",
+    lineItems: "Partidas",
+    container: "Contenedor",
+    carrier: "Naviera",
+    recoverableCredits: "Créditos recuperables",
     warnings: "Avisos",
     notes: "Notas",
     disclaimer:
-      "Las estimaciones cubren las lineas de flete mostradas. Derechos, impuestos, transporte interno de destino y lavado o fumigacion especificos son estimaciones separadas y deben confirmarse con el broker/importador.",
+      "Flete, preparación de cumplimiento y costos de importación son estimaciones separadas. El flete se estima hasta el puerto destino mostrado; reserva final, servicios de cumplimiento, derechos, impuestos, cargos en destino y cualquier lavado o tratamiento específico deben confirmarse antes del embarque.",
   },
   ru: {
     unavailableTitle: "Калькулятор недоступен",
     unavailableDescription:
-      "Живые тарифы временно недоступны. Meridian подготовит ручной расчет.",
+      "Текущие тарифы временно недоступны. Meridian подготовит ручной расчет.",
     selectEquipmentCategory: "Выберите категорию техники",
     selectEquipmentHint: "Выберите технику выше, чтобы увидеть параметры.",
     equipmentSpecs: "Параметры техники",
@@ -276,28 +281,28 @@ const COPY = {
     routeOptions: "Варианты маршрута",
     route: "Маршрут",
     transit: "Транзит",
-    notPublished: "Не опубликовано",
+    notPublished: "Подтвердить",
     routeRequired: "Выберите маршрут перед отправкой.",
-    noPublishedRoutesTitle: "Нет опубликованного маршрута для выбора",
+    noPublishedRoutesTitle: "Нет автоматического маршрута для выбора",
     noPublishedRoutesDescription:
       "Этот способ и направление пока не доступны в автоматическом калькуляторе. Meridian может подготовить ручной расчет.",
     estimatedFreight: "Оценка фрахта",
     basedOnRates:
       "Расчет по текущим тарифам. Финальную цену подтверждает Meridian.",
-    optimizedRouteRate: "оптимальный маршрут",
+    optimizedRouteRate: "оценка выбранного маршрута",
     exclInlandTransport: "без внутренней доставки по США",
     selectDestination: "Выберите направление",
     routeUnavailableEstimate: "Маршрут недоступен",
     emptyStateText: "Выберите технику и направление, чтобы увидеть расчет",
-    freightTotal: "Оценка фрахта до порта",
+    freightTotal: "Оценка фрахта до порта назначения",
     compliancePrep: "Подготовка к требованиям",
     importEstimate: "Ориентировочная импортная оценка",
-    importNotIncluded: "Не включено во фрахт",
+    importNotIncluded: "Отдельно от фрахта",
     importBrokerNote:
       "Пошлины, налоги, услуги брокера и расходы в стране назначения должен подтвердить лицензированный таможенный брокер.",
     brokerConfirmed: "Требуется подтверждение брокера",
-    quoteConfirmed: "Требуется подтверждение квоты",
-    notAvailable: "Не включено",
+    quoteConfirmed: "Требуется подтверждение расчета",
+    notAvailable: "Не рассчитывается онлайн",
     notCalculatedOnline: "Не рассчитывается онлайн",
     noAutomaticCharge: "Нет автоматического начисления",
     needsInput: "Нужны данные",
@@ -314,13 +319,13 @@ const COPY = {
     optionalPlaceholder: "Необязательно",
     emailPlaceholder: "you@company.com",
     validEmailError: "Укажите корректный email.",
-    calculateAndSend: "Рассчитать и отправить",
+    calculateAndSend: "Отправить подробный расчет",
     calculating: "Расчет...",
-    emailBreakdownNote: "Email нужен, чтобы получить подробный расчет",
-    bookThisFreight: "Забронировать фрахт",
+    emailBreakdownNote: "Email обязателен, чтобы отправить подробный расчет.",
+    bookThisFreight: "Отправить подробный расчет",
     refineQuote: "Уточнить расчет",
     estimateSentTo: "Расчет отправлен на {email}",
-    getDetailedQuote: "Получить подробную квоту",
+    getDetailedQuote: "Запросить подтвержденный расчет",
     whatsAppUs: "Написать в WhatsApp",
     calculateAnother: "Рассчитать еще",
     viewEstimateDetails: "Открыть детали",
@@ -329,10 +334,13 @@ const COPY = {
     selectEquipmentToBegin: "Выберите технику",
     yourFreightEstimate: "Ваш расчет фрахта",
     lineItems: "Строки расчета",
+    container: "Контейнер",
+    carrier: "Линия",
+    recoverableCredits: "Возмещаемые кредиты",
     warnings: "Предупреждения",
     notes: "Примечания",
     disclaimer:
-      "Оценка покрывает строки фрахта на экране. Пошлины, налоги, доставка в стране назначения и мойка или фумигация являются отдельными оценками и должны подтверждаться брокером/импортером.",
+      "Фрахт, подготовка к требованиям и импортные расходы являются отдельными оценками. Фрахт рассчитан до указанного порта назначения; финальное бронирование, услуги по требованиям, пошлины, налоги, расходы в стране назначения и любая мойка или обработка должны быть подтверждены до отправки.",
   },
 } as const;
 
@@ -344,7 +352,7 @@ const MISSING_INPUT_LABELS: Record<string, Record<CalculatorLocale, string>> = {
   },
   local_transport: {
     en: "U.S. inland transport",
-    es: "transporte interno EE.UU.",
+    es: "transporte interno EE. UU.",
     ru: "внутренняя доставка США",
   },
   packing_and_loading: {
@@ -354,7 +362,7 @@ const MISSING_INPUT_LABELS: Record<string, Record<CalculatorLocale, string>> = {
   },
   ocean_freight: {
     en: "ocean freight",
-    es: "flete maritimo",
+    es: "flete marítimo",
     ru: "морской фрахт",
   },
 };
@@ -379,7 +387,7 @@ function formatTransit(route: RouteOption, locale: CalculatorLocale): string {
   const value = route.transitTimeDays?.trim();
   if (!value) return COPY[locale].notPublished;
   if (!/\d/.test(value) || /\bday(s)?\b/i.test(value)) return value;
-  const unit = locale === "es" ? "dias" : locale === "ru" ? "дней" : "days";
+  const unit = locale === "es" ? "días" : locale === "ru" ? "дней" : "days";
   return `${value} ${unit}`;
 }
 
@@ -439,7 +447,7 @@ function lineItemLabel(line: FreightLineItemV3, locale: CalculatorLocale): strin
   if (line.id === "us_inland") {
     return {
       en: "U.S. inland transport",
-      es: "Transporte interno EE.UU.",
+      es: "Transporte interno EE. UU.",
       ru: "Внутренняя доставка США",
     }[locale];
   }
@@ -452,7 +460,7 @@ function lineItemLabel(line: FreightLineItemV3, locale: CalculatorLocale): strin
   }
   return {
     en: "Sea Freight & Loading",
-    es: "Flete maritimo y carga",
+    es: "Flete marítimo y carga",
     ru: "Морской фрахт и погрузка",
   }[locale];
 }
@@ -1084,6 +1092,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                       </Label>
                       <Input
                         id="v3-quantity"
+                        aria-label={getLocalizedText(profile.quantityLabel, lang)}
                         type="number"
                         min={1}
                         max={profile.maxQuantity}
@@ -1107,6 +1116,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                         </Label>
                         <Input
                           id="v3-equipment-value"
+                          aria-label={t.equipmentValueUsd}
                           type="number"
                           inputMode="decimal"
                           min={1}
@@ -1184,6 +1194,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                     </Label>
                     <select
                       id="v3-dest-country"
+                      aria-label={t.destinationCountry}
                       value={destinationCountry}
                       onChange={(event) => {
                         const country = event.target.value;
@@ -1228,6 +1239,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                     </Label>
                     <Input
                       id="v3-zip-code"
+                      aria-label={`${t.usPickupZip} ${t.optional}`}
                       type="text"
                       inputMode="numeric"
                       autoComplete="postal-code"
@@ -1250,7 +1262,11 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label className="text-sm">{t.routePreference}</Label>
-                    <div className="mt-2 grid max-w-xs grid-cols-2 overflow-hidden rounded-lg border">
+                    <div
+                      className="mt-2 grid max-w-xs grid-cols-2 overflow-hidden rounded-lg border"
+                      role="group"
+                      aria-label={t.routePreference}
+                    >
                       {(["cheapest", "fastest"] as const).map((preference) => (
                         <button
                           key={preference}
@@ -1275,7 +1291,11 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                   {showPortTabs && (
                     <div>
                       <Label className="text-sm">{t.destinationPort}</Label>
-                      <div className="mt-2 flex flex-wrap gap-2">
+                      <div
+                        className="mt-2 flex flex-wrap gap-2"
+                        role="group"
+                        aria-label={t.destinationPort}
+                      >
                         {destinationPortKeys.map((key) => (
                           <button
                             key={key}
@@ -1523,7 +1543,7 @@ function CalculatorV3EstimateCard({
       estimate ? formatDollar(estimate.freightTotal) : "N/A"
     } for ${profile ? getLocalizedText(profile.label, locale) : "equipment"} to ${
       destinationCountry ? countryLabel(destinationCountry) : "destination"
-    }. Can I get an exact quote?`,
+    }. Can I get a confirmed quote?`,
   );
 
   return (
@@ -1576,12 +1596,12 @@ function CalculatorV3EstimateCard({
           mono
         />
         <DetailRow
-          label="Container"
+          label={t.container}
           value={estimateMode ? shortContainerLabel(estimateMode.containerType) : "—"}
           mono
         />
         <DetailRow
-          label="Carrier"
+          label={t.carrier}
           value={estimateRoute?.carrier ?? "—"}
           highlight
           mono
@@ -1723,6 +1743,7 @@ function CalculatorV3EstimateCard({
             </Label>
             <Input
               id="v3-est-email"
+              aria-label={t.emailLabel}
               name="email"
               type="email"
               autoComplete="email"
@@ -1751,6 +1772,7 @@ function CalculatorV3EstimateCard({
               </Label>
               <Input
                 id="v3-est-name"
+                aria-label={t.nameLabel}
                 name="name"
                 autoComplete="name"
                 value={name}
@@ -1765,6 +1787,7 @@ function CalculatorV3EstimateCard({
               </Label>
               <Input
                 id="v3-est-company"
+                aria-label={t.companyLabel}
                 name="company"
                 autoComplete="organization"
                 value={company}
@@ -1781,6 +1804,7 @@ function CalculatorV3EstimateCard({
             </Label>
             <Input
               id="v3-est-phone"
+              aria-label={t.phoneLabel}
               name="phone"
               autoComplete="tel"
               value={phone}
@@ -1792,7 +1816,11 @@ function CalculatorV3EstimateCard({
 
           <div>
             <Label className="text-xs text-slate-300">{t.preferredContact}</Label>
-            <div className="mt-1 grid grid-cols-2 overflow-hidden rounded-lg border border-slate-700">
+            <div
+              className="mt-1 grid grid-cols-2 overflow-hidden rounded-lg border border-slate-700"
+              role="group"
+              aria-label={t.preferredContact}
+            >
               {(["email", "whatsapp"] as const).map((option) => (
                 <button
                   key={option}
@@ -1823,6 +1851,7 @@ function CalculatorV3EstimateCard({
             <Label htmlFor="v3-est-website">Website</Label>
             <Input
               id="v3-est-website"
+              aria-label="Website"
               type="text"
               value={website}
               onChange={(event) => onWebsiteChange(event.target.value)}
@@ -1929,7 +1958,10 @@ function ImportCostNote({
         <p>{t.importBrokerNote}</p>
         {importCost.recoverableCreditsUsd != null &&
           importCost.recoverableCreditsUsd > 0 && (
-            <p>Recoverable credits: {formatDollar(importCost.recoverableCreditsUsd)}</p>
+            <p>
+              {t.recoverableCredits}:{" "}
+              {formatDollar(importCost.recoverableCreditsUsd)}
+            </p>
           )}
       </div>
     );

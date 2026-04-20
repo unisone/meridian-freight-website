@@ -10,6 +10,7 @@ import {
   FORTYHC_ORIGIN_PORT,
   getFlatrackNcbUsd,
 } from "@/lib/freight-policy";
+import { resolveRouteTransitFallback } from "@/lib/calculator-v3/route-transit-fallbacks";
 import type { ContainerType, OceanFreightRate } from "@/lib/types/calculator";
 
 const CARRIER_PREFERENCE = ["HAPAG", "Maersk", "CMA"];
@@ -247,7 +248,19 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
       continue;
     }
 
-    const transit = parseTransitDays(rate.transit_time_days);
+    const rawTransitTimeDays = rate.transit_time_days?.trim() || null;
+    const transitFallback =
+      rawTransitTimeDays === null
+        ? resolveRouteTransitFallback({
+            containerType: rate.container_type,
+            destinationCountry,
+            originKey: origin.key,
+            destinationKey: destination.key,
+            carrier: rate.carrier,
+          })
+        : null;
+    const transitTimeDays = rawTransitTimeDays ?? transitFallback?.transitTimeDays ?? null;
+    const transit = parseTransitDays(transitTimeDays);
     routes.push(
       routeOptionSchema.parse({
         id: routeIdFor(rate, origin, destination.key),
@@ -260,7 +273,7 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
         oceanRateUsd: rate.ocean_rate ?? 0,
         drayageUsd: rate.drayage ?? 0,
         packingDrayageUsd: rate.packing_drayage ?? 0,
-        transitTimeDays: rate.transit_time_days?.trim() || null,
+        transitTimeDays,
         ...transit,
       }),
     );

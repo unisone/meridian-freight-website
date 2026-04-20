@@ -25,6 +25,7 @@ import {
 } from "@/lib/supabase-rates";
 import { COUNTRY_NAMES } from "@/lib/types/calculator";
 import type {
+  CalculatorLocale,
   FreightEstimateV3,
   FreightLineItemV3,
 } from "@/lib/calculator-v3/contracts";
@@ -100,18 +101,18 @@ const CALCULATOR_V3_ERROR_COPY = {
   },
   es: {
     rateDataUnavailable:
-      "Las tarifas de flete no estan disponibles temporalmente. Intente nuevamente.",
+      "Las tarifas de flete no están disponibles temporalmente. Intente nuevamente.",
     unsupportedSelection:
-      "Este equipo, modo y destino no se pueden cotizar automaticamente. Solicite una cotizacion manual.",
+      "Este equipo, modo y destino no se pueden cotizar automáticamente. Solicite una cotización manual.",
     equipmentValueRequired:
-      "El valor del equipo es obligatorio para envios completos o estimaciones de importacion.",
+      "El valor del equipo es obligatorio para envíos completos o estimaciones de importación.",
     routeChanged:
-      "La ruta seleccionada ya no esta disponible. Revise la ruta actualizada y envie de nuevo.",
+      "La ruta seleccionada ya no está disponible. Revise la ruta actualizada y envíe de nuevo.",
     rateBookChanged:
-      "Las tarifas de flete se actualizaron mientras usaba la calculadora. Revise la cotizacion actualizada y envie de nuevo.",
-    emailServiceUnavailable: "El servicio de correo no esta configurado.",
+      "Las tarifas de flete se actualizaron mientras usaba la calculadora. Revise la cotización actualizada y envíe de nuevo.",
+    emailServiceUnavailable: "El servicio de correo no está configurado.",
     ownerEmailFailed: "No se pudo enviar el correo.",
-    unexpected: "Ocurrio un error inesperado.",
+    unexpected: "Ocurrió un error inesperado.",
   },
   ru: {
     rateDataUnavailable:
@@ -130,17 +131,141 @@ const CALCULATOR_V3_ERROR_COPY = {
   },
 } as const;
 
+function normalizeCalculatorLocale(locale: string): CalculatorLocale {
+  const normalized = locale.toLowerCase();
+  return normalized === "es" || normalized === "ru" ? normalized : "en";
+}
+
 function getCalculatorV3Error(
   locale: string,
   key: keyof (typeof CALCULATOR_V3_ERROR_COPY)["en"],
 ): string {
-  const normalizedLocale = locale.toLowerCase();
   return (
-    CALCULATOR_V3_ERROR_COPY[
-      normalizedLocale as keyof typeof CALCULATOR_V3_ERROR_COPY
-    ]?.[key] ?? CALCULATOR_V3_ERROR_COPY.en[key]
+    CALCULATOR_V3_ERROR_COPY[normalizeCalculatorLocale(locale)]?.[key] ??
+    CALCULATOR_V3_ERROR_COPY.en[key]
   );
 }
+
+const EMAIL_COPY = {
+  en: {
+    quoteConfirmationRequired: "Quote confirmation required",
+    notCalculatedOnline: "Not calculated online",
+    notIncludedSuffix: "not included",
+    importUnavailableDefault: "Import costs are not calculated online for this selection.",
+    importNeedsInputsHeading: "Indicative import-cost estimate needs inputs",
+    importNotCalculatedHeading: "Import costs not calculated online",
+    importFinalBrokerLine:
+      "Final duties, taxes, broker fees, and destination charges must be confirmed with a licensed customs broker.",
+    importIndicativeOnly:
+      "Import costs are indicative only and are not part of the freight total.",
+    importEstimateHeading: "Indicative import-cost estimate",
+    recoverableCredits: "Recoverable credits",
+    compliancePrep: "Compliance prep",
+    brokerConfirmationRequired: "Broker confirmation required",
+    notAdded: "Not added",
+    complianceNoLines:
+      "Broker/importer confirmation required.",
+    complianceSeparate:
+      "Compliance prep is separate from the freight estimate and must be confirmed with the destination broker/importer.",
+    equipment: "Equipment",
+    mode: "Mode",
+    route: "Route",
+    usInland: "U.S. inland transport",
+    packingLoading: "Packing and loading",
+    seaFreightLoading: "Sea freight and loading",
+    estimatedFreightToPort: "Estimated freight to destination port",
+    excludesUsInland: "excludes U.S. inland",
+    dedicatedContainerComparison: "Dedicated-container comparison",
+    subject: `Your Freight Estimate - ${COMPANY.name}`,
+    greeting: "Hi",
+    intro: `Thanks for using the ${COMPANY.name} freight calculator. Here is your freight estimate:`,
+    disclaimer:
+      "Freight, compliance prep, and import costs are shown separately. Compliance and import estimates are indicative only and must be confirmed by the importer or customs broker before shipment.",
+    confirmedQuote:
+      "For a confirmed quote, reply to this email or",
+    continueWhatsApp: "continue on WhatsApp",
+  },
+  es: {
+    quoteConfirmationRequired: "Confirmación de cotización requerida",
+    notCalculatedOnline: "No calculado en línea",
+    notIncludedSuffix: "no incluido",
+    importUnavailableDefault:
+      "Los costos de importación no se calculan en línea para esta selección.",
+    importNeedsInputsHeading:
+      "La estimación indicativa de importación necesita datos",
+    importNotCalculatedHeading: "Costos de importación no calculados en línea",
+    importFinalBrokerLine:
+      "Derechos, impuestos, honorarios de broker y cargos en destino finales deben confirmarse con un broker aduanero autorizado.",
+    importIndicativeOnly:
+      "Los costos de importación son solo indicativos y no forman parte del total de flete.",
+    importEstimateHeading: "Estimación indicativa de importación",
+    recoverableCredits: "Créditos recuperables",
+    compliancePrep: "Preparación de cumplimiento",
+    brokerConfirmationRequired: "Confirmación del broker requerida",
+    notAdded: "No agregado",
+    complianceNoLines:
+      "Confirmación del broker/importador requerida.",
+    complianceSeparate:
+      "La preparación de cumplimiento es separada de la estimación de flete y debe confirmarse con el broker/importador de destino.",
+    equipment: "Equipo",
+    mode: "Modo",
+    route: "Ruta",
+    usInland: "Transporte interno en EE. UU.",
+    packingLoading: "Embalaje y carga",
+    seaFreightLoading: "Flete marítimo y carga",
+    estimatedFreightToPort: "Flete estimado al puerto destino",
+    excludesUsInland: "sin transporte interno de EE. UU.",
+    dedicatedContainerComparison: "Comparación con contenedor dedicado",
+    subject: `Su estimación de flete - ${COMPANY.name}`,
+    greeting: "Hola",
+    intro: `Gracias por usar la calculadora de flete de ${COMPANY.name}. Esta es su estimación:`,
+    disclaimer:
+      "Flete, preparación de cumplimiento y costos de importación se muestran por separado. Las estimaciones de cumplimiento e importación son indicativas y deben confirmarse con el importador o broker aduanero antes del embarque.",
+    confirmedQuote:
+      "Para una cotización confirmada, responda este email o",
+    continueWhatsApp: "continúe por WhatsApp",
+  },
+  ru: {
+    quoteConfirmationRequired: "Требуется подтверждение расчета",
+    notCalculatedOnline: "Не рассчитывается онлайн",
+    notIncludedSuffix: "не включено",
+    importUnavailableDefault:
+      "Импортные расходы не рассчитываются онлайн для этого выбора.",
+    importNeedsInputsHeading:
+      "Для ориентировочной импортной оценки нужны данные",
+    importNotCalculatedHeading: "Импортные расходы не рассчитываются онлайн",
+    importFinalBrokerLine:
+      "Финальные пошлины, налоги, услуги брокера и расходы в стране назначения должен подтвердить лицензированный таможенный брокер.",
+    importIndicativeOnly:
+      "Импортные расходы являются ориентировочными и не входят в сумму фрахта.",
+    importEstimateHeading: "Ориентировочная импортная оценка",
+    recoverableCredits: "Возмещаемые кредиты",
+    compliancePrep: "Подготовка к требованиям",
+    brokerConfirmationRequired: "Требуется подтверждение брокера",
+    notAdded: "Не добавлено",
+    complianceNoLines:
+      "Требуется подтверждение брокера/импортера.",
+    complianceSeparate:
+      "Подготовка к требованиям считается отдельно от фрахта и должна быть подтверждена брокером/импортером в стране назначения.",
+    equipment: "Техника",
+    mode: "Способ отправки",
+    route: "Маршрут",
+    usInland: "Внутренняя доставка по США",
+    packingLoading: "Упаковка и погрузка",
+    seaFreightLoading: "Морской фрахт и погрузка",
+    estimatedFreightToPort: "Оценка фрахта до порта назначения",
+    excludesUsInland: "без внутренней доставки по США",
+    dedicatedContainerComparison: "Сравнение с отдельным контейнером",
+    subject: `Ваш расчет фрахта - ${COMPANY.name}`,
+    greeting: "Здравствуйте",
+    intro: `Спасибо, что воспользовались калькулятором фрахта ${COMPANY.name}. Ваш расчет:`,
+    disclaimer:
+      "Фрахт, подготовка к требованиям и импортные расходы показаны отдельно. Оценки по требованиям и импорту являются ориентировочными и должны быть подтверждены импортером или таможенным брокером до отправки.",
+    confirmedQuote:
+      "Для подтвержденного расчета ответьте на это письмо или",
+    continueWhatsApp: "продолжите в WhatsApp",
+  },
+} as const satisfies Record<CalculatorLocale, Record<string, string>>;
 
 function countryName(country: string): string {
   return COUNTRY_NAMES[country.toUpperCase()] ?? country.toUpperCase();
@@ -150,18 +275,26 @@ function routeLabel(estimate: FreightEstimateV3): string {
   return `${estimate.route.origin.label} -> ${estimate.route.destination.label} (${countryName(estimate.route.destinationCountry)} route)`;
 }
 
-function lineItemHtml(item: FreightLineItemV3): string {
+function emailFreightLineLabel(item: FreightLineItemV3, locale: CalculatorLocale): string {
+  const t = EMAIL_COPY[locale];
+  if (item.id === "us_inland") return t.usInland;
+  if (item.id === "packing_loading") return t.packingLoading;
+  return t.seaFreightLoading;
+}
+
+function lineItemHtml(item: FreightLineItemV3, locale: CalculatorLocale): string {
+  const t = EMAIL_COPY[locale];
   const amount =
     item.amountUsd == null
       ? item.includedInTotal
-        ? "Quote confirmation required"
-        : "Not included"
+        ? t.quoteConfirmationRequired
+        : t.notCalculatedOnline
       : item.includedInTotal
         ? formatDollar(item.amountUsd)
-        : `${formatDollar(item.amountUsd)} (not included)`;
+        : `${formatDollar(item.amountUsd)} (${t.notIncludedSuffix})`;
   return `<tr>
     <td style="padding:8px 0;border-bottom:1px solid #e5e7eb">
-      ${escapeHtml(item.label)}
+      ${escapeHtml(emailFreightLineLabel(item, locale))}
       ${item.note ? `<div style="font-size:12px;color:#6b7280">${escapeHtml(item.note)}</div>` : ""}
     </td>
     <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:bold">${escapeHtml(amount)}</td>
@@ -175,33 +308,35 @@ function importCostHtml(
   locale: string,
   audience: EstimateEmailAudience,
 ): string {
+  const localeKey = normalizeCalculatorLocale(locale);
+  const t = EMAIL_COPY[localeKey];
   const importCost = estimate.importCost;
   if (!importCost.available || importCost.amountUsd == null) {
     const note = importCost.note
       ? getLocalizedText(importCost.note, locale)
-      : "Import costs are not calculated online for this selection.";
+      : t.importUnavailableDefault;
     const heading =
       importCost.status === "partial"
-        ? "Indicative import-cost estimate needs inputs"
-        : "Import costs not calculated online";
+        ? t.importNeedsInputsHeading
+        : t.importNotCalculatedHeading;
     return `<p style="font-size:13px;color:#6b7280"><strong>${escapeHtml(heading)}:</strong> ${escapeHtml(note)}</p>`;
   }
 
   const sourceLine =
     audience === "internal"
       ? `HS ${escapeHtml(importCost.hsCode)}, ${escapeHtml(importCost.sourceLabel ?? "source on file")} (${escapeHtml(importCost.sourceVersion ?? "version unavailable")}).`
-      : `HS ${escapeHtml(importCost.hsCode)}. Final duties, taxes, broker fees, and destination charges must be confirmed with a licensed customs broker.`;
+      : `HS ${escapeHtml(importCost.hsCode)}. ${escapeHtml(t.importFinalBrokerLine)}`;
   const note =
     audience === "internal" && importCost.note
       ? getLocalizedText(importCost.note, locale)
-      : "Import costs are indicative only and are not part of the freight total.";
+      : t.importIndicativeOnly;
 
   return `
     <div style="margin-top:18px;padding:14px;border:1px solid #dbeafe;border-radius:8px;background:#eff6ff">
-      <p style="margin:0 0 8px;font-weight:bold">Indicative import-cost estimate: ${formatDollar(importCost.amountUsd)}</p>
+      <p style="margin:0 0 8px;font-weight:bold">${escapeHtml(t.importEstimateHeading)}: ${formatDollar(importCost.amountUsd)}</p>
       <p style="margin:0;color:#374151;font-size:13px">
         ${sourceLine}
-        ${importCost.recoverableCreditsUsd ? `Recoverable credits: ${formatDollar(importCost.recoverableCreditsUsd)}.` : ""}
+        ${importCost.recoverableCreditsUsd ? `${escapeHtml(t.recoverableCredits)}: ${formatDollar(importCost.recoverableCreditsUsd)}.` : ""}
       </p>
       <p style="margin:8px 0 0;color:#6b7280;font-size:12px">${escapeHtml(note)}</p>
     </div>
@@ -209,20 +344,21 @@ function importCostHtml(
 }
 
 function compliancePrepHtml(estimate: FreightEstimateV3, locale: string): string {
+  const t = EMAIL_COPY[normalizeCalculatorLocale(locale)];
   const prep = estimate.compliancePrep;
   const prepStatus =
     prep.amountStatus === "priced" && prep.amountUsd != null
       ? formatDollar(prep.amountUsd)
       : prep.amountStatus === "quote_confirmed"
-        ? "Broker confirmation required"
-        : "Not added";
+        ? t.brokerConfirmationRequired
+        : t.notAdded;
   if (prep.lines.length === 0) {
-    return `<p style="font-size:13px;color:#6b7280"><strong>Compliance prep:</strong> Broker/importer confirmation required.</p>`;
+    return `<p style="font-size:13px;color:#6b7280"><strong>${escapeHtml(t.compliancePrep)}:</strong> ${escapeHtml(t.complianceNoLines)}</p>`;
   }
 
   return `
     <div style="margin-top:18px;padding:14px;border:1px solid #fde68a;border-radius:8px;background:#fffbeb">
-      <p style="margin:0 0 8px;font-weight:bold">Compliance prep: ${escapeHtml(prepStatus)}</p>
+      <p style="margin:0 0 8px;font-weight:bold">${escapeHtml(t.compliancePrep)}: ${escapeHtml(prepStatus)}</p>
       <table style="width:100%;border-collapse:collapse">
         ${prep.lines
           .map(
@@ -231,12 +367,12 @@ function compliancePrepHtml(estimate: FreightEstimateV3, locale: string): string
                 ${escapeHtml(getLocalizedText(line.label, locale))}
                 <div style="font-size:12px;color:#92400e">${escapeHtml(getLocalizedText(line.note, locale))}</div>
               </td>
-              <td style="padding:6px 0;border-top:1px solid #fde68a;text-align:right;font-weight:bold">${escapeHtml(line.amountUsd == null ? "Broker confirmation required" : formatDollar(line.amountUsd))}</td>
+              <td style="padding:6px 0;border-top:1px solid #fde68a;text-align:right;font-weight:bold">${escapeHtml(line.amountUsd == null ? t.brokerConfirmationRequired : formatDollar(line.amountUsd))}</td>
             </tr>`,
           )
           .join("")}
       </table>
-      <p style="margin:8px 0 0;color:#92400e;font-size:12px">Compliance prep is separate from the freight estimate and must be confirmed with the destination broker/importer.</p>
+      <p style="margin:8px 0 0;color:#92400e;font-size:12px">${escapeHtml(t.complianceSeparate)}</p>
     </div>
   `;
 }
@@ -246,29 +382,31 @@ function estimateSummaryHtml(
   locale: string,
   audience: EstimateEmailAudience,
 ): string {
+  const localeKey = normalizeCalculatorLocale(locale);
+  const t = EMAIL_COPY[localeKey];
   const profileName = getLocalizedText(estimate.equipmentDisplayName, locale);
   const modeName = getLocalizedText(estimate.mode.label, locale);
   return `
     <table style="width:100%;border-collapse:collapse;margin:16px 0">
       <tr>
-        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb">Equipment</td>
+        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb">${escapeHtml(t.equipment)}</td>
         <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:bold">${escapeHtml(profileName)} x ${estimate.quantity}</td>
       </tr>
       <tr>
-        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb">Mode</td>
+        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb">${escapeHtml(t.mode)}</td>
         <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:bold">${escapeHtml(modeName)}</td>
       </tr>
       <tr>
-        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb">Route</td>
+        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb">${escapeHtml(t.route)}</td>
         <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:bold">${escapeHtml(routeLabel(estimate))}</td>
       </tr>
-      ${estimate.lineItems.map(lineItemHtml).join("")}
+      ${estimate.lineItems.map((line) => lineItemHtml(line, localeKey)).join("")}
       <tr>
-        <td style="padding:10px 0;font-size:16px;font-weight:bold">Estimated freight to port</td>
-        <td style="padding:10px 0;text-align:right;font-size:18px;font-weight:bold;color:#2563eb">${formatDollar(estimate.freightTotal)}${estimate.totalExcludesInland ? " <span style='font-size:12px;color:#6b7280'>(excludes U.S. inland)</span>" : ""}</td>
+        <td style="padding:10px 0;font-size:16px;font-weight:bold">${escapeHtml(t.estimatedFreightToPort)}</td>
+        <td style="padding:10px 0;text-align:right;font-size:18px;font-weight:bold;color:#2563eb">${formatDollar(estimate.freightTotal)}${estimate.totalExcludesInland ? ` <span style='font-size:12px;color:#6b7280'>(${escapeHtml(t.excludesUsInland)})</span>` : ""}</td>
       </tr>
     </table>
-    ${estimate.dedicatedContainerFreightTotal != null ? `<p style="font-size:13px;color:#6b7280">Dedicated-container comparison: ${formatDollar(estimate.dedicatedContainerFreightTotal)}.</p>` : ""}
+    ${estimate.dedicatedContainerFreightTotal != null ? `<p style="font-size:13px;color:#6b7280">${escapeHtml(t.dedicatedContainerComparison)}: ${formatDollar(estimate.dedicatedContainerFreightTotal)}.</p>` : ""}
     ${compliancePrepHtml(estimate, locale)}
     ${importCostHtml(estimate, locale, audience)}
   `;
@@ -383,6 +521,8 @@ export async function submitCalculatorV3(
 
   const profileName = getLocalizedText(profile.label, locale);
   const modeName = getLocalizedText(mode.label, locale);
+  const emailLocale = normalizeCalculatorLocale(locale);
+  const emailCopy = EMAIL_COPY[emailLocale];
   const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
   await insertCalculatorV3Lead({
@@ -470,14 +610,14 @@ export async function submitCalculatorV3(
         from: CONTACT.fromEmail,
         to: data.email,
         replyTo: CONTACT.replyToEmails as unknown as string[],
-        subject: `Your Freight Estimate - ${COMPANY.name}`,
+        subject: emailCopy.subject,
         html: `
           <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:680px;margin:0 auto;line-height:1.6;color:#111827">
-            <p>Hi${data.name ? ` ${escapeHtml(data.name)}` : ""},</p>
-            <p>Thanks for using the ${COMPANY.name} freight calculator. Here is your freight estimate:</p>
+            <p>${escapeHtml(emailCopy.greeting)}${data.name ? ` ${escapeHtml(data.name)}` : ""},</p>
+            <p>${escapeHtml(emailCopy.intro)}</p>
             ${estimateSummaryHtml(estimate, locale, "customer")}
-            <p style="font-size:13px;color:#6b7280">Freight, compliance prep, and import costs are shown separately. Compliance and import estimates are indicative only and must be confirmed by the importer or customs broker before shipment.</p>
-            <p>For a confirmed quote, reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">continue on WhatsApp</a>.</p>
+            <p style="font-size:13px;color:#6b7280">${escapeHtml(emailCopy.disclaimer)}</p>
+            <p>${escapeHtml(emailCopy.confirmedQuote)} <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">${escapeHtml(emailCopy.continueWhatsApp)}</a>.</p>
             <p style="margin-top:20px;color:#6b7280;font-size:13px">- ${COMPANY.name}</p>
           </div>
         `,
@@ -500,7 +640,7 @@ export async function submitCalculatorV3(
         ? `Declared value: ${formatDollar(data.equipmentValueUsd)}`
         : null,
       `Route: ${routeLabel(estimate)}`,
-      `Transit: ${estimate.route.transitTimeDays ?? "not published"}`,
+      `Transit: ${estimate.route.transitTimeDays ?? "to be confirmed"}`,
       `Freight: ${formatDollar(estimate.freightTotal)} (${estimate.lineItems.map((line) => `${line.label}: ${line.amountUsd == null ? (line.includedInTotal ? "quote-confirmed" : "not included") : formatDollar(line.amountUsd)}`).join(" + ")})`,
       `Compliance prep: ${estimate.compliancePrep.status} / ${estimate.compliancePrep.amountStatus}${estimate.compliancePrep.amountUsd != null ? ` / ${formatDollar(estimate.compliancePrep.amountUsd)}` : " / broker confirmation required"}`,
       estimate.importCost.available && estimate.importCost.amountUsd != null

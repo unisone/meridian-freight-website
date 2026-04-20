@@ -18,7 +18,7 @@ import {
   getEquipmentProfile,
 } from "@/lib/calculator-v3/policy";
 import { compareRoutes, getRouteServiceCostUsd, selectRoute } from "@/lib/calculator-v3/routes";
-import { estimateRoadMiles, formatDollar } from "@/lib/freight-engine-v2";
+import { estimateRoadMiles } from "@/lib/freight-engine-v2";
 import {
   FLATRACK_INTERNAL_BUNDLE_USD,
   STANDARD_INLAND_DELIVERY_RATE,
@@ -266,7 +266,7 @@ function calculateCompliance(input: {
       sourceUrl: null,
       note: note(
         "Compliance prep requirements are not available for this country in the automatic calculator.",
-        "Los requisitos de preparacion de cumplimiento no estan disponibles para este pais en la calculadora automatica.",
+        "Los requisitos de preparación de cumplimiento no están disponibles para este país en la calculadora automática.",
         "Требования к подготовке соответствия для этой страны недоступны в автоматическом калькуляторе.",
       ),
     };
@@ -348,9 +348,9 @@ function oceanFreightNote(route: RouteOption): string {
   const routeLabel = `${route.origin.label} to ${route.destination.label}`;
   const transitTime = route.transitTimeDays?.trim();
   if (!transitTime) {
-    return `${routeLabel}. Transit time not published; confirm carrier schedule.`;
+    return `${routeLabel}. Transit time must be confirmed with the current carrier schedule before booking.`;
   }
-  return `${routeLabel}. Estimated route transit: ${formatTransitTime(transitTime)}.`;
+  return `${routeLabel}. Ocean transit: ${formatTransitTime(transitTime)}.`;
 }
 
 function buildLineItems(input: {
@@ -368,7 +368,9 @@ function buildLineItems(input: {
       id: "us_inland",
       label: "U.S. inland transport",
       amountUsd: input.usInlandTransport,
-      note: input.totalExcludesInland ? "Enter ZIP for inland estimate." : null,
+      note: input.totalExcludesInland
+        ? "Enter a U.S. pickup ZIP to include inland transport."
+        : null,
       includedInTotal: input.usInlandTransport !== null,
     },
     {
@@ -408,7 +410,7 @@ function addModeNotes(input: {
     notes.push(
       note(
         "Containerized combine quote uses two 40HC containers per machine; the unused part of the second container can carry compatible extra cargo.",
-        "La cosechadora en contenedor usa dos 40HC por maquina; el espacio libre del segundo contenedor puede llevar carga compatible.",
+        "La cosechadora en contenedor usa dos 40HC por máquina; el espacio libre del segundo contenedor puede llevar carga compatible.",
         "Контейнерный расчет комбайна использует два 40HC на машину; свободное место второго контейнера можно использовать под совместимый груз.",
       ),
     );
@@ -418,7 +420,7 @@ function addModeNotes(input: {
     notes.push(
       note(
         `Shared-container pricing assumes ${input.mode.capacityUnitsPerContainer} compatible headers per 40HC. For ${input.quantity} unit(s), the calculator prices ${input.pricedContainerCount.toFixed(2)} container(s) and also shows a dedicated-container comparison.`,
-        `El precio compartido asume ${input.mode.capacityUnitsPerContainer} cabezales compatibles por 40HC. Para ${input.quantity} unidad(es), se cotiza ${input.pricedContainerCount.toFixed(2)} contenedor(es) y se muestra una comparacion dedicada.`,
+        `El precio compartido asume ${input.mode.capacityUnitsPerContainer} cabezales compatibles por 40HC. Para ${input.quantity} unidad(es), se cotiza ${input.pricedContainerCount.toFixed(2)} contenedor(es) y se muestra una comparación dedicada.`,
         `Расчет доли предполагает ${input.mode.capacityUnitsPerContainer} совместимые жатки на 40HC. Для ${input.quantity} ед. считается ${input.pricedContainerCount.toFixed(2)} контейнера и показано сравнение с отдельным контейнером.`,
       ),
     );
@@ -427,9 +429,9 @@ function addModeNotes(input: {
   if (input.routePreference === "fastest" && input.route.transitMinDays === null) {
     warnings.push(
       note(
-        "Fastest route requested, but this route has no published transit time; showing the best available priced route.",
-        "Se pidio la ruta mas rapida, pero esta ruta no tiene tiempo publicado; se muestra la mejor ruta disponible por precio.",
-        "Запрошен самый быстрый маршрут, но для него нет опубликованного транзита; показан лучший доступный маршрут по цене.",
+        "Fastest route requested, but this lane needs carrier schedule confirmation; showing the best available priced route.",
+        "Se pidió la ruta más rápida, pero esta ruta requiere confirmar el itinerario con la naviera; se muestra la mejor ruta disponible por precio.",
+        "Запрошен самый быстрый маршрут, но график по этому направлению нужно подтвердить с линией; показан лучший доступный маршрут по цене.",
       ),
     );
   }
@@ -438,7 +440,7 @@ function addModeNotes(input: {
     warnings.push(
       note(
         "U.S. ZIP is missing, so inland transport is excluded from the freight total.",
-        "Falta ZIP de EE.UU.; transporte interno no esta incluido en el total de flete.",
+        "Falta ZIP de EE. UU.; transporte interno no está incluido en el total de flete.",
         "Не указан ZIP США, поэтому внутренний транспорт по США не включен в сумму фрахта.",
       ),
     );
@@ -555,16 +557,6 @@ export function calculateFreightV3(params: CalculateFreightV3Params): FreightEst
       oceanFreightUsd: oceanFreight,
     },
   });
-
-  if (importCost.available && importCost.amountUsd != null) {
-    notes.push(
-      note(
-        `Indicative import-cost estimate is separate from freight: ${formatDollar(importCost.amountUsd)}.`,
-        `La estimacion indicativa de importacion es separada del flete: ${formatDollar(importCost.amountUsd)}.`,
-        `Ориентировочная импортная оценка отдельно от фрахта: ${formatDollar(importCost.amountUsd)}.`,
-      ),
-    );
-  }
 
   return {
     version: CALCULATOR_V3_CONTRACT_VERSION,

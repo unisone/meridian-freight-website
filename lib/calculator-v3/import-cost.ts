@@ -43,13 +43,13 @@ type RoundingMode = LandedCostProfileRuntime["assumptions"]["roundingMode"];
 
 const unsupportedNote = {
   en: "Import duties, taxes, broker fees, destination charges, and local customs costs are not calculated online for this selection. Confirm them with a licensed customs broker or importer.",
-  es: "Derechos, impuestos, honorarios de broker, cargos en destino y costos aduaneros locales no se calculan en linea para esta seleccion. Confirmelos con un broker aduanero o importador autorizado.",
+  es: "Derechos, impuestos, honorarios de broker, cargos en destino y costos aduaneros locales no se calculan en línea para esta selección. Confírmelos con un broker aduanero o importador autorizado.",
   ru: "Пошлины, налоги, брокерские сборы, расходы в стране назначения и местные таможенные расходы не рассчитываются онлайн для этого выбора. Подтвердите их с лицензированным таможенным брокером или импортером.",
 };
 
 const partialNote = {
   en: "The calculator is missing required inputs for the import-cost estimate. No import-cost number is shown until those inputs are available; confirm final duties, taxes, and local charges with a broker/importer.",
-  es: "Faltan datos requeridos para la estimacion de importacion. No se muestra un numero de importacion hasta tener esos datos; confirme derechos, impuestos y cargos locales finales con broker/importador.",
+  es: "Faltan datos requeridos para la estimación de importación. No se muestra un número de importación hasta tener esos datos; confirme derechos, impuestos y cargos locales finales con broker/importador.",
   ru: "Для импортной оценки не хватает обязательных данных. Импортная сумма не показывается, пока этих данных нет; финальные пошлины, налоги и местные расходы подтвердите с брокером/импортером.",
 };
 

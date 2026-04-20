@@ -437,6 +437,76 @@ describe("calculator V3 route catalog", () => {
     });
     expect(route?.id).toContain("uy-chicago-fast");
   });
+
+  it("applies documented transit fallbacks only when route transit is missing", () => {
+    const catalog = buildRouteCatalog([
+      {
+        id: "ar-houston-fr-with-transit",
+        container_type: "flatrack",
+        origin_port: "Houston, TX",
+        destination_port: "Buenos Aires",
+        destination_country: "AR",
+        carrier: "HAPAG",
+        ocean_rate: 5000,
+        drayage: null,
+        packing_drayage: 4000,
+        transit_time_days: "30-36",
+      },
+      {
+        id: "ar-chicago-40hc-missing-transit",
+        container_type: "fortyhc",
+        origin_port: "Chicago, IL",
+        destination_port: "Buenos Aires",
+        destination_country: "AR",
+        carrier: "HAPAG",
+        ocean_rate: 2245,
+        drayage: 2200,
+        packing_drayage: null,
+        transit_time_days: null,
+      },
+      {
+        id: "uy-chicago-40hc-missing-transit",
+        container_type: "fortyhc",
+        origin_port: "Chicago, IL",
+        destination_port: "Montevideo",
+        destination_country: "UY",
+        carrier: "HAPAG",
+        ocean_rate: 2800,
+        drayage: 650,
+        packing_drayage: null,
+        transit_time_days: null,
+      },
+      {
+        id: "ae-chicago-40hc-missing-transit",
+        container_type: "fortyhc",
+        origin_port: "Chicago, IL",
+        destination_port: "Jebel Ali",
+        destination_country: "AE",
+        carrier: "HAPAG",
+        ocean_rate: 4200,
+        drayage: 800,
+        packing_drayage: null,
+        transit_time_days: null,
+      },
+    ]);
+
+    expect(
+      catalog.routes.find((route) => route.sourceRateId === "ar-houston-fr-with-transit")
+        ?.transitTimeDays,
+    ).toBe("30-36");
+    expect(
+      catalog.routes.find((route) => route.sourceRateId === "ar-chicago-40hc-missing-transit")
+        ?.transitTimeDays,
+    ).toBe("25-32");
+    expect(
+      catalog.routes.find((route) => route.sourceRateId === "uy-chicago-40hc-missing-transit")
+        ?.transitTimeDays,
+    ).toBe("35-40");
+    expect(
+      catalog.routes.find((route) => route.sourceRateId === "ae-chicago-40hc-missing-transit")
+        ?.transitTimeDays,
+    ).toBeNull();
+  });
 });
 
 describe("calculateFreightV3", () => {
@@ -504,11 +574,32 @@ describe("calculateFreightV3", () => {
   });
 
   it("falls back to cheapest with a warning when fastest route has no transit data", () => {
-    const ratesWithoutTransit = oceanRates.map((rate) =>
-      rate.destination_country === "UY"
-        ? { ...rate, transit_time_days: null }
-        : rate,
-    );
+    const ratesWithoutTransit: OceanFreightRate[] = [
+      {
+        id: "ae-chicago-cheapest",
+        container_type: "fortyhc",
+        origin_port: "Chicago, IL",
+        destination_port: "Jebel Ali",
+        destination_country: "AE",
+        carrier: "HAPAG",
+        ocean_rate: 4200,
+        drayage: 800,
+        packing_drayage: null,
+        transit_time_days: null,
+      },
+      {
+        id: "ae-chicago-costlier",
+        container_type: "fortyhc",
+        origin_port: "Chicago, IL",
+        destination_port: "Jebel Ali",
+        destination_country: "AE",
+        carrier: "Maersk",
+        ocean_rate: 4700,
+        drayage: 800,
+        packing_drayage: null,
+        transit_time_days: null,
+      },
+    ];
     const catalog = buildRouteCatalog(ratesWithoutTransit);
 
     const estimate = calculateFreightV3({
@@ -518,22 +609,22 @@ describe("calculateFreightV3", () => {
       modeId: "container",
       quantity: 4,
       equipmentValueUsd: 15000,
-      destinationCountry: "UY",
-      destinationPortKey: "montevideo",
+      destinationCountry: "AE",
+      destinationPortKey: "jebel_ali",
       routeId: null,
       routePreference: "fastest",
       zipCode: null,
     });
 
     expect(estimate).not.toBeNull();
-    expect(estimate?.route.sourceRateId).toBe("uy-chicago-hapag");
+    expect(estimate?.route.sourceRateId).toBe("ae-chicago-cheapest");
     expect(estimate?.pricedContainerCount).toBe(1);
     expect(estimate?.warnings.map((entry) => entry.en).join(" ")).toContain(
-      "no published transit time",
+      "carrier schedule confirmation",
     );
     expect(
       estimate?.lineItems.find((line) => line.id === "ocean_freight")?.note,
-    ).toContain("Transit time not published");
+    ).toContain("Transit time must be confirmed");
   });
 
   it("keeps Argentina compliance prep separate and applies the full broker-budget profile", () => {
