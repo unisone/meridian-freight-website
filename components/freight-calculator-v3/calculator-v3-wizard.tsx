@@ -95,13 +95,11 @@ const COPY = {
     whatsappOption: "WhatsApp",
     submit: "Email my estimate",
     submitting: "Sending...",
-    success: "Estimate sent. Meridian has the route, policy, and contact details.",
+    success: "Estimate sent. Meridian has the V3 route, policy, and contact details.",
     emailRequired: "Enter a valid email.",
     valueRequired: "Enter equipment value for this mode.",
     routeRequired: "Select a route before submitting.",
-    preview: "Selected route",
-    panelTitle: "Freight estimate",
-    emptyEstimate: "Select equipment, route, and quantity to show the freight estimate.",
+    preview: "Preview route",
     modeUnavailable: "Confirm with Meridian",
     policy: "Policy",
   },
@@ -143,13 +141,11 @@ const COPY = {
     whatsappOption: "WhatsApp",
     submit: "Enviar estimacion",
     submitting: "Enviando...",
-    success: "Estimacion enviada. Meridian tiene la ruta, politica y contacto.",
+    success: "Estimacion enviada. Meridian tiene la ruta V3, politica y contacto.",
     emailRequired: "Ingrese un email valido.",
     valueRequired: "Ingrese el valor del equipo para este modo.",
     routeRequired: "Seleccione una ruta antes de enviar.",
-    preview: "Ruta seleccionada",
-    panelTitle: "Estimacion de flete",
-    emptyEstimate: "Seleccione equipo, ruta y cantidad para ver la estimacion de flete.",
+    preview: "Ruta preliminar",
     modeUnavailable: "Confirmar con Meridian",
     policy: "Politica",
   },
@@ -191,13 +187,11 @@ const COPY = {
     whatsappOption: "WhatsApp",
     submit: "Отправить расчет",
     submitting: "Отправка...",
-    success: "Расчет отправлен. Meridian получил маршрут, политику и контакты.",
+    success: "Расчет отправлен. Meridian получил маршрут V3, политику и контакты.",
     emailRequired: "Укажите корректный email.",
     valueRequired: "Укажите стоимость техники для этого способа.",
     routeRequired: "Выберите маршрут перед отправкой.",
-    preview: "Выбранный маршрут",
-    panelTitle: "Расчет фрахта",
-    emptyEstimate: "Выберите технику, маршрут и количество, чтобы увидеть расчет фрахта.",
+    preview: "Предварительный маршрут",
     modeUnavailable: "Подтвердить с Meridian",
     policy: "Политика",
   },
@@ -285,16 +279,9 @@ function unavailablePanel(locale: CalculatorLocale) {
   );
 }
 
-export function CalculatorV3Wizard({
-  locale,
-  surface = "public",
-}: {
-  locale: string;
-  surface?: "public" | "preview";
-}) {
+export function CalculatorV3Wizard({ locale }: { locale: string }) {
   const lang = normalizeLocale(locale);
   const t = COPY[lang];
-  const isPreviewSurface = surface === "preview";
   const [data, setData] = useState<CalculatorDataV3 | null>(null);
   const [loading, setLoading] = useState(true);
   const [dataError, setDataError] = useState(false);
@@ -645,7 +632,7 @@ export function CalculatorV3Wizard({
               <h2 className="text-lg font-semibold">{t.stepEquipment}</h2>
               {profile && <p className="text-sm text-muted-foreground">{getLocalizedText(profile.description, lang)}</p>}
             </div>
-            {isPreviewSurface && data.quarantinedRateCount > 0 && (
+            {data.quarantinedRateCount > 0 && (
               <Badge variant="outline">{data.quarantinedRateCount} rates quarantined</Badge>
             )}
           </div>
@@ -945,7 +932,7 @@ export function CalculatorV3Wizard({
           <div className="border-b p-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-primary">
               <Route className="h-4 w-4" />
-              {isPreviewSurface ? "V3 preview" : t.panelTitle}
+              V3 preview
             </div>
             <div className="mt-4">
               <div className="text-sm text-muted-foreground">{t.freightTotal}</div>
@@ -1148,7 +1135,7 @@ export function CalculatorV3Wizard({
             </div>
           ) : (
             <div className="p-5 text-sm text-muted-foreground">
-              {t.emptyEstimate}
+              Select equipment, route, and quantity to show the V3 freight estimate.
             </div>
           )}
         </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
-import { CalculatorV3Wizard } from "@/components/freight-calculator-v3/calculator-v3-wizard";
+import { CalculatorWizard } from "@/components/freight-calculator/calculator-wizard";
 import { COMPANY, SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -56,8 +56,7 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
     "@type": "WebApplication",
     inLanguage: locale,
     name: "Freight Cost Calculator",
-    description:
-      "Free online calculator for estimating machinery export freight by equipment, route, shipping mode, compliance services, and ocean shipping.",
+    description: "Free online calculator for estimating machinery export costs including inland freight, packing, and ocean shipping.",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Any",
     offers: {
@@ -103,7 +102,7 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
             title="Compradores de Argentina: usen la calculadora como apoyo, no como costo final"
             description="La calculadora ayuda a estimar el tramo logístico que Meridian controla. Para una compra seria hacia Argentina, compleméntela con nuestra guia sobre alcance puerta a puerto, AFIDI/SENASA y costos que quedan del lado local."
           />
-          <CalculatorV3Wizard locale={locale} />
+          <CalculatorWizard />
         </div>
       </section>
     </>
