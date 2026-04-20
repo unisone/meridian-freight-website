@@ -14,17 +14,22 @@ import {
   buildRouteCatalog,
 } from "@/lib/calculator-v3/routes";
 import { buildRateBookSignature } from "@/lib/calculator-contract.server";
-import { fetchEquipmentRates, fetchOceanRates } from "@/lib/supabase-rates";
+import {
+  fetchEquipmentRates,
+  fetchLandedCostProfilesV3,
+  fetchOceanRates,
+} from "@/lib/supabase-rates";
 
 /**
  * Server Action: fetches and normalizes the V3 calculator data contract.
  * V3 deliberately keeps raw Supabase rates off the UI surface by exposing a
- * curated route catalog next to the source rows required for client previews.
+ * curated route catalog and vetted landed-cost profiles for client previews.
  */
 export async function getCalculatorDataV3(): Promise<CalculatorDataV3 | null> {
-  const [equipment, oceanRates] = await Promise.all([
+  const [equipment, oceanRates, importCostProfiles] = await Promise.all([
     fetchEquipmentRates(),
     fetchOceanRates(),
+    fetchLandedCostProfilesV3(),
   ]);
 
   if (!equipment || !oceanRates) return null;
@@ -45,9 +50,9 @@ export async function getCalculatorDataV3(): Promise<CalculatorDataV3 | null> {
 
   return {
     equipment,
-    oceanRates,
     profiles,
     routes: catalog.routes,
+    importCostProfiles,
     quarantinedRateCount: catalog.quarantined.length,
     countries,
     destinationPortsByCountry: buildDestinationPortsByCountry(catalog.routes),

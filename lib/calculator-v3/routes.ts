@@ -68,17 +68,44 @@ function carrierRank(carrier: string): number {
 export function normalizeOriginPort(value: string): NormalizedPort | null {
   const normalized = normalizeToken(value);
   if (!normalized) return null;
-  if (normalized.includes("chicago")) return NORMALIZED_PORTS.chicago;
-  if (normalized.includes("houston")) return NORMALIZED_PORTS.houston;
-  if (normalized.includes("savannah")) return NORMALIZED_PORTS.savannah;
-  if (normalized.includes("baltimore")) return NORMALIZED_PORTS.baltimore;
-  if (normalized.includes("charleston")) return NORMALIZED_PORTS.charleston;
-  if (normalized.includes("jacksonville") || normalized.includes("jacksonvile")) {
+  if (normalized === "chicago" || normalized === "chicago il") {
+    return NORMALIZED_PORTS.chicago;
+  }
+  if (normalized === "houston" || normalized === "houston tx") {
+    return NORMALIZED_PORTS.houston;
+  }
+  if (normalized === "savannah" || normalized === "savannah ga") {
+    return NORMALIZED_PORTS.savannah;
+  }
+  if (normalized === "baltimore" || normalized === "baltimore md") {
+    return NORMALIZED_PORTS.baltimore;
+  }
+  if (normalized === "charleston" || normalized === "charleston sc") {
+    return NORMALIZED_PORTS.charleston;
+  }
+  if (
+    normalized === "jacksonville" ||
+    normalized === "jacksonville fl" ||
+    normalized === "jacksonvile"
+  ) {
     return NORMALIZED_PORTS.jacksonville;
   }
-  if (normalized.includes("norfolk")) return NORMALIZED_PORTS.norfolk;
-  if (normalized.includes("tacoma")) return NORMALIZED_PORTS.tacoma;
+  if (normalized === "norfolk" || normalized === "norfolk va") {
+    return NORMALIZED_PORTS.norfolk;
+  }
+  if (normalized === "tacoma" || normalized === "tacoma wa") {
+    return NORMALIZED_PORTS.tacoma;
+  }
   return null;
+}
+
+function hasImpossibleOriginPort(value: string): boolean {
+  const normalized = normalizeToken(value);
+  if (normalized === "savannah tx") return true;
+  if (normalized === "houston ga") return true;
+  if (normalized === "baltimore tx") return true;
+  if (normalized === "charleston tx") return true;
+  return false;
 }
 
 export function normalizeDestinationPort(value: string): { key: string; label: string } | null {
@@ -136,6 +163,28 @@ function routeIdFor(rate: OceanFreightRate, origin: NormalizedPort, destinationK
   ].join(":");
 }
 
+function dedupeKeyFor(route: RouteOption): string {
+  return [
+    route.containerType,
+    route.destinationCountry,
+    route.origin.key,
+    route.destination.key,
+    slugify(route.carrier),
+  ].join("|");
+}
+
+function isPreferredDuplicate(candidate: RouteOption, current: RouteOption): boolean {
+  const candidateCost = getRouteServiceCostUsd(candidate);
+  const currentCost = getRouteServiceCostUsd(current);
+  if (candidateCost !== currentCost) return candidateCost < currentCost;
+
+  const candidateTransit = candidate.transitMinDays ?? Number.POSITIVE_INFINITY;
+  const currentTransit = current.transitMinDays ?? Number.POSITIVE_INFINITY;
+  if (candidateTransit !== currentTransit) return candidateTransit < currentTransit;
+
+  return candidate.id.localeCompare(current.id) < 0;
+}
+
 function quarantine(rate: OceanFreightRate, reason: QuarantinedRate["reason"]): QuarantinedRate {
   return {
     sourceRateId: rate.id,
@@ -163,6 +212,11 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
     const destinationCountry = rate.destination_country?.toUpperCase();
     if (!destinationCountry || destinationCountry.length !== 2) {
       quarantined.push(quarantine(rate, "missing_country"));
+      continue;
+    }
+
+    if (hasImpossibleOriginPort(rate.origin_port)) {
+      quarantined.push(quarantine(rate, "impossible_origin"));
       continue;
     }
 
@@ -212,8 +266,17 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
     );
   }
 
-  routes.sort(compareRoutes("cheapest"));
-  return { routes, quarantined };
+  const deduped = new Map<string, RouteOption>();
+  for (const route of routes) {
+    const key = dedupeKeyFor(route);
+    const current = deduped.get(key);
+    if (!current || isPreferredDuplicate(route, current)) {
+      deduped.set(key, route);
+    }
+  }
+
+  const catalogRoutes = Array.from(deduped.values()).sort(compareRoutes("cheapest"));
+  return { routes: catalogRoutes, quarantined };
 }
 
 export function getRouteServiceCostUsd(route: RouteOption): number {

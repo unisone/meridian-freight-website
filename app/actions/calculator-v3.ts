@@ -10,13 +10,18 @@ import {
   getLocalizedText,
 } from "@/lib/calculator-v3/policy";
 import { buildRateBookSignature } from "@/lib/calculator-contract.server";
+import { buildRouteCatalog } from "@/lib/calculator-v3/routes";
 import { CONTACT, COMPANY } from "@/lib/constants";
 import { formatDollar } from "@/lib/freight-engine-v2";
 import { log, startTimer } from "@/lib/logger";
 import { sendCAPIEvent } from "@/lib/meta-capi";
 import { calculatorV3Schema, type CalculatorV3Data } from "@/lib/schemas";
 import { notifySlack } from "@/lib/slack";
-import { fetchEquipmentRates, fetchOceanRates } from "@/lib/supabase-rates";
+import {
+  fetchEquipmentRates,
+  fetchLandedCostProfilesV3,
+  fetchOceanRates,
+} from "@/lib/supabase-rates";
 import { COUNTRY_NAMES } from "@/lib/types/calculator";
 import type {
   FreightEstimateV3,
@@ -147,7 +152,9 @@ function routeLabel(estimate: FreightEstimateV3): string {
 function lineItemHtml(item: FreightLineItemV3): string {
   const amount =
     item.amountUsd == null
-      ? "Quote-confirmed"
+      ? item.includedInTotal
+        ? "Quote-confirmed"
+        : "Not included"
       : item.includedInTotal
         ? formatDollar(item.amountUsd)
         : `${formatDollar(item.amountUsd)} (not included)`;
@@ -164,18 +171,50 @@ function importCostHtml(estimate: FreightEstimateV3, locale: string): string {
   const importCost = estimate.importCost;
   if (!importCost.available || importCost.amountUsd == null) {
     const note = importCost.note ? getLocalizedText(importCost.note, locale) : "Not available for this selection.";
-    return `<p style="font-size:13px;color:#6b7280"><strong>Indicative import-cost estimate:</strong> ${escapeHtml(note)}</p>`;
+    return `<p style="font-size:13px;color:#6b7280"><strong>Indicative import-cost estimate (${escapeHtml(importCost.status)}):</strong> ${escapeHtml(note)}</p>`;
   }
 
   return `
     <div style="margin-top:18px;padding:14px;border:1px solid #dbeafe;border-radius:8px;background:#eff6ff">
       <p style="margin:0 0 8px;font-weight:bold">Indicative import-cost estimate: ${formatDollar(importCost.amountUsd)}</p>
       <p style="margin:0;color:#374151;font-size:13px">
-        Duty: ${formatDollar(importCost.dutyUsd ?? 0)} (${Math.round((importCost.dutyRatePct ?? 0) * 1000) / 10}%),
-        tax: ${formatDollar(importCost.taxUsd ?? 0)} (${Math.round((importCost.taxRatePct ?? 0) * 1000) / 10}%).
-        HS ${escapeHtml(importCost.hsCode)}, ${escapeHtml(importCost.sourceLabel)} (${escapeHtml(importCost.sourceVersion)}), retrieved ${escapeHtml(importCost.retrievedAt)}.
+        HS ${escapeHtml(importCost.hsCode)}, ${escapeHtml(importCost.sourceLabel)} (${escapeHtml(importCost.sourceVersion)}).
+        ${importCost.recoverableCreditsUsd ? `Recoverable credits: ${formatDollar(importCost.recoverableCreditsUsd)}.` : ""}
       </p>
       <p style="margin:8px 0 0;color:#6b7280;font-size:12px">${escapeHtml(importCost.note ? getLocalizedText(importCost.note, locale) : "")}</p>
+    </div>
+  `;
+}
+
+function compliancePrepHtml(estimate: FreightEstimateV3, locale: string): string {
+  const prep = estimate.compliancePrep;
+  const prepStatus =
+    prep.amountStatus === "priced" && prep.amountUsd != null
+      ? formatDollar(prep.amountUsd)
+      : prep.amountStatus === "quote_confirmed"
+        ? "Broker-confirmed"
+        : "Not added";
+  if (prep.lines.length === 0) {
+    return `<p style="font-size:13px;color:#6b7280"><strong>Compliance prep:</strong> Broker/importer confirmation required.</p>`;
+  }
+
+  return `
+    <div style="margin-top:18px;padding:14px;border:1px solid #fde68a;border-radius:8px;background:#fffbeb">
+      <p style="margin:0 0 8px;font-weight:bold">Compliance prep: ${escapeHtml(prepStatus)}</p>
+      <table style="width:100%;border-collapse:collapse">
+        ${prep.lines
+          .map(
+            (line) => `<tr>
+              <td style="padding:6px 0;border-top:1px solid #fde68a">
+                ${escapeHtml(getLocalizedText(line.label, locale))}
+                <div style="font-size:12px;color:#92400e">${escapeHtml(getLocalizedText(line.note, locale))}</div>
+              </td>
+              <td style="padding:6px 0;border-top:1px solid #fde68a;text-align:right;font-weight:bold">${escapeHtml(line.amountUsd == null ? "Broker-confirmed" : formatDollar(line.amountUsd))}</td>
+            </tr>`,
+          )
+          .join("")}
+      </table>
+      <p style="margin:8px 0 0;color:#92400e;font-size:12px">Compliance prep is separate from the freight estimate and must be confirmed with the destination broker/importer.</p>
     </div>
   `;
 }
@@ -199,11 +238,12 @@ function estimateSummaryHtml(estimate: FreightEstimateV3, locale: string): strin
       </tr>
       ${estimate.lineItems.map(lineItemHtml).join("")}
       <tr>
-        <td style="padding:10px 0;font-size:16px;font-weight:bold">Freight total</td>
+        <td style="padding:10px 0;font-size:16px;font-weight:bold">Estimated freight to port</td>
         <td style="padding:10px 0;text-align:right;font-size:18px;font-weight:bold;color:#2563eb">${formatDollar(estimate.freightTotal)}${estimate.totalExcludesInland ? " <span style='font-size:12px;color:#6b7280'>(excludes U.S. inland)</span>" : ""}</td>
       </tr>
     </table>
     ${estimate.dedicatedContainerFreightTotal != null ? `<p style="font-size:13px;color:#6b7280">Dedicated-container comparison: ${formatDollar(estimate.dedicatedContainerFreightTotal)}.</p>` : ""}
+    ${compliancePrepHtml(estimate, locale)}
     ${importCostHtml(estimate, locale)}
   `;
 }
@@ -227,9 +267,10 @@ export async function submitCalculatorV3(
     return { success: true };
   }
 
-  const [equipmentRates, oceanRates] = await Promise.all([
+  const [equipmentRates, oceanRates, importCostProfiles] = await Promise.all([
     fetchEquipmentRates(),
     fetchOceanRates(),
+    fetchLandedCostProfilesV3(),
   ]);
 
   if (!equipmentRates || !oceanRates) {
@@ -243,6 +284,7 @@ export async function submitCalculatorV3(
     equipmentRates,
     oceanRates,
   });
+  const catalog = buildRouteCatalog(oceanRates);
   const profile = getEquipmentProfile(data.equipmentProfileId);
   const mode = profile?.modes.find((candidate) => candidate.id === data.modeId);
   if (!profile || !mode || !mode.enabled) {
@@ -264,7 +306,8 @@ export async function submitCalculatorV3(
   const destinationCountry = data.destinationCountry.toUpperCase();
   const estimate = calculateFreightV3({
     equipmentRates,
-    oceanRates,
+    routes: catalog.routes,
+    importCostProfiles,
     equipmentProfileId: data.equipmentProfileId,
     modeId: data.modeId,
     quantity: data.quantity,
@@ -321,7 +364,7 @@ export async function submitCalculatorV3(
     email: data.email,
     phone: data.phone || null,
     company: data.company || null,
-    message: `[Calculator V3 ${currentRateBookSignature} / ${CALCULATOR_V3_POLICY_VERSION}] ${profileName} x ${estimate.quantity} -> ${countryName(destinationCountry)} | ${modeName} | ${estimate.route.id} | Freight: ${formatDollar(estimate.freightTotal)}${estimate.importCost.available && estimate.importCost.amountUsd != null ? ` | Import estimate: ${formatDollar(estimate.importCost.amountUsd)}` : " | Import estimate: not available"} | Preferred contact: ${data.preferredContact}`,
+    message: `[Calculator V3 ${currentRateBookSignature} / ${CALCULATOR_V3_POLICY_VERSION}] ${profileName} x ${estimate.quantity} -> ${countryName(destinationCountry)} | ${modeName} | ${estimate.route.id} | Freight: ${formatDollar(estimate.freightTotal)} | Compliance: ${estimate.compliancePrep.amountStatus}${estimate.freightPlusComplianceTotal != null ? ` / freight+compliance ${formatDollar(estimate.freightPlusComplianceTotal)}` : ""}${estimate.importCost.available && estimate.importCost.amountUsd != null ? ` | Import estimate: ${formatDollar(estimate.importCost.amountUsd)}` : ` | Import estimate: ${estimate.importCost.status}`} | Preferred contact: ${data.preferredContact}`,
     source_page: data.source_page || "corporate: /pricing/calculator-v3",
     utm_source: data.utm_source || null,
     utm_medium: data.utm_medium || null,
@@ -407,7 +450,7 @@ export async function submitCalculatorV3(
             <p>Hi${data.name ? ` ${escapeHtml(data.name)}` : ""},</p>
             <p>Thanks for using the ${COMPANY.name} freight calculator. Here is your V3 preview estimate:</p>
             ${estimateSummaryHtml(estimate, locale)}
-            <p style="font-size:13px;color:#6b7280">Freight and import costs are shown separately. Import duties and taxes are indicative public-data estimates only and must be confirmed by the importer or customs broker before shipment.</p>
+            <p style="font-size:13px;color:#6b7280">Freight, compliance prep, and import costs are shown separately. Compliance and import estimates are indicative only and must be confirmed by the importer or customs broker before shipment.</p>
             <p>For a confirmed quote, reply to this email or <a href="${CONTACT.whatsappUrl}" style="color:#2563eb">continue on WhatsApp</a>.</p>
             <p style="margin-top:20px;color:#6b7280;font-size:13px">- ${COMPANY.name}</p>
           </div>
@@ -432,10 +475,11 @@ export async function submitCalculatorV3(
         : null,
       `Route: ${routeLabel(estimate)}`,
       `Transit: ${estimate.route.transitTimeDays ?? "not published"}`,
-      `Freight: ${formatDollar(estimate.freightTotal)} (${estimate.lineItems.map((line) => `${line.label}: ${line.amountUsd == null ? "quote-confirmed" : formatDollar(line.amountUsd)}`).join(" + ")})`,
+      `Freight: ${formatDollar(estimate.freightTotal)} (${estimate.lineItems.map((line) => `${line.label}: ${line.amountUsd == null ? (line.includedInTotal ? "quote-confirmed" : "not included") : formatDollar(line.amountUsd)}`).join(" + ")})`,
+      `Compliance prep: ${estimate.compliancePrep.status} / ${estimate.compliancePrep.amountStatus}${estimate.compliancePrep.amountUsd != null ? ` / ${formatDollar(estimate.compliancePrep.amountUsd)}` : " / broker-confirmed"}`,
       estimate.importCost.available && estimate.importCost.amountUsd != null
-        ? `Import estimate: ${formatDollar(estimate.importCost.amountUsd)} | HS ${estimate.importCost.hsCode} | ${estimate.importCost.sourceVersion}`
-        : "Import estimate: not available",
+        ? `Import estimate: ${formatDollar(estimate.importCost.amountUsd)} | ${estimate.importCost.status} | HS ${estimate.importCost.hsCode} | ${estimate.importCost.sourceVersion}`
+        : `Import estimate: ${estimate.importCost.status}${estimate.importCost.missingInputs.length > 0 ? ` | missing ${estimate.importCost.missingInputs.join(", ")}` : ""}`,
       estimate.warnings.length > 0
         ? `Warnings: ${estimate.warnings.map((warning) => getLocalizedText(warning, locale)).join(" | ")}`
         : null,
@@ -462,7 +506,10 @@ export async function submitCalculatorV3(
         destination_port: estimate.route.destination.label,
         destination_country: destinationCountry,
         freight_total: estimate.freightTotal,
+        compliance_prep_status: estimate.compliancePrep.status,
+        compliance_prep_amount_status: estimate.compliancePrep.amountStatus,
         import_estimate_available: estimate.importCost.available,
+        import_estimate_status: estimate.importCost.status,
         preferred_contact: data.preferredContact,
       },
     });

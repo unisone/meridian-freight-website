@@ -1,26 +1,23 @@
 import {
   CALCULATOR_V3_CONTRACT_VERSION,
   type CalculateFreightV3Params,
+  type CompliancePrepEstimateV3,
   type EquipmentQuoteMode,
   type EquipmentQuoteProfile,
   type FreightEstimateV3,
   type FreightLineItemV3,
-  type ImportCostEstimateV3,
   type LocalizedText,
   type RouteOption,
+  type RoutePreference,
 } from "@/lib/calculator-v3/contracts";
+import { calculateImportCostEstimateV3 } from "@/lib/calculator-v3/import-cost";
 import {
   CALCULATOR_V3_POLICY_VERSION,
   EQUIPMENT_QUOTE_PROFILES,
   getCompliancePolicy,
   getEquipmentProfile,
-  getImportCostProfile,
 } from "@/lib/calculator-v3/policy";
-import {
-  buildRouteCatalog,
-  getRouteServiceCostUsd,
-  selectRoute,
-} from "@/lib/calculator-v3/routes";
+import { compareRoutes, getRouteServiceCostUsd, selectRoute } from "@/lib/calculator-v3/routes";
 import { estimateRoadMiles, formatDollar } from "@/lib/freight-engine-v2";
 import {
   FLATRACK_INSURANCE_MIN_USD,
@@ -93,6 +90,111 @@ function getPricedContainerCount(mode: EquipmentQuoteMode, quantity: number): {
   };
 }
 
+export function getV3RouteFreightSortCost(input: {
+  route: RouteOption;
+  mode: EquipmentQuoteMode;
+  quantity: number;
+  equipmentValueUsd: number | null;
+  zipCode: string | null;
+}): number {
+  const { pricedContainerCount } = getPricedContainerCount(input.mode, input.quantity);
+  const inland = calculateInlandUsd({
+    containerType: input.mode.containerType,
+    route: input.route,
+    zipCode: input.zipCode,
+    quantity: input.quantity,
+  });
+  const oceanFreight = calculateOceanUsd({
+    route: input.route,
+    containerType: input.mode.containerType,
+    pricedContainerCount,
+    equipmentValueUsd: input.equipmentValueUsd,
+    quantity: input.quantity,
+  });
+  return (inland.amountUsd ?? 0) + oceanFreight;
+}
+
+export function compareRoutesForFreightV3(input: {
+  mode: EquipmentQuoteMode;
+  quantity: number;
+  equipmentValueUsd: number | null;
+  zipCode: string | null;
+  preference: RoutePreference;
+}): (left: RouteOption, right: RouteOption) => number {
+  return (left, right) => {
+    if (input.preference === "fastest") {
+      const leftTransit = left.transitMinDays ?? Number.POSITIVE_INFINITY;
+      const rightTransit = right.transitMinDays ?? Number.POSITIVE_INFINITY;
+      if (leftTransit !== rightTransit) return leftTransit - rightTransit;
+    }
+
+    const leftCost = getV3RouteFreightSortCost({
+      route: left,
+      mode: input.mode,
+      quantity: input.quantity,
+      equipmentValueUsd: input.equipmentValueUsd,
+      zipCode: input.zipCode,
+    });
+    const rightCost = getV3RouteFreightSortCost({
+      route: right,
+      mode: input.mode,
+      quantity: input.quantity,
+      equipmentValueUsd: input.equipmentValueUsd,
+      zipCode: input.zipCode,
+    });
+    if (leftCost !== rightCost) return leftCost - rightCost;
+
+    return compareRoutes("cheapest")(left, right);
+  };
+}
+
+function selectRouteForEstimate(input: {
+  routes: RouteOption[];
+  mode: EquipmentQuoteMode;
+  destinationCountry: string;
+  destinationPortKey: string | null;
+  routeId: string | null;
+  routePreference: RoutePreference;
+  quantity: number;
+  equipmentValueUsd: number | null;
+  zipCode: string | null;
+}): RouteOption | null {
+  if (input.routeId) {
+    return selectRoute({
+      routes: input.routes,
+      containerType: input.mode.containerType,
+      destinationCountry: input.destinationCountry,
+      destinationPortKey: input.destinationPortKey,
+      routeId: input.routeId,
+      preference: input.routePreference,
+    });
+  }
+
+  const eligibleRoutes = input.routes.filter(
+    (route) =>
+      route.containerType === input.mode.containerType &&
+      route.destinationCountry === input.destinationCountry &&
+      (!input.destinationPortKey || route.destination.key === input.destinationPortKey),
+  );
+  if (eligibleRoutes.length === 0) return null;
+
+  const sortableRoutes =
+    input.routePreference === "fastest"
+      ? eligibleRoutes.filter((route) => route.transitMinDays !== null)
+      : eligibleRoutes;
+
+  const routePool = sortableRoutes.length > 0 ? sortableRoutes : eligibleRoutes;
+  return [...routePool].sort(
+    compareRoutesForFreightV3({
+      mode: input.mode,
+      quantity: input.quantity,
+      equipmentValueUsd: input.equipmentValueUsd,
+      zipCode: input.zipCode,
+      preference: sortableRoutes.length > 0 ? input.routePreference : "cheapest",
+    }),
+  )[0] ?? null;
+}
+
 function calculatePackingUsd(input: {
   equipment: EquipmentPackingRate;
   mode: EquipmentQuoteMode;
@@ -161,107 +263,87 @@ function calculateOceanUsd(input: {
 
 function calculateCompliance(input: {
   country: string;
-  equipment: EquipmentPackingRate;
   quantity: number;
-}): {
-  amountUsd: number;
-  lines: FreightLineItemV3[];
-} {
+}): CompliancePrepEstimateV3 {
   const policy = getCompliancePolicy(input.country);
-  if (!policy) return { amountUsd: 0, lines: [] };
+  if (!policy) {
+    return {
+      status: "unknown",
+      amountUsd: null,
+      amountStatus: "quote_confirmed",
+      lines: [],
+      sourceLabel: null,
+      sourceUrl: null,
+      note: note(
+        "Compliance prep requirements are not available for this country in the automatic calculator.",
+        "Los requisitos de preparacion de cumplimiento no estan disponibles para este pais en la calculadora automatica.",
+        "Требования к подготовке соответствия для этой страны недоступны в автоматическом калькуляторе.",
+      ),
+    };
+  }
 
-  let amountUsd = 0;
-  const lines: FreightLineItemV3[] = [];
+  let pricedAmountUsd = 0;
+  let hasPricedLines = false;
+  let amountStatus: CompliancePrepEstimateV3["amountStatus"] = "not_applicable";
+  const statusRank = {
+    required: 5,
+    recommended: 4,
+    case_by_case: 3,
+    broker_confirm: 2,
+    unknown: 1,
+  } as const;
+  let status: CompliancePrepEstimateV3["status"] = "unknown";
 
   for (const policyLine of policy.lines) {
-    const amount =
-      policyLine.id === "wash"
-        ? input.equipment.wash_usda_cost * input.quantity
-        : policyLine.amountUsd == null
-          ? null
-          : policyLine.amountUsd * input.quantity;
-
-    if (amount != null && policyLine.includedInFreight) {
-      amountUsd += amount;
+    if (statusRank[policyLine.status] > statusRank[status]) {
+      status = policyLine.status;
     }
+    if (policyLine.amountStatus === "quote_confirmed") {
+      amountStatus = "quote_confirmed";
+    }
+    if (
+      policyLine.amountStatus === "priced" &&
+      policyLine.publicAmount &&
+      policyLine.amountUsd != null
+    ) {
+      hasPricedLines = true;
+      amountStatus = "priced";
+      pricedAmountUsd += policyLine.amountUsd * input.quantity;
+    }
+  }
 
-    if (policyLine.id === "inspection_note") continue;
+  const lines = policy.lines.map((policyLine) => {
+    const amountUsd =
+      policyLine.amountStatus === "priced" &&
+      policyLine.publicAmount &&
+      policyLine.amountUsd != null
+        ? policyLine.amountUsd * input.quantity
+        : null;
 
-    lines.push({
+    return {
       id: policyLine.id,
-      label: policyLine.label.en,
-      amountUsd: amount,
-      note: policyLine.note.en,
-      includedInTotal: policyLine.includedInFreight && amount != null,
-    });
+      serviceType: policyLine.serviceType,
+      label: policyLine.label,
+      amountUsd,
+      amountStatus: policyLine.amountStatus,
+      status: policyLine.status,
+      note: policyLine.note,
+      includedInFreight: false as const,
+    };
+  });
+
+  if (policy.lines.length === 0) {
+    amountStatus = "not_applicable";
   }
-
-  return { amountUsd: roundUsd(amountUsd), lines };
-}
-
-function unavailableImportCost(reason: LocalizedText | null = null): ImportCostEstimateV3 {
-  return {
-    available: false,
-    amountUsd: null,
-    dutyUsd: null,
-    taxUsd: null,
-    hsCode: null,
-    dutyRatePct: null,
-    taxRatePct: null,
-    confidence: null,
-    sourceLabel: null,
-    sourceUrl: null,
-    retrievedAt: null,
-    sourceVersion: null,
-    note: reason,
-  };
-}
-
-function calculateImportCost(input: {
-  equipmentProfileId: string;
-  country: string;
-  equipmentValueUsd: number | null;
-  freightTotal: number;
-}): ImportCostEstimateV3 {
-  if (input.equipmentValueUsd == null || input.equipmentValueUsd <= 0) {
-    return unavailableImportCost(
-      note(
-        "Enter equipment value to show an indicative customs estimate.",
-        "Ingrese el valor del equipo para ver una estimacion aduanera indicativa.",
-        "Укажите стоимость техники, чтобы показать ориентировочную таможенную оценку.",
-      ),
-    );
-  }
-
-  const profile = getImportCostProfile(input.country, input.equipmentProfileId);
-  if (!profile || profile.confidence === "low") {
-    return unavailableImportCost(
-      note(
-        "No source-backed import-cost profile is available for this selection.",
-        "No hay perfil de costos de importacion con fuente para esta seleccion.",
-        "Для этого выбора нет импортного профиля с подтвержденным источником.",
-      ),
-    );
-  }
-
-  const customsBase = input.equipmentValueUsd + input.freightTotal;
-  const dutyUsd = roundUsd(customsBase * profile.dutyRatePct);
-  const taxUsd = roundUsd((customsBase + dutyUsd) * profile.taxRatePct);
 
   return {
-    available: true,
-    amountUsd: dutyUsd + taxUsd,
-    dutyUsd,
-    taxUsd,
-    hsCode: profile.hsCode,
-    dutyRatePct: profile.dutyRatePct,
-    taxRatePct: profile.taxRatePct,
-    confidence: profile.confidence,
-    sourceLabel: profile.sourceLabel,
-    sourceUrl: profile.sourceUrl,
-    retrievedAt: profile.retrievedAt,
-    sourceVersion: profile.sourceVersion,
-    note: profile.note,
+    status,
+    amountUsd: hasPricedLines ? roundUsd(pricedAmountUsd) : null,
+    amountStatus,
+    lines,
+    sourceLabel: policy.sourceLabel,
+    sourceUrl: policy.sourceUrl,
+    note: policy.summary,
   };
 }
 
@@ -269,7 +351,6 @@ function buildLineItems(input: {
   usInlandTransport: number | null;
   packingAndLoading: number;
   oceanFreight: number;
-  complianceLines: FreightLineItemV3[];
   totalExcludesInland: boolean;
   route: RouteOption;
   containerType: ContainerType;
@@ -301,7 +382,6 @@ function buildLineItems(input: {
       note: `${input.route.origin.label} to ${input.route.destination.label}`,
       includedInTotal: true,
     },
-    ...input.complianceLines,
   ];
 }
 
@@ -377,14 +457,16 @@ export function calculateFreightV3(params: CalculateFreightV3Params): FreightEst
     quantity,
   );
 
-  const catalog = buildRouteCatalog(params.oceanRates);
-  const route = selectRoute({
-    routes: catalog.routes,
-    containerType: mode.containerType,
+  const route = selectRouteForEstimate({
+    routes: params.routes,
+    mode,
     destinationCountry: params.destinationCountry,
     destinationPortKey: params.destinationPortKey,
     routeId: params.routeId,
-    preference: params.routePreference,
+    routePreference: params.routePreference,
+    quantity,
+    equipmentValueUsd: params.equipmentValueUsd,
+    zipCode: params.zipCode,
   });
   if (!route) return null;
 
@@ -411,13 +493,14 @@ export function calculateFreightV3(params: CalculateFreightV3Params): FreightEst
   });
   const compliance = calculateCompliance({
     country: params.destinationCountry,
-    equipment,
     quantity,
   });
 
   const freightTotal = roundUsd(
-    (inland.amountUsd ?? 0) + packingAndLoading + oceanFreight + compliance.amountUsd,
+    (inland.amountUsd ?? 0) + packingAndLoading + oceanFreight,
   );
+  const freightPlusComplianceTotal =
+    compliance.amountUsd == null ? null : freightTotal + compliance.amountUsd;
 
   const dedicatedOceanFreight =
     dedicatedContainerCount !== pricedContainerCount
@@ -435,8 +518,7 @@ export function calculateFreightV3(params: CalculateFreightV3Params): FreightEst
       : roundUsd(
           (inland.amountUsd ?? 0) +
             packingAndLoading +
-            dedicatedOceanFreight +
-            compliance.amountUsd,
+            dedicatedOceanFreight,
         );
 
   const { notes, warnings } = addModeNotes({
@@ -455,11 +537,17 @@ export function calculateFreightV3(params: CalculateFreightV3Params): FreightEst
     notes.push(compliancePolicy.summary);
   }
 
-  const importCost = calculateImportCost({
-    equipmentProfileId: profile.id,
-    country: params.destinationCountry,
+  const importCost = calculateImportCostEstimateV3({
+    profiles: params.importCostProfiles ?? [],
+    equipmentProfile: profile,
+    shippingMode: mode.containerType,
+    countryCode: params.destinationCountry,
     equipmentValueUsd: params.equipmentValueUsd,
-    freightTotal,
+    freightBreakdown: {
+      localTransportUsd: inland.amountUsd,
+      packingAndLoadingUsd: packingAndLoading,
+      oceanFreightUsd: oceanFreight,
+    },
   });
 
   if (importCost.available && importCost.amountUsd != null) {
@@ -487,7 +575,6 @@ export function calculateFreightV3(params: CalculateFreightV3Params): FreightEst
       usInlandTransport: inland.amountUsd,
       packingAndLoading,
       oceanFreight,
-      complianceLines: compliance.lines,
       totalExcludesInland: inland.excludesInland,
       route,
       containerType: mode.containerType,
@@ -495,8 +582,10 @@ export function calculateFreightV3(params: CalculateFreightV3Params): FreightEst
     usInlandTransport: inland.amountUsd,
     packingAndLoading,
     oceanFreight,
-    complianceServices: compliance.amountUsd,
+    compliancePrep: compliance,
+    complianceServices: compliance.amountUsd ?? 0,
     freightTotal,
+    freightPlusComplianceTotal,
     dedicatedContainerFreightTotal,
     totalExcludesInland: inland.excludesInland,
     distanceMiles: inland.distanceMiles,

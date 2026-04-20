@@ -3,6 +3,8 @@
  * Uses the same REST API pattern as lead inserts in app/actions/contact.ts.
  */
 
+import { mapLandedCostProfileRowV3 } from "@/lib/calculator-v3/import-cost";
+import type { LandedCostProfileRuntime } from "@/lib/calculator-v3/contracts";
 import type { EquipmentPackingRate, OceanFreightRate } from "@/lib/types/calculator";
 
 function getSupabaseConfig() {
@@ -69,5 +71,40 @@ export async function fetchOceanRates(): Promise<OceanFreightRate[] | null> {
   } catch (e) {
     console.error("Ocean rates fetch error:", e);
     return null;
+  }
+}
+
+export async function fetchLandedCostProfilesV3(): Promise<LandedCostProfileRuntime[]> {
+  const config = getSupabaseConfig();
+  if (!config) return [];
+
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const params = new URLSearchParams({
+      select:
+        "id,country_code,country_name,landed_equipment_class,shipping_mode,profile_name,source_label,source_kind,currency,schema_version,rules_hash,assumptions_json,rules_json",
+      is_active: "eq.true",
+      effective_from: `lte.${today}`,
+      or: `(effective_until.is.null,effective_until.gte.${today})`,
+      order: "country_code,landed_equipment_class,effective_from.desc",
+    });
+
+    const resp = await fetch(`${config.url}/rest/v1/landed_cost_profiles?${params}`, {
+      headers: buildHeaders(config.key),
+    });
+
+    if (!resp.ok) {
+      console.error("Failed to fetch landed cost profiles:", resp.status, await resp.text());
+      return [];
+    }
+
+    const rows = (await resp.json()) as unknown[];
+    return rows.flatMap((row) => {
+      const parsed = mapLandedCostProfileRowV3(row as Parameters<typeof mapLandedCostProfileRowV3>[0]);
+      return parsed ? [parsed] : [];
+    });
+  } catch (e) {
+    console.error("Landed cost profiles fetch error:", e);
+    return [];
   }
 }

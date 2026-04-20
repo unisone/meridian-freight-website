@@ -1,13 +1,11 @@
 import {
   compliancePolicySchema,
   equipmentQuoteProfileSchema,
-  importCostProfileSchema,
   localeCodeSchema,
   type CalculatorLocale,
   type CompliancePolicy,
   type EquipmentQuoteMode,
   type EquipmentQuoteProfile,
-  type ImportCostProfile,
   type LocalizedText,
 } from "@/lib/calculator-v3/contracts";
 
@@ -347,25 +345,31 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
     ),
     lines: [
       {
-        id: "wash",
+        id: "ar-cleaning-wash",
+        serviceType: "wash",
         label: text("Export wash", "Lavado de exportacion", "Экспортная мойка"),
         amountUsd: null,
-        includedInFreight: true,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
         note: text(
-          "Uses the equipment-specific wash cost from Meridian's rate table.",
-          "Usa el costo de lavado especifico del equipo en la tabla de Meridian.",
-          "Использует стоимость мойки из таблицы Meridian для выбранной техники.",
+          "Used machinery must be clean and free of soil or plant residue; Meridian service pricing is confirmed with the export team.",
+          "La maquinaria usada debe estar limpia y libre de suelo o restos vegetales; el precio del servicio Meridian se confirma con el equipo de exportacion.",
+          "Бывшая в употреблении техника должна быть чистой, без почвы и растительных остатков; стоимость услуги Meridian подтверждается командой экспорта.",
         ),
       },
       {
-        id: "fumigation",
+        id: "ar-treatment",
+        serviceType: "treatment",
         label: text("Fumigation / phytosanitary treatment", "Fumigacion / tratamiento fitosanitario", "Фумигация / фитосанитарная обработка"),
-        amountUsd: 650,
-        includedInFreight: true,
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "case_by_case",
+        publicAmount: false,
         note: text(
-          "Indicative service allowance; AFIDI defines the final treatment requirement.",
-          "Provision indicativa; AFIDI define el tratamiento final requerido.",
-          "Ориентировочный сервисный резерв; финальное требование определяет AFIDI.",
+          "AFIDI and the local broker/importer confirm the exact treatment before shipping.",
+          "AFIDI y el broker/importador local confirman el tratamiento exacto antes del embarque.",
+          "AFIDI и местный брокер/импортер подтверждают точную обработку перед отправкой.",
         ),
       },
     ],
@@ -384,25 +388,31 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
     ),
     lines: [
       {
-        id: "wash",
+        id: "cl-cleaning-wash",
+        serviceType: "wash",
         label: text("Export wash", "Lavado de exportacion", "Экспортная мойка"),
         amountUsd: null,
-        includedInFreight: true,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
         note: text(
-          "Uses the equipment-specific wash cost from Meridian's rate table.",
-          "Usa el costo de lavado especifico del equipo en la tabla de Meridian.",
-          "Использует стоимость мойки из таблицы Meridian для выбранной техники.",
+          "SAG requires used machinery to be clean and free of regulated material; service pricing is confirmed before booking.",
+          "SAG exige maquinaria usada limpia y libre de material regulado; el precio del servicio se confirma antes de reservar.",
+          "SAG требует, чтобы бывшая в употреблении техника была чистой и без регулируемых материалов; стоимость услуги подтверждается до бронирования.",
         ),
       },
       {
-        id: "fumigation",
+        id: "cl-treatment",
+        serviceType: "treatment",
         label: text("Fumigation / phytosanitary treatment", "Fumigacion / tratamiento fitosanitario", "Фумигация / фитосанитарная обработка"),
-        amountUsd: 650,
-        includedInFreight: true,
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "case_by_case",
+        publicAmount: false,
         note: text(
-          "Indicative service allowance pending final documentation review.",
-          "Provision indicativa pendiente de revision documental final.",
-          "Ориентировочный резерв до финальной проверки документов.",
+          "Treatment or fumigation is confirmed by broker/SAG documentation review.",
+          "El tratamiento o la fumigacion se confirma con revision documental del broker/SAG.",
+          "Обработка или фумигация подтверждается после проверки документов брокером/SAG.",
         ),
       },
     ],
@@ -412,7 +422,7 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
     version: "uy-dgsa-2026-04",
     sourceLabel: "Uruguay MGAP DGSA Resolucion 98/016",
     sourceUrl:
-      "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-98016-dgsa-requisitos-fitosanitarios-para-introduccion-pais",
+      "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-98016-1",
     effectiveDate: "2026-04-20",
     summary: text(
       "Uruguay requires used machinery to be clean and subject to phytosanitary inspection; treatment may be required by DGSA.",
@@ -421,99 +431,107 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
     ),
     lines: [
       {
-        id: "wash",
+        id: "uy-cleaning-wash",
+        serviceType: "wash",
         label: text("Export wash", "Lavado de exportacion", "Экспортная мойка"),
         amountUsd: null,
-        includedInFreight: true,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
         note: text(
-          "Default Meridian quote includes wash only; DGSA may require additional treatment after inspection.",
-          "La cotizacion default incluye solo lavado; DGSA puede requerir tratamiento adicional tras inspeccion.",
-          "Базовый расчет Meridian включает только мойку; DGSA может потребовать дополнительную обработку после инспекции.",
+          "DGSA requires cleaning and may require treatment or additional action after inspection.",
+          "DGSA exige limpieza y puede requerir tratamiento o accion adicional tras la inspeccion.",
+          "DGSA требует очистку и может потребовать обработку или дополнительные действия после инспекции.",
+        ),
+      },
+      {
+        id: "uy-treatment",
+        serviceType: "treatment",
+        label: text("Phytosanitary treatment", "Tratamiento fitosanitario", "Фитосанитарная обработка"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "case_by_case",
+        publicAmount: false,
+        note: text(
+          "Treatment specifications must be confirmed with the broker/importer and origin certificate requirements.",
+          "Las especificaciones de tratamiento deben confirmarse con el broker/importador y los requisitos del certificado de origen.",
+          "Спецификации обработки должны быть подтверждены брокером/импортером и требованиями сертификата страны отправления.",
         ),
       },
     ],
   },
   {
     country: "PY",
-    version: "py-policy-2026-04",
-    sourceLabel: "Meridian Paraguay import policy",
-    sourceUrl: "https://meridianexport.com/destinations/paraguay",
+    version: "py-law-7565-2026-04",
+    sourceLabel: "Paraguay Ley 7565/2025",
+    sourceUrl:
+      "https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados",
     effectiveDate: "2026-04-20",
     summary: text(
-      "No default wash or fumigation allowance is added; broker/importer confirmation is still required.",
-      "No se agrega lavado ni fumigacion por defecto; se requiere confirmacion del broker/importador.",
-      "По умолчанию мойка и фумигация не добавляются; требуется подтверждение брокера/импортера.",
+      "Paraguay requires used agricultural machinery to be sanitized, clean, treated/certified, and inspected under Ley 7565/2025.",
+      "Paraguay exige maquinaria agricola usada sanitada, limpia, tratada/certificada e inspeccionada bajo Ley 7565/2025.",
+      "Парагвай требует санитарную подготовку, очистку, обработку/сертификацию и инспекцию бывшей в употреблении сельхозтехники по Ley 7565/2025.",
     ),
-    lines: [],
+    lines: [
+      {
+        id: "py-cleaning-sanitation",
+        serviceType: "cleaning",
+        label: text("Cleaning / sanitation", "Limpieza / sanitacion", "Очистка / санитарная подготовка"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
+        note: text(
+          "Cleaning and sanitation must be confirmed with exporter/importer documentation and SENAVE process.",
+          "Limpieza y sanitacion deben confirmarse con documentacion del exportador/importador y proceso SENAVE.",
+          "Очистка и санитарная подготовка подтверждаются документами экспортера/импортера и процедурой SENAVE.",
+        ),
+      },
+      {
+        id: "py-treatment-certificate",
+        serviceType: "certificate",
+        label: text("Treatment and certificate", "Tratamiento y certificado", "Обработка и сертификат"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "broker_confirm",
+        publicAmount: false,
+        note: text(
+          "Treatment certificate, phytosanitary certificate, and destination inspection are broker/importer-confirmed.",
+          "Certificado de tratamiento, certificado fitosanitario e inspeccion en destino se confirman con broker/importador.",
+          "Сертификат обработки, фитосанитарный сертификат и инспекция в стране назначения подтверждаются брокером/импортером.",
+        ),
+      },
+    ],
   },
   {
     country: "BO",
     version: "bo-policy-2026-04",
-    sourceLabel: "Meridian Bolivia import policy",
-    sourceUrl: "https://meridianexport.com/destinations/bolivia",
+    sourceLabel: "Bolivia SENASAG / VUCE import process",
+    sourceUrl: "https://www.vuce.gob.bo/es/SENASAG_importacion_fitozanitario_requisitos",
     effectiveDate: "2026-04-20",
     summary: text(
-      "No default wash or fumigation allowance is added; broker/importer confirmation is required for Bolivia-bound cargo.",
-      "No se agrega lavado ni fumigacion por defecto; se requiere confirmacion para carga hacia Bolivia.",
-      "По умолчанию мойка и фумигация не добавляются; для Боливии требуется подтверждение брокера/импортера.",
+      "Bolivia-bound cargo needs broker/importer confirmation for phytosanitary import documentation; no used-machinery-specific automatic treatment profile is confirmed.",
+      "La carga hacia Bolivia requiere confirmacion del broker/importador para documentacion fitosanitaria; no hay perfil automatico confirmado para maquinaria usada.",
+      "Грузы в Боливию требуют подтверждения брокера/импортера по фитосанитарным документам; автоматический профиль для бывшей в употреблении техники не подтвержден.",
     ),
-    lines: [],
+    lines: [
+      {
+        id: "bo-broker-confirmation",
+        serviceType: "note",
+        label: text("Broker/importer confirmation", "Confirmacion broker/importador", "Подтверждение брокера/импортера"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "broker_confirm",
+        publicAmount: false,
+        note: text(
+          "Cleaning, treatment, or phytosanitary documentation may be required; confirm before booking.",
+          "Limpieza, tratamiento o documentacion fitosanitaria pueden ser requeridos; confirmar antes de reservar.",
+          "Очистка, обработка или фитосанитарные документы могут потребоваться; подтвердите до бронирования.",
+        ),
+      },
+    ],
   },
 ].map((policy) => compliancePolicySchema.parse(policy));
-
-const tariffNote = text(
-  "Indicative public-data estimate only. Duties and taxes depend on final HS classification, customs valuation, importer status, and active local regulations.",
-  "Estimacion indicativa con datos publicos. Aranceles e impuestos dependen de clasificacion HS final, valoracion aduanera, estado del importador y normativa local vigente.",
-  "Ориентировочная оценка по публичным данным. Пошлины и налоги зависят от финальной HS-классификации, таможенной оценки, статуса импортера и актуальных правил.",
-);
-
-const importProfile = (
-  country: string,
-  equipmentProfileId: string,
-  hsCode: string,
-  dutyRatePct: number,
-  taxRatePct: number,
-): ImportCostProfile =>
-  importCostProfileSchema.parse({
-    country,
-    equipmentProfileId,
-    hsCode,
-    dutyRatePct,
-    taxRatePct,
-    confidence: "medium",
-    sourceLabel: "WTO Tariff & Trade Data / WITS public tariff references",
-    sourceUrl: "https://ttd.wto.org/en/download",
-    retrievedAt: "2026-04-20",
-    sourceVersion: "public-tariff-seed-2026-04",
-    note: tariffNote,
-  });
-
-const tariffSeeds: Array<[string, string, string, number, number]> = [
-  ["AR", "combines", "843351", 0.14, 0.105],
-  ["AR", "tractors", "870190", 0.14, 0.105],
-  ["AR", "sprayers", "842449", 0.14, 0.105],
-  ["AR", "headers", "843390", 0.14, 0.105],
-  ["CL", "combines", "843351", 0.06, 0.19],
-  ["CL", "tractors", "870190", 0.06, 0.19],
-  ["CL", "sprayers", "842449", 0.06, 0.19],
-  ["CL", "headers", "843390", 0.06, 0.19],
-  ["UY", "combines", "843351", 0.14, 0.22],
-  ["UY", "tractors", "870190", 0.14, 0.22],
-  ["UY", "sprayers", "842449", 0.14, 0.22],
-  ["UY", "headers", "843390", 0.14, 0.22],
-  ["PY", "combines", "843351", 0.10, 0.10],
-  ["PY", "tractors", "870190", 0.10, 0.10],
-  ["PY", "sprayers", "842449", 0.10, 0.10],
-  ["PY", "headers", "843390", 0.10, 0.10],
-  ["BO", "combines", "843351", 0.10, 0.13],
-  ["BO", "tractors", "870190", 0.10, 0.13],
-  ["BO", "sprayers", "842449", 0.10, 0.13],
-  ["BO", "headers", "843390", 0.10, 0.13],
-];
-
-export const IMPORT_COST_PROFILES: ImportCostProfile[] = tariffSeeds.map((seed) =>
-  importProfile(...seed),
-);
 
 export function getLocalizedText(value: LocalizedText, locale: string): string {
   const normalized = localeCodeSchema.safeParse(locale).success
@@ -530,19 +548,6 @@ export function getCompliancePolicy(country: string): CompliancePolicy | null {
   return (
     COMPLIANCE_POLICIES.find(
       (policy) => policy.country.toUpperCase() === country.toUpperCase(),
-    ) ?? null
-  );
-}
-
-export function getImportCostProfile(
-  country: string,
-  equipmentProfileId: string,
-): ImportCostProfile | null {
-  return (
-    IMPORT_COST_PROFILES.find(
-      (profile) =>
-        profile.country.toUpperCase() === country.toUpperCase() &&
-        profile.equipmentProfileId === equipmentProfileId,
     ) ?? null
   );
 }

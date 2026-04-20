@@ -26,6 +26,36 @@ export type RoutePreference = z.infer<typeof routePreferenceSchema>;
 export const confidenceSchema = z.enum(["high", "medium", "low"]);
 export type EstimateConfidence = z.infer<typeof confidenceSchema>;
 
+export const compliancePrepStatusSchema = z.enum([
+  "required",
+  "recommended",
+  "case_by_case",
+  "broker_confirm",
+  "unknown",
+]);
+export type CompliancePrepStatus = z.infer<typeof compliancePrepStatusSchema>;
+
+export const complianceAmountStatusSchema = z.enum([
+  "priced",
+  "quote_confirmed",
+  "not_applicable",
+]);
+export type ComplianceAmountStatus = z.infer<typeof complianceAmountStatusSchema>;
+
+export const complianceServiceTypeSchema = z.enum([
+  "wash",
+  "cleaning",
+  "fumigation",
+  "treatment",
+  "inspection",
+  "certificate",
+  "note",
+]);
+export type ComplianceServiceType = z.infer<typeof complianceServiceTypeSchema>;
+
+export const importCostStatusSchema = z.enum(["complete", "partial", "unsupported"]);
+export type ImportCostStatus = z.infer<typeof importCostStatusSchema>;
+
 export const equipmentQuoteModeSchema = z.object({
   id: shippingModeSchema,
   containerType: z.enum(["fortyhc", "flatrack"]),
@@ -62,14 +92,17 @@ export const equipmentQuoteProfileSchema = z.object({
 });
 export type EquipmentQuoteProfile = z.infer<typeof equipmentQuoteProfileSchema>;
 
-export const complianceLineItemSchema = z.object({
-  id: z.enum(["wash", "fumigation", "inspection_note"]),
+export const compliancePolicyLineSchema = z.object({
+  id: z.string().min(1),
+  serviceType: complianceServiceTypeSchema,
   label: localizedTextSchema,
   amountUsd: z.number().nonnegative().nullable(),
-  includedInFreight: z.boolean(),
+  amountStatus: complianceAmountStatusSchema,
+  status: compliancePrepStatusSchema,
   note: localizedTextSchema,
+  publicAmount: z.boolean().default(false),
 });
-export type ComplianceLineItem = z.infer<typeof complianceLineItemSchema>;
+export type CompliancePolicyLine = z.infer<typeof compliancePolicyLineSchema>;
 
 export const compliancePolicySchema = z.object({
   country: z.string().length(2),
@@ -78,24 +111,151 @@ export const compliancePolicySchema = z.object({
   sourceUrl: z.string().url(),
   effectiveDate: z.string().min(1),
   summary: localizedTextSchema,
-  lines: z.array(complianceLineItemSchema),
+  lines: z.array(compliancePolicyLineSchema),
 });
 export type CompliancePolicy = z.infer<typeof compliancePolicySchema>;
 
-export const importCostProfileSchema = z.object({
-  country: z.string().length(2),
-  equipmentProfileId: z.string().min(1),
-  hsCode: z.string().regex(/^\d{6}$/),
-  dutyRatePct: z.number().min(0).max(1),
-  taxRatePct: z.number().min(0).max(1).default(0),
-  confidence: confidenceSchema,
-  sourceLabel: z.string().min(1),
-  sourceUrl: z.string().url(),
-  retrievedAt: z.string().min(1),
-  sourceVersion: z.string().min(1),
-  note: localizedTextSchema,
+export const landedEquipmentClassSchema = z.enum([
+  "header",
+  "combine",
+  "tractor",
+  "sprayer",
+  "planter",
+  "seeder",
+  "tillage",
+  "misc",
+]);
+export type LandedEquipmentClass = z.infer<typeof landedEquipmentClassSchema>;
+
+export const landedShippingModeSchema = z.enum(["flatrack", "fortyhc", "roro"]);
+export type LandedShippingMode = z.infer<typeof landedShippingModeSchema>;
+
+export const landedCostInputKeySchema = z.enum([
+  "equipment_value",
+  "local_transport",
+  "packing_and_loading",
+  "ocean_freight",
+]);
+export type LandedCostInputKey = z.infer<typeof landedCostInputKeySchema>;
+
+export const landedCostRuleKindSchema = z.enum([
+  "input",
+  "charge",
+  "subtotal",
+  "credit",
+  "note",
+]);
+export type LandedCostRuleKind = z.infer<typeof landedCostRuleKindSchema>;
+
+export const landedCostPaymentBucketSchema = z.enum([
+  "dealer_payment",
+  "meridian_invoice",
+  "destination_import",
+  "recoverable_credit",
+]);
+export type LandedCostPaymentBucket = z.infer<typeof landedCostPaymentBucketSchema>;
+
+export const landedCostCalcModeSchema = z.enum(["fixed_usd", "percent"]);
+export type LandedCostCalcMode = z.infer<typeof landedCostCalcModeSchema>;
+
+export const landedCostBaseSchema = z.enum([
+  "equipment_value",
+  "origin_freight_subtotal",
+  "cif_subtotal",
+  "group_total",
+  "prior_rule",
+]);
+export type LandedCostBase = z.infer<typeof landedCostBaseSchema>;
+
+export const landedCostRuleSchema = z
+  .object({
+    code: z.string().trim().min(1).max(120),
+    labelKey: z.string().trim().min(1).max(200),
+    label: z.string().trim().min(1).max(200),
+    kind: landedCostRuleKindSchema,
+    group: z.string().trim().min(1).max(120).nullable().optional(),
+    paymentBucket: landedCostPaymentBucketSchema,
+    calcMode: landedCostCalcModeSchema.optional(),
+    base: landedCostBaseSchema.optional(),
+    baseRef: z.string().trim().min(1).max(120).nullable().optional(),
+    inputKey: landedCostInputKeySchema.optional(),
+    value: z.number().nonnegative().optional(),
+    recoverable: z.boolean().default(false),
+    customerVisible: z.boolean().default(true),
+    sortOrder: z.number().int().nonnegative(),
+    note: z.string().trim().min(1).max(500).nullable().optional(),
+  })
+  .superRefine((value, ctx) => {
+    if (value.kind === "input") {
+      if (!value.inputKey) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["inputKey"],
+          message: "input rules require inputKey",
+        });
+      }
+      return;
+    }
+
+    if (value.kind === "charge" || value.kind === "credit") {
+      if (!value.calcMode) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["calcMode"],
+          message: "charge and credit rules require calcMode",
+        });
+      }
+      if (!value.base) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["base"],
+          message: "charge and credit rules require base",
+        });
+      }
+      if (value.value == null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["value"],
+          message: "charge and credit rules require value",
+        });
+      }
+      if ((value.base === "group_total" || value.base === "prior_rule") && !value.baseRef) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["baseRef"],
+          message: "group_total and prior_rule bases require baseRef",
+        });
+      }
+    }
+  });
+export type LandedCostRule = z.infer<typeof landedCostRuleSchema>;
+
+export const landedCostAssumptionsSchema = z.object({
+  approximateOnly: z.boolean().default(true),
+  manualOverridesAllowed: z.boolean().default(false),
+  roundingMode: z.enum(["none", "nearest_cent", "nearest_dollar"]).default("nearest_cent"),
+  disclaimer: z.string().trim().min(1).max(1000),
+  disclaimerKey: z.string().trim().min(1).max(200).default("landed.disclaimer.generic"),
+  notes: z.array(z.string().trim().min(1).max(300)).default([]),
 });
-export type ImportCostProfile = z.infer<typeof importCostProfileSchema>;
+export type LandedCostAssumptions = z.infer<typeof landedCostAssumptionsSchema>;
+
+export const landedCostProfileRuntimeSchema = z.object({
+  id: z.string().uuid(),
+  countryCode: z.string().trim().min(2).max(3).transform((value) => value.toUpperCase()),
+  countryName: z.string().trim().min(1).max(120),
+  landedEquipmentClass: landedEquipmentClassSchema,
+  shippingMode: landedShippingModeSchema.nullable(),
+  profileName: z.string().trim().min(1).max(200),
+  sourceLabel: z.string().trim().min(1).max(200),
+  sourceKind: z.string().trim().min(1).max(80),
+  currency: z.literal("USD"),
+  schemaVersion: z.number().int().positive(),
+  rulesHash: z.string().trim().min(1).max(200),
+  assumptions: landedCostAssumptionsSchema,
+  rules: z.array(landedCostRuleSchema).min(1),
+});
+export type LandedCostProfileRuntime = z.infer<typeof landedCostProfileRuntimeSchema>;
 
 export const portSchema = z.object({
   key: z.string().min(1),
@@ -132,6 +292,7 @@ export interface QuarantinedRate {
     | "missing_cost"
     | "unknown_origin"
     | "unknown_destination"
+    | "impossible_origin"
     | "unsupported_direct_40hc"
     | "invalid_container";
   raw: Pick<
@@ -151,9 +312,9 @@ export interface RouteCatalog {
 
 export interface CalculatorDataV3 {
   equipment: EquipmentPackingRate[];
-  oceanRates: OceanFreightRate[];
   profiles: EquipmentQuoteProfile[];
   routes: RouteOption[];
+  importCostProfiles: LandedCostProfileRuntime[];
   quarantinedRateCount: number;
   countries: string[];
   destinationPortsByCountry: Record<string, string[]>;
@@ -164,7 +325,8 @@ export interface CalculatorDataV3 {
 
 export interface CalculateFreightV3Params {
   equipmentRates: EquipmentPackingRate[];
-  oceanRates: OceanFreightRate[];
+  routes: RouteOption[];
+  importCostProfiles?: LandedCostProfileRuntime[];
   equipmentProfileId: string;
   modeId: ShippingMode;
   quantity: number;
@@ -177,21 +339,52 @@ export interface CalculateFreightV3Params {
 }
 
 export interface FreightLineItemV3 {
-  id:
-    | "us_inland"
-    | "packing_loading"
-    | "ocean_freight"
-    | "wash"
-    | "fumigation";
+  id: "us_inland" | "packing_loading" | "ocean_freight";
   label: string;
   amountUsd: number | null;
   note: string | null;
   includedInTotal: boolean;
 }
 
+export interface CompliancePrepLineItemV3 {
+  id: string;
+  serviceType: ComplianceServiceType;
+  label: LocalizedText;
+  amountUsd: number | null;
+  amountStatus: ComplianceAmountStatus;
+  status: CompliancePrepStatus;
+  note: LocalizedText;
+  includedInFreight: false;
+}
+
+export interface CompliancePrepEstimateV3 {
+  status: CompliancePrepStatus;
+  amountUsd: number | null;
+  amountStatus: ComplianceAmountStatus;
+  lines: CompliancePrepLineItemV3[];
+  sourceLabel: string | null;
+  sourceUrl: string | null;
+  note: LocalizedText | null;
+}
+
+export interface ImportCostLineItemV3 {
+  code: string;
+  label: string;
+  group: string | null;
+  paymentBucket: LandedCostPaymentBucket;
+  amountUsd: number;
+  recoverable: boolean;
+  customerVisible: boolean;
+  note: string | null;
+}
+
 export interface ImportCostEstimateV3 {
+  status: ImportCostStatus;
   available: boolean;
   amountUsd: number | null;
+  grossCashRequiredUsd: number | null;
+  netAfterRecoverableUsd: number | null;
+  recoverableCreditsUsd: number | null;
   dutyUsd: number | null;
   taxUsd: number | null;
   hsCode: string | null;
@@ -202,6 +395,9 @@ export interface ImportCostEstimateV3 {
   sourceUrl: string | null;
   retrievedAt: string | null;
   sourceVersion: string | null;
+  profileName: string | null;
+  missingInputs: string[];
+  lineItems: ImportCostLineItemV3[];
   note: LocalizedText | null;
 }
 
@@ -220,8 +416,10 @@ export interface FreightEstimateV3 {
   usInlandTransport: number | null;
   packingAndLoading: number;
   oceanFreight: number;
+  compliancePrep: CompliancePrepEstimateV3;
   complianceServices: number;
   freightTotal: number;
+  freightPlusComplianceTotal: number | null;
   dedicatedContainerFreightTotal: number | null;
   totalExcludesInland: boolean;
   distanceMiles: number | null;

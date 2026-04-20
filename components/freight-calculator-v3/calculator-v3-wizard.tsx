@@ -25,12 +25,13 @@ import {
   submitCalculatorV3,
   type CalculatorV3Result,
 } from "@/app/actions/calculator-v3";
-import { calculateFreightV3 } from "@/lib/calculator-v3/engine";
-import { getLocalizedText } from "@/lib/calculator-v3/policy";
 import {
-  compareRoutes,
-  getRouteServiceCostUsd,
-} from "@/lib/calculator-v3/routes";
+  calculateFreightV3,
+  compareRoutesForFreightV3,
+  getV3RouteFreightSortCost,
+} from "@/lib/calculator-v3/engine";
+import { getLocalizedText } from "@/lib/calculator-v3/policy";
+import { getRouteServiceCostUsd } from "@/lib/calculator-v3/routes";
 import { CONTACT, TRACKING } from "@/lib/constants";
 import { formatDollar } from "@/lib/freight-engine-v2";
 import {
@@ -56,6 +57,34 @@ import type {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TARGET_COUNTRIES = new Set(["AR", "CL", "UY", "PY", "BO"]);
 
+const MISSING_INPUT_LABELS: Record<string, Record<CalculatorLocale, string>> = {
+  equipment_value: {
+    en: "equipment value",
+    es: "valor del equipo",
+    ru: "стоимость техники",
+  },
+  local_transport: {
+    en: "U.S. ZIP / inland transport",
+    es: "ZIP de EE.UU. / transporte interno",
+    ru: "ZIP США / внутренний транспорт",
+  },
+  packing_and_loading: {
+    en: "packing and loading",
+    es: "embalaje y carga",
+    ru: "упаковка и погрузка",
+  },
+  ocean_freight: {
+    en: "ocean freight",
+    es: "flete maritimo",
+    ru: "морской фрахт",
+  },
+  broker_confirmation: {
+    en: "broker confirmation",
+    es: "confirmacion del broker",
+    ru: "подтверждение брокера",
+  },
+};
+
 const COPY = {
   en: {
     unavailableTitle: "Calculator unavailable",
@@ -79,7 +108,13 @@ const COPY = {
     zip: "U.S. ZIP",
     value: "Equipment value",
     valueHelp: "Required for whole-unit routes and customs estimates.",
-    freightTotal: "Freight total",
+    freightTotal: "Estimated freight to port",
+    compliancePrep: "Compliance prep",
+    freightPlusCompliance: "Freight + compliance prep",
+    quoteConfirmed: "Quote-confirmed",
+    brokerConfirmed: "Confirm with broker",
+    notIncluded: "Not included",
+    missingInputs: "Missing inputs",
     importEstimate: "Indicative import-cost estimate",
     unavailable: "Not available",
     lineItems: "Line items",
@@ -125,7 +160,13 @@ const COPY = {
     zip: "ZIP en EE.UU.",
     value: "Valor del equipo",
     valueHelp: "Requerido para envios completos y estimaciones aduaneras.",
-    freightTotal: "Total de flete",
+    freightTotal: "Flete estimado al puerto",
+    compliancePrep: "Preparacion de cumplimiento",
+    freightPlusCompliance: "Flete + preparacion",
+    quoteConfirmed: "Confirmar cotizacion",
+    brokerConfirmed: "Confirmar con broker",
+    notIncluded: "No incluido",
+    missingInputs: "Datos faltantes",
     importEstimate: "Estimacion indicativa de importacion",
     unavailable: "No disponible",
     lineItems: "Lineas",
@@ -171,7 +212,13 @@ const COPY = {
     zip: "ZIP в США",
     value: "Стоимость техники",
     valueHelp: "Нужно для отправки целиком и импортной оценки.",
-    freightTotal: "Итого фрахт",
+    freightTotal: "Оценка фрахта до порта",
+    compliancePrep: "Подготовка к требованиям",
+    freightPlusCompliance: "Фрахт + подготовка",
+    quoteConfirmed: "Подтвердить в квоте",
+    brokerConfirmed: "Подтвердить с брокером",
+    notIncluded: "Не включено",
+    missingInputs: "Не хватает данных",
     importEstimate: "Ориентировочная импортная оценка",
     unavailable: "Недоступно",
     lineItems: "Строки расчета",
@@ -209,13 +256,21 @@ function routeDestinationLabel(route: RouteOption): string {
   return `${route.destination.label} (${countryLabel(route.destinationCountry)} route)`;
 }
 
-function routeCostLabel(route: RouteOption): string {
-  return formatDollar(getRouteServiceCostUsd(route));
+function routeCostLabel(input: {
+  route: RouteOption;
+  mode: EquipmentQuoteMode;
+  quantity: number;
+  equipmentValueUsd: number | null;
+  zipCode: string | null;
+}): string {
+  if (input.zipCode && input.route.containerType === "flatrack") {
+    return formatDollar(getV3RouteFreightSortCost(input));
+  }
+  return formatDollar(getRouteServiceCostUsd(input.route));
 }
 
-function percentLabel(value: number | null): string {
-  if (value == null) return "0%";
-  return `${Math.round(value * 1000) / 10}%`;
+function missingInputLabel(key: string, locale: CalculatorLocale): string {
+  return MISSING_INPUT_LABELS[key]?.[locale] ?? key.replace(/_/g, " ");
 }
 
 function containerLabel(containerType: ContainerType): string {
@@ -232,6 +287,9 @@ function getRoutes(input: {
   destinationCountry: string;
   destinationPortKey: string | null;
   preference: RoutePreference;
+  quantity: number;
+  equipmentValueUsd: number | null;
+  zipCode: string | null;
 }): RouteOption[] {
   if (!input.data || !input.mode || !input.destinationCountry) return [];
   return input.data.routes
@@ -241,7 +299,15 @@ function getRoutes(input: {
         route.destinationCountry === input.destinationCountry &&
         (!input.destinationPortKey || route.destination.key === input.destinationPortKey),
     )
-    .sort(compareRoutes(input.preference));
+    .sort(
+      compareRoutesForFreightV3({
+        mode: input.mode,
+        quantity: input.quantity,
+        equipmentValueUsd: input.equipmentValueUsd,
+        zipCode: input.zipCode,
+        preference: input.preference,
+      }),
+    );
 }
 
 function getDestinationPortLabel(
@@ -401,8 +467,21 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
         destinationCountry,
         destinationPortKey: showPortTabs ? destinationPortKey : null,
         preference: routePreference,
+        quantity,
+        equipmentValueUsd,
+        zipCode: zipCode || null,
       }),
-    [data, mode, destinationCountry, destinationPortKey, routePreference, showPortTabs],
+    [
+      data,
+      mode,
+      destinationCountry,
+      destinationPortKey,
+      routePreference,
+      quantity,
+      equipmentValueUsd,
+      zipCode,
+      showPortTabs,
+    ],
   );
 
   const selectedRoute = useMemo(() => {
@@ -423,7 +502,8 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     if (!data || !profile || !mode || !destinationCountry) return null;
     return calculateFreightV3({
       equipmentRates: data.equipment,
-      oceanRates: data.oceanRates,
+      routes: data.routes,
+      importCostProfiles: data.importCostProfiles,
       equipmentProfileId: profile.id,
       modeId: mode.id,
       quantity,
@@ -632,9 +712,6 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
               <h2 className="text-lg font-semibold">{t.stepEquipment}</h2>
               {profile && <p className="text-sm text-muted-foreground">{getLocalizedText(profile.description, lang)}</p>}
             </div>
-            {data.quarantinedRateCount > 0 && (
-              <Badge variant="outline">{data.quarantinedRateCount} rates quarantined</Badge>
-            )}
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -908,7 +985,13 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                       <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                         <span className="flex items-center gap-2">
                           <DollarSign className="h-4 w-4 text-emerald-700" />
-                          {routeCostLabel(route)}
+                          {routeCostLabel({
+                            route,
+                            mode: mode!,
+                            quantity,
+                            equipmentValueUsd,
+                            zipCode: zipCode || null,
+                          })}
                         </span>
                         <span className="flex items-center gap-2">
                           <Clock3 className="h-4 w-4 text-sky-700" />
@@ -981,11 +1064,57 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                           {line.note && <div className="mt-1 text-xs text-muted-foreground">{line.note}</div>}
                         </div>
                         <div className="font-semibold">
-                          {line.amountUsd == null ? "Quote" : formatDollar(line.amountUsd)}
+                          {line.amountUsd == null
+                            ? line.includedInTotal
+                              ? "Quote"
+                              : t.notIncluded
+                            : formatDollar(line.amountUsd)}
                         </div>
                       </div>
                     ))}
                 </div>
+              </div>
+
+              <div className="border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-semibold">{t.compliancePrep}</span>
+                  <span className="font-bold">
+                    {preview.compliancePrep.amountStatus === "priced" &&
+                    preview.compliancePrep.amountUsd != null
+                      ? formatDollar(preview.compliancePrep.amountUsd)
+                      : preview.compliancePrep.amountStatus === "not_applicable"
+                        ? t.unavailable
+                        : t.brokerConfirmed}
+                  </span>
+                </div>
+                {preview.compliancePrep.note && (
+                  <p className="mt-2 text-xs leading-relaxed text-amber-900">
+                    {getLocalizedText(preview.compliancePrep.note, lang)}
+                  </p>
+                )}
+                {preview.compliancePrep.lines.length > 0 && (
+                  <div className="mt-3 divide-y divide-amber-200 border-y border-amber-200">
+                    {preview.compliancePrep.lines.map((line) => (
+                      <div key={line.id} className="grid grid-cols-[1fr_auto] gap-3 py-2 text-xs">
+                        <div>
+                          <div className="font-medium">{getLocalizedText(line.label, lang)}</div>
+                          <div className="mt-1 leading-relaxed text-amber-800">
+                            {getLocalizedText(line.note, lang)}
+                          </div>
+                        </div>
+                        <div className="font-semibold">
+                          {line.amountUsd == null ? t.brokerConfirmed : formatDollar(line.amountUsd)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {preview.freightPlusComplianceTotal != null && (
+                  <div className="mt-3 flex items-center justify-between gap-3 border-t border-amber-200 pt-3">
+                    <span className="font-medium">{t.freightPlusCompliance}</span>
+                    <span className="font-bold">{formatDollar(preview.freightPlusComplianceTotal)}</span>
+                  </div>
+                )}
               </div>
 
               {preview.dedicatedContainerFreightTotal != null && (
@@ -1005,14 +1134,36 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
                   </span>
                 </div>
                 {preview.importCost.available ? (
-                  <p className="mt-2 text-xs leading-relaxed">
-                    HS {preview.importCost.hsCode}; duty {percentLabel(preview.importCost.dutyRatePct)};
-                    tax {percentLabel(preview.importCost.taxRatePct)}; {preview.importCost.sourceVersion}.
-                  </p>
+                  <div className="mt-2 space-y-2 text-xs leading-relaxed">
+                    <p>
+                      HS {preview.importCost.hsCode}; {preview.importCost.profileName ?? preview.importCost.sourceLabel};
+                      {" "}
+                      {preview.importCost.sourceVersion}.
+                    </p>
+                    {preview.importCost.recoverableCreditsUsd != null &&
+                      preview.importCost.recoverableCreditsUsd > 0 && (
+                        <p>
+                          Recoverable credits: {formatDollar(preview.importCost.recoverableCreditsUsd)}.
+                        </p>
+                      )}
+                    {preview.importCost.note && (
+                      <p>{getLocalizedText(preview.importCost.note, lang)}</p>
+                    )}
+                  </div>
                 ) : (
-                  <p className="mt-2 text-xs leading-relaxed">
-                    {preview.importCost.note ? getLocalizedText(preview.importCost.note, lang) : t.unavailable}
-                  </p>
+                  <div className="mt-2 space-y-2 text-xs leading-relaxed">
+                    <p>
+                      {preview.importCost.note ? getLocalizedText(preview.importCost.note, lang) : t.unavailable}
+                    </p>
+                    {preview.importCost.missingInputs.length > 0 && (
+                      <p>
+                        {t.missingInputs}:{" "}
+                        {preview.importCost.missingInputs
+                          .map((key) => missingInputLabel(key, lang))
+                          .join(", ")}
+                      </p>
+                    )}
+                  </div>
                 )}
               </div>
 
