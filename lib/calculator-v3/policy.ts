@@ -94,9 +94,9 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
     ],
     notes: [
       text(
-        "For CEO/internal work, the model-level rows can still be inspected in the admin data, but the public calculator keeps one combine choice.",
-        "Para trabajo interno, los modelos siguen en los datos, pero la calculadora publica mantiene una sola opcion de cosechadoras.",
-        "Для внутренней работы модели остаются в данных, но публичный калькулятор показывает один вариант комбайнов.",
+        "Combines are quoted as one public equipment category; Meridian confirms model-specific handling during follow-up.",
+        "Las cosechadoras se cotizan como una categoria publica; Meridian confirma el manejo especifico del modelo en el seguimiento.",
+        "Комбайны рассчитываются как одна публичная категория техники; особенности конкретной модели Meridian подтверждает при follow-up.",
       ),
     ],
   },
