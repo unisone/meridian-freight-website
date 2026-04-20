@@ -305,6 +305,7 @@ export interface QuarantinedRate {
   reason:
     | "missing_country"
     | "missing_cost"
+    | "missing_transit"
     | "unknown_origin"
     | "unknown_destination"
     | "impossible_origin"

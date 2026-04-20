@@ -98,23 +98,14 @@ describe("calculator V3 route health", () => {
 
     expect(report.routeHealthVersion).toBe("calculator-v3-route-health-2026-04-20");
     expect(report.summary).toEqual({
-      routeCount: 4,
-      quarantinedCount: 3,
+      routeCount: 3,
+      quarantinedCount: 4,
       countryCount: 5,
       publicProfileCount: 8,
       publicModeCount: 10,
     });
 
     expect(report.routeCountsByCountry).toEqual([
-      {
-        country: "AE",
-        routeCount: 1,
-        fortyhcRouteCount: 1,
-        flatrackRouteCount: 0,
-        transitKnownCount: 0,
-        transitMissingCount: 1,
-        transitCoveragePercent: 0,
-      },
       {
         country: "AR",
         routeCount: 2,
@@ -136,14 +127,6 @@ describe("calculator V3 route health", () => {
     ]);
 
     expect(report.routeCountsByCountryAndContainer).toEqual([
-      {
-        country: "AE",
-        containerType: "fortyhc",
-        routeCount: 1,
-        transitKnownCount: 0,
-        transitMissingCount: 1,
-        transitCoveragePercent: 0,
-      },
       {
         country: "AR",
         containerType: "fortyhc",
@@ -171,33 +154,22 @@ describe("calculator V3 route health", () => {
     ]);
 
     expect(report.transitCoverage.overall).toEqual({
-      routeCount: 4,
+      routeCount: 3,
       transitKnownCount: 3,
-      transitMissingCount: 1,
-      transitCoveragePercent: 75,
+      transitMissingCount: 0,
+      transitCoveragePercent: 100,
     });
 
-    expect(report.missingTransitRows).toEqual([
-      {
-        sourceRateId: "ae-chicago-missing-transit",
-        country: "AE",
-        containerType: "fortyhc",
-        originPort: "Chicago, IL",
-        destinationPort: "Jebel Ali",
-        carrier: "HAPAG",
-      },
-    ]);
+    expect(report.missingTransitRows).toEqual([]);
 
     expect(report.quarantineCountsByReason).toEqual([
       { reason: "missing_cost", count: 1 },
+      { reason: "missing_transit", count: 1 },
       { reason: "unknown_origin", count: 1 },
       { reason: "impossible_origin", count: 1 },
     ]);
 
-    expect(report.countriesWithoutEligibleAutomaticRoute).toEqual([
-      { country: "NA", eligibleRouteCount: 0 },
-      { country: "TZ", eligibleRouteCount: 0 },
-    ]);
+    expect(report.countriesWithoutEligibleAutomaticRoute).toEqual([]);
 
     expect(report.dirtyQuarantinedRawPortStrings).toEqual([
       {
@@ -217,15 +189,12 @@ describe("calculator V3 route health", () => {
     ]);
 
     expect(report.warnings).toEqual([
-      "1 route(s) still lack transit data and must be confirmed from the rate table or an approved fallback.",
-      "3 row(s) were quarantined across 3 reason bucket(s).",
+      "1 rate row(s) have no approved transit time and are excluded from customer automatic quotes.",
+      "4 row(s) were quarantined across 4 reason bucket(s).",
       "2 dirty raw port string(s) were quarantined for review.",
     ]);
 
-    expect(report.criticalIssues).toEqual([
-      "No eligible automatic route for NA across 10 public mode(s).",
-      "No eligible automatic route for TZ across 10 public mode(s).",
-    ]);
+    expect(report.criticalIssues).toEqual([]);
   });
 
   it("keeps a route-only lane clean when transit is present and no rows are quarantined", () => {

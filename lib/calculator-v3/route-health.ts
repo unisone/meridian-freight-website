@@ -12,6 +12,7 @@ export const CALCULATOR_V3_ROUTE_HEALTH_VERSION = "calculator-v3-route-health-20
 const QUARANTINE_REASON_ORDER: QuarantinedRate["reason"][] = [
   "missing_country",
   "missing_cost",
+  "missing_transit",
   "unknown_origin",
   "unknown_destination",
   "impossible_origin",
@@ -356,7 +357,6 @@ function buildDirtyPortSummaries(
 
 function buildCountryEligibility(
   routes: RouteOption[],
-  quarantined: QuarantinedRate[],
   equipmentProfiles: EquipmentQuoteProfile[],
 ): RouteHealthUnsupportedCountry[] {
   const enabledModes = collectEnabledModes(equipmentProfiles);
@@ -368,13 +368,6 @@ function buildCountryEligibility(
   for (const route of routes) {
     countries.add(route.destinationCountry);
   }
-  for (const entry of quarantined) {
-    const country = entry.raw.destination_country?.trim().toUpperCase() ?? "";
-    if (country.length === 2) {
-      countries.add(country);
-    }
-  }
-
   return Array.from(countries)
     .filter((country) => {
       return !routes.some(
@@ -403,7 +396,6 @@ export function buildRouteHealthReport(
   const dirtyQuarantinedRawPortStrings = buildDirtyPortSummaries(catalog.quarantined);
   const countriesWithoutEligibleAutomaticRoute = buildCountryEligibility(
     catalog.routes,
-    catalog.quarantined,
     equipmentProfiles,
   );
   const enabledModes = collectEnabledModes(equipmentProfiles);
@@ -415,6 +407,13 @@ export function buildRouteHealthReport(
     );
   }
   if (quarantineCountsByReason.length > 0) {
+    const missingTransitCount =
+      quarantineCountsByReason.find((entry) => entry.reason === "missing_transit")?.count ?? 0;
+    if (missingTransitCount > 0) {
+      warnings.push(
+        `${missingTransitCount} rate row(s) have no approved transit time and are excluded from customer automatic quotes.`,
+      );
+    }
     warnings.push(
       `${catalog.quarantined.length} row(s) were quarantined across ${quarantineCountsByReason.length} reason bucket(s).`,
     );

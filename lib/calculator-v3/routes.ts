@@ -261,6 +261,11 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
         : null;
     const transitTimeDays = rawTransitTimeDays ?? transitFallback?.transitTimeDays ?? null;
     const transit = parseTransitDays(transitTimeDays);
+    if (!transitTimeDays || transit.transitMinDays == null || transit.transitMaxDays == null) {
+      quarantined.push(quarantine(rate, "missing_transit"));
+      continue;
+    }
+
     routes.push(
       routeOptionSchema.parse({
         id: routeIdFor(rate, origin, destination.key),

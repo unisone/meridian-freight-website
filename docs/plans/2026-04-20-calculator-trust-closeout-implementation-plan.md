@@ -40,13 +40,13 @@ Close the CEO feedback loop without rebuilding the calculator UI. The work shoul
 2. Report:
    - route counts by country/container type,
    - transit coverage,
-   - missing transit rows,
+   - missing-transit rows quarantined from customer automatic quotes,
    - quarantine counts by reason,
    - countries with no eligible automatic route,
    - dirty raw port strings that are quarantined.
 3. Add a script such as `npm run audit:calculator-v3` to print the report from live Supabase data.
 4. Add unit tests for health summaries using fixtures.
-5. Do not add new transit fallbacks unless each has evidence.
+5. Do not add new transit fallbacks unless each has evidence; rows with no approved transit time must stay unavailable for automatic quoting.
 
 ## Phase 3: Import-Cost Governance
 
@@ -77,7 +77,7 @@ Close the CEO feedback loop without rebuilding the calculator UI. The work shoul
 
 1. Audit all V3 public copy for internal/system language.
 2. Replace with customer-facing wording:
-   - "Estimated freight to destination port."
+   - "Estimated freight to destination shown."
    - "Final pricing is confirmed by Meridian before booking."
    - "Broker/importer confirmation required."
    - "Not calculated online for this selection."
@@ -97,7 +97,7 @@ Close the CEO feedback loop without rebuilding the calculator UI. The work shoul
    - calculator version,
    - equipment profile/mode,
    - route ID,
-   - origin/destination ports,
+   - origin/destination labels,
    - transit range,
    - freight line items,
    - compliance status,

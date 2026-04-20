@@ -350,7 +350,7 @@ function oceanFreightNote(route: RouteOption): string {
   if (!transitTime) {
     return `${routeLabel}. Transit time must be confirmed with the current carrier schedule before booking.`;
   }
-  return `${routeLabel}. Ocean transit: ${formatTransitTime(transitTime)}.`;
+  return `${routeLabel}. Transit: ${formatTransitTime(transitTime)}.`;
 }
 
 function buildLineItems(input: {

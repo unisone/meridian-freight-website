@@ -75,7 +75,7 @@ const estimate = {
       label: "Sea freight and loading",
       amountUsd: 12900,
       includedInTotal: true,
-      note: "Houston, TX to Buenos Aires. Ocean transit: 28-35 days.",
+      note: "Houston, TX to Buenos Aires. Transit: 28-35 days.",
     },
   ],
   usInlandTransport: 0,

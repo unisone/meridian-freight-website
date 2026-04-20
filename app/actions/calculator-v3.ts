@@ -218,7 +218,7 @@ const EMAIL_COPY = {
     usInland: "U.S. inland transport",
     packingLoading: "Packing and loading",
     seaFreightLoading: "Sea freight and loading",
-    estimatedFreightToPort: "Estimated freight to destination port",
+    estimatedFreightToPort: "Estimated freight to destination shown",
     excludesUsInland: "excludes U.S. inland",
     dedicatedContainerComparison: "Dedicated-container comparison",
     subject: `Your Freight Estimate - ${COMPANY.name}`,
@@ -258,7 +258,7 @@ const EMAIL_COPY = {
     usInland: "Transporte interno en EE. UU.",
     packingLoading: "Embalaje y carga",
     seaFreightLoading: "Flete marítimo y carga",
-    estimatedFreightToPort: "Flete estimado al puerto destino",
+    estimatedFreightToPort: "Flete estimado al destino mostrado",
     excludesUsInland: "sin transporte interno de EE. UU.",
     dedicatedContainerComparison: "Comparación con contenedor dedicado",
     subject: `Su estimación de flete - ${COMPANY.name}`,
@@ -298,7 +298,7 @@ const EMAIL_COPY = {
     usInland: "Внутренняя доставка по США",
     packingLoading: "Упаковка и погрузка",
     seaFreightLoading: "Морской фрахт и погрузка",
-    estimatedFreightToPort: "Оценка фрахта до порта назначения",
+    estimatedFreightToPort: "Оценка фрахта до указанного назначения",
     excludesUsInland: "без внутренней доставки по США",
     dedicatedContainerComparison: "Сравнение с отдельным контейнером",
     subject: `Ваш расчет фрахта - ${COMPANY.name}`,
@@ -369,7 +369,7 @@ function importCostHtml(
 
   const sourceLine =
     audience === "internal"
-      ? `HS ${escapeHtml(importCost.hsCode)}, ${escapeHtml(importCost.sourceLabel ?? "source on file")} (${escapeHtml(importCost.sourceVersion ?? "version unavailable")}).`
+      ? `HS ${escapeHtml(importCost.hsCode)}, ${escapeHtml(importCost.sourceLabel ?? "source on file")}.`
       : `HS ${escapeHtml(importCost.hsCode)}. ${escapeHtml(t.importFinalBrokerLine)}`;
   const note =
     audience === "internal" && importCost.note
@@ -700,10 +700,10 @@ export async function submitCalculatorV3(
         : null,
       `Route: ${routeLabel(estimate)}`,
       `Transit: ${estimate.route.transitTimeDays ?? "to be confirmed"}`,
-      `Freight: ${formatDollar(estimate.freightTotal)} (${estimate.lineItems.map((line) => `${line.label}: ${line.amountUsd == null ? (line.includedInTotal ? "quote-confirmed" : "not included") : formatDollar(line.amountUsd)}`).join(" + ")})`,
+      `Freight: ${formatDollar(estimate.freightTotal)} (${estimate.lineItems.map((line) => `${line.label}: ${line.amountUsd == null ? (line.includedInTotal ? "quote confirmation required" : "not included") : formatDollar(line.amountUsd)}`).join(" + ")})`,
       `Compliance prep: ${estimate.compliancePrep.status} / ${estimate.compliancePrep.amountStatus}${estimate.compliancePrep.amountUsd != null ? ` / ${formatDollar(estimate.compliancePrep.amountUsd)}` : " / broker confirmation required"}`,
       estimate.importCost.available && estimate.importCost.amountUsd != null
-        ? `Import estimate: ${formatDollar(estimate.importCost.amountUsd)} | ${estimate.importCost.status} | HS ${estimate.importCost.hsCode} | ${estimate.importCost.sourceVersion}`
+        ? `Import estimate: ${formatDollar(estimate.importCost.amountUsd)} | ${estimate.importCost.status} | HS ${estimate.importCost.hsCode} | ${estimate.importCost.sourceLabel ?? "source on file"}`
         : `Import estimate: ${estimate.importCost.status}${estimate.importCost.missingInputs.length > 0 ? ` | missing ${estimate.importCost.missingInputs.join(", ")}` : ""}`,
       estimate.warnings.length > 0
         ? `Warnings: ${estimate.warnings.map((warning) => getLocalizedText(warning, locale)).join(" | ")}`

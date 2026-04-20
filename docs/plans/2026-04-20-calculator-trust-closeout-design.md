@@ -32,7 +32,7 @@ The freight total remains freight only. Compliance prep, customs duties, VAT, br
 - Combines, tractors, and sprayers can expose whole-unit and containerized options where a safe freight profile exists.
 - Combines in containers are priced as two 40HC containers, with copy explaining the 1 1/3-container footprint and remaining compatible cargo space.
 - Headers use shared-container math where four compatible headers fit in one 40HC and show a dedicated-container comparison.
-- Destination port choice, route cards, cheapest/fastest selection, transit time, and visible origin/destination ports are important.
+- Destination port/route choice, route cards, cheapest/fastest selection, transit time, and visible origin/destination labels are important.
 - Country-specific compliance notes are useful if they are conservative and source-backed.
 - Import-cost estimates are useful only when they are clearly separate from freight and source-backed.
 - Optional WhatsApp handoff and preferred contact capture should remain.
@@ -55,7 +55,7 @@ The freight total remains freight only. Compliance prep, customs duties, VAT, br
 
 The estimate card should have three separate conceptual buckets:
 
-1. Freight to destination port
+1. Freight to destination shown
    - U.S. inland transport when ZIP is provided.
    - Packing/loading when containerized through Albion.
    - Sea freight and loading for flatrack routes.
@@ -147,7 +147,7 @@ Lead submissions should preserve structured V3 context for operations:
 - policy version,
 - equipment profile and mode,
 - route ID,
-- origin/destination ports,
+- origin/destination labels,
 - transit range,
 - freight line items,
 - compliance status,
@@ -172,8 +172,8 @@ Use the current production calculator layout and visual language. The closeout p
 ## Error And Edge Behavior
 
 - No route: show manual quote CTA, not an empty estimate.
-- Missing pickup ZIP: show port-only freight and mark U.S. inland as excluded.
-- Missing transit: show "to be confirmed" and do not treat the route as fastest.
+- Missing pickup ZIP: show route-only freight and mark U.S. inland as excluded.
+- Missing transit: quarantine the rate row from customer automatic quotes; do not show a freight estimate until an approved transit time is present in the rate table or documented fallback evidence.
 - Fastest unavailable: fall back to cheapest with a warning.
 - Missing customs profile: show "not calculated online"; freight quote still works.
 - Missing equipment value where needed: require value only for whole-unit insurance/import-cost cases.

@@ -504,8 +504,15 @@ describe("calculator V3 route catalog", () => {
     ).toBe("35-40");
     expect(
       catalog.routes.find((route) => route.sourceRateId === "ae-chicago-40hc-missing-transit")
-        ?.transitTimeDays,
-    ).toBeNull();
+    ).toBeUndefined();
+    expect(catalog.quarantined).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          sourceRateId: "ae-chicago-40hc-missing-transit",
+          reason: "missing_transit",
+        }),
+      ]),
+    );
   });
 });
 
@@ -573,7 +580,7 @@ describe("calculateFreightV3", () => {
     );
   });
 
-  it("falls back to cheapest with a warning when fastest route has no transit data", () => {
+  it("does not return an automatic quote when route transit data is missing", () => {
     const ratesWithoutTransit: OceanFreightRate[] = [
       {
         id: "ae-chicago-cheapest",
@@ -601,6 +608,19 @@ describe("calculateFreightV3", () => {
       },
     ];
     const catalog = buildRouteCatalog(ratesWithoutTransit);
+    expect(catalog.routes).toHaveLength(0);
+    expect(catalog.quarantined).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          sourceRateId: "ae-chicago-cheapest",
+          reason: "missing_transit",
+        }),
+        expect.objectContaining({
+          sourceRateId: "ae-chicago-costlier",
+          reason: "missing_transit",
+        }),
+      ]),
+    );
 
     const estimate = calculateFreightV3({
       equipmentRates,
@@ -616,15 +636,7 @@ describe("calculateFreightV3", () => {
       zipCode: null,
     });
 
-    expect(estimate).not.toBeNull();
-    expect(estimate?.route.sourceRateId).toBe("ae-chicago-cheapest");
-    expect(estimate?.pricedContainerCount).toBe(1);
-    expect(estimate?.warnings.map((entry) => entry.en).join(" ")).toContain(
-      "carrier schedule confirmation",
-    );
-    expect(
-      estimate?.lineItems.find((line) => line.id === "ocean_freight")?.note,
-    ).toContain("Transit time must be confirmed");
+    expect(estimate).toBeNull();
   });
 
   it("keeps Argentina compliance prep separate and applies the full broker-budget profile", () => {
