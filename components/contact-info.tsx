@@ -1,6 +1,7 @@
-import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Youtube } from "lucide-react";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { CONTACT, SOCIAL } from "@/lib/constants";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
+import { FacebookIcon, InstagramIcon, YouTubeIcon } from "@/components/social-icons";
 import { useTranslations } from "next-intl";
 
 export function ContactInfo() {
@@ -78,7 +79,7 @@ export function ContactInfo() {
             className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
             aria-label={t("facebook")}
           >
-            <Facebook className="h-4 w-4" />
+            <FacebookIcon className="h-4 w-4" />
           </a>
           <a
             href={SOCIAL.instagram}
@@ -87,7 +88,7 @@ export function ContactInfo() {
             className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
             aria-label={t("instagram")}
           >
-            <Instagram className="h-4 w-4" />
+            <InstagramIcon className="h-4 w-4" />
           </a>
           <a
             href={SOCIAL.youtube}
@@ -96,7 +97,7 @@ export function ContactInfo() {
             className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all hover:bg-primary hover:text-white hover:scale-110"
             aria-label={t("youtube")}
           >
-            <Youtube className="h-4 w-4" />
+            <YouTubeIcon className="h-4 w-4" />
           </a>
         </div>
       </div>

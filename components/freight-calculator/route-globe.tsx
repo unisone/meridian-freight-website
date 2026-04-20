@@ -316,7 +316,7 @@ export function RouteGlobe({
       ref={containerRef}
       className={`relative overflow-hidden rounded-xl bg-black ${className}`}
       role="img"
-      aria-label="Shipping route visualization"
+      aria-label="Shipping route preview"
     >
       <GlobeGL
         ref={globeRef}
@@ -369,7 +369,7 @@ export function RouteGlobe({
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
           </span>
           <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-            Live Route Analysis
+            Route preview
           </span>
         </div>
       )}

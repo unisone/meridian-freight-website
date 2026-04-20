@@ -7,9 +7,10 @@ import {
   type RoutePreference,
 } from "@/lib/calculator-v3/contracts";
 import {
-  FLATRACK_NCB_BY_POL,
   FORTYHC_ORIGIN_PORT,
+  getFlatrackNcbUsd,
 } from "@/lib/freight-policy";
+import { resolveRouteTransitFallback } from "@/lib/calculator-v3/route-transit-fallbacks";
 import type { ContainerType, OceanFreightRate } from "@/lib/types/calculator";
 
 const CARRIER_PREFERENCE = ["HAPAG", "Maersk", "CMA"];
@@ -68,17 +69,44 @@ function carrierRank(carrier: string): number {
 export function normalizeOriginPort(value: string): NormalizedPort | null {
   const normalized = normalizeToken(value);
   if (!normalized) return null;
-  if (normalized.includes("chicago")) return NORMALIZED_PORTS.chicago;
-  if (normalized.includes("houston")) return NORMALIZED_PORTS.houston;
-  if (normalized.includes("savannah")) return NORMALIZED_PORTS.savannah;
-  if (normalized.includes("baltimore")) return NORMALIZED_PORTS.baltimore;
-  if (normalized.includes("charleston")) return NORMALIZED_PORTS.charleston;
-  if (normalized.includes("jacksonville") || normalized.includes("jacksonvile")) {
+  if (normalized === "chicago" || normalized === "chicago il") {
+    return NORMALIZED_PORTS.chicago;
+  }
+  if (normalized === "houston" || normalized === "houston tx") {
+    return NORMALIZED_PORTS.houston;
+  }
+  if (normalized === "savannah" || normalized === "savannah ga") {
+    return NORMALIZED_PORTS.savannah;
+  }
+  if (normalized === "baltimore" || normalized === "baltimore md") {
+    return NORMALIZED_PORTS.baltimore;
+  }
+  if (normalized === "charleston" || normalized === "charleston sc") {
+    return NORMALIZED_PORTS.charleston;
+  }
+  if (
+    normalized === "jacksonville" ||
+    normalized === "jacksonville fl" ||
+    normalized === "jacksonvile"
+  ) {
     return NORMALIZED_PORTS.jacksonville;
   }
-  if (normalized.includes("norfolk")) return NORMALIZED_PORTS.norfolk;
-  if (normalized.includes("tacoma")) return NORMALIZED_PORTS.tacoma;
+  if (normalized === "norfolk" || normalized === "norfolk va") {
+    return NORMALIZED_PORTS.norfolk;
+  }
+  if (normalized === "tacoma" || normalized === "tacoma wa") {
+    return NORMALIZED_PORTS.tacoma;
+  }
   return null;
+}
+
+function hasImpossibleOriginPort(value: string): boolean {
+  const normalized = normalizeToken(value);
+  if (normalized === "savannah tx") return true;
+  if (normalized === "houston ga") return true;
+  if (normalized === "baltimore tx") return true;
+  if (normalized === "charleston tx") return true;
+  return false;
 }
 
 export function normalizeDestinationPort(value: string): { key: string; label: string } | null {
@@ -136,6 +164,28 @@ function routeIdFor(rate: OceanFreightRate, origin: NormalizedPort, destinationK
   ].join(":");
 }
 
+function dedupeKeyFor(route: RouteOption): string {
+  return [
+    route.containerType,
+    route.destinationCountry,
+    route.origin.key,
+    route.destination.key,
+    slugify(route.carrier),
+  ].join("|");
+}
+
+function isPreferredDuplicate(candidate: RouteOption, current: RouteOption): boolean {
+  const candidateCost = getRouteServiceCostUsd(candidate);
+  const currentCost = getRouteServiceCostUsd(current);
+  if (candidateCost !== currentCost) return candidateCost < currentCost;
+
+  const candidateTransit = candidate.transitMinDays ?? Number.POSITIVE_INFINITY;
+  const currentTransit = current.transitMinDays ?? Number.POSITIVE_INFINITY;
+  if (candidateTransit !== currentTransit) return candidateTransit < currentTransit;
+
+  return candidate.id.localeCompare(current.id) < 0;
+}
+
 function quarantine(rate: OceanFreightRate, reason: QuarantinedRate["reason"]): QuarantinedRate {
   return {
     sourceRateId: rate.id,
@@ -166,6 +216,11 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
       continue;
     }
 
+    if (hasImpossibleOriginPort(rate.origin_port)) {
+      quarantined.push(quarantine(rate, "impossible_origin"));
+      continue;
+    }
+
     const origin = normalizeOriginPort(rate.origin_port);
     if (!origin) {
       quarantined.push(quarantine(rate, "unknown_origin"));
@@ -193,7 +248,19 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
       continue;
     }
 
-    const transit = parseTransitDays(rate.transit_time_days);
+    const rawTransitTimeDays = rate.transit_time_days?.trim() || null;
+    const transitFallback =
+      rawTransitTimeDays === null
+        ? resolveRouteTransitFallback({
+            containerType: rate.container_type,
+            destinationCountry,
+            originKey: origin.key,
+            destinationKey: destination.key,
+            carrier: rate.carrier,
+          })
+        : null;
+    const transitTimeDays = rawTransitTimeDays ?? transitFallback?.transitTimeDays ?? null;
+    const transit = parseTransitDays(transitTimeDays);
     routes.push(
       routeOptionSchema.parse({
         id: routeIdFor(rate, origin, destination.key),
@@ -206,14 +273,23 @@ export function buildRouteCatalog(oceanRates: OceanFreightRate[]): RouteCatalog 
         oceanRateUsd: rate.ocean_rate ?? 0,
         drayageUsd: rate.drayage ?? 0,
         packingDrayageUsd: rate.packing_drayage ?? 0,
-        transitTimeDays: rate.transit_time_days?.trim() || null,
+        transitTimeDays,
         ...transit,
       }),
     );
   }
 
-  routes.sort(compareRoutes("cheapest"));
-  return { routes, quarantined };
+  const deduped = new Map<string, RouteOption>();
+  for (const route of routes) {
+    const key = dedupeKeyFor(route);
+    const current = deduped.get(key);
+    if (!current || isPreferredDuplicate(route, current)) {
+      deduped.set(key, route);
+    }
+  }
+
+  const catalogRoutes = Array.from(deduped.values()).sort(compareRoutes("cheapest"));
+  return { routes: catalogRoutes, quarantined };
 }
 
 export function getRouteServiceCostUsd(route: RouteOption): number {
@@ -223,7 +299,10 @@ export function getRouteServiceCostUsd(route: RouteOption): number {
   return (
     route.oceanRateUsd +
     route.packingDrayageUsd +
-    (FLATRACK_NCB_BY_POL[route.origin.label] ?? 0)
+    getFlatrackNcbUsd({
+      originPort: route.origin.label,
+      destinationCountry: route.destinationCountry,
+    })
   );
 }
 

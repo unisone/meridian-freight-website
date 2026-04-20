@@ -1,9 +1,10 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 
 import { COMPANY, CONTACT, SOCIAL, NAV_ITEMS } from "@/lib/constants";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { FacebookIcon, InstagramIcon, YouTubeIcon } from "@/components/social-icons";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { getAllDestinations } from "@/content/destinations";
@@ -93,7 +94,7 @@ export function Footer() {
                 className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-primary hover:text-white hover:scale-110"
                 aria-label={t("followFacebook")}
               >
-                <Facebook className="h-5 w-5" />
+                <FacebookIcon className="h-5 w-5" />
               </a>
               <a
                 href={SOCIAL.instagram}
@@ -102,7 +103,7 @@ export function Footer() {
                 className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-pink-500 hover:text-white hover:scale-110"
                 aria-label={t("followInstagram")}
               >
-                <Instagram className="h-5 w-5" />
+                <InstagramIcon className="h-5 w-5" />
               </a>
               <a
                 href={SOCIAL.youtube}
@@ -111,7 +112,7 @@ export function Footer() {
                 className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-800 text-slate-400 transition-[color,background-color,transform] hover:bg-red-600 hover:text-white hover:scale-110"
                 aria-label={t("watchYouTube")}
               >
-                <Youtube className="h-5 w-5" />
+                <YouTubeIcon className="h-5 w-5" />
               </a>
             </div>
           </div>

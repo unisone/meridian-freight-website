@@ -1,16 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  AlertTriangle,
-  CheckCircle2,
+  ArrowRight,
+  CheckCircle,
+  ChevronDown,
   Clock3,
   DollarSign,
-  Mail,
+  Globe,
+  Info,
+  Loader2,
+  Lock,
   MessageCircle,
+  Package,
   PackageCheck,
-  Route,
   Ship,
   Truck,
 } from "lucide-react";
@@ -19,183 +22,351 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { CalculatorProgressBar } from "@/components/freight-calculator/calculator-progress-bar";
+import { CATEGORY_ICONS } from "@/components/freight-calculator/category-icons";
+import { RouteGlobe } from "@/components/freight-calculator/route-globe";
 import { getCalculatorDataV3 } from "@/app/actions/calculator-v3-data";
 import {
   submitCalculatorV3,
   type CalculatorV3Result,
 } from "@/app/actions/calculator-v3";
-import { calculateFreightV3 } from "@/lib/calculator-v3/engine";
-import { getLocalizedText } from "@/lib/calculator-v3/policy";
 import {
-  compareRoutes,
-  getRouteServiceCostUsd,
-} from "@/lib/calculator-v3/routes";
+  calculateFreightV3,
+  compareRoutesForFreightV3,
+  getV3RouteFreightSortCost,
+} from "@/lib/calculator-v3/engine";
+import { getLocalizedText } from "@/lib/calculator-v3/policy";
 import { CONTACT, TRACKING } from "@/lib/constants";
 import { formatDollar } from "@/lib/freight-engine-v2";
 import {
+  trackCalcFunnel,
   trackContactClick,
   trackGA4Event,
   trackGoogleAdsConversion,
   trackPixelEvent,
 } from "@/lib/tracking";
-import {
-  COUNTRY_NAMES,
-  type ContainerType,
-} from "@/lib/types/calculator";
+import { COUNTRY_NAMES, type ContainerType } from "@/lib/types/calculator";
+import { Link } from "@/i18n/navigation";
 import type {
   CalculatorDataV3,
   CalculatorLocale,
   EquipmentQuoteMode,
   EquipmentQuoteProfile,
   FreightEstimateV3,
+  FreightLineItemV3,
+  ImportCostEstimateV3,
   RouteOption,
   RoutePreference,
+  ShippingMode,
 } from "@/lib/calculator-v3/contracts";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TARGET_COUNTRIES = new Set(["AR", "CL", "UY", "PY", "BO"]);
 
 const COPY = {
   en: {
     unavailableTitle: "Calculator unavailable",
-    unavailableBody: "Live rate data is temporarily unavailable. Meridian can still prepare a manual quote.",
-    whatsapp: "WhatsApp Meridian",
-    stepEquipment: "Equipment",
-    stepRoute: "Route",
-    stepEstimate: "Estimate",
-    stepContact: "Contact",
+    unavailableDescription:
+      "Current rate data is temporarily unavailable. Meridian can still prepare a manual quote.",
+    selectEquipmentCategory: "Select equipment category",
+    selectEquipmentHint: "Select equipment above to see specifications.",
+    equipmentSpecs: "Equipment specs",
+    shippingRoute: "Shipping route",
+    completeEquipmentHint: "Complete equipment selection to configure routing.",
     shippingMode: "Shipping mode",
-    country: "Country",
-    destinationPort: "Destination port",
-    allPorts: "Best available",
+    quantity: "Quantity",
+    equipmentValueUsd: "Equipment value",
+    equipmentValuePlaceholder: "e.g. 125000",
+    equipmentValueHint:
+      "Used for flat rack insurance and indicative import-cost estimates.",
+    valueRequired: "Enter equipment value for this mode.",
+    destinationCountry: "Destination country",
+    selectCountry: "Select country",
+    usPickupZip: "U.S. Pickup ZIP",
+    optional: "optional",
+    zipPlaceholder: "e.g. 50005",
+    zipHint: "Used to estimate U.S. inland transport. Leave blank for port-only freight.",
     routePreference: "Route preference",
     cheapest: "Cheapest",
     fastest: "Fastest",
-    routeCard: "Route",
+    destinationPort: "Destination port",
+    routeOptions: "Route options",
+    route: "Route",
     transit: "Transit",
-    notPublished: "Not published",
-    quantity: "Quantity",
-    zip: "U.S. ZIP",
-    value: "Equipment value",
-    valueHelp: "Required for whole-unit routes and customs estimates.",
-    freightTotal: "Freight total",
+    notPublished: "To be confirmed",
+    routeRequired: "Select a route before submitting.",
+    noPublishedRoutesTitle: "No automatic route for this selection",
+    noPublishedRoutesDescription:
+      "This equipment mode and destination are not available in the automatic calculator yet. Meridian can quote it manually.",
+    estimatedFreight: "Estimated freight",
+    basedOnRates:
+      "Estimated from current route rates. Final pricing is confirmed by Meridian.",
+    optimizedRouteRate: "selected route estimate",
+    exclInlandTransport: "excludes U.S. inland transport",
+    selectDestination: "Select destination",
+    routeUnavailableEstimate: "Route unavailable",
+    emptyStateText: "Select equipment and destination to see an estimate",
+    freightTotal: "Estimated freight to destination port",
+    compliancePrep: "Compliance prep",
     importEstimate: "Indicative import-cost estimate",
-    unavailable: "Not available",
-    lineItems: "Line items",
-    dedicated: "Dedicated-container comparison",
-    notes: "Notes",
-    warnings: "Warnings",
-    email: "Email",
-    name: "Name",
-    company: "Company",
-    phone: "Phone / WhatsApp",
+    importNotIncluded: "Separate from freight",
+    importBrokerNote:
+      "Final duties, taxes, broker fees, and destination charges must be confirmed with a licensed customs broker.",
+    brokerConfirmed: "Broker confirmation required",
+    quoteConfirmed: "Quote confirmation required",
+    notAvailable: "Not calculated online",
+    notCalculatedOnline: "Not calculated online",
+    noAutomaticCharge: "No automatic charge",
+    needsInput: "More info needed",
+    missingInputs: "Missing inputs",
+    dedicatedComparison: "Dedicated-container comparison",
+    getYourDetailedEstimate: "Send this estimate",
+    emailLabel: "Email",
+    nameLabel: "Name",
+    companyLabel: "Company",
+    phoneLabel: "Phone / WhatsApp",
     preferredContact: "Preferred contact",
     emailOption: "Email",
     whatsappOption: "WhatsApp",
-    submit: "Email my estimate",
-    submitting: "Sending...",
-    success: "Estimate sent. Meridian has the V3 route, policy, and contact details.",
-    emailRequired: "Enter a valid email.",
-    valueRequired: "Enter equipment value for this mode.",
-    routeRequired: "Select a route before submitting.",
-    preview: "Preview route",
-    modeUnavailable: "Confirm with Meridian",
-    policy: "Policy",
+    optionalPlaceholder: "Optional",
+    emailPlaceholder: "you@company.com",
+    validEmailError: "Enter a valid email.",
+    calculateAndSend: "Send detailed estimate",
+    calculating: "Calculating...",
+    emailBreakdownNote: "Email is required to send the detailed breakdown.",
+    bookThisFreight: "Send detailed estimate",
+    refineQuote: "Adjust estimate",
+    estimateSentTo: "Estimate sent to {email}",
+    getDetailedQuote: "Request confirmed quote",
+    whatsAppUs: "Chat on WhatsApp",
+    calculateAnother: "Calculate another",
+    viewEstimateDetails: "View estimate details",
+    viewEstimate: "View estimate",
+    selectDestinationForEstimate: "Select destination for estimate",
+    selectEquipmentToBegin: "Select equipment to begin",
+    yourFreightEstimate: "Your freight estimate",
+    lineItems: "Line items",
+    container: "Container",
+    carrier: "Carrier",
+    recoverableCredits: "Recoverable credits",
+    warnings: "Warnings",
+    notes: "Notes",
+    disclaimer:
+      "Freight, compliance prep, and import costs are separate estimates. Freight is estimated to the destination port shown; final booking, compliance services, duties, taxes, destination charges, and any destination-specific wash or treatment must be confirmed before shipment.",
   },
   es: {
     unavailableTitle: "Calculadora no disponible",
-    unavailableBody: "Las tarifas en vivo no estan disponibles temporalmente. Meridian puede preparar una cotizacion manual.",
-    whatsapp: "WhatsApp Meridian",
-    stepEquipment: "Equipo",
-    stepRoute: "Ruta",
-    stepEstimate: "Estimacion",
-    stepContact: "Contacto",
-    shippingMode: "Modo de envio",
-    country: "Pais",
-    destinationPort: "Puerto destino",
-    allPorts: "Mejor disponible",
-    routePreference: "Preferencia de ruta",
-    cheapest: "Mas barata",
-    fastest: "Mas rapida",
-    routeCard: "Ruta",
-    transit: "Transito",
-    notPublished: "No publicado",
+    unavailableDescription:
+      "Las tarifas actuales no están disponibles temporalmente. Meridian puede preparar una cotización manual.",
+    selectEquipmentCategory: "Seleccione categoría de equipo",
+    selectEquipmentHint: "Seleccione equipo arriba para ver especificaciones.",
+    equipmentSpecs: "Especificaciones",
+    shippingRoute: "Ruta de envío",
+    completeEquipmentHint: "Complete la selección del equipo para configurar la ruta.",
+    shippingMode: "Modo de envío",
     quantity: "Cantidad",
-    zip: "ZIP en EE.UU.",
-    value: "Valor del equipo",
-    valueHelp: "Requerido para envios completos y estimaciones aduaneras.",
-    freightTotal: "Total de flete",
-    importEstimate: "Estimacion indicativa de importacion",
-    unavailable: "No disponible",
-    lineItems: "Lineas",
-    dedicated: "Comparacion con contenedor dedicado",
-    notes: "Notas",
-    warnings: "Avisos",
-    email: "Email",
-    name: "Nombre",
-    company: "Empresa",
-    phone: "Telefono / WhatsApp",
+    equipmentValueUsd: "Valor del equipo",
+    equipmentValuePlaceholder: "ej. 125000",
+    equipmentValueHint:
+      "Se usa para seguro flat rack y estimaciones indicativas de importación.",
+    valueRequired: "Ingrese el valor del equipo para este modo.",
+    destinationCountry: "País destino",
+    selectCountry: "Seleccione país",
+    usPickupZip: "ZIP de retiro en EE. UU.",
+    optional: "opcional",
+    zipPlaceholder: "ej. 50005",
+    zipHint:
+      "Se usa para estimar transporte interno en EE. UU. Déjelo vacío para flete desde puerto.",
+    routePreference: "Preferencia de ruta",
+    cheapest: "Más barata",
+    fastest: "Más rápida",
+    destinationPort: "Puerto destino",
+    routeOptions: "Opciones de ruta",
+    route: "Ruta",
+    transit: "Tránsito",
+    notPublished: "Por confirmar",
+    routeRequired: "Seleccione una ruta antes de enviar.",
+    noPublishedRoutesTitle: "No hay ruta automática para esta selección",
+    noPublishedRoutesDescription:
+      "Este modo de equipo y destino aún no está disponible en la calculadora automática. Meridian puede cotizarlo manualmente.",
+    estimatedFreight: "Flete estimado",
+    basedOnRates:
+      "Estimado con tarifas actuales. El precio final lo confirma Meridian.",
+    optimizedRouteRate: "estimación de la ruta seleccionada",
+    exclInlandTransport: "sin transporte interno de EE. UU.",
+    selectDestination: "Seleccione destino",
+    routeUnavailableEstimate: "Ruta no disponible",
+    emptyStateText: "Seleccione equipo y destino para ver una estimación",
+    freightTotal: "Flete estimado al puerto destino",
+    compliancePrep: "Preparación de cumplimiento",
+    importEstimate: "Estimación indicativa de importación",
+    importNotIncluded: "Separado del flete",
+    importBrokerNote:
+      "Derechos, impuestos, honorarios del broker y cargos en destino deben confirmarse con un broker aduanal autorizado.",
+    brokerConfirmed: "Confirmación del broker requerida",
+    quoteConfirmed: "Confirmación de cotización requerida",
+    notAvailable: "No calculado en línea",
+    notCalculatedOnline: "No calculado en línea",
+    noAutomaticCharge: "Sin cargo automático",
+    needsInput: "Faltan datos",
+    missingInputs: "Datos faltantes",
+    dedicatedComparison: "Comparación con contenedor dedicado",
+    getYourDetailedEstimate: "Enviar esta estimación",
+    emailLabel: "Email",
+    nameLabel: "Nombre",
+    companyLabel: "Empresa",
+    phoneLabel: "Teléfono / WhatsApp",
     preferredContact: "Contacto preferido",
     emailOption: "Email",
     whatsappOption: "WhatsApp",
-    submit: "Enviar estimacion",
-    submitting: "Enviando...",
-    success: "Estimacion enviada. Meridian tiene la ruta V3, politica y contacto.",
-    emailRequired: "Ingrese un email valido.",
-    valueRequired: "Ingrese el valor del equipo para este modo.",
-    routeRequired: "Seleccione una ruta antes de enviar.",
-    preview: "Ruta preliminar",
-    modeUnavailable: "Confirmar con Meridian",
-    policy: "Politica",
+    optionalPlaceholder: "Opcional",
+    emailPlaceholder: "usted@empresa.com",
+    validEmailError: "Ingrese un email válido.",
+    calculateAndSend: "Enviar estimación detallada",
+    calculating: "Calculando...",
+    emailBreakdownNote: "El email es obligatorio para enviar el detalle.",
+    bookThisFreight: "Enviar estimación detallada",
+    refineQuote: "Ajustar estimación",
+    estimateSentTo: "Estimación enviada a {email}",
+    getDetailedQuote: "Solicitar cotización confirmada",
+    whatsAppUs: "Chat por WhatsApp",
+    calculateAnother: "Calcular otra",
+    viewEstimateDetails: "Ver detalle",
+    viewEstimate: "Ver estimación",
+    selectDestinationForEstimate: "Seleccione destino",
+    selectEquipmentToBegin: "Seleccione equipo",
+    yourFreightEstimate: "Su estimación de flete",
+    lineItems: "Partidas",
+    container: "Contenedor",
+    carrier: "Naviera",
+    recoverableCredits: "Créditos recuperables",
+    warnings: "Avisos",
+    notes: "Notas",
+    disclaimer:
+      "Flete, preparación de cumplimiento y costos de importación son estimaciones separadas. El flete se estima hasta el puerto destino mostrado; reserva final, servicios de cumplimiento, derechos, impuestos, cargos en destino y cualquier lavado o tratamiento específico deben confirmarse antes del embarque.",
   },
   ru: {
     unavailableTitle: "Калькулятор недоступен",
-    unavailableBody: "Живые тарифы временно недоступны. Meridian подготовит ручной расчет.",
-    whatsapp: "WhatsApp Meridian",
-    stepEquipment: "Техника",
-    stepRoute: "Маршрут",
-    stepEstimate: "Расчет",
-    stepContact: "Контакт",
+    unavailableDescription:
+      "Текущие тарифы временно недоступны. Meridian подготовит ручной расчет.",
+    selectEquipmentCategory: "Выберите категорию техники",
+    selectEquipmentHint: "Выберите технику выше, чтобы увидеть параметры.",
+    equipmentSpecs: "Параметры техники",
+    shippingRoute: "Маршрут отправки",
+    completeEquipmentHint: "Завершите выбор техники, чтобы настроить маршрут.",
     shippingMode: "Способ отправки",
-    country: "Страна",
-    destinationPort: "Порт назначения",
-    allPorts: "Лучший вариант",
+    quantity: "Количество",
+    equipmentValueUsd: "Стоимость техники",
+    equipmentValuePlaceholder: "например 125000",
+    equipmentValueHint:
+      "Используется для страхования flat rack и ориентировочной импортной оценки.",
+    valueRequired: "Укажите стоимость техники для этого способа.",
+    destinationCountry: "Страна назначения",
+    selectCountry: "Выберите страну",
+    usPickupZip: "ZIP забора в США",
+    optional: "необязательно",
+    zipPlaceholder: "например 50005",
+    zipHint: "Используется для оценки внутренней доставки по США. Оставьте пустым для фрахта от порта.",
     routePreference: "Приоритет маршрута",
     cheapest: "Дешевле",
     fastest: "Быстрее",
-    routeCard: "Маршрут",
+    destinationPort: "Порт назначения",
+    routeOptions: "Варианты маршрута",
+    route: "Маршрут",
     transit: "Транзит",
-    notPublished: "Не опубликовано",
-    quantity: "Количество",
-    zip: "ZIP в США",
-    value: "Стоимость техники",
-    valueHelp: "Нужно для отправки целиком и импортной оценки.",
-    freightTotal: "Итого фрахт",
+    notPublished: "Подтвердить",
+    routeRequired: "Выберите маршрут перед отправкой.",
+    noPublishedRoutesTitle: "Нет автоматического маршрута для выбора",
+    noPublishedRoutesDescription:
+      "Этот способ и направление пока не доступны в автоматическом калькуляторе. Meridian может подготовить ручной расчет.",
+    estimatedFreight: "Оценка фрахта",
+    basedOnRates:
+      "Расчет по текущим тарифам. Финальную цену подтверждает Meridian.",
+    optimizedRouteRate: "оценка выбранного маршрута",
+    exclInlandTransport: "без внутренней доставки по США",
+    selectDestination: "Выберите направление",
+    routeUnavailableEstimate: "Маршрут недоступен",
+    emptyStateText: "Выберите технику и направление, чтобы увидеть расчет",
+    freightTotal: "Оценка фрахта до порта назначения",
+    compliancePrep: "Подготовка к требованиям",
     importEstimate: "Ориентировочная импортная оценка",
-    unavailable: "Недоступно",
-    lineItems: "Строки расчета",
-    dedicated: "Сравнение с отдельным контейнером",
-    notes: "Примечания",
-    warnings: "Предупреждения",
-    email: "Email",
-    name: "Имя",
-    company: "Компания",
-    phone: "Телефон / WhatsApp",
+    importNotIncluded: "Отдельно от фрахта",
+    importBrokerNote:
+      "Пошлины, налоги, услуги брокера и расходы в стране назначения должен подтвердить лицензированный таможенный брокер.",
+    brokerConfirmed: "Требуется подтверждение брокера",
+    quoteConfirmed: "Требуется подтверждение расчета",
+    notAvailable: "Не рассчитывается онлайн",
+    notCalculatedOnline: "Не рассчитывается онлайн",
+    noAutomaticCharge: "Нет автоматического начисления",
+    needsInput: "Нужны данные",
+    missingInputs: "Не хватает данных",
+    dedicatedComparison: "Сравнение с отдельным контейнером",
+    getYourDetailedEstimate: "Получить подробный расчет",
+    emailLabel: "Email",
+    nameLabel: "Имя",
+    companyLabel: "Компания",
+    phoneLabel: "Телефон / WhatsApp",
     preferredContact: "Предпочтительный контакт",
     emailOption: "Email",
     whatsappOption: "WhatsApp",
-    submit: "Отправить расчет",
-    submitting: "Отправка...",
-    success: "Расчет отправлен. Meridian получил маршрут V3, политику и контакты.",
-    emailRequired: "Укажите корректный email.",
-    valueRequired: "Укажите стоимость техники для этого способа.",
-    routeRequired: "Выберите маршрут перед отправкой.",
-    preview: "Предварительный маршрут",
-    modeUnavailable: "Подтвердить с Meridian",
-    policy: "Политика",
+    optionalPlaceholder: "Необязательно",
+    emailPlaceholder: "you@company.com",
+    validEmailError: "Укажите корректный email.",
+    calculateAndSend: "Отправить подробный расчет",
+    calculating: "Расчет...",
+    emailBreakdownNote: "Email обязателен, чтобы отправить подробный расчет.",
+    bookThisFreight: "Отправить подробный расчет",
+    refineQuote: "Уточнить расчет",
+    estimateSentTo: "Расчет отправлен на {email}",
+    getDetailedQuote: "Запросить подтвержденный расчет",
+    whatsAppUs: "Написать в WhatsApp",
+    calculateAnother: "Рассчитать еще",
+    viewEstimateDetails: "Открыть детали",
+    viewEstimate: "Смотреть расчет",
+    selectDestinationForEstimate: "Выберите направление",
+    selectEquipmentToBegin: "Выберите технику",
+    yourFreightEstimate: "Ваш расчет фрахта",
+    lineItems: "Строки расчета",
+    container: "Контейнер",
+    carrier: "Линия",
+    recoverableCredits: "Возмещаемые кредиты",
+    warnings: "Предупреждения",
+    notes: "Примечания",
+    disclaimer:
+      "Фрахт, подготовка к требованиям и импортные расходы являются отдельными оценками. Фрахт рассчитан до указанного порта назначения; финальное бронирование, услуги по требованиям, пошлины, налоги, расходы в стране назначения и любая мойка или обработка должны быть подтверждены до отправки.",
   },
 } as const;
+
+const MISSING_INPUT_LABELS: Record<string, Record<CalculatorLocale, string>> = {
+  equipment_value: {
+    en: "equipment value",
+    es: "valor del equipo",
+    ru: "стоимость техники",
+  },
+  local_transport: {
+    en: "U.S. inland transport",
+    es: "transporte interno EE. UU.",
+    ru: "внутренняя доставка США",
+  },
+  packing_and_loading: {
+    en: "packing and loading",
+    es: "embalaje y carga",
+    ru: "упаковка и погрузка",
+  },
+  ocean_freight: {
+    en: "ocean freight",
+    es: "flete marítimo",
+    ru: "морской фрахт",
+  },
+};
 
 function normalizeLocale(locale: string): CalculatorLocale {
   return locale === "es" || locale === "ru" ? locale : "en";
@@ -205,25 +376,30 @@ function countryLabel(country: string): string {
   return COUNTRY_NAMES[country] ?? country;
 }
 
-function routeDestinationLabel(route: RouteOption): string {
-  return `${route.destination.label} (${countryLabel(route.destinationCountry)} route)`;
-}
-
-function routeCostLabel(route: RouteOption): string {
-  return formatDollar(getRouteServiceCostUsd(route));
-}
-
-function percentLabel(value: number | null): string {
-  if (value == null) return "0%";
-  return `${Math.round(value * 1000) / 10}%`;
-}
-
 function containerLabel(containerType: ContainerType): string {
-  return containerType === "fortyhc" ? "40HC" : "Flat rack";
+  return containerType === "fortyhc" ? "40' High Cube" : "Flat Rack";
 }
 
-function getModeIcon(mode: EquipmentQuoteMode) {
-  return mode.containerType === "flatrack" ? Ship : PackageCheck;
+function shortContainerLabel(containerType: ContainerType): string {
+  return containerType === "fortyhc" ? "40'HC" : "Flat";
+}
+
+function formatTransit(route: RouteOption, locale: CalculatorLocale): string {
+  const value = route.transitTimeDays?.trim();
+  if (!value) return COPY[locale].notPublished;
+  if (!/\d/.test(value) || /\bday(s)?\b/i.test(value)) return value;
+  const unit = locale === "es" ? "días" : locale === "ru" ? "дней" : "days";
+  return `${value} ${unit}`;
+}
+
+function routeSortCostLabel(input: {
+  route: RouteOption;
+  mode: EquipmentQuoteMode;
+  quantity: number;
+  equipmentValueUsd: number | null;
+  zipCode: string | null;
+}): string {
+  return formatDollar(getV3RouteFreightSortCost(input));
 }
 
 function getRoutes(input: {
@@ -232,6 +408,9 @@ function getRoutes(input: {
   destinationCountry: string;
   destinationPortKey: string | null;
   preference: RoutePreference;
+  quantity: number;
+  equipmentValueUsd: number | null;
+  zipCode: string | null;
 }): RouteOption[] {
   if (!input.data || !input.mode || !input.destinationCountry) return [];
   return input.data.routes
@@ -239,44 +418,65 @@ function getRoutes(input: {
       (route) =>
         route.containerType === input.mode?.containerType &&
         route.destinationCountry === input.destinationCountry &&
-        (!input.destinationPortKey || route.destination.key === input.destinationPortKey),
+        (!input.destinationPortKey ||
+          route.destination.key === input.destinationPortKey),
     )
-    .sort(compareRoutes(input.preference));
+    .sort(
+      compareRoutesForFreightV3({
+        mode: input.mode,
+        quantity: input.quantity,
+        equipmentValueUsd: input.equipmentValueUsd,
+        zipCode: input.zipCode,
+        preference: input.preference,
+      }),
+    );
 }
 
-function getDestinationPortLabel(
-  routes: RouteOption[],
-  key: string,
-): string {
+function getDestinationPortLabel(routes: RouteOption[], key: string): string {
   return routes.find((route) => route.destination.key === key)?.destination.label ?? key;
 }
 
-function unavailablePanel(locale: CalculatorLocale) {
-  const t = COPY[locale];
-  return (
-    <div className="border border-amber-200 bg-amber-50 p-6">
-      <div className="flex items-start gap-3">
-        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" />
-        <div>
-          <h2 className="text-lg font-semibold text-amber-950">{t.unavailableTitle}</h2>
-          <p className="mt-1 text-sm text-amber-900">{t.unavailableBody}</p>
-          <Button
-            className="mt-4"
-            size="sm"
-            render={
-              <a
-                href={CONTACT.whatsappUrl}
-                onClick={() => trackContactClick("whatsapp", "calculator_v3_unavailable")}
-              />
-            }
-          >
-            <MessageCircle className="mr-2 h-4 w-4" />
-            {t.whatsapp}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+function modeIcon(mode: EquipmentQuoteMode) {
+  return mode.containerType === "flatrack" ? Truck : PackageCheck;
+}
+
+function missingInputLabel(key: string, locale: CalculatorLocale): string {
+  return MISSING_INPUT_LABELS[key]?.[locale] ?? key.replace(/_/g, " ");
+}
+
+function lineItemLabel(line: FreightLineItemV3, locale: CalculatorLocale): string {
+  if (line.id === "us_inland") {
+    return {
+      en: "U.S. inland transport",
+      es: "Transporte interno EE. UU.",
+      ru: "Внутренняя доставка США",
+    }[locale];
+  }
+  if (line.id === "packing_loading") {
+    return {
+      en: "Packing & Loading",
+      es: "Embalaje y carga",
+      ru: "Упаковка и погрузка",
+    }[locale];
+  }
+  return {
+    en: "Sea Freight & Loading",
+    es: "Flete marítimo y carga",
+    ru: "Морской фрахт и погрузка",
+  }[locale];
+}
+
+function importAmountLabel(
+  importCost: ImportCostEstimateV3,
+  locale: CalculatorLocale,
+): string {
+  if (importCost.available && importCost.amountUsd != null) {
+    return formatDollar(importCost.amountUsd);
+  }
+  if (importCost.status === "partial") {
+    return COPY[locale].needsInput;
+  }
+  return COPY[locale].notCalculatedOnline;
 }
 
 export function CalculatorV3Wizard({ locale }: { locale: string }) {
@@ -286,7 +486,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
   const [loading, setLoading] = useState(true);
   const [dataError, setDataError] = useState(false);
   const [profileId, setProfileId] = useState("");
-  const [modeId, setModeId] = useState<"whole" | "container">("whole");
+  const [modeId, setModeId] = useState<ShippingMode>("whole");
   const [quantity, setQuantity] = useState(1);
   const [destinationCountry, setDestinationCountry] = useState("");
   const [destinationPortKey, setDestinationPortKey] = useState<string | null>(null);
@@ -294,16 +494,20 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
   const [routeId, setRouteId] = useState<string | null>(null);
   const [zipCode, setZipCode] = useState("");
   const [equipmentValueUsd, setEquipmentValueUsd] = useState<number | null>(null);
+  const [rateBookSignature, setRateBookSignature] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [phone, setPhone] = useState("");
-  const [preferredContact, setPreferredContact] = useState<"email" | "whatsapp">("email");
+  const [preferredContact, setPreferredContact] = useState<"email" | "whatsapp">(
+    "email",
+  );
   const [website, setWebsite] = useState("");
-  const [rateBookSignature, setRateBookSignature] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<CalculatorV3Result | null>(null);
+  const [showAllProfiles, setShowAllProfiles] = useState(false);
+  const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
   const submittingRef = useRef(false);
   const customsTrackedRef = useRef(new Set<string>());
 
@@ -316,14 +520,6 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
         }
         setData(payload);
         setRateBookSignature(payload.rateBookSignature);
-        const initialProfile = payload.profiles[0];
-        if (initialProfile) {
-          setProfileId(initialProfile.id);
-          setModeId(initialProfile.modes.find((mode) => mode.enabled)?.id ?? "whole");
-          setQuantity(initialProfile.defaultQuantity);
-        }
-        const preferredCountry = payload.countries.find((country) => country === "AR") ?? payload.countries[0] ?? "";
-        setDestinationCountry(preferredCountry);
       })
       .catch(() => setDataError(true))
       .finally(() => setLoading(false));
@@ -337,72 +533,79 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     () => profile?.modes.find((candidate) => candidate.id === modeId) ?? null,
     [profile, modeId],
   );
+  const enabledMode = mode?.enabled ? mode : null;
+  const visibleProfiles =
+    data && !showAllProfiles && data.profiles.length > 8
+      ? data.profiles.slice(0, 8)
+      : data?.profiles ?? [];
+  const hasRequiredValue =
+    !enabledMode?.requiresEquipmentValue ||
+    (equipmentValueUsd !== null &&
+      Number.isFinite(equipmentValueUsd) &&
+      equipmentValueUsd > 0);
+  const step1Done = Boolean(profile);
+  const step2Done = Boolean(profile && enabledMode && quantity > 0 && hasRequiredValue);
 
   const eligibleCountries = useMemo(() => {
-    if (!data || !mode) return [];
-    return data.countries.filter((country) =>
-      data.routes.some(
-        (route) =>
-          route.destinationCountry === country &&
-          route.containerType === mode.containerType,
-      ),
-    );
-  }, [data, mode]);
+    if (!data || !enabledMode) return [];
+    return data.countries
+      .filter((country) =>
+        data.routes.some(
+          (route) =>
+            route.destinationCountry === country &&
+            route.containerType === enabledMode.containerType,
+        ),
+      )
+      .sort((a, b) => countryLabel(a).localeCompare(countryLabel(b)));
+  }, [data, enabledMode]);
 
-  useEffect(() => {
-    if (!profile) return;
-    if (!profile.modes.some((candidate) => candidate.id === modeId && candidate.enabled)) {
-      setModeId(profile.modes.find((candidate) => candidate.enabled)?.id ?? "whole");
-    }
-    setQuantity((current) =>
-      Math.min(Math.max(current || profile.defaultQuantity, 1), profile.maxQuantity),
-    );
-  }, [profile, modeId]);
-
-  useEffect(() => {
-    if (!destinationCountry || eligibleCountries.includes(destinationCountry)) return;
-    setDestinationCountry(eligibleCountries[0] ?? "");
-    setDestinationPortKey(null);
-    setRouteId(null);
-  }, [destinationCountry, eligibleCountries]);
+  const activeDestinationCountry =
+    destinationCountry && eligibleCountries.includes(destinationCountry)
+      ? destinationCountry
+      : "";
 
   const routesForCountry = useMemo(() => {
-    if (!data || !mode || !destinationCountry) return [];
+    if (!data || !enabledMode || !activeDestinationCountry) return [];
     return data.routes.filter(
       (route) =>
-        route.containerType === mode.containerType &&
-        route.destinationCountry === destinationCountry,
+        route.containerType === enabledMode.containerType &&
+        route.destinationCountry === activeDestinationCountry,
     );
-  }, [data, mode, destinationCountry]);
+  }, [data, enabledMode, activeDestinationCountry]);
 
   const destinationPortKeys = useMemo(
     () => [...new Set(routesForCountry.map((route) => route.destination.key))].sort(),
     [routesForCountry],
   );
-  const showPortTabs =
-    destinationPortKeys.length > 1 &&
-    (TARGET_COUNTRIES.has(destinationCountry) || destinationCountry === "CL" || destinationCountry === "BO");
-
-  useEffect(() => {
-    if (!showPortTabs) {
-      setDestinationPortKey(null);
-      return;
-    }
-    if (!destinationPortKey || !destinationPortKeys.includes(destinationPortKey)) {
-      setDestinationPortKey(destinationPortKeys[0] ?? null);
-    }
-  }, [destinationPortKey, destinationPortKeys, showPortTabs]);
+  const showPortTabs = destinationPortKeys.length > 1;
+  const selectedDestinationPortKey = showPortTabs
+    ? destinationPortKey && destinationPortKeys.includes(destinationPortKey)
+      ? destinationPortKey
+      : destinationPortKeys[0] ?? null
+    : null;
 
   const routeOptions = useMemo(
     () =>
       getRoutes({
         data,
-        mode,
-        destinationCountry,
-        destinationPortKey: showPortTabs ? destinationPortKey : null,
+        mode: enabledMode,
+        destinationCountry: activeDestinationCountry,
+        destinationPortKey: selectedDestinationPortKey,
         preference: routePreference,
+        quantity,
+        equipmentValueUsd,
+        zipCode: zipCode || null,
       }),
-    [data, mode, destinationCountry, destinationPortKey, routePreference, showPortTabs],
+    [
+      data,
+      enabledMode,
+      activeDestinationCountry,
+      selectedDestinationPortKey,
+      routePreference,
+      quantity,
+      equipmentValueUsd,
+      zipCode,
+    ],
   );
 
   const selectedRoute = useMemo(() => {
@@ -413,23 +616,20 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     return routeOptions[0] ?? null;
   }, [routeId, routeOptions]);
 
-  useEffect(() => {
-    if (routeId && !routeOptions.some((route) => route.id === routeId)) {
-      setRouteId(null);
-    }
-  }, [routeId, routeOptions]);
-
   const preview = useMemo<FreightEstimateV3 | null>(() => {
-    if (!data || !profile || !mode || !destinationCountry) return null;
+    if (!data || !profile || !enabledMode || !activeDestinationCountry || !step2Done) {
+      return null;
+    }
     return calculateFreightV3({
       equipmentRates: data.equipment,
-      oceanRates: data.oceanRates,
+      routes: data.routes,
+      importCostProfiles: data.importCostProfiles,
       equipmentProfileId: profile.id,
-      modeId: mode.id,
+      modeId: enabledMode.id,
       quantity,
       equipmentValueUsd,
-      destinationCountry,
-      destinationPortKey: showPortTabs ? destinationPortKey : null,
+      destinationCountry: activeDestinationCountry,
+      destinationPortKey: selectedDestinationPortKey,
       routeId: selectedRoute?.id ?? null,
       routePreference,
       zipCode: zipCode || null,
@@ -437,15 +637,15 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
   }, [
     data,
     profile,
-    mode,
-    destinationCountry,
-    destinationPortKey,
+    enabledMode,
+    activeDestinationCountry,
+    selectedDestinationPortKey,
     selectedRoute,
     routePreference,
     quantity,
     equipmentValueUsd,
     zipCode,
-    showPortTabs,
+    step2Done,
   ]);
 
   useEffect(() => {
@@ -464,20 +664,45 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     });
   }, [preview]);
 
+  const step3Done =
+    step2Done && activeDestinationCountry !== "" && preview !== null;
+  const step4Done = result?.success === true;
+  const completedSteps =
+    (step1Done ? 1 : 0) +
+    (step2Done ? 1 : 0) +
+    (step3Done ? 1 : 0) +
+    (step4Done ? 1 : 0);
+
+  function resetEstimateState() {
+    setResult(null);
+    setError("");
+  }
+
   function selectProfile(nextProfile: EquipmentQuoteProfile) {
-    setProfileId(nextProfile.id);
     const nextMode = nextProfile.modes.find((candidate) => candidate.enabled);
+    setProfileId(nextProfile.id);
     setModeId(nextMode?.id ?? "whole");
     setQuantity(nextProfile.defaultQuantity);
+    setEquipmentValueUsd(null);
+    setDestinationCountry("");
+    setDestinationPortKey(null);
     setRouteId(null);
-    setResult(null);
+    setZipCode("");
+    resetEstimateState();
+    trackCalcFunnel("start", {
+      equipment_type: getLocalizedText(nextProfile.label, lang),
+      container_type: nextMode?.containerType ?? "unknown",
+    });
   }
 
   function selectMode(nextMode: EquipmentQuoteMode) {
     if (!nextMode.enabled) return;
     setModeId(nextMode.id);
+    setEquipmentValueUsd(null);
+    setDestinationCountry("");
+    setDestinationPortKey(null);
     setRouteId(null);
-    setResult(null);
+    resetEstimateState();
     trackGA4Event("calculator_mode_selected", {
       equipment_profile: profileId,
       shipping_mode: nextMode.id,
@@ -492,7 +717,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
 
   function selectRoute(route: RouteOption) {
     setRouteId(route.id);
-    setResult(null);
+    resetEstimateState();
     trackGA4Event("calculator_route_selected", {
       equipment_profile: profileId,
       destination_country: route.destinationCountry,
@@ -509,15 +734,19 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
   async function handleSubmit() {
     if (website || submittingRef.current) return;
     if (!EMAIL_RE.test(email)) {
-      setError(t.emailRequired);
+      setError(t.validEmailError);
       return;
     }
-    if (!profile || !mode || !destinationCountry || !selectedRoute) {
+    if (!profile || !enabledMode || !activeDestinationCountry || !selectedRoute || !preview) {
       setError(t.routeRequired);
       return;
     }
-    if (mode.requiresEquipmentValue && (equipmentValueUsd == null || equipmentValueUsd <= 0)) {
+    if (enabledMode.requiresEquipmentValue && !hasRequiredValue) {
       setError(t.valueRequired);
+      return;
+    }
+    if (preferredContact === "whatsapp" && !phone.trim()) {
+      setError("Phone or WhatsApp number is required when WhatsApp is selected.");
       return;
     }
 
@@ -535,11 +764,11 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
           phone,
           preferredContact,
           equipmentProfileId: profile.id,
-          modeId: mode.id,
+          modeId: enabledMode.id,
           quantity,
           equipmentValueUsd,
-          destinationCountry,
-          destinationPortKey: showPortTabs ? destinationPortKey : null,
+          destinationCountry: activeDestinationCountry,
+          destinationPortKey: selectedDestinationPortKey,
           routeId: selectedRoute.id,
           routePreference,
           zipCode,
@@ -569,16 +798,16 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
         });
         trackGA4Event("calculator_lead_submitted", {
           equipment_profile: profile.id,
-          shipping_mode: mode.id,
-          destination_country: destinationCountry,
+          shipping_mode: enabledMode.id,
+          destination_country: activeDestinationCountry,
           route_preference: routePreference,
         });
         trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 300);
         vercelTrack("generate_lead", { source: "calculator_v3", value: 300 });
         vercelTrack("calculator_lead_submitted", {
           equipment_profile: profile.id,
-          shipping_mode: mode.id,
-          destination_country: destinationCountry,
+          shipping_mode: enabledMode.id,
+          destination_country: activeDestinationCountry,
         });
         if (res.eventId) {
           trackPixelEvent(
@@ -599,547 +828,1194 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     }
   }
 
+  function resetAll() {
+    setProfileId("");
+    setModeId("whole");
+    setQuantity(1);
+    setDestinationCountry("");
+    setDestinationPortKey(null);
+    setRoutePreference("cheapest");
+    setRouteId(null);
+    setZipCode("");
+    setEquipmentValueUsd(null);
+    setEmail("");
+    setName("");
+    setCompany("");
+    setPhone("");
+    setPreferredContact("email");
+    setWebsite("");
+    setError("");
+    setResult(null);
+    setMobileSheetOpen(false);
+    setShowAllProfiles(false);
+  }
+
   if (loading) {
     return (
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <Skeleton className="h-[680px] w-full" />
-        <Skeleton className="h-[680px] w-full" />
+      <div>
+        <div className="mb-6 flex gap-2">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-1.5 flex-1 rounded-full" />
+          ))}
+        </div>
+        <div className="flex flex-col gap-8 lg:flex-row">
+          <div className="min-w-0 flex-[3] space-y-8">
+            <div>
+              <Skeleton className="mb-4 h-5 w-48" />
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={i} className="h-20 rounded-xl" />
+                ))}
+              </div>
+            </div>
+            <div className="opacity-40">
+              <Skeleton className="mb-4 h-5 w-36" />
+              <Skeleton className="h-4 w-64" />
+            </div>
+            <div className="opacity-40">
+              <Skeleton className="mb-4 h-5 w-32" />
+              <Skeleton className="h-4 w-56" />
+            </div>
+          </div>
+          <div className="hidden flex-[2] lg:block">
+            <Skeleton className="h-72 rounded-2xl" />
+          </div>
+        </div>
       </div>
     );
   }
 
   if (dataError || !data) {
-    return unavailablePanel(lang);
+    return (
+      <Card className="mx-auto max-w-2xl border-primary/20 shadow-xl">
+        <CardContent className="space-y-4 p-8 text-center">
+          <h3 className="text-lg font-bold text-foreground">
+            {t.unavailableTitle}
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            {t.unavailableDescription}
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <Button
+              render={<Link href="/contact" />}
+              className="bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
+            >
+              Contact us
+            </Button>
+            <Button
+              render={
+                <a
+                  href={CONTACT.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackContactClick("whatsapp", "calculator_v3_unavailable")
+                  }
+                />
+              }
+              variant="outline"
+              className="border-emerald-600 py-5 font-semibold text-emerald-600 hover:bg-emerald-50"
+            >
+              {t.whatsAppUs}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
+  const estimateCardProps = {
+    locale: lang,
+    preview,
+    result,
+    profile,
+    mode: enabledMode,
+    destinationCountry: activeDestinationCountry,
+    selectedRoute,
+    isComplete: step3Done,
+    email,
+    onEmailChange: setEmail,
+    name,
+    onNameChange: setName,
+    company,
+    onCompanyChange: setCompany,
+    phone,
+    onPhoneChange: setPhone,
+    preferredContact,
+    onPreferredContactChange: setPreferredContact,
+    website,
+    onWebsiteChange: setWebsite,
+    isSubmitting,
+    error,
+    onSubmit: handleSubmit,
+    onReset: resetAll,
+  } satisfies CalculatorV3EstimateCardProps;
+
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
-      <div className="space-y-6">
-        <div className="grid grid-cols-2 gap-2 text-xs font-medium text-muted-foreground sm:grid-cols-4">
-          {[t.stepEquipment, t.stepRoute, t.stepEstimate, t.stepContact].map((step, index) => (
-            <div
-              key={step}
-              className="flex h-10 items-center justify-center border bg-muted/30 text-center"
-            >
-              {index + 1}. {step}
+    <div>
+      <CalculatorProgressBar completedSteps={completedSteps} />
+
+      <div className="flex flex-col gap-8 lg:flex-row">
+        <div className="min-w-0 flex-[3] space-y-8">
+          <section>
+            <SectionHeader num={1} title={t.selectEquipmentCategory} />
+
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {visibleProfiles.map((candidate) => {
+                const Icon = CATEGORY_ICONS[candidate.equipmentCategory] ?? Package;
+                const isSelected = profileId === candidate.id;
+                return (
+                  <button
+                    key={candidate.id}
+                    type="button"
+                    onClick={() => selectProfile(candidate)}
+                    className={`group flex min-h-20 flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
+                      isSelected
+                        ? "border-primary bg-primary/5 ring-1 ring-primary/20"
+                        : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
+                    }`}
+                    aria-pressed={isSelected}
+                  >
+                    <Icon
+                      aria-hidden="true"
+                      className={`h-6 w-6 transition-colors ${
+                        isSelected
+                          ? "text-primary"
+                          : "text-muted-foreground group-hover:text-primary/70"
+                      }`}
+                    />
+                    <span
+                      className={`text-xs font-medium leading-tight ${
+                        isSelected ? "text-primary" : "text-foreground"
+                      }`}
+                    >
+                      {getLocalizedText(candidate.label, lang)}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-          ))}
+
+            {data.profiles.length > 8 && !showAllProfiles && (
+              <button
+                type="button"
+                onClick={() => setShowAllProfiles(true)}
+                className="mt-2 flex items-center gap-1 rounded py-2 text-xs font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+              >
+                Show all categories <ChevronDown className="h-3 w-3" />
+              </button>
+            )}
+          </section>
+
+          <section
+            aria-disabled={!profile || undefined}
+            className={`transition-[opacity,transform] duration-300 ${
+              !profile
+                ? "pointer-events-none translate-y-2 opacity-40"
+                : "translate-y-0 opacity-100"
+            }`}
+          >
+            <SectionHeader num={2} title={t.equipmentSpecs} />
+
+            {!profile ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                {t.selectEquipmentHint}
+              </p>
+            ) : (
+              <div className="mt-4 space-y-4">
+                <div>
+                  <Label className="text-sm">{t.shippingMode}</Label>
+                  <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                    {profile.modes.map((candidate) => {
+                      const Icon = modeIcon(candidate);
+                      const isSelected = modeId === candidate.id;
+                      return (
+                        <button
+                          key={candidate.id}
+                          type="button"
+                          disabled={!candidate.enabled}
+                          onClick={() => selectMode(candidate)}
+                          className={`flex min-h-24 items-start gap-3 rounded-xl border-2 px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 ${
+                            isSelected
+                              ? "border-primary bg-primary/5 ring-1 ring-primary/20"
+                              : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
+                          }`}
+                        >
+                          <Icon
+                            aria-hidden="true"
+                            className={`mt-0.5 h-5 w-5 shrink-0 ${
+                              isSelected ? "text-primary" : "text-muted-foreground"
+                            }`}
+                          />
+                          <span>
+                            <span className="block text-sm font-semibold text-foreground">
+                              {getLocalizedText(candidate.label, lang)}
+                            </span>
+                            <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
+                              {getLocalizedText(
+                                candidate.enabled
+                                  ? candidate.description
+                                  : candidate.disabledReason ?? candidate.description,
+                                lang,
+                              )}
+                            </span>
+                            <Badge variant="secondary" className="mt-2 text-[10px]">
+                              {candidate.enabled
+                                ? containerLabel(candidate.containerType)
+                                : "Confirm with Meridian"}
+                            </Badge>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {enabledMode && (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label htmlFor="v3-quantity" className="text-sm">
+                        {getLocalizedText(profile.quantityLabel, lang)}
+                      </Label>
+                      <Input
+                        id="v3-quantity"
+                        aria-label={getLocalizedText(profile.quantityLabel, lang)}
+                        type="number"
+                        min={1}
+                        max={profile.maxQuantity}
+                        value={quantity}
+                        onChange={(event) => {
+                          const parsed = Number.parseInt(event.target.value || "1", 10);
+                          setQuantity(Math.min(profile.maxQuantity, Math.max(1, parsed)));
+                          resetEstimateState();
+                        }}
+                        className="mt-1.5 max-w-40"
+                      />
+                      <p className="mt-1.5 text-xs text-muted-foreground">
+                        {getLocalizedText(profile.quantityHelp, lang)}
+                      </p>
+                    </div>
+
+                    {enabledMode.requiresEquipmentValue && (
+                      <div>
+                        <Label htmlFor="v3-equipment-value" className="text-sm">
+                          {t.equipmentValueUsd}
+                        </Label>
+                        <Input
+                          id="v3-equipment-value"
+                          aria-label={t.equipmentValueUsd}
+                          type="number"
+                          inputMode="decimal"
+                          min={1}
+                          step={100}
+                          value={equipmentValueUsd ?? ""}
+                          onChange={(event) => {
+                            const parsed = Number.parseFloat(event.target.value);
+                            setEquipmentValueUsd(
+                              Number.isFinite(parsed) && parsed > 0 ? parsed : null,
+                            );
+                            resetEstimateState();
+                          }}
+                          placeholder={t.equipmentValuePlaceholder}
+                          className="mt-1.5 max-w-56"
+                        />
+                        <p className="mt-1.5 text-xs text-muted-foreground">
+                          {t.equipmentValueHint}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {enabledMode && (
+                  <div className="rounded-xl bg-muted p-4">
+                    <div className="flex items-center gap-2">
+                      <Info className="h-4 w-4 text-primary" />
+                      <span className="text-sm font-medium text-foreground">
+                        {getLocalizedText(enabledMode.shortLabel, lang)} ·{" "}
+                        {containerLabel(enabledMode.containerType)}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-xs text-muted-foreground">
+                      {getLocalizedText(enabledMode.description, lang)}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+
+          <section
+            aria-disabled={!step2Done || undefined}
+            className={`transition-[opacity,transform] duration-300 ${
+              !step2Done
+                ? "pointer-events-none translate-y-2 opacity-40"
+                : "translate-y-0 opacity-100"
+            }`}
+          >
+            <SectionHeader num={3} title={t.shippingRoute} />
+
+            {!step2Done ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                {profile && enabledMode?.requiresEquipmentValue && !hasRequiredValue
+                  ? t.valueRequired
+                  : t.completeEquipmentHint}
+              </p>
+            ) : eligibleCountries.length === 0 ? (
+              <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+                <div className="font-semibold">{t.noPublishedRoutesTitle}</div>
+                <p className="mt-1 text-amber-900/80">
+                  {t.noPublishedRoutesDescription}
+                </p>
+              </div>
+            ) : (
+              <div className="mt-4 space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label
+                      htmlFor="v3-dest-country"
+                      className="flex items-center gap-1.5 text-sm"
+                    >
+                      <Globe className="h-3.5 w-3.5 text-primary" />
+                      {t.destinationCountry}
+                    </Label>
+                    <select
+                      id="v3-dest-country"
+                      aria-label={t.destinationCountry}
+                      value={activeDestinationCountry}
+                      onChange={(event) => {
+                        const country = event.target.value;
+                        setDestinationCountry(country);
+                        setDestinationPortKey(null);
+                        setRouteId(null);
+                        resetEstimateState();
+                        if (country && profile && enabledMode) {
+                          trackCalcFunnel("step", {
+                            step_number: "3",
+                            step_name: "destination",
+                            destination_country: country,
+                          });
+                          trackCalcFunnel("complete", {
+                            equipment_type: getLocalizedText(profile.label, lang),
+                            destination_country: country,
+                            container_type: enabledMode.containerType,
+                          });
+                        }
+                      }}
+                      className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-base transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary md:text-sm"
+                    >
+                      <option value="">{t.selectCountry}</option>
+                      {eligibleCountries.map((code) => (
+                        <option key={code} value={code}>
+                          {countryLabel(code)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <Label
+                      htmlFor="v3-zip-code"
+                      className="flex items-center gap-1.5 text-sm"
+                    >
+                      <Package className="h-3.5 w-3.5 text-primary" />
+                      {t.usPickupZip}
+                      <span className="text-xs text-muted-foreground">
+                        {t.optional}
+                      </span>
+                    </Label>
+                    <Input
+                      id="v3-zip-code"
+                      aria-label={`${t.usPickupZip} ${t.optional}`}
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="postal-code"
+                      maxLength={5}
+                      value={zipCode}
+                      onChange={(event) => {
+                        setZipCode(event.target.value.replace(/\D/g, "").slice(0, 5));
+                        setRouteId(null);
+                        resetEstimateState();
+                      }}
+                      placeholder={t.zipPlaceholder}
+                      className="mt-1.5"
+                    />
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {t.zipHint}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label className="text-sm">{t.routePreference}</Label>
+                    <div
+                      className="mt-2 grid max-w-xs grid-cols-2 overflow-hidden rounded-lg border"
+                      role="group"
+                      aria-label={t.routePreference}
+                    >
+                      {(["cheapest", "fastest"] as const).map((preference) => (
+                        <button
+                          key={preference}
+                          type="button"
+                          onClick={() => {
+                            setRoutePreference(preference);
+                            setRouteId(null);
+                            resetEstimateState();
+                          }}
+                          className={`h-10 text-sm font-medium transition-colors ${
+                            routePreference === preference
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-background text-foreground hover:bg-muted"
+                          }`}
+                        >
+                          {preference === "cheapest" ? t.cheapest : t.fastest}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {showPortTabs && (
+                    <div>
+                      <Label className="text-sm">{t.destinationPort}</Label>
+                      <div
+                        className="mt-2 flex flex-wrap gap-2"
+                        role="group"
+                        aria-label={t.destinationPort}
+                      >
+                        {destinationPortKeys.map((key) => (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => {
+                              setDestinationPortKey(key);
+                              setRouteId(null);
+                              resetEstimateState();
+                            }}
+                            className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+                              selectedDestinationPortKey === key
+                                ? "border-primary bg-primary text-primary-foreground"
+                                : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
+                            }`}
+                          >
+                            {getDestinationPortLabel(routesForCountry, key)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {activeDestinationCountry && (
+                  <div>
+                    <div className="mb-2 text-sm font-semibold text-foreground">
+                      {t.routeOptions}
+                    </div>
+                    <div className="grid gap-2 md:grid-cols-2">
+                      {routeOptions.slice(0, 4).map((route) => {
+                        const active = selectedRoute?.id === route.id;
+                        return (
+                          <button
+                            key={route.id}
+                            type="button"
+                            onClick={() => selectRoute(route)}
+                            className={`rounded-xl border-2 px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
+                              active
+                                ? "border-primary bg-primary/5 ring-1 ring-primary/20"
+                                : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                                  {t.route}
+                                </div>
+                                <div className="mt-1 text-sm font-semibold text-foreground">
+                                  {route.origin.label} → {route.destination.label}
+                                </div>
+                              </div>
+                              <Badge variant="secondary" className="text-[10px]">
+                                {route.carrier}
+                              </Badge>
+                            </div>
+                            <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1.5">
+                                <DollarSign className="h-3.5 w-3.5 text-emerald-700" />
+                                {enabledMode
+                                  ? routeSortCostLabel({
+                                      route,
+                                      mode: enabledMode,
+                                      quantity,
+                                      equipmentValueUsd,
+                                      zipCode: zipCode || null,
+                                    })
+                                  : "—"}
+                              </span>
+                              <span className="flex items-center gap-1.5">
+                                <Clock3 className="h-3.5 w-3.5 text-primary" />
+                                {formatTransit(route, lang)}
+                              </span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {preview && (
+                  <div className="rounded-xl bg-muted p-4 text-sm">
+                    <div className="font-semibold text-foreground">
+                      {t.shippingRoute}
+                    </div>
+                    <div className="mt-1 text-muted-foreground">
+                      {zipCode ? `ZIP ${zipCode}` : "U.S. pickup"} →{" "}
+                      {preview.route.origin.label} → {preview.route.destination.label}
+                    </div>
+                    <div className="mt-2 font-mono text-lg font-bold text-primary">
+                      {formatDollar(preview.freightTotal)}
+                      {preview.totalExcludesInland && (
+                        <span className="ml-1 text-xs font-normal text-muted-foreground">
+                          ({t.exclInlandTransport})
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-4 overflow-hidden rounded-xl">
+                  <RouteGlobe
+                    originPort={
+                      preview?.route.origin.label ?? selectedRoute?.origin.label ?? null
+                    }
+                    destinationPort={
+                      preview?.route.destination.label ??
+                      selectedRoute?.destination.label ??
+                      null
+                    }
+                    destinationCountry={activeDestinationCountry || null}
+                    containerType={enabledMode?.containerType ?? null}
+                  />
+                </div>
+              </div>
+            )}
+          </section>
+
+          <p className="text-xs text-muted-foreground">{t.disclaimer}</p>
         </div>
 
-        <section className="border bg-background p-4 sm:p-5">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold">{t.stepEquipment}</h2>
-              {profile && <p className="text-sm text-muted-foreground">{getLocalizedText(profile.description, lang)}</p>}
+        <div className="hidden flex-[2] lg:block">
+          <div className="sticky top-24">
+            <CalculatorV3EstimateCard {...estimateCardProps} />
+          </div>
+        </div>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden">
+        <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
+          <div className="flex items-center justify-between bg-slate-900 px-4 py-3 shadow-2xl">
+            <SheetTrigger
+              aria-label={t.viewEstimateDetails}
+              className="flex items-center gap-2 text-white"
+            >
+              {preview ? (
+                <>
+                  <span className="text-xs text-slate-400">Est.</span>
+                  <span className="font-mono text-lg font-bold">
+                    {formatDollar(preview.freightTotal)}
+                  </span>
+                </>
+              ) : profile ? (
+                <span className="text-sm text-slate-400">
+                  {t.selectDestinationForEstimate}
+                </span>
+              ) : (
+                <span className="text-sm text-slate-400">
+                  {t.selectEquipmentToBegin}
+                </span>
+              )}
+            </SheetTrigger>
+            <Button
+              size="sm"
+              className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
+              disabled={!step3Done}
+              onClick={() => setMobileSheetOpen(true)}
+            >
+              {result?.success ? t.viewEstimate : t.bookThisFreight}
+              <ArrowRight className="ml-1 h-3.5 w-3.5" />
+            </Button>
+          </div>
+
+          <SheetContent
+            side="bottom"
+            className="max-h-[85vh] overflow-y-auto rounded-t-2xl p-0"
+            showCloseButton={true}
+          >
+            <SheetHeader className="bg-muted px-5 py-4">
+              <SheetTitle>{t.yourFreightEstimate}</SheetTitle>
+            </SheetHeader>
+            <div className="p-5">
+              <CalculatorV3EstimateCard {...estimateCardProps} />
             </div>
-            {data.quarantinedRateCount > 0 && (
-              <Badge variant="outline">{data.quarantinedRateCount} rates quarantined</Badge>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      <div className="h-16 lg:hidden" />
+    </div>
+  );
+}
+
+interface CalculatorV3EstimateCardProps {
+  locale: CalculatorLocale;
+  preview: FreightEstimateV3 | null;
+  result: CalculatorV3Result | null;
+  profile: EquipmentQuoteProfile | null;
+  mode: EquipmentQuoteMode | null;
+  destinationCountry: string;
+  selectedRoute: RouteOption | null;
+  isComplete: boolean;
+  email: string;
+  onEmailChange: (value: string) => void;
+  name: string;
+  onNameChange: (value: string) => void;
+  company: string;
+  onCompanyChange: (value: string) => void;
+  phone: string;
+  onPhoneChange: (value: string) => void;
+  preferredContact: "email" | "whatsapp";
+  onPreferredContactChange: (value: "email" | "whatsapp") => void;
+  website: string;
+  onWebsiteChange: (value: string) => void;
+  isSubmitting: boolean;
+  error: string;
+  onSubmit: () => void;
+  onReset: () => void;
+}
+
+function CalculatorV3EstimateCard({
+  locale,
+  preview,
+  result,
+  profile,
+  mode,
+  destinationCountry,
+  selectedRoute,
+  isComplete,
+  email,
+  onEmailChange,
+  name,
+  onNameChange,
+  company,
+  onCompanyChange,
+  phone,
+  onPhoneChange,
+  preferredContact,
+  onPreferredContactChange,
+  website,
+  onWebsiteChange,
+  isSubmitting,
+  error,
+  onSubmit,
+  onReset,
+}: CalculatorV3EstimateCardProps) {
+  const t = COPY[locale];
+  const [emailGateOpen, setEmailGateOpen] = useState(false);
+  const isEmailValid = EMAIL_RE.test(email);
+  const hasResult = result?.success && result.estimate;
+  const estimate = result?.estimate ?? preview;
+
+  if (!profile) {
+    return (
+      <div className="flex min-h-[280px] items-center justify-center rounded-2xl bg-muted p-6 text-center">
+        <div>
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+            <Ship className="h-6 w-6 text-muted-foreground" />
+          </div>
+          <p className="text-sm text-muted-foreground">{t.emptyStateText}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const estimateMode = estimate?.mode ?? mode;
+  const estimateRoute = estimate?.route ?? selectedRoute;
+  const whatsappText = encodeURIComponent(
+    `Hi! Your calculator estimated ${
+      estimate ? formatDollar(estimate.freightTotal) : "N/A"
+    } for ${profile ? getLocalizedText(profile.label, locale) : "equipment"} to ${
+      destinationCountry ? countryLabel(destinationCountry) : "destination"
+    }. Can I get a confirmed quote?`,
+  );
+
+  return (
+    <div className="rounded-2xl bg-slate-900 p-6 text-white" aria-live="polite">
+      {hasResult && (
+        <div className="mb-4 flex items-center gap-2">
+          <CheckCircle className="h-5 w-5 text-emerald-500" />
+          <span className="text-sm font-medium text-emerald-500">
+            {t.estimateSentTo.replace("{email}", email)}
+          </span>
+        </div>
+      )}
+
+      <div className="mb-1 flex items-center justify-between">
+        <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+          {t.estimatedFreight}
+        </span>
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
+          <Ship className="h-4 w-4 text-primary" />
+        </div>
+      </div>
+      <p className="mb-4 text-xs text-slate-400">{t.basedOnRates}</p>
+
+      {estimate ? (
+        <>
+          <div className="mb-1 font-mono tabular-nums text-4xl font-bold tracking-tight text-white">
+            {formatDollar(estimate.freightTotal)}
+          </div>
+          <p className="mb-5 text-xs font-semibold uppercase tracking-wider text-primary">
+            {estimate.totalExcludesInland
+              ? t.exclInlandTransport
+              : t.optimizedRouteRate}
+          </p>
+        </>
+      ) : (
+        <>
+          <div className="mb-1 font-mono text-4xl font-bold tracking-tight text-slate-600">
+            $—,———
+          </div>
+          <p className="mb-5 text-xs text-slate-600">
+            {destinationCountry ? t.routeUnavailableEstimate : t.selectDestination}
+          </p>
+        </>
+      )}
+
+      <div className="-mx-6 mt-4 space-y-3 rounded-lg bg-white/5 px-6 pt-4 pb-4">
+        <DetailRow
+          label={t.transit}
+          value={estimateRoute ? formatTransit(estimateRoute, locale) : "—"}
+          mono
+        />
+        <DetailRow
+          label={t.container}
+          value={estimateMode ? shortContainerLabel(estimateMode.containerType) : "—"}
+          mono
+        />
+        <DetailRow
+          label={t.carrier}
+          value={estimateRoute?.carrier ?? "—"}
+          highlight
+          mono
+        />
+        {estimateRoute && (
+          <DetailRow
+            label={t.route}
+            value={`${estimateRoute.origin.label} → ${estimateRoute.destination.label}`}
+          />
+        )}
+      </div>
+
+      {estimate && (
+        <div className="mt-5 space-y-5">
+          <div>
+            <h3 className="mb-2 text-sm font-semibold">{t.lineItems}</h3>
+            <div className="space-y-3">
+              {estimate.lineItems
+                .filter((line) => line.amountUsd !== 0 || line.id !== "packing_loading")
+                .map((line) => (
+                  <div key={line.id} className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-sm text-slate-300">
+                        {lineItemLabel(line, locale)}
+                      </div>
+                      {line.note && (
+                        <div className="text-xs text-slate-400">{line.note}</div>
+                      )}
+                    </div>
+                    <span className="font-mono font-bold text-white">
+                      {line.amountUsd == null
+                        ? line.includedInTotal
+                          ? t.quoteConfirmed
+                          : t.notAvailable
+                        : formatDollar(line.amountUsd)}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-white/5 p-3">
+            <div className="flex items-baseline justify-between">
+              <span className="font-semibold text-white">{t.freightTotal}</span>
+              <span className="font-mono text-3xl font-bold text-white">
+                {formatDollar(estimate.freightTotal)}
+              </span>
+            </div>
+          </div>
+
+          <div className="space-y-3 border-t border-slate-700 pt-4">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-sm font-medium text-slate-200">
+                  {t.compliancePrep}
+                </div>
+                {estimate.compliancePrep.note && (
+                  <div className="mt-1 text-xs text-slate-400">
+                    {getLocalizedText(estimate.compliancePrep.note, locale)}
+                  </div>
+                )}
+              </div>
+              <span className="text-right font-mono text-sm font-bold text-white">
+                {estimate.compliancePrep.amountStatus === "priced" &&
+                estimate.compliancePrep.amountUsd != null
+                  ? formatDollar(estimate.compliancePrep.amountUsd)
+                  : estimate.compliancePrep.amountStatus === "not_applicable"
+                    ? t.noAutomaticCharge
+                    : t.brokerConfirmed}
+              </span>
+            </div>
+
+            {estimate.dedicatedContainerFreightTotal != null && (
+              <div className="flex items-start justify-between gap-4">
+                <div className="text-sm text-slate-300">
+                  {t.dedicatedComparison}
+                </div>
+                <span className="font-mono text-sm font-bold text-white">
+                  {formatDollar(estimate.dedicatedContainerFreightTotal)}
+                </span>
+              </div>
+            )}
+
+            <div>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="text-sm font-medium text-slate-200">
+                    {t.importEstimate}
+                  </div>
+                  <div className="mt-1 text-xs text-slate-400">
+                    {t.importNotIncluded}
+                    {estimate.importCost.hsCode
+                      ? ` · HS ${estimate.importCost.hsCode}`
+                      : ""}
+                  </div>
+                </div>
+                <span className="text-right font-mono text-sm font-bold text-white">
+                  {importAmountLabel(estimate.importCost, locale)}
+                </span>
+              </div>
+              <ImportCostNote importCost={estimate.importCost} locale={locale} />
+            </div>
+          </div>
+
+          {(estimate.warnings.length > 0 || estimate.notes.length > 0) && (
+            <div className="space-y-2">
+              {estimate.warnings.slice(0, 2).map((warning, index) => (
+                <p
+                  key={`${warning.en}-${index}`}
+                  className="flex items-start gap-1.5 text-xs text-amber-500"
+                >
+                  <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  {getLocalizedText(warning, locale)}
+                </p>
+              ))}
+              {estimate.notes.slice(0, 2).map((note, index) => (
+                <p
+                  key={`${note.en}-${index}`}
+                  className="flex items-start gap-1.5 text-xs text-slate-400"
+                >
+                  <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  {getLocalizedText(note, locale)}
+                </p>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {emailGateOpen && !hasResult ? (
+        <div className="-mx-6 mt-5 space-y-3 rounded-lg bg-white/5 px-6 py-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            {t.getYourDetailedEstimate}
+          </p>
+
+          <div>
+            <Label htmlFor="v3-est-email" className="text-xs text-slate-300">
+              {t.emailLabel}
+            </Label>
+            <Input
+              id="v3-est-email"
+              aria-label={t.emailLabel}
+              name="email"
+              type="email"
+              autoComplete="email"
+              spellCheck={false}
+              value={email}
+              onChange={(event) => onEmailChange(event.target.value)}
+              placeholder={t.emailPlaceholder}
+              required
+              aria-invalid={email ? !isEmailValid : undefined}
+              aria-describedby={
+                email && !isEmailValid ? "v3-est-email-error" : undefined
+              }
+              className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-primary"
+            />
+            {email && !isEmailValid && (
+              <p id="v3-est-email-error" className="mt-1 text-xs text-red-500">
+                {t.validEmailError}
+              </p>
             )}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {data.profiles.map((candidate, index) => {
-              const active = candidate.id === profileId;
-              return (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="v3-est-name" className="text-xs text-slate-300">
+                {t.nameLabel}
+              </Label>
+              <Input
+                id="v3-est-name"
+                aria-label={t.nameLabel}
+                name="name"
+                autoComplete="name"
+                value={name}
+                onChange={(event) => onNameChange(event.target.value)}
+                placeholder={t.optionalPlaceholder}
+                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
+              />
+            </div>
+            <div>
+              <Label htmlFor="v3-est-company" className="text-xs text-slate-300">
+                {t.companyLabel}
+              </Label>
+              <Input
+                id="v3-est-company"
+                aria-label={t.companyLabel}
+                name="company"
+                autoComplete="organization"
+                value={company}
+                onChange={(event) => onCompanyChange(event.target.value)}
+                placeholder={t.optionalPlaceholder}
+                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="v3-est-phone" className="text-xs text-slate-300">
+              {t.phoneLabel}
+            </Label>
+            <Input
+              id="v3-est-phone"
+              aria-label={t.phoneLabel}
+              name="phone"
+              autoComplete="tel"
+              value={phone}
+              onChange={(event) => onPhoneChange(event.target.value)}
+              placeholder={t.optionalPlaceholder}
+              className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
+            />
+          </div>
+
+          <div>
+            <Label className="text-xs text-slate-300">{t.preferredContact}</Label>
+            <div
+              className="mt-1 grid grid-cols-2 overflow-hidden rounded-lg border border-slate-700"
+              role="group"
+              aria-label={t.preferredContact}
+            >
+              {(["email", "whatsapp"] as const).map((option) => (
                 <button
-                  key={candidate.id}
+                  key={option}
                   type="button"
-                  onClick={() => selectProfile(candidate)}
-                  className={`group overflow-hidden border text-left transition ${
-                    active
-                      ? "border-primary bg-primary/5 ring-2 ring-primary/20"
-                      : "border-border bg-background hover:border-primary/50"
+                  onClick={() => onPreferredContactChange(option)}
+                  className={`h-10 text-sm font-medium transition-colors ${
+                    preferredContact === option
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-slate-800 text-slate-300 hover:bg-slate-700"
                   }`}
                 >
-                  <div className="relative aspect-[4/3] bg-muted">
-                    <Image
-                      src={candidate.image}
-                      alt={getLocalizedText(candidate.label, lang)}
-                      fill
-                      priority={index < 4}
-                      className="object-cover transition group-hover:scale-[1.02]"
-                      sizes="(min-width: 1280px) 220px, (min-width: 640px) 50vw, 100vw"
-                    />
-                  </div>
-                  <div className="min-h-28 p-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-sm font-semibold leading-tight">
-                        {getLocalizedText(candidate.label, lang)}
-                      </h3>
-                      {active && <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />}
-                    </div>
-                    <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
-                      {getLocalizedText(candidate.description, lang)}
-                    </p>
-                  </div>
+                  {option === "email" ? t.emailOption : t.whatsappOption}
                 </button>
-              );
-            })}
-          </div>
-
-          {profile && (
-            <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_220px]">
-              <div>
-                <Label className="mb-2 block">{t.shippingMode}</Label>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {profile.modes.map((candidate) => {
-                    const Icon = getModeIcon(candidate);
-                    const active = candidate.id === modeId;
-                    return (
-                      <button
-                        key={candidate.id}
-                        type="button"
-                        disabled={!candidate.enabled}
-                        onClick={() => selectMode(candidate)}
-                        className={`flex min-h-28 items-start gap-3 border p-3 text-left transition disabled:cursor-not-allowed disabled:opacity-60 ${
-                          active
-                            ? "border-primary bg-primary/5 ring-2 ring-primary/20"
-                            : "border-border hover:border-primary/50"
-                        }`}
-                      >
-                        <Icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-                        <span>
-                          <span className="block font-semibold">
-                            {getLocalizedText(candidate.label, lang)}
-                          </span>
-                          <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                            {candidate.enabled
-                              ? getLocalizedText(candidate.description, lang)
-                              : getLocalizedText(candidate.disabledReason ?? candidate.description, lang)}
-                          </span>
-                          <span className="mt-2 inline-flex text-xs font-medium text-foreground">
-                            {candidate.enabled
-                              ? containerLabel(candidate.containerType)
-                              : t.modeUnavailable}
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                <div>
-                  <Label htmlFor="v3-quantity" className="mb-2 block">
-                    {profile ? getLocalizedText(profile.quantityLabel, lang) : t.quantity}
-                  </Label>
-                  <div className="flex h-10 overflow-hidden border">
-                    <button
-                      type="button"
-                      className="w-10 border-r text-lg disabled:opacity-40"
-                      disabled={quantity <= 1}
-                      onClick={() => setQuantity((current) => Math.max(1, current - 1))}
-                    >
-                      -
-                    </button>
-                    <Input
-                      id="v3-quantity"
-                      type="number"
-                      min={1}
-                      max={profile.maxQuantity}
-                      value={quantity}
-                      onChange={(event) =>
-                        setQuantity(
-                          Math.min(
-                            profile.maxQuantity,
-                            Math.max(1, Number.parseInt(event.target.value || "1", 10)),
-                          ),
-                        )
-                      }
-                      className="h-10 rounded-none border-0 text-center"
-                    />
-                    <button
-                      type="button"
-                      className="w-10 border-l text-lg disabled:opacity-40"
-                      disabled={quantity >= profile.maxQuantity}
-                      onClick={() =>
-                        setQuantity((current) => Math.min(profile.maxQuantity, current + 1))
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {getLocalizedText(profile.quantityHelp, lang)}
-                  </p>
-                </div>
-                <div>
-                  <Label htmlFor="v3-value" className="mb-2 block">
-                    {t.value}
-                  </Label>
-                  <Input
-                    id="v3-value"
-                    inputMode="numeric"
-                    value={equipmentValueUsd ?? ""}
-                    onChange={(event) => {
-                      const next = Number(event.target.value.replace(/[^0-9.]/g, ""));
-                      setEquipmentValueUsd(Number.isFinite(next) && next > 0 ? next : null);
-                    }}
-                    placeholder="$125000"
-                  />
-                  <p className="mt-2 text-xs text-muted-foreground">{t.valueHelp}</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
-
-        <section className="border bg-background p-4 sm:p-5">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold">{t.stepRoute}</h2>
-              <p className="text-sm text-muted-foreground">
-                {preview ? `${preview.route.origin.label} -> ${routeDestinationLabel(preview.route)}` : t.preview}
-              </p>
-            </div>
-            {mode && <Badge variant="outline">{containerLabel(mode.containerType)}</Badge>}
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-[240px_1fr]">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="v3-country" className="mb-2 block">{t.country}</Label>
-                <select
-                  id="v3-country"
-                  value={destinationCountry}
-                  onChange={(event) => {
-                    setDestinationCountry(event.target.value);
-                    setDestinationPortKey(null);
-                    setRouteId(null);
-                    setResult(null);
-                  }}
-                  className="h-10 w-full border border-input bg-background px-3 text-sm"
-                >
-                  {eligibleCountries.map((country) => (
-                    <option key={country} value={country}>
-                      {countryLabel(country)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <Label htmlFor="v3-zip" className="mb-2 block">{t.zip}</Label>
-                <Input
-                  id="v3-zip"
-                  value={zipCode}
-                  onChange={(event) => setZipCode(event.target.value)}
-                  placeholder="50005"
-                  maxLength={10}
-                />
-              </div>
-
-              <div>
-                <Label className="mb-2 block">{t.routePreference}</Label>
-                <div className="grid grid-cols-2 border">
-                  {(["cheapest", "fastest"] as const).map((preference) => (
-                    <button
-                      key={preference}
-                      type="button"
-                      onClick={() => {
-                        setRoutePreference(preference);
-                        setRouteId(null);
-                      }}
-                      className={`h-10 text-sm font-medium ${
-                        routePreference === preference
-                          ? "bg-foreground text-background"
-                          : "bg-background text-foreground"
-                      }`}
-                    >
-                      {preference === "cheapest" ? t.cheapest : t.fastest}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {showPortTabs && (
-                <div>
-                  <Label className="mb-2 block">{t.destinationPort}</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {destinationPortKeys.map((key) => (
-                      <button
-                        key={key}
-                        type="button"
-                        onClick={() => {
-                          setDestinationPortKey(key);
-                          setRouteId(null);
-                        }}
-                        className={`h-9 border px-3 text-sm font-medium ${
-                          destinationPortKey === key
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : "border-border bg-background"
-                        }`}
-                      >
-                        {getDestinationPortLabel(routesForCountry, key)}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="grid gap-3 md:grid-cols-2">
-                {routeOptions.slice(0, 4).map((route) => {
-                  const active = selectedRoute?.id === route.id;
-                  return (
-                    <button
-                      key={route.id}
-                      type="button"
-                      onClick={() => selectRoute(route)}
-                      className={`min-h-36 border p-4 text-left transition ${
-                        active
-                          ? "border-primary bg-primary/5 ring-2 ring-primary/20"
-                          : "border-border hover:border-primary/50"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <span className="text-xs font-semibold uppercase text-muted-foreground">
-                            {t.routeCard}
-                          </span>
-                          <p className="mt-1 font-semibold leading-tight">
-                            {route.origin.label} {"->"} {route.destination.label}
-                          </p>
-                        </div>
-                        {active && <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />}
-                      </div>
-                      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                        <span className="flex items-center gap-2">
-                          <DollarSign className="h-4 w-4 text-emerald-700" />
-                          {routeCostLabel(route)}
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <Clock3 className="h-4 w-4 text-sky-700" />
-                          {route.transitTimeDays ?? t.notPublished}
-                        </span>
-                        <span className="col-span-2 text-xs text-muted-foreground">
-                          {route.carrier}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="border bg-background">
-          <div className="border-b p-5">
-            <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-              <Route className="h-4 w-4" />
-              V3 preview
-            </div>
-            <div className="mt-4">
-              <div className="text-sm text-muted-foreground">{t.freightTotal}</div>
-              <div className="mt-1 text-3xl font-bold tracking-tight">
-                {preview ? formatDollar(preview.freightTotal) : "--"}
-              </div>
-              {preview?.totalExcludesInland && (
-                <p className="mt-1 text-xs text-amber-700">
-                  {preview.warnings[0] ? getLocalizedText(preview.warnings[0], lang) : ""}
-                </p>
-              )}
+              ))}
             </div>
           </div>
 
-          {preview ? (
-            <div className="space-y-5 p-5">
-              <div className="grid gap-3 text-sm">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="flex items-center gap-2 text-muted-foreground">
-                    <Truck className="h-4 w-4" />
-                    {preview.route.origin.label}
-                  </span>
-                  <span className="text-right font-medium">{routeDestinationLabel(preview.route)}</span>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-muted-foreground">{t.transit}</span>
-                  <span className="font-medium">{preview.route.transitTimeDays ?? t.notPublished}</span>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-muted-foreground">{t.policy}</span>
-                  <span className="text-right text-xs font-medium">
-                    {preview.compliancePolicy?.sourceLabel ?? "Standard export"}
-                  </span>
-                </div>
-              </div>
+          <div
+            aria-hidden="true"
+            style={{
+              opacity: 0,
+              position: "absolute",
+              pointerEvents: "none",
+              height: 0,
+              overflow: "hidden",
+            }}
+          >
+            <Label htmlFor="v3-est-website">Website</Label>
+            <Input
+              id="v3-est-website"
+              aria-label="Website"
+              type="text"
+              value={website}
+              onChange={(event) => onWebsiteChange(event.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
 
-              <div>
-                <h3 className="mb-2 text-sm font-semibold">{t.lineItems}</h3>
-                <div className="divide-y border">
-                  {preview.lineItems
-                    .filter((line) => line.amountUsd !== 0 || line.id !== "packing_loading")
-                    .map((line) => (
-                      <div key={line.id} className="grid grid-cols-[1fr_auto] gap-3 p-3 text-sm">
-                        <div>
-                          <div className="font-medium">{line.label}</div>
-                          {line.note && <div className="mt-1 text-xs text-muted-foreground">{line.note}</div>}
-                        </div>
-                        <div className="font-semibold">
-                          {line.amountUsd == null ? "Quote" : formatDollar(line.amountUsd)}
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
+          {error && <p className="text-center text-xs text-red-500">{error}</p>}
 
-              {preview.dedicatedContainerFreightTotal != null && (
-                <div className="border border-sky-200 bg-sky-50 p-3 text-sm text-sky-950">
-                  <div className="font-semibold">{t.dedicated}</div>
-                  <div className="mt-1">{formatDollar(preview.dedicatedContainerFreightTotal)}</div>
-                </div>
-              )}
+          <Button
+            type="button"
+            onClick={onSubmit}
+            disabled={!isEmailValid || isSubmitting}
+            className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t.calculating}
+              </>
+            ) : (
+              <>
+                {t.calculateAndSend}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </>
+            )}
+          </Button>
 
-              <div className="border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-950">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="font-semibold">{t.importEstimate}</span>
-                  <span className="font-bold">
-                    {preview.importCost.available && preview.importCost.amountUsd != null
-                      ? formatDollar(preview.importCost.amountUsd)
-                      : t.unavailable}
-                  </span>
-                </div>
-                {preview.importCost.available ? (
-                  <p className="mt-2 text-xs leading-relaxed">
-                    HS {preview.importCost.hsCode}; duty {percentLabel(preview.importCost.dutyRatePct)};
-                    tax {percentLabel(preview.importCost.taxRatePct)}; {preview.importCost.sourceVersion}.
-                  </p>
-                ) : (
-                  <p className="mt-2 text-xs leading-relaxed">
-                    {preview.importCost.note ? getLocalizedText(preview.importCost.note, lang) : t.unavailable}
-                  </p>
-                )}
-              </div>
-
-              {(preview.notes.length > 0 || preview.warnings.length > 0) && (
-                <div className="space-y-3">
-                  {preview.warnings.length > 0 && (
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-amber-800">{t.warnings}</h3>
-                      <ul className="space-y-1 text-xs leading-relaxed text-amber-800">
-                        {preview.warnings.map((warning, index) => (
-                          <li key={`${warning.en}-${index}`}>{getLocalizedText(warning, lang)}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {preview.notes.length > 0 && (
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold">{t.notes}</h3>
-                      <ul className="space-y-1 text-xs leading-relaxed text-muted-foreground">
-                        {preview.notes.slice(0, 3).map((item, index) => (
-                          <li key={`${item.en}-${index}`}>{getLocalizedText(item, lang)}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div className="space-y-3 border-t pt-5">
-                <div className="hidden">
-                  <Label htmlFor="v3-website">Website</Label>
-                  <Input
-                    id="v3-website"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    value={website}
-                    onChange={(event) => setWebsite(event.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="v3-email" className="mb-2 block">{t.email}</Label>
-                  <Input
-                    id="v3-email"
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder="you@company.com"
-                  />
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                  <div>
-                    <Label htmlFor="v3-name" className="mb-2 block">{t.name}</Label>
-                    <Input id="v3-name" value={name} onChange={(event) => setName(event.target.value)} />
-                  </div>
-                  <div>
-                    <Label htmlFor="v3-company" className="mb-2 block">{t.company}</Label>
-                    <Input id="v3-company" value={company} onChange={(event) => setCompany(event.target.value)} />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="v3-phone" className="mb-2 block">{t.phone}</Label>
-                  <Input id="v3-phone" value={phone} onChange={(event) => setPhone(event.target.value)} />
-                </div>
-                <div>
-                  <Label className="mb-2 block">{t.preferredContact}</Label>
-                  <div className="grid grid-cols-2 border">
-                    {(["email", "whatsapp"] as const).map((option) => (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => setPreferredContact(option)}
-                        className={`h-10 text-sm font-medium ${
-                          preferredContact === option
-                            ? "bg-foreground text-background"
-                            : "bg-background text-foreground"
-                        }`}
-                      >
-                        {option === "email" ? t.emailOption : t.whatsappOption}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {error && (
-                  <div className="border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
-                    {error}
-                  </div>
-                )}
-                {result?.success && (
-                  <div className="border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
-                    {t.success}
-                  </div>
-                )}
-
-                <Button
-                  type="button"
-                  className="w-full"
-                  size="lg"
-                  disabled={isSubmitting || !preview}
-                  onClick={handleSubmit}
-                >
-                  <Mail className="mr-2 h-4 w-4" />
-                  {isSubmitting ? t.submitting : t.submit}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  render={
-                    <a
-                      href={CONTACT.whatsappUrl}
-                      onClick={() => trackContactClick("whatsapp", "calculator_v3_handoff")}
-                    />
-                  }
-                >
-                  <MessageCircle className="mr-2 h-4 w-4" />
-                  {t.whatsapp}
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="p-5 text-sm text-muted-foreground">
-              Select equipment, route, and quantity to show the V3 freight estimate.
-            </div>
-          )}
+          <p className="flex items-center justify-center gap-1.5 text-xs text-slate-400">
+            <Lock className="h-3 w-3" />
+            {t.emailBreakdownNote}
+          </p>
         </div>
-      </aside>
+      ) : !hasResult ? (
+        <div className="mt-5 space-y-2">
+          <Button
+            type="button"
+            onClick={() => setEmailGateOpen(true)}
+            disabled={!isComplete}
+            className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            {t.bookThisFreight}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            className="w-full text-slate-300 hover:text-white"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            {t.refineQuote}
+          </Button>
+        </div>
+      ) : (
+        <div className="mt-5 space-y-2">
+          <Button
+            render={<Link href="/contact" />}
+            className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            {t.getDetailedQuote}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <Button
+            render={
+              <a
+                href={`${CONTACT.whatsappUrl}?text=${whatsappText}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackContactClick("whatsapp", "calculator_v3_estimate")}
+              />
+            }
+            variant="outline"
+            className="w-full border-emerald-600/50 py-5 font-semibold text-emerald-500 hover:bg-emerald-600/10"
+          >
+            <MessageCircle className="mr-2 h-4 w-4" />
+            {t.whatsAppUs}
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={onReset}
+            className="w-full text-slate-300 hover:text-white"
+          >
+            {t.calculateAnother}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ImportCostNote({
+  importCost,
+  locale,
+}: {
+  importCost: ImportCostEstimateV3;
+  locale: CalculatorLocale;
+}) {
+  const t = COPY[locale];
+  if (importCost.available) {
+    return (
+      <div className="mt-2 space-y-1 text-xs leading-relaxed text-slate-400">
+        <p>{t.importBrokerNote}</p>
+        {importCost.recoverableCreditsUsd != null &&
+          importCost.recoverableCreditsUsd > 0 && (
+            <p>
+              {t.recoverableCredits}:{" "}
+              {formatDollar(importCost.recoverableCreditsUsd)}
+            </p>
+          )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-2 space-y-1 text-xs leading-relaxed text-slate-400">
+      {importCost.note && <p>{getLocalizedText(importCost.note, locale)}</p>}
+      {importCost.missingInputs.length > 0 && (
+        <p>
+          {t.missingInputs}:{" "}
+          {importCost.missingInputs
+            .map((key) => missingInputLabel(key, locale))
+            .join(", ")}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function DetailRow({
+  label,
+  value,
+  highlight,
+  mono,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+  mono?: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 text-sm">
+      <span className="text-slate-400">{label}</span>
+      <span
+        className={`text-right ${
+          highlight ? "font-semibold text-primary" : "font-medium text-white"
+        }${mono ? " font-mono" : ""}`}
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function SectionHeader({ num, title }: { num: number; title: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+        {String(num).padStart(2, "0")}
+      </div>
+      <h3 className="text-lg font-bold text-foreground">{title}</h3>
     </div>
   );
 }

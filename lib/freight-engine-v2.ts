@@ -21,10 +21,10 @@ import type {
 import {
   FLATRACK_INSURANCE_MIN_USD,
   FLATRACK_INTERNAL_BUNDLE_USD,
-  FLATRACK_NCB_BY_POL,
   FORTYHC_ORIGIN_PORT,
   STANDARD_INLAND_DELIVERY_RATE,
-  getFlatrackInsuranceUsd,
+  getFlatrackFreightInsuranceUsd,
+  getFlatrackNcbUsd,
   resolveQuoteContainerType,
 } from "@/lib/freight-policy";
 
@@ -197,13 +197,19 @@ function carrierRank(carrier: string): number {
 }
 
 function getFlatrackSeaBundle(params: {
-  rate: Pick<OceanFreightRate, "origin_port" | "ocean_rate" | "packing_drayage">;
+  rate: Pick<
+    OceanFreightRate,
+    "origin_port" | "destination_country" | "ocean_rate" | "packing_drayage"
+  >;
   insuranceUsd: number;
 }): number {
   return (
     (params.rate.ocean_rate ?? 0) +
     (params.rate.packing_drayage ?? 0) +
-    (FLATRACK_NCB_BY_POL[params.rate.origin_port] ?? 0) +
+    getFlatrackNcbUsd({
+      originPort: params.rate.origin_port,
+      destinationCountry: params.rate.destination_country,
+    }) +
     FLATRACK_INTERNAL_BUNDLE_USD +
     params.insuranceUsd
   );
@@ -327,7 +333,10 @@ export function calculateFreightV2(params: CalculateFreightParams): FreightEstim
       notes.push("Enter ZIP for inland transport estimate.");
     }
   } else {
-    const flatrackInsuranceUsd = getFlatrackInsuranceUsd(equipmentValueUsd);
+    const flatrackInsuranceUsd = getFlatrackFreightInsuranceUsd({
+      destinationCountry,
+      equipmentValueUsd,
+    });
     let bestTotal = Infinity;
     let bestRate: OceanFreightRate | null = null;
     let bestPortName = "";
@@ -347,6 +356,7 @@ export function calculateFreightV2(params: CalculateFreightParams): FreightEstim
         const seaBundle = getFlatrackSeaBundle({
           rate: {
             origin_port: portName,
+            destination_country: rate.destination_country,
             ocean_rate: rate.ocean_rate,
             packing_drayage: rate.packing_drayage,
           },
@@ -393,6 +403,7 @@ export function calculateFreightV2(params: CalculateFreightParams): FreightEstim
         getFlatrackSeaBundle({
           rate: {
             origin_port: matchedPort ?? generalRate.origin_port,
+            destination_country: generalRate.destination_country,
             ocean_rate: generalRate.ocean_rate,
             packing_drayage: generalRate.packing_drayage,
           },
@@ -408,6 +419,7 @@ export function calculateFreightV2(params: CalculateFreightParams): FreightEstim
         getFlatrackSeaBundle({
           rate: {
             origin_port: bestPortName,
+            destination_country: bestRate.destination_country,
             ocean_rate: bestRate.ocean_rate,
             packing_drayage: bestRate.packing_drayage,
           },

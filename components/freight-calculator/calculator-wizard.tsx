@@ -97,7 +97,9 @@ export function CalculatorWizard() {
   const submittingRef = useRef(false);
 
   // ─── Preview estimate ──────────────────────────────────────────────────
-  const [preview, setPreview] = useState<FreightEstimateV2 | null>(null);
+  const [serverPreview, setServerPreview] = useState<FreightEstimateV2 | null>(
+    null,
+  );
 
   // ─── Mobile sheet ──────────────────────────────────────────────────────
   const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
@@ -118,30 +120,6 @@ export function CalculatorWizard() {
       .catch(() => setDataError(true))
       .finally(() => setLoading(false));
   }, []);
-
-  // ─── Recalculate preview when inputs change ────────────────────────────
-  useEffect(() => {
-    if (!selectedEquipment || !destinationCountry || !data) {
-      setPreview(null);
-      return;
-    }
-    const est = calculateFreightV2({
-      equipment: selectedEquipment,
-      equipmentSize,
-      equipmentValueUsd,
-      destinationCountry,
-      zipCode: zipCode || null,
-      oceanRates: data.oceanRates,
-    });
-    setPreview(est);
-  }, [
-    selectedEquipment,
-    equipmentSize,
-    equipmentValueUsd,
-    destinationCountry,
-    zipCode,
-    data,
-  ]);
 
   // ─── Derived state ─────────────────────────────────────────────────────
   const filteredEquipment = data
@@ -176,23 +154,33 @@ export function CalculatorWizard() {
     resolvedContainerType === "fortyhc"
       ? t("fortyHC")
       : t("flatRack");
-
-  useEffect(() => {
-    if (
-      destinationCountry &&
-      resolvedContainerType &&
-      !supportedCountries.includes(destinationCountry)
-    ) {
-      setDestinationCountry("");
-      setPreview(null);
+  const activeDestinationCountry =
+    destinationCountry &&
+    (!resolvedContainerType || supportedCountries.includes(destinationCountry))
+      ? destinationCountry
+      : "";
+  const clientPreview = useMemo<FreightEstimateV2 | null>(() => {
+    if (!selectedEquipment || !activeDestinationCountry || !data) {
+      return null;
     }
-  }, [destinationCountry, resolvedContainerType, supportedCountries]);
-
-  useEffect(() => {
-    if (resolvedContainerType !== "flatrack" && equipmentValueUsd !== null) {
-      setEquipmentValueUsd(null);
-    }
-  }, [resolvedContainerType, equipmentValueUsd]);
+    return calculateFreightV2({
+      equipment: selectedEquipment,
+      equipmentSize,
+      equipmentValueUsd: isFlatrack ? equipmentValueUsd : null,
+      destinationCountry: activeDestinationCountry,
+      zipCode: zipCode || null,
+      oceanRates: data.oceanRates,
+    });
+  }, [
+    selectedEquipment,
+    equipmentSize,
+    equipmentValueUsd,
+    activeDestinationCountry,
+    zipCode,
+    data,
+    isFlatrack,
+  ]);
+  const preview = serverPreview ?? clientPreview;
 
   // Progress: how many steps are complete?
   const step1Done = selectedEquipment !== null;
@@ -203,10 +191,10 @@ export function CalculatorWizard() {
     step1Done &&
     (!needsSize || (equipmentSize !== null && equipmentSize > 0)) &&
     equipmentValueDone;
-  const step3Done = step2Done && destinationCountry !== "" && preview !== null;
+  const step3Done = step2Done && activeDestinationCountry !== "" && preview !== null;
   const step4Done = result?.success === true;
   const routeIssueMessage =
-    !step2Done || !destinationCountry || preview
+    !step2Done || !activeDestinationCountry || preview
       ? null
       : t("unsupportedRouteMessage");
   const completedSteps =
@@ -224,7 +212,7 @@ export function CalculatorWizard() {
 
   // ─── Handlers ──────────────────────────────────────────────────────────
   async function handleCalculate() {
-    if (!EMAIL_RE.test(email) || !selectedEquipment || !destinationCountry)
+    if (!EMAIL_RE.test(email) || !selectedEquipment || !activeDestinationCountry)
       return;
     if (website) return; // honeypot — silent reject before any state changes
     if (submittingRef.current) return;
@@ -246,7 +234,7 @@ export function CalculatorWizard() {
         equipmentSize: needsSize ? equipmentSize : null,
         equipmentValueUsd: isFlatrack ? equipmentValueUsd : null,
         containerType: resolvedContainerType ?? selectedEquipment.container_type,
-        destinationCountry,
+        destinationCountry: activeDestinationCountry,
         zipCode,
         rateBookSignature,
         website,
@@ -259,7 +247,7 @@ export function CalculatorWizard() {
       });
 
       if (res.success && res.estimate) {
-        setPreview(res.estimate);
+        setServerPreview(res.estimate);
         if (res.currentRateBookSignature) {
           setRateBookSignature(res.currentRateBookSignature);
         }
@@ -281,7 +269,7 @@ export function CalculatorWizard() {
         }
       } else {
         if (res.estimate) {
-          setPreview(res.estimate);
+          setServerPreview(res.estimate);
         }
         if (res.currentRateBookSignature) {
           setRateBookSignature(res.currentRateBookSignature);
@@ -309,7 +297,7 @@ export function CalculatorWizard() {
     setWebsite("");
     setError("");
     setResult(null);
-    setPreview(null);
+    setServerPreview(null);
     setMobileSheetOpen(false);
     setShowAllCategories(false);
   }
@@ -450,6 +438,8 @@ export function CalculatorWizard() {
                       setEquipmentValueUsd(null);
                       setDestinationCountry("");
                       setZipCode("");
+                      setServerPreview(null);
+                      setResult(null);
                     }}
                     className={`group flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                       isSelected
@@ -508,6 +498,8 @@ export function CalculatorWizard() {
                             setEquipmentSize(null);
                             setEquipmentValueUsd(null);
                             setDestinationCountry("");
+                            setServerPreview(null);
+                            setResult(null);
                             trackCalcFunnel("start", {
                               equipment_type: eq.display_name_en,
                               container_type: eqContainerType,
@@ -606,6 +598,8 @@ export function CalculatorWizard() {
                             ? parsed
                             : e.target.value ? null : null
                         );
+                        setServerPreview(null);
+                        setResult(null);
                       }}
                       placeholder={t("enterSize")}
                       className="mt-1.5 max-w-40"
@@ -697,6 +691,8 @@ export function CalculatorWizard() {
                             ? parsed
                             : null
                         );
+                        setServerPreview(null);
+                        setResult(null);
                       }}
                       placeholder={t("equipmentValuePlaceholder")}
                       className="mt-1.5 max-w-56"
@@ -780,10 +776,12 @@ export function CalculatorWizard() {
                       id="dest-country"
                       name="destination-country"
                       autoComplete="off"
-                      value={destinationCountry}
+                      value={activeDestinationCountry}
                       onChange={(e) => {
                         const country = e.target.value;
                         setDestinationCountry(country);
+                        setServerPreview(null);
+                        setResult(null);
                         if (country && selectedEquipment) {
                           trackCalcFunnel("step", {
                             step_number: "3",
@@ -829,11 +827,13 @@ export function CalculatorWizard() {
                       autoComplete="postal-code"
                       maxLength={5}
                       value={zipCode}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setZipCode(
                           e.target.value.replace(/\D/g, "").slice(0, 5)
-                        )
-                      }
+                        );
+                        setServerPreview(null);
+                        setResult(null);
+                      }}
                       placeholder={t("zipPlaceholder")}
                       className="mt-1.5"
                     />
@@ -890,7 +890,7 @@ export function CalculatorWizard() {
                   <RouteGlobe
                     originPort={preview?.originPort ?? null}
                     destinationPort={preview?.destinationPort ?? null}
-                    destinationCountry={destinationCountry || null}
+                    destinationCountry={activeDestinationCountry || null}
                     containerType={resolvedContainerType}
                   />
                 </div>

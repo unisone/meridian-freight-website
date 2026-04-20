@@ -13,7 +13,39 @@ export const FLATRACK_NCB_BY_POL: Readonly<Record<string, number>> = {
   "Charleston, SC": 550,
 };
 
+const FLATRACK_COUNTRIES_WITH_NEGOTIATED_ROUTE_BUNDLE = new Set(["KZ"]);
+
 export type FreightContainerType = "flatrack" | "fortyhc";
+
+export function getFlatrackNcbUsd(input: {
+  originPort: string;
+  destinationCountry?: string | null;
+}): number {
+  const country = input.destinationCountry?.toUpperCase() ?? "";
+  if (FLATRACK_COUNTRIES_WITH_NEGOTIATED_ROUTE_BUNDLE.has(country)) {
+    return 0;
+  }
+  return FLATRACK_NCB_BY_POL[input.originPort] ?? 0;
+}
+
+export function getFlatrackFreightInsuranceUsd(input: {
+  destinationCountry?: string | null;
+  equipmentValueUsd: number | null;
+  quantity?: number;
+}): number {
+  const country = input.destinationCountry?.toUpperCase() ?? "";
+  const quantity = input.quantity ?? 1;
+  if (FLATRACK_COUNTRIES_WITH_NEGOTIATED_ROUTE_BUNDLE.has(country)) {
+    return 0;
+  }
+  if (input.equipmentValueUsd == null || input.equipmentValueUsd <= 0) {
+    return FLATRACK_INSURANCE_MIN_USD * quantity;
+  }
+  return Math.max(
+    FLATRACK_INSURANCE_MIN_USD * quantity,
+    input.equipmentValueUsd * FLATRACK_INSURANCE_RATE,
+  );
+}
 
 type QuoteContainerResolutionSource =
   | "protected_policy"

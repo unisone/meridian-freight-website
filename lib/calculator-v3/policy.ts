@@ -1,13 +1,11 @@
 import {
   compliancePolicySchema,
   equipmentQuoteProfileSchema,
-  importCostProfileSchema,
   localeCodeSchema,
   type CalculatorLocale,
   type CompliancePolicy,
   type EquipmentQuoteMode,
   type EquipmentQuoteProfile,
-  type ImportCostProfile,
   type LocalizedText,
 } from "@/lib/calculator-v3/contracts";
 
@@ -30,7 +28,7 @@ const wholeMode = (
   shortLabel: text("Whole", "Completo", "Целиком"),
   description: text(
     "Ships as a complete machine with route optimized to the best U.S. port.",
-    "Se envia como maquina completa con ruta optimizada al mejor puerto de EE.UU.",
+    "Se envía como máquina completa con ruta optimizada al mejor puerto de EE. UU.",
     "Отправляется целиком с оптимизацией маршрута до лучшего порта США.",
   ),
   fractionalContainerPricing: false,
@@ -48,7 +46,7 @@ const containerMode = (
   shortLabel: text("Container", "Contenedor", "Контейнер"),
   description: text(
     "Packed at Meridian's Albion, IA facility and shipped by 40' high cube container.",
-    "Se embala en la instalacion de Meridian en Albion, IA y se envia en contenedor high cube de 40 pies.",
+    "Se embala en la instalación de Meridian en Albion, IA y se envía en contenedor high cube de 40 pies.",
     "Упаковка на площадке Meridian в Albion, IA и отправка в 40-футовом high cube контейнере.",
   ),
   fractionalContainerPricing: false,
@@ -67,11 +65,11 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
     pluralLabel: text("Combines", "Cosechadoras", "Комбайны"),
     description: text(
       "Large grain combines with whole-unit and containerized routing options.",
-      "Cosechadoras grandes con opciones de envio completas o en contenedores.",
+      "Cosechadoras grandes con opciones de envío completas o en contenedores.",
       "Зерноуборочные комбайны с вариантами отправки целиком или в контейнерах.",
     ),
     image: "/images/project-jd-9650sts-combine.jpg",
-    quantityLabel: text("Number of combines", "Numero de cosechadoras", "Количество комбайнов"),
+    quantityLabel: text("Number of combines", "Número de cosechadoras", "Количество комбайнов"),
     quantityHelp: text(
       "Containerized combines are priced as two 40HC containers because the machine occupies about 1 1/3 containers.",
       "Las cosechadoras en contenedor se cotizan como dos 40HC porque ocupan aproximadamente 1 1/3 contenedores.",
@@ -92,13 +90,7 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
         ),
       }),
     ],
-    notes: [
-      text(
-        "For CEO/internal work, the model-level rows can still be inspected in the admin data, but the public calculator keeps one combine choice.",
-        "Para trabajo interno, los modelos siguen en los datos, pero la calculadora publica mantiene una sola opcion de cosechadoras.",
-        "Для внутренней работы модели остаются в данных, но публичный калькулятор показывает один вариант комбайнов.",
-      ),
-    ],
+    notes: [],
   },
   {
     id: "tractors",
@@ -110,11 +102,11 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
     pluralLabel: text("Tractors", "Tractores", "Тракторы"),
     description: text(
       "Row-crop, 4WD, and tracked tractors with container-first quoting.",
-      "Tractores agricolas, 4WD y de orugas con cotizacion primaria en contenedor.",
+      "Tractores agrícolas, 4WD y de orugas con cotización primaria en contenedor.",
       "Колесные, 4WD и гусеничные тракторы с приоритетом контейнерной отправки.",
     ),
     image: "/images/project-jd-4044r-tractor.jpg",
-    quantityLabel: text("Number of tractors", "Numero de tractores", "Количество тракторов"),
+    quantityLabel: text("Number of tractors", "Número de tractores", "Количество тракторов"),
     quantityHelp: text(
       "Use the whole-unit mode only when dimensions require port loading.",
       "Use unidad completa solo cuando las dimensiones requieran carga en puerto.",
@@ -149,10 +141,10 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
       "Самоходные и прицепные опрыскиватели с отправкой целиком или в контейнере.",
     ),
     image: "/images/project-hagie-sprayer-flatbed.jpg",
-    quantityLabel: text("Number of sprayers", "Numero de pulverizadoras", "Количество опрыскивателей"),
+    quantityLabel: text("Number of sprayers", "Número de pulverizadoras", "Количество опрыскивателей"),
     quantityHelp: text(
       "Self-propelled sprayers usually require whole-unit routing; pull-type sprayers often fit 40HC.",
-      "Las autopropulsadas normalmente requieren envio completo; las de arrastre suelen entrar en 40HC.",
+      "Las autopropulsadas normalmente requieren envío completo; las de arrastre suelen entrar en 40HC.",
       "Самоходные обычно идут целиком; прицепные часто помещаются в 40HC.",
     ),
     defaultQuantity: 1,
@@ -182,14 +174,14 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
     pluralLabel: text("Headers", "Cabezales", "Жатки"),
     description: text(
       "Flex, rigid, draper, corn, and specialty headers with shared-container math.",
-      "Cabezales flexibles, rigidos, draper, maiceros y especiales con calculo por contenedor compartido.",
+      "Cabezales flexibles, rígidos, draper, maiceros y especiales con cálculo por contenedor compartido.",
       "Гибкие, жесткие, draper, кукурузные и специальные жатки с расчетом доли контейнера.",
     ),
     image: "/images/project-jd-925f-header-load.jpg",
-    quantityLabel: text("Number of headers", "Numero de cabezales", "Количество жаток"),
+    quantityLabel: text("Number of headers", "Número de cabezales", "Количество жаток"),
     quantityHelp: text(
       "Flex/rigid headers with augers can usually load four per 40HC; one unit is priced as one quarter of a shared container.",
-      "Los cabezales flex/rigidos con sinfin normalmente cargan cuatro por 40HC; una unidad se calcula como un cuarto de contenedor compartido.",
+      "Los cabezales flex/rígidos con sinfín normalmente cargan cuatro por 40HC; una unidad se calcula como un cuarto de contenedor compartido.",
       "Гибкие/жесткие жатки со шнеком обычно грузятся по четыре в 40HC; одна единица считается как четверть общего контейнера.",
     ),
     defaultQuantity: 1,
@@ -201,7 +193,7 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
         fractionalContainerPricing: true,
         description: text(
           "Shared-container allocation assumes four compatible headers per 40HC and also shows a dedicated-container comparison.",
-          "La asignacion compartida asume cuatro cabezales compatibles por 40HC y tambien muestra una comparacion con contenedor dedicado.",
+          "La asignación compartida asume cuatro cabezales compatibles por 40HC y también muestra una comparación con contenedor dedicado.",
           "Расчет доли предполагает четыре совместимые жатки на 40HC и также показывает сравнение с отдельным контейнером.",
         ),
       }),
@@ -221,7 +213,7 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
       "Сеялки и пневмобункеры через контейнерный маршрут, когда это возможно.",
     ),
     image: "/images/project-kinze-planter-flatbed.jpg",
-    quantityLabel: text("Number of units", "Numero de unidades", "Количество единиц"),
+    quantityLabel: text("Number of units", "Número de unidades", "Количество единиц"),
     quantityHelp: text(
       "Large frames may still require a manual dimensional check.",
       "Los equipos grandes pueden requerir verificacion manual de dimensiones.",
@@ -257,7 +249,7 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
       "Культиваторы, диски, рыхлители, плуги и похожие орудия.",
     ),
     image: "/images/project-jd-tillage-containers.jpg",
-    quantityLabel: text("Number of units", "Numero de unidades", "Количество единиц"),
+    quantityLabel: text("Number of units", "Número de unidades", "Количество единиц"),
     quantityHelp: text(
       "Container loading depends on folded dimensions and dismantling scope.",
       "La carga en contenedor depende de dimensiones plegadas y desmontaje.",
@@ -278,14 +270,14 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
     pluralLabel: text("Balers and other equipment", "Enfardadoras y otros equipos", "Прессы и другая техника"),
     description: text(
       "General containerized farm equipment that needs route pricing before a manual dimensional check.",
-      "Equipos agricolas generales en contenedor antes de verificacion dimensional manual.",
+      "Equipos agrícolas generales en contenedor antes de verificación dimensional manual.",
       "Общая сельхозтехника в контейнере перед ручной проверкой габаритов.",
     ),
     image: "/images/project-spare-parts-container.jpg",
-    quantityLabel: text("Number of units", "Numero de unidades", "Количество единиц"),
+    quantityLabel: text("Number of units", "Número de unidades", "Количество единиц"),
     quantityHelp: text(
       "Use this for equipment that is not covered by the primary categories.",
-      "Use esta opcion si el equipo no aparece en las categorias principales.",
+      "Use esta opción si el equipo no aparece en las categorías principales.",
       "Используйте для техники вне основных категорий.",
     ),
     defaultQuantity: 1,
@@ -319,7 +311,7 @@ export const EQUIPMENT_QUOTE_PROFILES: EquipmentQuoteProfile[] = [
       "Крупногабаритные машины обычно отправляются целиком с погрузкой в порту.",
     ),
     image: "/images/project-jd-aerial-container.jpg",
-    quantityLabel: text("Number of units", "Numero de unidades", "Количество единиц"),
+    quantityLabel: text("Number of units", "Número de unidades", "Количество единиц"),
     quantityHelp: text(
       "Exact mode depends on dimensions and attachments.",
       "El modo exacto depende de dimensiones y accesorios.",
@@ -341,31 +333,37 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
       "https://www.argentina.gob.ar/noticias/argentina-controla-la-importacion-de-maquinaria-agricola-usada-para-prevenir-el-ingreso-de",
     effectiveDate: "2026-04-20",
     summary: text(
-      "Argentina requires AFIDI-led document and physical checks for used agricultural machinery; clean machinery and applicable phytosanitary treatments are verified case by case.",
-      "Argentina verifica AFIDI, documentos e inspeccion fisica para maquinaria agricola usada; limpieza y tratamientos fitosanitarios aplican caso por caso.",
+      "Argentina requires clean used machinery plus AFIDI document and physical checks; any treatment is confirmed case by case with the importer/broker.",
+      "Argentina exige maquinaria usada limpia, revisión documental AFIDI e inspección física; cualquier tratamiento se confirma caso por caso con el importador/broker.",
       "Аргентина проверяет AFIDI, документы и физическое состояние бывшей в употреблении сельхозтехники; мойка и фитосанитарная обработка зависят от случая.",
     ),
     lines: [
       {
-        id: "wash",
-        label: text("Export wash", "Lavado de exportacion", "Экспортная мойка"),
+        id: "ar-cleaning-wash",
+        serviceType: "wash",
+        label: text("Export wash", "Lavado de exportación", "Экспортная мойка"),
         amountUsd: null,
-        includedInFreight: true,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
         note: text(
-          "Uses the equipment-specific wash cost from Meridian's rate table.",
-          "Usa el costo de lavado especifico del equipo en la tabla de Meridian.",
-          "Использует стоимость мойки из таблицы Meridian для выбранной техники.",
+          "Used machinery must be clean and free of soil or plant residue; Meridian service pricing is confirmed with the export team.",
+          "La maquinaria usada debe estar limpia y libre de suelo o restos vegetales; el precio del servicio Meridian se confirma con el equipo de exportación.",
+          "Бывшая в употреблении техника должна быть чистой, без почвы и растительных остатков; стоимость услуги Meridian подтверждается командой экспорта.",
         ),
       },
       {
-        id: "fumigation",
-        label: text("Fumigation / phytosanitary treatment", "Fumigacion / tratamiento fitosanitario", "Фумигация / фитосанитарная обработка"),
-        amountUsd: 650,
-        includedInFreight: true,
+        id: "ar-treatment",
+        serviceType: "treatment",
+        label: text("Treatment review", "Revisión de tratamiento", "Проверка обработки"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "case_by_case",
+        publicAmount: false,
         note: text(
-          "Indicative service allowance; AFIDI defines the final treatment requirement.",
-          "Provision indicativa; AFIDI define el tratamiento final requerido.",
-          "Ориентировочный сервисный резерв; финальное требование определяет AFIDI.",
+          "AFIDI and the local broker/importer confirm whether treatment or fumigation is required before shipping.",
+          "AFIDI y el broker/importador local confirman si se requiere tratamiento o fumigación antes del embarque.",
+          "AFIDI и местный брокер/импортер подтверждают перед отправкой, требуется ли обработка или фумигация.",
         ),
       },
     ],
@@ -379,30 +377,36 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
     effectiveDate: "2026-04-20",
     summary: text(
       "Chile regulates used machinery under SAG phytosanitary import/transit requirements.",
-      "Chile regula maquinaria usada bajo requisitos fitosanitarios de importacion/transito SAG.",
+      "Chile regula maquinaria usada bajo requisitos fitosanitarios de importación/tránsito SAG.",
       "Чили регулирует бывшую в употреблении технику по фитосанитарным требованиям SAG.",
     ),
     lines: [
       {
-        id: "wash",
-        label: text("Export wash", "Lavado de exportacion", "Экспортная мойка"),
+        id: "cl-cleaning-wash",
+        serviceType: "wash",
+        label: text("Export wash", "Lavado de exportación", "Экспортная мойка"),
         amountUsd: null,
-        includedInFreight: true,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
         note: text(
-          "Uses the equipment-specific wash cost from Meridian's rate table.",
-          "Usa el costo de lavado especifico del equipo en la tabla de Meridian.",
-          "Использует стоимость мойки из таблицы Meridian для выбранной техники.",
+          "SAG requires used machinery to be clean and free of regulated material; service pricing is confirmed before booking.",
+          "SAG exige maquinaria usada limpia y libre de material regulado; el precio del servicio se confirma antes de reservar.",
+          "SAG требует, чтобы бывшая в употреблении техника была чистой и без регулируемых материалов; стоимость услуги подтверждается до бронирования.",
         ),
       },
       {
-        id: "fumigation",
-        label: text("Fumigation / phytosanitary treatment", "Fumigacion / tratamiento fitosanitario", "Фумигация / фитосанитарная обработка"),
-        amountUsd: 650,
-        includedInFreight: true,
+        id: "cl-treatment",
+        serviceType: "treatment",
+        label: text("Treatment review", "Revisión de tratamiento", "Проверка обработки"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "case_by_case",
+        publicAmount: false,
         note: text(
-          "Indicative service allowance pending final documentation review.",
-          "Provision indicativa pendiente de revision documental final.",
-          "Ориентировочный резерв до финальной проверки документов.",
+          "Broker/SAG documentation review confirms whether treatment or fumigation is required.",
+          "La revisión documental del broker/SAG confirma si se requiere tratamiento o fumigación.",
+          "Обработка или фумигация подтверждается после проверки документов брокером/SAG.",
         ),
       },
     ],
@@ -412,108 +416,116 @@ export const COMPLIANCE_POLICIES: CompliancePolicy[] = [
     version: "uy-dgsa-2026-04",
     sourceLabel: "Uruguay MGAP DGSA Resolucion 98/016",
     sourceUrl:
-      "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-98016-dgsa-requisitos-fitosanitarios-para-introduccion-pais",
+      "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-98016-1",
     effectiveDate: "2026-04-20",
     summary: text(
       "Uruguay requires used machinery to be clean and subject to phytosanitary inspection; treatment may be required by DGSA.",
-      "Uruguay exige maquinaria usada limpia e inspeccion fitosanitaria; DGSA puede requerir tratamiento.",
+      "Uruguay exige maquinaria usada limpia e inspección fitosanitaria; DGSA puede requerir tratamiento.",
       "Уругвай требует чистую технику и фитосанитарную инспекцию; DGSA может потребовать обработку.",
     ),
     lines: [
       {
-        id: "wash",
-        label: text("Export wash", "Lavado de exportacion", "Экспортная мойка"),
+        id: "uy-cleaning-wash",
+        serviceType: "wash",
+        label: text("Export wash", "Lavado de exportación", "Экспортная мойка"),
         amountUsd: null,
-        includedInFreight: true,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
         note: text(
-          "Default Meridian quote includes wash only; DGSA may require additional treatment after inspection.",
-          "La cotizacion default incluye solo lavado; DGSA puede requerir tratamiento adicional tras inspeccion.",
-          "Базовый расчет Meridian включает только мойку; DGSA может потребовать дополнительную обработку после инспекции.",
+          "DGSA requires cleaning and may require treatment or additional action after inspection.",
+          "DGSA exige limpieza y puede requerir tratamiento o acción adicional tras la inspección.",
+          "DGSA требует очистку и может потребовать обработку или дополнительные действия после инспекции.",
+        ),
+      },
+      {
+        id: "uy-treatment",
+        serviceType: "treatment",
+        label: text("Phytosanitary treatment", "Tratamiento fitosanitario", "Фитосанитарная обработка"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "case_by_case",
+        publicAmount: false,
+        note: text(
+          "Treatment specifications must be confirmed with the broker/importer and origin certificate requirements.",
+          "Las especificaciones de tratamiento deben confirmarse con el broker/importador y los requisitos del certificado de origen.",
+          "Спецификации обработки должны быть подтверждены брокером/импортером и требованиями сертификата страны отправления.",
         ),
       },
     ],
   },
   {
     country: "PY",
-    version: "py-policy-2026-04",
-    sourceLabel: "Meridian Paraguay import policy",
-    sourceUrl: "https://meridianexport.com/destinations/paraguay",
+    version: "py-law-7565-2026-04",
+    sourceLabel: "Paraguay Ley 7565/2025",
+    sourceUrl:
+      "https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados",
     effectiveDate: "2026-04-20",
     summary: text(
-      "No default wash or fumigation allowance is added; broker/importer confirmation is still required.",
-      "No se agrega lavado ni fumigacion por defecto; se requiere confirmacion del broker/importador.",
-      "По умолчанию мойка и фумигация не добавляются; требуется подтверждение брокера/импортера.",
+      "Paraguay requires used agricultural machinery to be sanitized, clean, treated/certified, and inspected under Ley 7565/2025; online pricing stays broker-confirmed.",
+      "Paraguay exige maquinaria agrícola usada sanitizada, limpia, tratada/certificada e inspeccionada bajo Ley 7565/2025; el precio en línea queda sujeto a confirmación del broker.",
+      "Парагвай требует санитарную подготовку, очистку, обработку/сертификацию и инспекцию бывшей в употреблении сельхозтехники по Ley 7565/2025.",
     ),
-    lines: [],
+    lines: [
+      {
+        id: "py-cleaning-sanitation",
+        serviceType: "cleaning",
+        label: text("Cleaning / sanitation", "Limpieza / sanitización", "Очистка / санитарная подготовка"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "required",
+        publicAmount: false,
+        note: text(
+          "Cleaning and sanitation must be confirmed with exporter/importer documentation and SENAVE process.",
+          "Limpieza y sanitización deben confirmarse con documentación del exportador/importador y proceso SENAVE.",
+          "Очистка и санитарная подготовка подтверждаются документами экспортера/импортера и процедурой SENAVE.",
+        ),
+      },
+      {
+        id: "py-treatment-certificate",
+        serviceType: "certificate",
+        label: text("Treatment and certificate", "Tratamiento y certificado", "Обработка и сертификат"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "broker_confirm",
+        publicAmount: false,
+        note: text(
+          "Treatment certificate, phytosanitary certificate, and destination inspection are broker/importer-confirmed.",
+          "Certificado de tratamiento, certificado fitosanitario e inspección en destino se confirman con broker/importador.",
+          "Сертификат обработки, фитосанитарный сертификат и инспекция в стране назначения подтверждаются брокером/импортером.",
+        ),
+      },
+    ],
   },
   {
     country: "BO",
     version: "bo-policy-2026-04",
-    sourceLabel: "Meridian Bolivia import policy",
-    sourceUrl: "https://meridianexport.com/destinations/bolivia",
+    sourceLabel: "Bolivia SENASAG / VUCE import process",
+    sourceUrl: "https://www.vuce.gob.bo/es/SENASAG_importacion_fitozanitario_requisitos",
     effectiveDate: "2026-04-20",
     summary: text(
-      "No default wash or fumigation allowance is added; broker/importer confirmation is required for Bolivia-bound cargo.",
-      "No se agrega lavado ni fumigacion por defecto; se requiere confirmacion para carga hacia Bolivia.",
-      "По умолчанию мойка и фумигация не добавляются; для Боливии требуется подтверждение брокера/импортера.",
+      "Bolivia-bound cargo needs broker/importer confirmation for phytosanitary import documentation; no used-machinery-specific automatic treatment profile is confirmed.",
+      "La carga hacia Bolivia requiere confirmación del broker/importador para documentación fitosanitaria; no hay perfil automático confirmado para maquinaria usada.",
+      "Грузы в Боливию требуют подтверждения брокера/импортера по фитосанитарным документам; автоматический профиль для бывшей в употреблении техники не подтвержден.",
     ),
-    lines: [],
+    lines: [
+      {
+        id: "bo-broker-confirmation",
+        serviceType: "note",
+        label: text("Broker/importer confirmation", "Confirmación broker/importador", "Подтверждение брокера/импортера"),
+        amountUsd: null,
+        amountStatus: "quote_confirmed",
+        status: "broker_confirm",
+        publicAmount: false,
+        note: text(
+          "Cleaning, treatment, or phytosanitary documentation may be required; confirm before booking.",
+          "Limpieza, tratamiento o documentación fitosanitaria pueden ser requeridos; confirmar antes de reservar.",
+          "Очистка, обработка или фитосанитарные документы могут потребоваться; подтвердите до бронирования.",
+        ),
+      },
+    ],
   },
 ].map((policy) => compliancePolicySchema.parse(policy));
-
-const tariffNote = text(
-  "Indicative public-data estimate only. Duties and taxes depend on final HS classification, customs valuation, importer status, and active local regulations.",
-  "Estimacion indicativa con datos publicos. Aranceles e impuestos dependen de clasificacion HS final, valoracion aduanera, estado del importador y normativa local vigente.",
-  "Ориентировочная оценка по публичным данным. Пошлины и налоги зависят от финальной HS-классификации, таможенной оценки, статуса импортера и актуальных правил.",
-);
-
-const importProfile = (
-  country: string,
-  equipmentProfileId: string,
-  hsCode: string,
-  dutyRatePct: number,
-  taxRatePct: number,
-): ImportCostProfile =>
-  importCostProfileSchema.parse({
-    country,
-    equipmentProfileId,
-    hsCode,
-    dutyRatePct,
-    taxRatePct,
-    confidence: "medium",
-    sourceLabel: "WTO Tariff & Trade Data / WITS public tariff references",
-    sourceUrl: "https://ttd.wto.org/en/download",
-    retrievedAt: "2026-04-20",
-    sourceVersion: "public-tariff-seed-2026-04",
-    note: tariffNote,
-  });
-
-const tariffSeeds: Array<[string, string, string, number, number]> = [
-  ["AR", "combines", "843351", 0.14, 0.105],
-  ["AR", "tractors", "870190", 0.14, 0.105],
-  ["AR", "sprayers", "842449", 0.14, 0.105],
-  ["AR", "headers", "843390", 0.14, 0.105],
-  ["CL", "combines", "843351", 0.06, 0.19],
-  ["CL", "tractors", "870190", 0.06, 0.19],
-  ["CL", "sprayers", "842449", 0.06, 0.19],
-  ["CL", "headers", "843390", 0.06, 0.19],
-  ["UY", "combines", "843351", 0.14, 0.22],
-  ["UY", "tractors", "870190", 0.14, 0.22],
-  ["UY", "sprayers", "842449", 0.14, 0.22],
-  ["UY", "headers", "843390", 0.14, 0.22],
-  ["PY", "combines", "843351", 0.10, 0.10],
-  ["PY", "tractors", "870190", 0.10, 0.10],
-  ["PY", "sprayers", "842449", 0.10, 0.10],
-  ["PY", "headers", "843390", 0.10, 0.10],
-  ["BO", "combines", "843351", 0.10, 0.13],
-  ["BO", "tractors", "870190", 0.10, 0.13],
-  ["BO", "sprayers", "842449", 0.10, 0.13],
-  ["BO", "headers", "843390", 0.10, 0.13],
-];
-
-export const IMPORT_COST_PROFILES: ImportCostProfile[] = tariffSeeds.map((seed) =>
-  importProfile(...seed),
-);
 
 export function getLocalizedText(value: LocalizedText, locale: string): string {
   const normalized = localeCodeSchema.safeParse(locale).success
@@ -530,19 +542,6 @@ export function getCompliancePolicy(country: string): CompliancePolicy | null {
   return (
     COMPLIANCE_POLICIES.find(
       (policy) => policy.country.toUpperCase() === country.toUpperCase(),
-    ) ?? null
-  );
-}
-
-export function getImportCostProfile(
-  country: string,
-  equipmentProfileId: string,
-): ImportCostProfile | null {
-  return (
-    IMPORT_COST_PROFILES.find(
-      (profile) =>
-        profile.country.toUpperCase() === country.toUpperCase() &&
-        profile.equipmentProfileId === equipmentProfileId,
     ) ?? null
   );
 }
