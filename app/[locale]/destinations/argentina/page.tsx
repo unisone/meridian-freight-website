@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import {
   ArrowRight,
@@ -30,7 +30,6 @@ import { setRequestLocale } from "next-intl/server";
 
 const ARGENTINA_PATH = "/es/destinations/argentina";
 
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return [{ locale: "es" }];
@@ -42,7 +41,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  if (locale !== "es") notFound();
+  if (locale !== "es") permanentRedirect(ARGENTINA_PATH);
 
   return {
     title: argentinaMarketPage.seo.title,
@@ -85,7 +84,7 @@ export default async function ArgentinaBuyerHubPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (locale !== "es") notFound();
+  if (locale !== "es") permanentRedirect(ARGENTINA_PATH);
 
   setRequestLocale(locale);
 
