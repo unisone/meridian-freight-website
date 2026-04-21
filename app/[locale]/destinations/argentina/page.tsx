@@ -30,6 +30,8 @@ import { setRequestLocale } from "next-intl/server";
 
 const ARGENTINA_PATH = "/es/destinations/argentina";
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return [{ locale: "es" }];
 }

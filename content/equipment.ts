@@ -80,10 +80,10 @@ const equipmentTypesEn: EquipmentType[] = [
       "used tractor international export",
       "tractor container loading",
       "farm tractor ocean freight",
-      "export tractor to Africa",
+      "export tractor to África",
     ],
     heroDescription:
-      "Buy a tractor anywhere in the US or Canada — we collect it, drain fluids and pull mirrors and dual wheels to fit the container, load it ourselves, and book the vessel. One detailed invoice covers everything from the seller's gate to your port.",
+      "Buy a tractor anywhere in the US or Canadá — we collect it, drain fluids and pull mirrors and dual wheels to fit the container, load it ourselves, and book the vessel. One detailed invoice covers everything from the seller's gate to your port.",
     sourcingNote:
       "Looking for a specific make and hour count? Send the brief — {link} attends Ritchie Bros, BigIron, and Purple Wave every month.",
     sourcingLinkLabel: "our sourcing team",
@@ -326,7 +326,7 @@ const equipmentTypesEn: EquipmentType[] = [
     heroDescription:
       "Wheel loaders fit a 40HC with the bucket pulled and stowed alongside; bigger machines take a flat rack with the bucket loaded separately. CAT, John Deere, Volvo, Komatsu — we pick the right container, lock the articulation joints, and ship from any North American seller.",
     sourcingNote:
-      "Specific bucket size, ton class, or pin-on attachments? {link} can pull options from dealers and auctions across the USA and Canada.",
+      "Specific bucket size, ton class, or pin-on attachments? {link} can pull options from dealers and auctions across the USA and Canadá.",
     sourcingLinkLabel: "Our sourcing team",
     brands: ["CAT", "John Deere", "Volvo", "Komatsu"],
     commonModels: [
