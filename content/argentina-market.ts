@@ -109,7 +109,6 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
       "importar tractor usado desde usa a argentina",
       "enviar maquinaria agrícola a zárate",
       "maquinaria usada eeuu argentina",
-      "precio final maquinaria en argentina desde usa",
       "despachante maquinaria agrícola argentina",
       "puesta en puerto zárate maquinaria",
     ],
@@ -153,13 +152,14 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
     changedLabel: "Lo que sí cambió",
     changed: [
       "La conversación dejó de ser si se puede importar y pasó a ser cómo cerrar una operación seria.",
+      "El CIBU ya no es un trámite previo: fue reemplazado por una Declaración Jurada en el Sistema Informático Malvina (SIM), que arma su despachante al momento de la oficialización del despacho.",
       "Hoy es más viable comparar disponibilidad, configuración y precio de usados en EE.UU. frente a mercado local.",
       "El comprador argentino puede avanzar más rápido si separa bien el tramo puerta a puerto del costo argentino final.",
     ],
     unchangedLabel: "Lo que sigue exigiendo trabajo",
     unchanged: [
-      "AFIDI y controles fitosanitarios de SENASA siguen siendo relevantes para maquinaria agrícola usada.",
-      "Limpieza, ausencia de tierra o restos vegetales y documentación prolija siguen siendo críticas.",
+      "AFIDI (Autorización Fitosanitaria de Importación, emitida por SENASA) sigue siendo obligatoria para maquinaria agrícola usada, y debe gestionarse por SIGPV-IMPO antes de cualquier transacción comercial.",
+      "En puerto, SENASA hace revisión documental e inspección física: exige equipos limpios, libres de suelo y restos vegetales, con tratamientos fitosanitarios cuando corresponda.",
       "El costo final depende además de NCM, despachante, tributos, gastos portuarios y transporte interior en Argentina.",
     ],
     officialLinks: [
@@ -287,7 +287,7 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
   credibility: {
     title: "Qué sí puede validar hoy antes de avanzar",
     intro:
-      "Para esta página evitamos usar operaciones puntuales como si fueran prueba directa de Argentina. Lo correcto es mostrar qué capacidad comercial y operativa puede verificar hoy mismo en Meridian.",
+      "En esta sección le mostramos la capacidad operativa que puede verificar hoy mismo — antes de comprometer una compra.",
     pillars: [
       {
         title: "Compra asistida en EE.UU. y Canadá",
@@ -307,7 +307,7 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
     ],
     noteTitle: "Importante",
     note:
-      "Si más adelante se confirman proyectos reales que encajen con la narrativa Argentina, se pueden curar de forma explícita. Mientras tanto, es mejor ser exactos que inflar prueba.",
+      "Somos transparentes: mostramos capacidad verificable, no promesas infladas.",
     projectGalleryLabel: "Ver proyectos globales de Meridian",
     projectGalleryDescription:
       "Explore la biblioteca completa de proyectos y revise el tipo de operación, embalaje y documentación que Meridian ya ejecuta en otros mercados.",
@@ -355,6 +355,12 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
         category: "Argentina",
       },
       {
+        question: "¿Meridian gestiona la Declaración Jurada en MALVINA?",
+        answer:
+          "No. La Declaración Jurada en el Sistema Informático Malvina (SIM) la arma su despachante argentino al momento de la oficialización del despacho, junto con el resto de la documentación aduanera. Meridian prepara la parte de exportación desde EE.UU. o Canadá — su despachante cierra la parte argentina.",
+        category: "Argentina",
+      },
+      {
         question: "¿Meridian se ocupa del despachante argentino?",
         answer:
           "No actuamos como despachante argentino. Si lo necesita, podemos coordinar el tramo de exportación y ayudarle a preparar la información que su despachante va a necesitar para armar la parte local.",
@@ -385,7 +391,7 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
       href: "/projects",
       label: "Galería de proyectos",
       description:
-        "Revise la biblioteca global de exportaciones de Meridian sin usarla como prueba artificial del corredor Argentina.",
+        "Revise la biblioteca global de exportaciones de Meridian — operaciones reales en múltiples mercados.",
     },
   ],
   cta: {
