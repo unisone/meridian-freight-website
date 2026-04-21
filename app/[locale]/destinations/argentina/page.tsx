@@ -50,9 +50,11 @@ export async function generateMetadata({
       canonical: `${SITE.url}${ARGENTINA_PATH}`,
       languages: {
         es: `${SITE.url}${ARGENTINA_PATH}`,
+        "x-default": `${SITE.url}${ARGENTINA_PATH}`,
       },
     },
     openGraph: {
+      type: "website",
       locale: getOgLocale(locale),
       title: `${argentinaMarketPage.seo.title} | ${SITE.name}`,
       description: argentinaMarketPage.seo.description,
