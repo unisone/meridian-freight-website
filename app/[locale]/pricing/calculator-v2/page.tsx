@@ -88,6 +88,8 @@ export default async function CalculatorV2RollbackPage({
       />
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/pricing/calculator-v2"
         breadcrumbs={[
           { label: t("breadcrumbPricing"), href: "/pricing" },
           { label: t("breadcrumbCalculator") },

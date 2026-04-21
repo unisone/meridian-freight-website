@@ -163,6 +163,8 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
 
       <PageHero
         variant="dark"
+        locale={locale}
+        currentPath="/destinations"
         breadcrumbs={[{ label: t("breadcrumb") }]}
         eyebrow={t("eyebrow")}
         heading={t("heroHeading")}

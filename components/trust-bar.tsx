@@ -5,7 +5,8 @@ import { useInView } from "motion/react";
 import { TrendingUp, Clock, Ship, Globe, FileText, Package } from "lucide-react";
 import { useCountUp } from "@/hooks/use-count-up";
 import { STATS } from "@/lib/constants";
-import { useTranslations } from "next-intl";
+import { formatCount } from "@/lib/i18n-utils";
+import { useLocale, useTranslations } from "next-intl";
 
 type TrustItem = {
   icon: typeof TrendingUp;
@@ -14,7 +15,7 @@ type TrustItem = {
   suffix: string | null;
 };
 
-function StatItem({ item, label }: { item: TrustItem; label: string }) {
+function StatItem({ item, label, locale }: { item: TrustItem; label: string; locale: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   const count = useCountUp({
@@ -29,7 +30,7 @@ function StatItem({ item, label }: { item: TrustItem; label: string }) {
       <div ref={ref} className="flex flex-col items-center gap-1 text-center">
         <item.icon className="h-5 w-5 text-primary" />
         <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
-          {count.toLocaleString("en-US")}{item.suffix}
+          {formatCount(count, locale)}{item.suffix}
         </span>
         <span className="text-xs text-muted-foreground">{label}</span>
       </div>
@@ -47,6 +48,7 @@ function StatItem({ item, label }: { item: TrustItem; label: string }) {
 
 export function TrustBar() {
   const t = useTranslations("TrustBar");
+  const locale = useLocale();
 
   const items: TrustItem[] = [
     { icon: TrendingUp, labelKey: "machinesShipped", value: STATS.projectsCompleted, suffix: "+" },
@@ -62,7 +64,7 @@ export function TrustBar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-8">
           {items.map((item) => (
-            <StatItem key={item.labelKey} item={item} label={t(item.labelKey)} />
+            <StatItem key={item.labelKey} item={item} label={t(item.labelKey)} locale={locale} />
           ))}
         </div>
       </div>

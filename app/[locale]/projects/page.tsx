@@ -84,6 +84,8 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
       />
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/projects"
         breadcrumbs={[{ label: t("breadcrumb") }]}
         eyebrow={t("eyebrow")}
         heading={

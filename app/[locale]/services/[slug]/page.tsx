@@ -135,6 +135,8 @@ export default async function ServicePage({
 
       <PageHero
         variant="dark"
+        locale={locale}
+        currentPath={`/services/${slug}`}
         breadcrumbs={[
           { label: "Services", href: "/services" },
           { label: service.shortTitle },

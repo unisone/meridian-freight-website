@@ -21,6 +21,10 @@ interface PageHeroProps {
   children?: React.ReactNode;
   /** Right column content for 2-col grid layout (e.g., globe on destinations) */
   rightContent?: React.ReactNode;
+  /** Current locale — required for locale-prefixed BreadcrumbList URLs */
+  locale: string;
+  /** Path without locale prefix, e.g. "/about" — required for terminal breadcrumb URL */
+  currentPath: string;
 }
 
 export function PageHero({
@@ -34,6 +38,8 @@ export function PageHero({
   centered,
   children,
   rightContent,
+  locale,
+  currentPath,
 }: PageHeroProps) {
   const isCentered = centered ?? variant === "gradient";
 
@@ -41,7 +47,7 @@ export function PageHero({
     <div className="pt-20">
       {/* Breadcrumbs — always in standard container above hero band */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={breadcrumbs} />
+        <Breadcrumbs items={breadcrumbs} locale={locale} currentPath={currentPath} />
       </div>
 
       {variant === "light" ? (

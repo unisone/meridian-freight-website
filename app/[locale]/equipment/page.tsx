@@ -85,6 +85,8 @@ export default async function EquipmentIndexPage({
       />
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/equipment"
         breadcrumbs={[{ label: t("breadcrumb") }]}
         eyebrow={t("eyebrow")}
         heading={
