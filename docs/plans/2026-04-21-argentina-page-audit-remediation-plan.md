@@ -1,16 +1,38 @@
 # Argentina Page — Phase 1 Remediation Implementation Plan
 
 **Date:** 2026-04-21
-**Status:** v4 — Consolidated single PR — Shipping
+**Status:** **COMPLETED** — shipped and production-verified across 6 PRs (#95, #96, #97, #98, #99, #100)
 **Author:** AI-drafted (Claude Code), Codex-SOP normalized per `AGENTS.md:439-519`
-**Spec:** [`docs/specs/2026-04-21-argentina-page-audit-remediation-spec.md`](../specs/2026-04-21-argentina-page-audit-remediation-spec.md) (v3)
+**Spec:** [`docs/specs/2026-04-21-argentina-page-audit-remediation-spec.md`](../specs/2026-04-21-argentina-page-audit-remediation-spec.md) (v3+post-deploy)
+
+## Actual ship log
+
+```
+e0ab4e8  fix(argentina): add edge-level redirects for non-es routes (#100)
+878522e  fix(argentina): hard redirect non-es routes to /es (HTTP 308, not soft-404) (#99)
+e0c4004  fix(i18n,argentina): P1/P2/P3 closure — missing translations, hard 404, accent polish, H1 (#98)
+c545087  fix(argentina): ship deferred v3 spec items — H1 split, meta desc trim, og:type, x-default (#97)
+5fc0c01  fix(i18n): site-wide es-AR BCP-47 tags + Spanish accent normalization (#96)
+c20e9fe  Argentina destination page — Phase 1 remediation (#95)
+```
+
+Stale PRs closed without merge: #93, #94 (superseded by the consolidated #95).
 
 ## Revision history
 
 - **v1 (superseded):** 6 PRs across 3 phases. Too broad.
 - **v2 (superseded):** 2 PRs. Branch conventions right; missing `npm run type-check`, author tag wrong, `R-3`/`R-4` unverified.
 - **v3 (superseded):** Implementation-ready 2-PR split with verification log.
-- **v4 (this):** **Consolidated to a single PR** per founder directive ("we don't need multiple branches and PRs"). Same functional scope as v3 R-1 through R-6, plus one adjacent elite-level fix: `messages/es.json` digit-separator consistency (11 strings switched from comma to dot to match Argentine/Spanish convention; unrelated to, but visible alongside, the `formatCount` runtime fix). Single branch `codex/argentina-remediation`, squash-merge to main, post-deploy production verification.
+- **v4 (superseded):** Consolidated to a single PR (#95) per founder directive. That PR shipped clean.
+- **v5 (this — Completed):** Five follow-up PRs landed after #95 because production review surfaced additional work not covered by v3 scope. The remediation ultimately shipped as 6 PRs spanning:
+  - **#95** — the originally approved v3 R-1…R-6 scope plus the `messages/es.json` digit-separator adjacency.
+  - **#96** — site-wide `inLanguage: "es" → "es-AR"` (originally flagged as out-of-scope, promoted to urgent after QA showed LocalBusiness + WebSite schemas on every Spanish page still emitting plain `es`).
+  - **#97** — deferred v3 items (R-10 meta trim, R-11 H1 split, R-22 x-default, `og:type`) that were approved in v3 but didn't make it into #95's commit.
+  - **#98** — founder-surfaced P1/P2/P3 closure: 5 `MISSING_MESSAGE` build errors, first hard-404 attempt, Spanish chrome accent pass (222 fixes), 22 adjacent-content accent fixes, H1 `Importe → Importar`, dealers line softened.
+  - **#99** — `permanentRedirect(ARGENTINA_PATH)` in-page for non-es locales. Didn't fire at edge due to Vercel response caching.
+  - **#100** — explicit `async redirects()` in `next.config.ts`. Processed at the edge before page routing; reliable 308 for `/destinations/argentina` and `/ru/destinations/argentina`.
+
+The scope growth was driven by post-deploy review, not spec drift — each PR closed a genuine issue that only became visible after the previous ship. Documented here so the evolution is legible to any future reader.
 
 ---
 

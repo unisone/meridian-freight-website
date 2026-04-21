@@ -1,15 +1,27 @@
 # Argentina Destination Page — Phase 1 Remediation Spec
 
 **Date:** 2026-04-21
-**Status:** Draft v3 — Implementation-ready (verified against file:line and runtime) — Pending founder approval
+**Status:** **COMPLETED** — all in-scope items shipped and production-verified
 **Author:** AI-drafted (Claude Code), Codex-SOP normalized per `AGENTS.md`
 **Depends on:** None (content + view-layer changes only)
+
+## Final ship log
+
+| PR | Commit | Scope |
+|---|---|---|
+| [#95](https://github.com/unisone/meridian-freight-website/pull/95) | `c20e9fe` | Phase 1 remediation — R-1 through R-6 (MALVINA/SIM, SENASA sharpening, slop removal, duplicate BreadcrumbList, `formatCount` helper, 11 es.json digit fixes) |
+| [#96](https://github.com/unisone/meridian-freight-website/pull/96) | `5fc0c01` | Site-wide `es-AR` BCP-47 tags across 22 `inLanguage` sites in 17 files + 222 Spanish accent corrections (post-deploy supplementary) |
+| [#97](https://github.com/unisone/meridian-freight-website/pull/97) | `c545087` | Deferred v3 R-10/R-11/R-22 items — meta description 163→126 chars, H1 98→55 chars, `x-default` hreflang, `og:type` (post-deploy supplementary) |
+| [#98](https://github.com/unisone/meridian-freight-website/pull/98) | `e0c4004` | P1/P2/P3 founder-review closure — 5 missing Spanish translations, initial 404 attempt, Spanish chrome accent pass, H1 `Importe → Importar`, dealers line softened (post-deploy supplementary) |
+| [#99](https://github.com/unisone/meridian-freight-website/pull/99) | `878522e` | In-page `permanentRedirect` for non-es (did not fire at edge due to cache) |
+| [#100](https://github.com/unisone/meridian-freight-website/pull/100) | `e0ab4e8` | `next.config.ts` explicit edge redirects — reliable 308 for `/destinations/argentina` and `/ru/destinations/argentina` → `/es/destinations/argentina` |
 
 ## Revision history
 
 - **v1 (superseded):** 38 findings spanning Argentina page, site-wide hygiene, speculative CRO. Rejected by founder as too broad and unverified.
 - **v2 (superseded):** Narrowed to 6 high-confidence fixes focused on trust + SEO correctness + buyer-facing copy quality. Rejected by founder: strategic synthesis not verified against exact repo behavior. Two real bugs would have shipped (R-3 breadcrumb regression, R-4 broken locale format) and one script (`npm run type-check`) was missing from QA.
-- **v3 (this):** Same six functional fixes as v2, but every claim now carries a `Verified:` citation to a file:line or command output. Scope expanded by ~5 LOC to make `<Breadcrumbs>` locale-aware, which R-3's original "just delete" approach would have otherwise regressed. Adds a `formatCount(n, locale)` helper because raw `toLocaleString(useLocale())` produces wrong output for `"es"`.
+- **v3 (approved):** Same six functional fixes as v2, but every claim now carries a `Verified:` citation to a file:line or command output. Scope expanded by ~5 LOC to make `<Breadcrumbs>` locale-aware, which R-3's original "just delete" approach would have otherwise regressed. Adds a `formatCount(n, locale)` helper because raw `toLocaleString(useLocale())` produces wrong output for `"es"`. Shipped in PR #95.
+- **v3+post-deploy (this):** After PR #95 shipped, founder-led production QA surfaced five classes of issue not covered by the original spec — (a) site-wide `inLanguage` was `"es"` not `"es-AR"` on shared schemas (#96), (b) three v3 spec items (R-10 meta trim, R-11 H1 split, R-22 x-default) were promised but not shipped (#97), (c) five `MISSING_MESSAGE` build errors on ES pages (#98), (d) Spanish chrome + adjacent content used unaccented spelling (#98), (e) non-es Argentina routes were serving soft-404 (HTTP 200 with not-found body) instead of a proper redirect (#99, #100). All resolved.
 
 ---
 
