@@ -3,10 +3,21 @@
 Date: 2026-04-20
 Design: `docs/plans/2026-04-20-calculator-trust-closeout-design.md`
 Branch: `codex/calculator-trust-closeout`
+Status: Implemented and production default
+Production spec: `docs/specs/2026-04-21-freight-calculator-v3-production-spec.md`
 
 ## Goal
 
 Close the CEO feedback loop without rebuilding the calculator UI. The work should improve trust, source discipline, route/transit quality, compliance language, import-cost governance, and operational visibility.
+
+Implementation outcome:
+
+- `/pricing/calculator` now serves V3 as the indexed production default.
+- `/pricing/calculator-v2` keeps V2 available as a noindex rollback route.
+- `/pricing/calculator-v3` remains a noindex preview/debug route.
+- The closeout preserved the current production UI structure instead of introducing a new image-heavy redesign.
+- Route/transit health is available through `npm run audit:calculator-v3`.
+- Unknown or unsupported customs/import profiles show no guessed numeric amount.
 
 ## Non-Goals
 
@@ -140,6 +151,7 @@ Run browser QA on desktop and mobile for:
 4. Present preview and scenario evidence.
 5. Ship only after approval.
 6. Verify production calculator routes after merge.
+7. Keep `/pricing/calculator-v2` noindexed and available for one deploy cycle as the app-level rollback path.
 
 ## Ship Criteria
 

@@ -2,7 +2,8 @@
 
 Date: 2026-04-20
 Branch: `codex/calculator-trust-closeout`
-Status: Approved direction, ready for implementation planning
+Status: Implemented and production default
+Production spec: `docs/specs/2026-04-21-freight-calculator-v3-production-spec.md`
 
 ## Decision
 
@@ -13,6 +14,8 @@ The calculator positioning is:
 > Instant freight-to-destination-port estimate, with compliance and import costs shown separately when Meridian has vetted data.
 
 The freight total remains freight only. Compliance prep, customs duties, VAT, broker fees, destination handling, inland delivery after port, and local treatment/wash requirements do not enter the freight total.
+
+Implementation outcome: the closeout shipped without a broad UI redesign. The production calculator route now uses the V3 trust model, keeps the existing production visual structure, keeps the route globe, and preserves V2 at `/pricing/calculator-v2` as the rollback route.
 
 ## Product Principles
 

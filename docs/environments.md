@@ -1,6 +1,6 @@
 # Environment Strategy
 
-Last updated: 2026-03-30
+Last updated: 2026-04-21
 
 ## Three Environments
 
@@ -74,6 +74,23 @@ GitHub Actions runs on every PR to `main` and every push to `main`:
 5. Merge to main → auto-deploys to production (full analytics + tracking)
 6. If broken → vercel rollback (instant, sub-second)
 ```
+
+## Calculator Rollback
+
+The freight calculator has an app-level rollback route in addition to Vercel deployment rollback:
+
+| Route | Purpose | SEO |
+|-------|---------|-----|
+| `/pricing/calculator` | Production default, currently V3 | `index, follow` |
+| `/pricing/calculator-v2` | V2 rollback route | `noindex, nofollow` |
+| `/pricing/calculator-v3` | V3 preview/debug route | `noindex, nofollow` |
+
+For a critical calculator issue, use the fastest safe option:
+
+1. Run `vercel rollback` to restore the previous known-good production deployment.
+2. If a code hotfix is safer, switch `app/[locale]/pricing/calculator/page.tsx` back to the existing V2 `CalculatorWizard` and deploy.
+3. Keep `/pricing/calculator-v2` available while V3 stabilizes.
+4. Re-run calculator smoke tests and `npm run audit:calculator-v3` before switching back to V3.
 
 ## Adding New Environment Variables
 

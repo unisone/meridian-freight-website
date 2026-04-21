@@ -1,11 +1,13 @@
 # PRD: Freight Calculator Page Redesign
 
-**Status:** Draft — Pending Approval
+**Status:** Historical draft - superseded by `docs/specs/2026-04-21-freight-calculator-v3-production-spec.md`
 **Author:** Claude Code
 **Date:** 2026-03-18
 **Branch:** TBD (will create `feat/calculator-redesign` after approval)
 
 ---
+
+> Current production direction: preserve the existing production calculator UI structure and run V3 as the default `/pricing/calculator` implementation. This March redesign PRD is retained for historical context only and is not the active calculator spec.
 
 ## 1. Overview
 
