@@ -93,6 +93,24 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        // ES-only market page — redirect non-es locales to canonical Spanish URL.
+        // Handles: /destinations/argentina (default-locale path, implicitly EN) and
+        //         /ru/destinations/argentina. Permanent (308) so Google consolidates
+        //         link equity onto the canonical ES URL. Prevents soft-404.
+        source: "/destinations/argentina",
+        destination: "/es/destinations/argentina",
+        permanent: true,
+      },
+      {
+        source: "/ru/destinations/argentina",
+        destination: "/es/destinations/argentina",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
