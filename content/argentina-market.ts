@@ -102,7 +102,7 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
   seo: {
     title: "Importar maquinaria agrícola usada desde EE.UU. a Argentina",
     description:
-      "Guía en español para compradores argentinos: alcance puerta a puerto, qué cubre Meridian, qué queda del lado local y cuándo conviene mirar equipos usados en EE.UU.",
+      "Guía en español para compradores argentinos: alcance puerta a puerto, qué cubre Meridian y qué debe cerrar del lado argentino.",
     keywords: [
       "importar maquinaria agrícola usada desde estados unidos a argentina",
       "comprar cosechadora usada en estados unidos desde argentina",
@@ -116,9 +116,9 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
   hero: {
     eyebrow: "Guía para compradores argentinos",
     heading:
-      "Importe maquinaria agrícola usada de EE.UU. a Argentina con un solo socio, del vendedor al puerto",
+      "Importe maquinaria agrícola usada de EE.UU. a Argentina",
     description:
-      "Meridian coordina compra asistida, retiro, desmontaje, embalaje, documentación de exportación y reserva marítima desde EE.UU. o Canadá hasta puerto argentino. El lado argentino se deja separado y claro desde el primer mensaje.",
+      "Un solo socio, del vendedor al puerto. Meridian coordina compra asistida, retiro, desmontaje, embalaje, documentación de exportación y reserva marítima desde EE.UU. o Canadá hasta puerto argentino. El lado argentino se deja separado y claro desde el primer mensaje.",
     highlights: [
       "Pensado para compradores argentinos, no para dealers estadounidenses.",
       "WhatsApp para cotizar; calculadora como referencia del tramo logístico, no como costo final argentino.",
