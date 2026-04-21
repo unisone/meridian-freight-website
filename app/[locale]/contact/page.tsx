@@ -78,6 +78,8 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       />
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/contact"
         breadcrumbs={[{ label: t("breadcrumb") }]}
         eyebrow={t("eyebrow")}
         heading={

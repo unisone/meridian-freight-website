@@ -118,6 +118,8 @@ export default async function BlogPostPage({
               { label: "Blog", href: "/blog" },
               { label: post.title },
             ]}
+            locale={locale}
+            currentPath={`/blog/${slug}`}
           />
         </div>
 

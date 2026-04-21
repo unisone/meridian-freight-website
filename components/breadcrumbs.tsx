@@ -10,12 +10,17 @@ interface BreadcrumbItem {
 
 interface BreadcrumbsProps {
   items: BreadcrumbItem[];
+  locale: string;
+  /** Path without locale prefix, e.g. "/destinations/argentina" */
+  currentPath: string;
 }
 
-export function Breadcrumbs({ items }: BreadcrumbsProps) {
+export function Breadcrumbs({ items, locale, currentPath }: BreadcrumbsProps) {
   const t = useTranslations("Breadcrumbs");
 
-  // Build JSON-LD BreadcrumbList
+  const localePrefix = locale === "en" ? "" : `/${locale}`;
+
+  // Build JSON-LD BreadcrumbList with locale-prefixed URLs
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -24,14 +29,22 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         "@type": "ListItem",
         position: 1,
         name: t("home"),
-        item: SITE.url,
+        item: `${SITE.url}${localePrefix}`,
       },
-      ...items.map((item, i) => ({
-        "@type": "ListItem" as const,
-        position: i + 2,
-        name: item.label,
-        ...(item.href ? { item: `${SITE.url}${item.href}` } : {}),
-      })),
+      ...items.map((item, i) => {
+        const isLast = i === items.length - 1;
+        const base: { "@type": "ListItem"; position: number; name: string; item?: string } = {
+          "@type": "ListItem",
+          position: i + 2,
+          name: item.label,
+        };
+        if (item.href) {
+          base.item = `${SITE.url}${localePrefix}${item.href}`;
+        } else if (isLast) {
+          base.item = `${SITE.url}${localePrefix}${currentPath}`;
+        }
+        return base;
+      }),
     ],
   };
 

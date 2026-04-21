@@ -85,6 +85,8 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
       />
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/pricing"
         breadcrumbs={[{ label: t("breadcrumb") }]}
         eyebrow={t("eyebrow")}
         heading={

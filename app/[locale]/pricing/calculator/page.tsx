@@ -81,6 +81,8 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
       />
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/pricing/calculator"
         breadcrumbs={[
           { label: t("breadcrumbPricing"), href: "/pricing" },
           { label: t("breadcrumbCalculator") },

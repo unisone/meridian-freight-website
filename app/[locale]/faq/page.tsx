@@ -82,6 +82,8 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
       />
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/faq"
         breadcrumbs={[{ label: t("breadcrumb") }]}
         eyebrow={t("eyebrow")}
         heading={
