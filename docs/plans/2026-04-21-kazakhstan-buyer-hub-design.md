@@ -124,3 +124,62 @@ Template defaults replaced:
 - Kazakhstan equipment cluster pages for combines, tractors, headers, and sprayers.
 - Customs/tariff calculator for Kazakhstan. This needs broker-verified rules before public copy.
 - Paid landing-page variant for KZ ads. This should wait until the organic hub is live and can inform ad landing-page copy.
+
+## Phase 2 — 100% RU Localization + On-Page SEO Hardening (shipped 2026-04-21)
+
+After the initial Phase 1 ship, a linguistic and SEO audit of the live page surfaced three categories of residual gaps. All were addressed in a single cohesive PR (#102, squash commit `e65a42a`). This section records what shipped so the design doc reflects the live state, not just the initial intent.
+
+### Gaps addressed
+
+1. **Zero-hardcoded-strings rule**: 11 user-visible RU strings still lived as literals inside `components/destinations/kazakhstan-market-page.tsx` (status badges, breadcrumbs, "Фокус N" card labels, mid-process CTA heading and description, proof section, FAQ eyebrow, "Открыть" link label, date placeholder). All extracted into the typed `KazakhstanMarketPageContent` interface in `content/kazakhstan-market.ts`.
+2. **Native-voice polish**: one genuine ambiguity (the bare word `штат` in an enumeration reads as "staff" rather than "US state") plus several softer issues — the English calque `опубликованные работы` ("published projects"), the awkward phrase `один контакт по американской части`, the colloquial `запчасти к уборке`, and English-style `Фокус N` card labels.
+3. **SEO asymmetry**: the RU Kazakhstan branch of `generateMetadata` was emitting only `canonical` — no `alternates.languages`. The generic destination branch emitted full hreflang for every other destination. This was the only page on the site missing page-level hreflang signals.
+
+### What shipped
+
+**Content module changes** (`content/kazakhstan-market.ts`):
+
+- Added four new typed sub-objects to `KazakhstanMarketPageContent`: `breadcrumbs`, `laneBoardLabels` (with nested `status`), `midCta`, `proofSection`.
+- Added `cardLabelPrefix` on `equipmentFocus` and `sectionEyebrow` on `faq`.
+- Native-voice rewrites:
+  - `hero.highlights[0]`: `Один контакт по американской части` → `Один куратор на всю работу в США`.
+  - `marketContext.cards[1].description`: `запчасти к уборке` → `расходники и запчасти под уборочную кампанию`.
+  - `midCta.description` (new): disambiguated `штат` → `локация продавца`.
+  - `proofSection.intro` (new): rewritten without the `опубликованные работы` calque.
+  - `equipmentFocus.cardLabelPrefix`: `Категория` (replaces the JSX-level `Фокус N`).
+  - `faq.sectionEyebrow`: `Частые вопросы` (replaces bare `FAQ`).
+- ё-strict typography pass: `расчет → расчёт`, `еще → ещё`, `колеса → колёса`, `решета → решёта`, `импортера → импортёра`, `нем → нём`, `передаем → передаём`, `идет → идёт`, `все → всё` where singular-semantic.
+- Keyword expansion 11 → 22: added KZ regions (Павлодар, Шымкент, Актобе, Кокшетау), brand queries (John Deere, Case IH), and container long-tails (40HC, flat rack, Чикаго).
+
+**Component changes** (`components/destinations/kazakhstan-market-page.tsx`):
+
+- Every hardcoded RU string replaced with `content.*.*` references.
+- `formatDate` and `getStatusLabel` refactored to accept labels/placeholders as arguments instead of closing over literals.
+- Added two new page-level JSON-LD blocks alongside the existing WebPage + FAQPage:
+  - `BreadcrumbList` (Главная → Направления → Казахстан).
+  - `Service` (serviceType, areaServed=KZ, availableLanguage=[ru, en], provider, offers).
+- Enriched `WebPage` schema with:
+  - `datePublished`, `dateModified`.
+  - `mentions[]` — 7 KZ `Place` entries (Астана, Алматы, Костанай, Акмолинская область, Кокшетау, Павлодар, Шымкент) and 4 equipment brand `Organization` entries (John Deere, Case IH, Claas, MacDon).
+  - `potentialAction` → `ContactAction` targeting the WhatsApp deep-link.
+
+**Route metadata** (`app/[locale]/destinations/[slug]/page.tsx`):
+
+- RU Kazakhstan branch of `generateMetadata` now emits `alternates.languages` for `en`, `es`, `ru`, and `x-default` — hreflang parity with the generic branch.
+- Explicit `robots: { index: true, follow: true }` on the RU branch.
+
+### Production verification (2026-04-21, live at meridianexport.com)
+
+- HTTP 200 on `/ru/destinations/kazakhstan`, `/destinations/kazakhstan` (EN regression), `/es/destinations/kazakhstan` (ES regression).
+- 4 hreflang alternates emitted (en, es, ru, x-default) with correct absolute URLs.
+- 4 page-level JSON-LD schemas validated: WebPage (enriched), FAQPage, BreadcrumbList, Service.
+- Inherited layout schemas present: LocalBusiness, WebSite, Organization.
+- 22-keyword meta tag, `og:locale="ru_RU"`, Yandex verification (`6a04fca73120c14d`) rendered.
+- All native-voice rewrites render in the HTML body and the RSC payload (dual count = 2× for every target string, expected for Next.js streaming).
+- Zero rendered occurrences of the pre-polish phrases (`опубликованные работы`, `Один контакт по американской части`, `запчасти к уборке`, bare ambiguous `штат`).
+
+### Follow-ups flagged (explicitly out of scope for Phase 2)
+
+- Yandex.Metrica counter — dominant RU/KZ analytics; requires cookie-consent UI and privacy-policy updates.
+- Localized OG image (RU-text variant) — requires Vercel OG setup + design pass.
+- Site-wide `messages/ru.json` rewrite — a separate larger plan covering ~240 strings across the rest of the site (prior analysis already mapped the gaps: terminology inconsistency, calques, register drift).

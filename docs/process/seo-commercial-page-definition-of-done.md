@@ -40,7 +40,10 @@ This gate is mandatory when the work includes any of the following:
 
 5. Validate structured data and metadata.
    - Confirm canonical URL, robots behavior, Open Graph, Twitter metadata, `inLanguage`, locale alternates, and sitemap inclusion.
+   - **Hreflang parity (page-level, not only sitemap).** Custom locale-specific branches inside a dynamic route must emit the same `alternates.languages` structure as the generic branch, including `x-default`. A page missing page-level `<link rel="alternate" hreflang="...">` tags receives a weaker cross-locale signal than its siblings — even if the sitemap has them. Grep the rendered HTML for `hrefLang="` and confirm all expected locales plus `x-default` are present.
    - Confirm JSON-LD is unique, non-conflicting, and uses correct absolute localized URLs.
+   - **Required schema set for a commercial landing page targeting a specific market:** `WebPage`, `FAQPage` (if FAQ is rendered), `BreadcrumbList` (mirroring visible breadcrumbs), and `Service` (with `serviceType`, `areaServed`, `availableLanguage`, `provider`, `offers`). `LocalBusiness` and `WebSite` inherit from layout. Do not rely on only `WebPage` + `FAQPage` for a page whose SEO goal is ranking in a specific country — the missing `BreadcrumbList` + `Service` + geo-targeted `mentions` are the difference between a generic page and a market-specific one.
+   - **Enrich `WebPage` schema** with `datePublished`, `dateModified`, `mentions[]` (cities and brand Organizations relevant to the market), and `potentialAction` (typically `ContactAction` on the primary WhatsApp deep-link).
    - FAQ schema must match rendered FAQ content.
    - Breadcrumb schema must match visible breadcrumb links and localized route behavior.
 
@@ -49,7 +52,12 @@ This gate is mandatory when the work includes any of the following:
    - For Argentina Spanish, prefer `es-AR` formatting for buyer-facing numbers and dates unless there is a stronger reason not to.
    - For Russian Kazakhstan/Central Asia pages, write Russian source copy instead of translating English section-by-section. Use formal `вы`, direct B2B logistics language, and buyer terms such as `сельхозтехника`, `забор у продавца`, `разборка под контейнер`, `упаковка`, `загрузка`, `таможенный представитель`, `декларант`, `код ТН ВЭД`, `свободное место`, `40HC`, `flat rack`, and `доставка по Казахстану`.
    - For Russian Kazakhstan/Central Asia pages, avoid internal or machine-translated phrases such as `операционная активность`, `зона Meridian`, `маршрутный пакет`, `финальная экономика`, `открытый объем`, `актуальный срез`, `путь до маршрута`, public-facing `KZ`, and English logistics terms like `pickup` unless the term is intentionally buyer-facing.
+   - **Typography: ё-strict for RU display copy.** Apply `ё` everywhere etymologically correct: `расчёт`, `ещё`, `счёт`, `всё` (singular-semantic only), `колёса`, `решёта`, `импортёр`, `передаём`, `нём`, `идёт`. This signals care to native RU/CIS business readers; lazy `е`-for-`ё` reads as low-effort translation.
+   - **Disambiguate ambiguous terms.** In RU freight/business writing, bare `штат` without context reads as "staff/personnel" not "US state"; always qualify (`штат продавца`, `локация`). Similarly: verify `брокер` has a qualifier (`таможенный`, `фрахтовый`); verify `агент` is unambiguous; verify `контакт` means touchpoint vs. data-field as the reader would expect.
+   - **Detect and remove English calques.** Signals that copy was translated section-by-section from English rather than written in Russian: `работа на полную ставку`, `не видите X`, `опубликованные работы`, `ваш@почта.com`, `полное имя`, `почти безупречное`. Rewrite in native RU construction (often inverting word order and switching to active voice).
+   - **Terminology consistency across pages.** Choose one word per concept and enforce site-wide: `расчёт` vs `расценка` vs `оценка` vs `котировка`; `ФИО` vs `полное имя` vs `имя`; `страхование` vs `страховка`; `отправка` vs `отгрузка` vs `отправление`; `без скрытых платежей` vs `без скрытых комиссий`. Inconsistency across pages is the single strongest marker of non-native authorship.
    - Check that non-supported locales 404 or redirect intentionally and do not emit broken alternates.
+   - **Zero hardcoded user-visible strings in JSX.** Every user-facing string on a localized page must live in the typed content module (e.g., `content/<market>.ts`) or in `messages/<locale>.json` — never as JSX literals, alt text, aria-label literals, helper-function return values, or prop defaults. Rationale: TypeScript becomes the guardrail against drift, translators see the full surface, and no string can silently bypass linguistic review. Verify by `grep`-ing the rendered HTML for every suspected hardcode before ship.
 
 7. Validate design and UX.
    - Preserve the current design system unless a new design direction is explicitly approved.
@@ -108,3 +116,7 @@ Do not ship if any of these are true:
 - The page targets buyer intent but the CTA path is broken or untracked.
 - Required technical gates were skipped or failed.
 - Known legal/truth risks are left unresolved without being removed from copy.
+- Any user-visible string is hardcoded in the JSX, a helper function, or a prop default rather than living in the typed content module / i18n file.
+- The page's HTML `<head>` is missing page-level `<link rel="alternate" hreflang="...">` tags for every supported locale plus `x-default`.
+- RU/CIS-targeted copy contains ambiguous bare terms (`штат`, unqualified `брокер`, `контакт`) or English calques identifiable by the patterns in section 6.
+- RU/CIS-targeted copy inconsistently uses competing terms for the same concept across pages (e.g., `расчёт` on one page, `котировка` on another).
