@@ -27,6 +27,8 @@ import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { fetchScheduleContainersWithBookingData } from "@/lib/supabase-containers";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
+export const revalidate = 900; // Keep the Kazakhstan lane board aligned with the public schedule.
+
 function getEquipmentSlug(name: string, locale: string): string | null {
   const types = getAllEquipmentTypes(locale);
   const match = types.find(

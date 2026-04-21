@@ -586,10 +586,10 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                Внутренние ресурсы
+                Следующий шаг
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Рабочие поверхности для следующего шага
+                Полезные разделы для проверки машины
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
                 После первого расчета покупателю обычно нужны три вещи: проверить ближайший контейнер, посмотреть опубликованные работы и решить, кто помогает с поиском техники.

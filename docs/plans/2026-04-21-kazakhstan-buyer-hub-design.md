@@ -82,7 +82,7 @@ Template defaults replaced:
 2. "Почему Казахстан требует отдельного подхода" market context: demand exists, but the best U.S. fit is model/condition/availability specific.
 3. "Что берет на себя Meridian" vs "Что остается на стороне импортера": clear scope split.
 4. "Какая техника чаще всего имеет смысл из США": combines first, then high-hp tractors, headers/drapers, sprayers, and parts.
-5. "Живой маршрут в Казахстан": schedule-backed card/list with link to `/ru/schedule?country=KZ`.
+5. "Актуальный маршрут в Казахстан": schedule-backed card/list with link to `/ru/schedule?country=KZ`.
 6. "Как работает процесс": five steps from machine/listing to Kazakhstan route handoff.
 7. FAQ: final cost, customs, route/timing, buying from dealer/auction, shared container capacity, parts/headers.
 8. Final CTA: WhatsApp first, calculator second, schedule link optional.
@@ -102,6 +102,7 @@ Template defaults replaced:
 - Add a server component, likely `components/destinations/kazakhstan-market-page.tsx`.
 - In `app/[locale]/destinations/[slug]/page.tsx`, branch on `locale === "ru" && slug === "kazakhstan"` for custom metadata and page rendering.
 - Use `fetchScheduleContainersWithBookingData()` and filter `destination_country === "KZ"`; handle null data gracefully.
+- Set the destination detail route to 15-minute ISR so the Kazakhstan lane board does not become a deployment-only static snapshot.
 - Reuse existing Meridian Horizon components: `PageHero`, `TrustBar`, `DarkCta`, shadcn `Card`/`Badge`, `FaqAccordion`, `TrackedContactLink`, and `TrackedCtaLink`.
 - Emit `WebPage` or `Service`, `BreadcrumbList`, and `FAQPage` JSON-LD with correct localized URL `/ru/destinations/kazakhstan`.
 - Add page-specific CTA locations: `kazakhstan_hero_whatsapp`, `kazakhstan_schedule_whatsapp`, `kazakhstan_final_whatsapp`, `kazakhstan_hero_schedule`, `kazakhstan_final_calculator`.

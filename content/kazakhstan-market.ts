@@ -142,9 +142,9 @@ export const kazakhstanMarketPage: KazakhstanMarketPageContent = {
     primaryCtaLabel: "Написать в WhatsApp",
     scheduleCtaLabel: "Смотреть рейсы в Казахстан",
     calculatorCtaLabel: "Рассчитать доставку",
-    laneBoardTitle: "Доска рейсов KZ",
+    laneBoardTitle: "Текущие рейсы KZ",
     laneBoardSubtitle:
-      "Живой срез публичного расписания Meridian по направлению Казахстан.",
+      "Актуальный срез публичного расписания Meridian по направлению Казахстан.",
     laneBoardEmpty:
       "Если расписание временно недоступно, мы все равно можем проверить ближайший контейнер вручную.",
   },
@@ -165,19 +165,23 @@ export const kazakhstanMarketPage: KazakhstanMarketPageContent = {
           "Костанай, Акмола, Северный Казахстан, Кокшетау и Астана чаще связаны с крупными зерновыми хозяйствами, где востребованы комбайны, мощные тракторы, жатки, сеялки и техника для уборки.",
       },
       {
-        title: "США имеет смысл не для каждой позиции",
+        title: "Поиск в США имеет смысл не для каждой позиции",
         description:
-          "Локальная сборка и дилерские программы в Казахстане существуют. U.S. sourcing сильнее там, где нужна конкретная модель, состояние, комплектация, цена сделки или запчасти, которые сложно быстро найти локально.",
+          "Локальная сборка и дилерские программы в Казахстане существуют. Американский рынок сильнее там, где нужна конкретная модель, состояние, комплектация, цена сделки или запчасти, которые сложно быстро найти локально.",
       },
     ],
     sourceLinks: [
       {
-        label: "Trade.gov: Kazakhstan agricultural sector",
+        label: "Trade.gov: агросектор Казахстана",
         href: "https://www.trade.gov/country-commercial-guides/kazakhstan-agricultural-sector",
       },
       {
         label: "KazAgroFinance: обновление парка техники",
         href: "https://www.kaf.kz/en/media/news/82902/",
+      },
+      {
+        label: "KazAgroFinance: спрос по категориям и регионам",
+        href: "https://www.kaf.kz/en/media/news/83260/",
       },
       {
         label: "Правительство Казахстана: локализация John Deere",
@@ -210,7 +214,7 @@ export const kazakhstanMarketPage: KazakhstanMarketPageContent = {
   },
   equipmentFocus: {
     eyebrow: "Что смотреть в США",
-    title: "Где U.S. sourcing чаще всего имеет смысл",
+    title: "Где поиск техники в США чаще всего имеет смысл",
     intro:
       "Лучшие кандидаты — техника с высокой стоимостью единицы, понятной перепродажной логикой и реальной разницей между конкретным американским листингом и локальной альтернативой.",
     items: [
@@ -254,7 +258,7 @@ export const kazakhstanMarketPage: KazakhstanMarketPageContent = {
   },
   schedule: {
     eyebrow: "Операционная активность",
-    title: "Живой маршрут Meridian в Казахстан",
+    title: "Актуальный маршрут Meridian в Казахстан",
     intro:
       "Вместо абстрактного обещания показываем публичное расписание: какие контейнеры заведены в систему, куда они идут и есть ли открытый объем.",
     metricRowsLabel: "строк расписания KZ",

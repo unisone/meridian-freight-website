@@ -280,22 +280,22 @@ const destinationsEn: Destination[] = [
   {
     slug: "kazakhstan",
     country: "Kazakhstan",
-    port: "Aktau",
+    port: "Kazakhstan route",
     region: "Central Asia",
-    metaTitle: "Ship Machinery to Kazakhstan — Aktau | Meridian Export",
+    metaTitle: "Ship Machinery to Kazakhstan | Meridian Export",
     metaDescription:
-      "Export machinery to Aktau, Kazakhstan in 40-50 days. Multimodal logistics with packing, ocean, and overland transport. Free quote.",
+      "Coordinate machinery export to Kazakhstan with pickup, packing, export documents, and route booking. Timelines depend on route and destination.",
     keywords: [
       "ship equipment to kazakhstan",
       "machinery export kazakhstan",
-      "heavy equipment shipping aktau",
+      "heavy equipment shipping kazakhstan",
       "farm machinery to central asia",
       "export equipment kazakhstan",
-      "container shipping caspian sea",
+      "container shipping kazakhstan",
     ],
     heroDescription:
-      "We deliver machinery from the USA and Canada to Aktau — Kazakhstan's Caspian Sea port and the primary entry point for heavy equipment into Central Asia. This multimodal route takes 40-50 days including ocean and overland segments.",
-    transitDays: "40-50",
+      "We coordinate machinery exports from the USA and Canada into Kazakhstan routes, including pickup, dismantling, packing, export documents, and container booking. Transit depends on the equipment, corridor, and final destination.",
+    transitDays: "35-60",
     carriers: ["Maersk", "CMA CGM", "MSC", "Hapag-Lloyd"],
     commonEquipment: [
       "Combines",
@@ -306,12 +306,12 @@ const destinationsEn: Destination[] = [
       "Headers",
     ],
     shippingNotes:
-      "Kazakhstan shipments route through a transshipment port (typically Poti, Georgia or Mersin, Turkey) before Caspian Sea feeder to Aktau. GOST certification may be required for certain equipment. We coordinate the full multimodal chain from your door to Aktau. For urgent parts or time-sensitive shipments, air freight is available with typical delivery in 7–14 days.",
+      "Kazakhstan is landlocked, so routing can combine ocean, rail, road, and inland handoffs depending on the machine and destination city. Meridian handles the U.S. export side and route booking; import duties, VAT, certification, and final in-country clearance should be confirmed by the buyer's Kazakhstan broker or declarant before shipment. For urgent parts or time-sensitive shipments, air freight may be available.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "20ft Standard"],
     faqs: [
-      { question: "Why does shipping to Kazakhstan take 40-50 days?", answer: "Kazakhstan is landlocked. Shipments travel by ocean to a transshipment port (typically Poti, Georgia or Mersin, Turkey), then transfer to a Caspian Sea feeder vessel to Aktau port. The multimodal routing adds transit time.", category: "Kazakhstan" },
-      { question: "Is GOST certification required for equipment imports to Kazakhstan?", answer: "GOST certification may be required for certain equipment categories under the Eurasian Economic Union (EAEU) technical regulations. We verify requirements for your specific equipment and coordinate certification when needed.", category: "Kazakhstan" },
-      { question: "What equipment is commonly exported to Kazakhstan?", answer: "Combines, tractors, excavators, bulldozers, planters, and headers are all in demand for Kazakhstan's agricultural and mining sectors. The country's vast farmland and mineral resources drive consistent equipment imports.", category: "Kazakhstan" },
+      { question: "Why can shipping to Kazakhstan take longer than ocean-port destinations?", answer: "Kazakhstan is landlocked, so the route usually includes multiple handoffs after the U.S. export leg. The right corridor depends on the equipment dimensions, container type, available sailing, and destination city.", category: "Kazakhstan" },
+      { question: "Who confirms Kazakhstan import duties and certification?", answer: "The buyer's Kazakhstan broker or declarant should confirm duties, VAT, certification, and final clearance requirements for the exact machine and HS code. Meridian prepares the U.S. export side and route documents tied to our scope.", category: "Kazakhstan" },
+      { question: "What equipment is commonly evaluated for Kazakhstan?", answer: "Combines, high-horsepower tractors, headers, seeders, sprayers, and parts are common fit checks because Kazakhstan's grain regions need productive machines and timely replacement capacity.", category: "Kazakhstan" },
     ],
   },
   {
@@ -820,22 +820,22 @@ const destinationsEs: Destination[] = [
   {
     slug: "kazakhstan",
     country: "Kazajistán",
-    port: "Aktau",
+    port: "Ruta a Kazajistán",
     region: "Asia Central",
-    metaTitle: "Envío de Maquinaria a Kazajistán — Aktau | Meridian Export",
+    metaTitle: "Envío de Maquinaria a Kazajistán | Meridian Export",
     metaDescription:
-      "Exporte maquinaria a Aktau, Kazajistán en 40-50 días. Logística multimodal con embalaje, transporte marítimo y terrestre. Cotización gratis.",
+      "Coordinamos exportación de maquinaria a Kazajistán con retiro, embalaje, documentos de exportación y reserva de ruta.",
     keywords: [
       "enviar equipo a Kazajistán",
       "exportación de maquinaria a Kazajistán",
-      "envío de equipo pesado a Aktau",
+      "envío de equipo pesado a Kazajistán",
       "maquinaria agrícola a Asia Central",
       "exportar equipo a Kazajistán",
-      "envío de contenedor al Mar Caspio",
+      "envío de contenedor a Kazajistán",
     ],
     heroDescription:
-      "Entregamos maquinaria desde USA y Canadá a Aktau — el puerto del Mar Caspio de Kazajistán y el punto de entrada principal para equipo pesado a Asia Central. Esta ruta multimodal toma 40-50 días incluyendo segmentos marítimos y terrestres.",
-    transitDays: "40-50",
+      "Coordinamos exportaciones de maquinaria desde USA y Canadá hacia rutas de Kazajistán, incluyendo retiro, desmontaje, embalaje, documentos de exportación y reserva de contenedor. El tránsito depende del equipo, corredor y destino final.",
+    transitDays: "35-60",
     carriers: ["Maersk", "CMA CGM", "MSC", "Hapag-Lloyd"],
     commonEquipment: [
       "Cosechadoras",
@@ -846,12 +846,12 @@ const destinationsEs: Destination[] = [
       "Cabezales",
     ],
     shippingNotes:
-      "Los envíos a Kazajistán pasan por un puerto de transbordo (típicamente Poti, Georgia o Mersin, Turquía) antes del alimentador del Mar Caspio a Aktau. La certificación GOST puede requerirse para cierto equipo. Coordinamos la cadena multimodal completa desde su puerta hasta Aktau. Para repuestos urgentes o envíos sensibles al tiempo, disponemos de flete aéreo con entrega típica en 7-14 días.",
+      "Kazajistán no tiene salida al mar, por lo que la ruta puede combinar tramos marítimos, ferroviarios, terrestres y entregas interiores según la máquina y la ciudad de destino. Meridian maneja la parte de exportación en EE.UU. y la reserva de ruta; aranceles, IVA, certificación y despacho final deben ser confirmados por el broker o declarante del comprador en Kazajistán antes del embarque. Para repuestos urgentes puede haber opción aérea.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Estándar 20ft"],
     faqs: [
-      { question: "¿Por qué el envío a Kazajistán toma 40-50 días?", answer: "Kazajistán no tiene salida al mar. Los envíos viajan por mar a un puerto de transbordo (típicamente Poti, Georgia o Mersin, Turquía), luego se transfieren a un buque alimentador del Mar Caspio al puerto de Aktau. El enrutamiento multimodal añade tiempo de tránsito.", category: "Kazajistán" },
-      { question: "¿Se requiere certificación GOST para importar equipo a Kazajistán?", answer: "La certificación GOST puede requerirse para ciertas categorías de equipo bajo las regulaciones técnicas de la Unión Económica Euroasiática (UEEA). Verificamos los requisitos para su equipo específico y coordinamos la certificación cuando es necesario.", category: "Kazajistán" },
-      { question: "¿Qué equipo se exporta comúnmente a Kazajistán?", answer: "Cosechadoras, tractores, excavadoras, bulldozers, sembradoras y cabezales tienen demanda en los sectores agrícola y minero de Kazajistán. Las vastas tierras de cultivo y los recursos minerales del país impulsan importaciones constantes de equipo.", category: "Kazajistán" },
+      { question: "¿Por qué el envío a Kazajistán puede tardar más que a un puerto marítimo?", answer: "Kazajistán no tiene salida al mar, por lo que la ruta normalmente incluye varios traspasos después de la exportación desde EE.UU. El corredor correcto depende de dimensiones, tipo de contenedor, salida disponible y ciudad de destino.", category: "Kazajistán" },
+      { question: "¿Quién confirma aranceles y certificación en Kazajistán?", answer: "El broker o declarante del comprador en Kazajistán debe confirmar aranceles, IVA, certificación y despacho final para la máquina exacta y su código arancelario. Meridian prepara la parte de exportación de EE.UU. y los documentos vinculados a nuestro alcance.", category: "Kazajistán" },
+      { question: "¿Qué equipo suele evaluarse para Kazajistán?", answer: "Cosechadoras, tractores de alta potencia, cabezales, sembradoras, pulverizadoras y repuestos son revisiones frecuentes porque las regiones cerealistas de Kazajistán necesitan capacidad productiva y reemplazo oportuno.", category: "Kazajistán" },
     ],
   },
 ];
@@ -861,22 +861,22 @@ const destinationsRu: Destination[] = [
   {
     slug: "kazakhstan",
     country: "Казахстан",
-    port: "Актау",
+    port: "Маршрут в Казахстан",
     region: "Центральная Азия",
-    metaTitle: "Доставка техники в Казахстан — Актау | Meridian Export",
+    metaTitle: "Доставка техники в Казахстан | Meridian Export",
     metaDescription:
-      "Экспорт техники в Актау, Казахстан за 40-50 дней. Мультимодальная логистика с упаковкой, морским и наземным транспортом. Бесплатная котировка.",
+      "Координируем экспорт техники в Казахстан: забор, упаковка, экспортные документы и бронь маршрута.",
     keywords: [
       "доставка техники в Казахстан",
       "экспорт техники в Казахстан",
-      "доставка тяжёлого оборудования в Актау",
+      "доставка тяжёлого оборудования в Казахстан",
       "сельхозтехника в Центральную Азию",
       "экспорт оборудования в Казахстан",
-      "контейнерная доставка Каспийское море",
+      "контейнерная доставка в Казахстан",
     ],
     heroDescription:
-      "Мы доставляем технику из США и Канады в Актау — порт Казахстана на Каспийском море и основную точку входа для тяжёлой техники в Центральную Азию. Этот мультимодальный маршрут занимает 40-50 дней, включая морские и наземные сегменты.",
-    transitDays: "40-50",
+      "Мы координируем экспорт техники из США и Канады по маршрутам в Казахстан: забор, демонтаж, упаковку, экспортные документы и бронирование контейнера. Срок зависит от машины, коридора и конечного города.",
+    transitDays: "35-60",
     carriers: ["Maersk", "CMA CGM", "MSC", "Hapag-Lloyd"],
     commonEquipment: [
       "Комбайны",
@@ -887,13 +887,12 @@ const destinationsRu: Destination[] = [
       "Жатки",
     ],
     shippingNotes:
-      "Грузы в Казахстан проходят через перевалочный порт (обычно Поти, Грузия или Мерсин, Турция), затем фидерным рейсом по Каспийскому морю до Актау. Для определённых видов техники может потребоваться сертификация ГОСТ. Мы координируем полную мультимодальную цепочку от вашей двери до Актау. Для срочных запчастей или чувствительных ко времени грузов доступен авиафрахт с доставкой за 7-14 дней.",
+      "Казахстан не имеет выхода к морю, поэтому маршрут может включать морские, железнодорожные, автомобильные и внутренние участки в зависимости от машины и города назначения. Meridian отвечает за экспортную сторону США и бронирование маршрута; пошлины, НДС, сертификацию и финальное оформление в Казахстане должен подтвердить брокер или декларант покупателя до отправки. Для срочных запчастей может быть доступен авиафрахт.",
     containerOptions: ["40ft High-Cube", "Flat Rack", "Стандарт 20 футов"],
     faqs: [
-      { question: "Почему доставка в Казахстан занимает 40-50 дней?", answer: "Казахстан не имеет выхода к морю. Грузы идут морем до перевалочного порта (обычно Поти, Грузия или Мерсин, Турция), затем пересаживаются на фидерное судно Каспийского моря до порта Актау. Мультимодальная маршрутизация добавляет время транзита.", category: "Казахстан" },
-      { question: "Требуется ли сертификация ГОСТ для импорта техники в Казахстан?", answer: "Сертификация ГОСТ может потребоваться для определённых категорий техники согласно техническим регламентам Евразийского экономического союза (ЕАЭС). Мы проверяем требования для вашей конкретной техники и координируем сертификацию при необходимости.", category: "Казахстан" },
-      { question: "Какую технику чаще всего экспортируют в Казахстан?", answer: "Комбайны, тракторы, экскаваторы, бульдозеры, сеялки и жатки востребованы в сельскохозяйственном и горнодобывающем секторах Казахстана. Обширные сельхозугодья и минеральные ресурсы страны обеспечивают стабильный импорт техники.", category: "Казахстан" },
-      { question: "Какие льготы по импортным пошлинам действуют для техники в Казахстане?", answer: "В рамках ЕАЭС Казахстан предоставляет льготы по импортным пошлинам на определённые виды сельскохозяйственной техники, не производимой на территории союза. Мы уточняем актуальные ставки и льготы для вашей конкретной техники при подготовке котировки.", category: "Казахстан" },
+      { question: "Почему доставка в Казахстан может занимать дольше, чем в морской порт?", answer: "Казахстан не имеет выхода к морю, поэтому маршрут обычно включает несколько перегрузок после экспортного участка из США. Правильный коридор зависит от габаритов, типа контейнера, доступного рейса и города назначения.", category: "Казахстан" },
+      { question: "Кто подтверждает пошлины и сертификацию в Казахстане?", answer: "Брокер или декларант покупателя в Казахстане должен подтвердить пошлины, НДС, сертификацию и финальное оформление по конкретной машине и коду ТН ВЭД. Meridian готовит экспортную сторону США и документы в рамках нашей зоны ответственности.", category: "Казахстан" },
+      { question: "Какую технику чаще всего проверяют для Казахстана?", answer: "Комбайны, тракторы высокой мощности, жатки, сеялки, опрыскиватели и запчасти часто рассматриваются для Казахстана, потому что зерновым регионам нужна производительная техника и своевременное обновление парка.", category: "Казахстан" },
     ],
   },
   {
