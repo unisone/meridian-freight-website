@@ -42,6 +42,7 @@ This website is available in three languages:
 - English (default): https://meridianexport.com
 - Spanish (Latin America): https://meridianexport.com/es
 - Russian (Kazakhstan/CIS): https://meridianexport.com/ru
+- Russian Kazakhstan buyer hub: https://meridianexport.com/ru/destinations/kazakhstan
 
 ## Contact
 
