@@ -186,6 +186,8 @@ export default async function EquipmentPage({
       {/* 1. Hero — trust eyebrow, pricing, 3 CTAs */}
       <PageHero
         variant="dark"
+        locale={locale}
+        currentPath={`/equipment/${slug}`}
         breadcrumbs={[
           { label: te("equipmentIndex"), href: "/equipment" },
           { label: equipment.pluralName },

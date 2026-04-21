@@ -81,6 +81,8 @@ export default async function CalculatorV3Page({
     <>
       <PageHero
         variant="gradient"
+        locale={normalizedLocale}
+        currentPath="/pricing/calculator-v3"
         breadcrumbs={[
           { label: t("breadcrumbPricing"), href: "/pricing" },
           { label: t("breadcrumbCalculator") },

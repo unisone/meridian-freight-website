@@ -48,7 +48,7 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
   return (
     <div className="pt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: t("breadcrumb") }]} />
+        <Breadcrumbs items={[{ label: t("breadcrumb") }]} locale={locale} currentPath="/privacy" />
       </div>
 
       <article className="py-16 md:py-20">

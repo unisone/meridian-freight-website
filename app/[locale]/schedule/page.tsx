@@ -132,6 +132,8 @@ export default async function SchedulePage({
 
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/schedule"
         breadcrumbs={[{ label: t("breadcrumb") }]}
         eyebrow={t("eyebrow")}
         heading={

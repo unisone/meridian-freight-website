@@ -155,6 +155,8 @@ export default async function DestinationPage({
 
       <PageHero
         variant="dark"
+        locale={locale}
+        currentPath={`/destinations/${slug}`}
         breadcrumbs={[
           { label: "Destinations", href: "/destinations" },
           { label: dest.country },

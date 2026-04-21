@@ -85,6 +85,8 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 
       <PageHero
         variant="gradient"
+        locale={locale}
+        currentPath="/blog"
         breadcrumbs={[{ label: "Blog" }]}
         eyebrow={tb("eyebrow")}
         heading={

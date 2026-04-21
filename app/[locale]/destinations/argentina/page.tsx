@@ -25,7 +25,7 @@ import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { argentinaMarketPage } from "@/content/argentina-market";
 import { COMPANY, CONTACT, SITE, STATS } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { formatCount, getOgLocale } from "@/lib/i18n-utils";
 import { setRequestLocale } from "next-intl/server";
 
 const ARGENTINA_PATH = "/es/destinations/argentina";
@@ -93,7 +93,7 @@ export default async function ArgentinaBuyerHubPage({
   const webPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    inLanguage: "es",
+    inLanguage: "es-AR",
     name: content.seo.title,
     description: content.seo.description,
     url: `${SITE.url}${ARGENTINA_PATH}`,
@@ -110,35 +110,10 @@ export default async function ArgentinaBuyerHubPage({
     },
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Inicio",
-        item: `${SITE.url}/es`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Destinos",
-        item: `${SITE.url}/es/destinations`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Argentina",
-        item: `${SITE.url}${ARGENTINA_PATH}`,
-      },
-    ],
-  };
-
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    inLanguage: "es",
+    inLanguage: "es-AR",
     mainEntity: content.faq.entries.map((entry) => ({
       "@type": "Question",
       name: entry.question,
@@ -157,15 +132,13 @@ export default async function ArgentinaBuyerHubPage({
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       <PageHero
         variant="dark"
+        locale="es"
+        currentPath="/destinations/argentina"
         breadcrumbs={[
           { label: "Destinos", href: "/destinations" },
           { label: "Argentina" },
@@ -559,7 +532,7 @@ export default async function ArgentinaBuyerHubPage({
                     <div className="mt-5 grid grid-cols-2 gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
                       <div>
                         <p className="font-mono text-3xl font-bold">
-                          {STATS.projectsCompleted.toLocaleString("en-US")}+
+                          {formatCount(STATS.projectsCompleted, "es")}+
                         </p>
                         <p className="mt-1 text-xs text-sky-100">
                           exportaciones ejecutadas
