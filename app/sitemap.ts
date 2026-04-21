@@ -65,8 +65,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const destinationPages: MetadataRoute.Sitemap = getAllDestinations('en').map((d) => ({
     url: `${SITE.url}/destinations/${d.slug}`,
     lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
+    changeFrequency: d.slug === "kazakhstan" ? "weekly" as const : "monthly" as const,
+    priority: d.slug === "kazakhstan" ? 0.85 : 0.7,
     alternates: withAlternates(`/destinations/${d.slug}`),
   }));
 

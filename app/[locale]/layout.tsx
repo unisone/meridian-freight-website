@@ -90,8 +90,21 @@ export const metadata: Metadata = {
   },
 };
 
+function getStructuredDataDescription(locale: string) {
+  switch (locale) {
+    case "ru":
+      return "Экспорт техники из США и Канады: забор у продавца, профессиональная разборка, упаковка в контейнер, экспортные документы и морская или авиационная доставка по миру. Выполнено 1 000+ экспортных отправок.";
+    case "es":
+      return "Exportación integral de maquinaria desde EE. UU. y Canadá: retiro con el vendedor, desmontaje profesional, embalaje en contenedor, documentos de exportación y transporte marítimo o aéreo internacional. Más de 1,000 exportaciones completadas.";
+    default:
+      return COMPANY.description;
+  }
+}
+
 // JSON-LD structured data for Organization + WebSite
 function JsonLd({ locale }: { locale: string }) {
+  const description = getStructuredDataDescription(locale);
+
   const org = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -99,7 +112,7 @@ function JsonLd({ locale }: { locale: string }) {
     name: COMPANY.name,
     url: SITE.url,
     logo: `${SITE.url}/logos/MF Logos White/meridianFreight-logo-w-500.png`,
-    description: COMPANY.description,
+    description,
     address: {
       "@type": "PostalAddress",
       streetAddress: CONTACT.address.street,
@@ -135,7 +148,7 @@ function JsonLd({ locale }: { locale: string }) {
     inLanguage: toBCP47(locale),
     name: SITE.name,
     url: SITE.url,
-    description: COMPANY.description,
+    description,
     publisher: { "@type": "Organization", name: COMPANY.name },
   };
 

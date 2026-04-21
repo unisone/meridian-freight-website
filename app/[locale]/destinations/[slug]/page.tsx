@@ -20,9 +20,14 @@ import { getDestinationBySlug, getAllDestinations } from "@/content/destinations
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
+import { KazakhstanMarketPage } from "@/components/destinations/kazakhstan-market-page";
+import { KAZAKHSTAN_PATH, kazakhstanMarketPage } from "@/content/kazakhstan-market";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
+import { fetchScheduleContainersWithBookingData } from "@/lib/supabase-containers";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+
+export const revalidate = 900; // Keep the Kazakhstan lane board aligned with the public schedule.
 
 function getEquipmentSlug(name: string, locale: string): string | null {
   const types = getAllEquipmentTypes(locale);
@@ -42,6 +47,44 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
+  if (locale === "ru" && slug === "kazakhstan") {
+    return {
+      title: kazakhstanMarketPage.seo.title,
+      description: kazakhstanMarketPage.seo.description,
+      keywords: kazakhstanMarketPage.seo.keywords,
+      alternates: {
+        canonical: `${SITE.url}${KAZAKHSTAN_PATH}`,
+        languages: {
+          en: `${SITE.url}/destinations/kazakhstan`,
+          es: `${SITE.url}/es/destinations/kazakhstan`,
+          ru: `${SITE.url}${KAZAKHSTAN_PATH}`,
+          "x-default": `${SITE.url}/destinations/kazakhstan`,
+        },
+      },
+      robots: { index: true, follow: true },
+      openGraph: {
+        locale: getOgLocale(locale),
+        title: `${kazakhstanMarketPage.seo.title} | ${SITE.name}`,
+        description: kazakhstanMarketPage.seo.description,
+        url: `${SITE.url}${KAZAKHSTAN_PATH}`,
+        images: [
+          {
+            url: SITE.ogImage,
+            width: 1200,
+            height: 630,
+            alt: kazakhstanMarketPage.seo.title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${kazakhstanMarketPage.seo.title} | ${SITE.name}`,
+        description: kazakhstanMarketPage.seo.description,
+        images: [SITE.ogImage],
+      },
+    };
+  }
+
   const dest = getDestinationBySlug(slug, locale);
   if (!dest) return {};
   const localePath = locale === "en" ? "" : `/${locale}`;
@@ -81,6 +124,11 @@ export default async function DestinationPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  if (locale === "ru" && slug === "kazakhstan") {
+    const containers = await fetchScheduleContainersWithBookingData();
+    return <KazakhstanMarketPage containers={containers} />;
+  }
+
   const td = await getTranslations("DestinationDetailPage");
   const dest = getDestinationBySlug(slug, locale);
   if (!dest) notFound();
