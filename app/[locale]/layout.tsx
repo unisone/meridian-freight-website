@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { toBCP47 } from "@/lib/i18n-utils";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
@@ -94,7 +95,7 @@ function JsonLd({ locale }: { locale: string }) {
   const org = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: COMPANY.name,
     url: SITE.url,
     logo: `${SITE.url}/logos/MF Logos White/meridianFreight-logo-w-500.png`,
@@ -131,7 +132,7 @@ function JsonLd({ locale }: { locale: string }) {
   const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: SITE.name,
     url: SITE.url,
     description: COMPANY.description,

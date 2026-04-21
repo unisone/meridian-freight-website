@@ -4,7 +4,7 @@ import { ContactForm } from "@/components/contact-form";
 import { ContactInfo } from "@/components/contact-info";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 
 export async function generateMetadata({
   params,
@@ -56,7 +56,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   const contactJsonLd = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     mainEntity: {
       "@type": "Organization",
       name: COMPANY.name,

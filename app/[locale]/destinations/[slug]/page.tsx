@@ -21,7 +21,7 @@ import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 function getEquipmentSlug(name: string, locale: string): string | null {
@@ -88,7 +88,7 @@ export default async function DestinationPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: `Machinery Shipping to ${dest.country}`,
     description: dest.heroDescription,
     image: `${SITE.url}${SITE.ogImage}`,
@@ -143,7 +143,7 @@ export default async function DestinationPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            inLanguage: locale,
+            inLanguage: toBCP47(locale),
             mainEntity: dest.faqs.map((e) => ({
               "@type": "Question",
               name: e.question,

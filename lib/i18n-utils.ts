@@ -26,22 +26,31 @@ export function localizePath(locale: string, path: string): string {
 }
 
 /**
- * Locale tags used for number formatting via Intl.NumberFormat.
+ * BCP-47 locale tags used both for Intl.NumberFormat number formatting
+ * and for schema.org JSON-LD `inLanguage` properties / HTML `lang` attrs.
+ *
  * Verified with Node v22.22 (ICU enabled):
- *   (1000).toLocaleString("es")    → "1000"   ← NO separator
- *   (1000).toLocaleString("es-AR") → "1.000"  ← Argentine
+ *   (1000).toLocaleString("es")    → "1000"   ← NO separator (wrong)
+ *   (1000).toLocaleString("es-AR") → "1.000"  ← Argentine (target)
  *   (1000).toLocaleString("es-419")→ "1,000"  ← LatAm generic
  *   (1000).toLocaleString("ru-RU") → "1 000"  ← NBSP
- * Meridian's Spanish-language leads are predominantly Argentine;
- * "es-AR" is the correct tag for this audience.
+ *
+ * Meridian's Spanish-language leads are predominantly Argentine, so we
+ * map `es → es-AR` everywhere we surface locale context to users or to
+ * search engines. Using the same canonical BCP-47 table across number
+ * formatting (formatCount) and JSON-LD inLanguage keeps the regional
+ * signal consistent.
  */
-const NUMBER_LOCALES: Record<string, string> = {
+const BCP47_LOCALES: Record<string, string> = {
   en: "en-US",
   es: "es-AR",
   ru: "ru-RU",
 };
 
+export function toBCP47(locale: string): string {
+  return BCP47_LOCALES[locale] ?? "en-US";
+}
+
 export function formatCount(n: number, locale: string): string {
-  const tag = NUMBER_LOCALES[locale] ?? "en-US";
-  return n.toLocaleString(tag);
+  return n.toLocaleString(toBCP47(locale));
 }

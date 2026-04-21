@@ -7,7 +7,7 @@ import { PageHero } from "@/components/page-hero";
 import { Guarantees } from "@/components/guarantees";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { COMPANY, CONTACT, SITE, STATS, WAREHOUSE_MAIN, WAREHOUSE_PARTNERS } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -60,7 +60,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: COMPANY.name,
     legalName: COMPANY.legalName,
     url: SITE.url,

@@ -3,7 +3,7 @@ import { PageHero } from "@/components/page-hero";
 import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
 import { CalculatorV3Wizard } from "@/components/freight-calculator-v3/calculator-v3-wizard";
 import { COMPANY, SITE } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -54,7 +54,7 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
   const calculatorJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: "Freight Cost Calculator",
     description: "Free online calculator for estimating machinery export costs including inland freight, packing, and ocean shipping.",
     applicationCategory: "BusinessApplication",

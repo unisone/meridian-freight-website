@@ -35,7 +35,7 @@ import { getProjectsByEquipmentSlug } from "@/content/projects";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export function generateStaticParams() {
@@ -118,7 +118,7 @@ export default async function EquipmentPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemPage",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: equipment.title,
     description: equipment.metaDescription,
     image: `${SITE.url}${SITE.ogImage}`,
@@ -173,7 +173,7 @@ export default async function EquipmentPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            inLanguage: locale,
+            inLanguage: toBCP47(locale),
             mainEntity: equipment.faqs.map((e) => ({
               "@type": "Question",
               name: e.question,

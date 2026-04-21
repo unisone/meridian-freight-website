@@ -11,7 +11,7 @@ import { DarkCta } from "@/components/dark-cta";
 import { ArgentinaGuideCallout } from "@/components/argentina-guide-callout";
 import { getAllDestinations } from "@/content/destinations";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -141,7 +141,7 @@ export default async function DestinationsPage({ params }: { params: Promise<{ l
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: "Machinery Shipping Destinations",
     description:
       "Countries and ports served by Meridian Freight for machinery export from the USA and Canada.",

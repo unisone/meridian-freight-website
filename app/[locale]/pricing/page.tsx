@@ -7,7 +7,7 @@ import { PageHero } from "@/components/page-hero";
 import { PricingTable } from "@/components/pricing-table";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, COMPANY, SITE } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -63,7 +63,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
   const pricingJsonLd = {
     "@context": "https://schema.org",
     "@type": "AggregateOffer",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     priceCurrency: "USD",
     offerCount: 40,
     lowPrice: "1500",
