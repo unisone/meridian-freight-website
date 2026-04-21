@@ -1,12 +1,16 @@
 # Freight Calculator V3 Core Design
 
 Date: 2026-04-20
-Status: Approved for implementation planning
+Status: Implemented and production default
 Scope: Core calculator architecture, rate accuracy, compliance treatment, and edge-case behavior before UI rebuild
+
+Production spec: `docs/specs/2026-04-21-freight-calculator-v3-production-spec.md`
 
 ## Decision
 
 Rebuild Freight Calculator V3 core in the website as a parallel versioned calculator instead of patching the current V3 implementation.
+
+Implementation outcome: V3 is now the default `/pricing/calculator` implementation. V2 remains available at `/pricing/calculator-v2` as a noindex rollback route, and `/pricing/calculator-v3` remains a noindex preview/debug route.
 
 The calculator must separate three different estimates:
 
@@ -291,7 +295,7 @@ Server action tests:
 
 ## Non-Goals
 
-- Do not make V3 the live `/pricing/calculator` route until approved.
+- Do not remove the V2 rollback route until V3 has completed the agreed production stability window.
 - Do not present public customs estimates without active vetted profiles.
 - Do not expose internal flatrack bundle components.
 - Do not treat official regulatory requirements as Meridian service mandates.
