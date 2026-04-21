@@ -240,7 +240,6 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
       },
     })),
   };
-
   return (
     <>
       <script
@@ -560,7 +559,7 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
               variant="card"
               className="mt-10"
               heading="Нужна проверка конкретной машины?"
-              description="Пришлите ссылку на объявление до оплаты продавцу. Мы быстро скажем, что может сломать логистику: габариты, штат, pickup, контейнер или документы."
+              description="Пришлите ссылку на объявление до оплаты продавцу. Мы быстро скажем, что может сломать логистику: габариты, штат, забор у продавца, контейнер или документы."
               icon={
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
                   <ClipboardCheck className="h-6 w-6" />

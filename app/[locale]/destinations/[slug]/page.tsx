@@ -54,11 +54,6 @@ export async function generateMetadata({
       keywords: kazakhstanMarketPage.seo.keywords,
       alternates: {
         canonical: `${SITE.url}${KAZAKHSTAN_PATH}`,
-        languages: {
-          en: `${SITE.url}/destinations/kazakhstan`,
-          es: `${SITE.url}/es/destinations/kazakhstan`,
-          ru: `${SITE.url}${KAZAKHSTAN_PATH}`,
-        },
       },
       openGraph: {
         locale: getOgLocale(locale),
