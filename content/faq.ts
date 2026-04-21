@@ -12,7 +12,7 @@ const faqEntriesEn: FaqEntry[] = [
   },
   {
     question: "What areas do you serve?",
-    answer: "We pick up equipment anywhere in the USA and Canada. Our main facility is in Iowa, with partner warehouses in California, Georgia, Illinois, North Dakota, Texas, and Alberta. We ship to any port worldwide — Latin America, Middle East, Africa, Central Asia, and beyond.",
+    answer: "We pick up equipment anywhere in the USA and Canadá. Our main facility is in Iowa, with partner warehouses in California, Georgia, Illinois, North Dakota, Texas, and Alberta. We ship to any port worldwide — Latin America, Middle East, África, Central Asia, and beyond.",
     category: "General",
   },
   {
@@ -47,12 +47,12 @@ const faqEntriesEn: FaqEntry[] = [
   },
   {
     question: "Can you source and purchase equipment for me?",
-    answer: "Yes — our sourcing team helps international buyers find specific machinery from dealers, auctions, and private sellers across the USA and Canada. Every piece is inspected and documented with photos before we ship it.",
+    answer: "Yes — our sourcing team helps international buyers find specific machinery from dealers, auctions, and private sellers across the USA and Canadá. Every piece is inspected and documented with photos before we ship it.",
     category: "General",
   },
   {
     question: "Do you offer storage services?",
-    answer: "Yes — we offer secure storage at our Iowa facility and partner warehouses across the USA and Canada. Short-term staging before loading or long-term storage while awaiting shipping schedules — your equipment stays protected.",
+    answer: "Yes — we offer secure storage at our Iowa facility and partner warehouses across the USA and Canadá. Short-term staging before loading or long-term storage while awaiting shipping schedules — your equipment stays protected.",
     category: "General",
   },
   {
@@ -77,7 +77,7 @@ const faqEntriesEn: FaqEntry[] = [
   },
   {
     question: "What countries have you shipped to?",
-    answer: "Anywhere with a seaport or airport. Our most active markets are Latin America (Brazil, Colombia, Mexico), the Middle East (UAE, Turkey, Saudi Arabia), Africa, Central Asia, and Eastern Europe. We work with Maersk, Hapag-Lloyd, and CMA CGM for reliable transit.",
+    answer: "Anywhere with a seaport or airport. Our most active markets are Latin America (Brazil, Colombia, México), the Middle East (UAE, Turkey, Saudi Arabia), África, Central Asia, and Eastern Europe. We work with Maersk, Hapag-Lloyd, and CMA CGM for reliable transit.",
     category: "Shipping",
   },
   {
@@ -87,7 +87,7 @@ const faqEntriesEn: FaqEntry[] = [
   },
   {
     question: "What about import duties and tariffs at the destination?",
-    answer: "Import duties vary by country and equipment type — they can range from 0% (free-zone ports like Jebel Ali, UAE) to 20%+ in some markets. We provide duty estimates for your specific destination as part of your quote so there are no surprises. Some countries offer duty exemptions for agricultural equipment under trade agreements like USMCA for Mexico.",
+    answer: "Import duties vary by country and equipment type — they can range from 0% (free-zone ports like Jebel Ali, UAE) to 20%+ in some markets. We provide duty estimates for your specific destination as part of your quote so there are no surprises. Some countries offer duty exemptions for agricultural equipment under trade agreements like USMCA for México.",
     category: "Pricing",
   },
   {

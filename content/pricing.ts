@@ -131,9 +131,9 @@ export const equipmentCategories = [
 const typeTranslations: Record<string, Record<string, string>> = {
   es: {
     "Flex and rigid platforms up to 30'": "Plataformas flexibles y rigidas hasta 30'",
-    "Flex and rigid platforms over 30'": "Plataformas flexibles y rigidas mas de 30'",
+    "Flex and rigid platforms over 30'": "Plataformas flexibles y rigidas más de 30'",
     "Draper platforms up to 30'": "Plataformas draper hasta 30'",
-    "Draper platforms over 30'": "Plataformas draper mas de 30'",
+    "Draper platforms over 30'": "Plataformas draper más de 30'",
     "Shelbourne header": "Cabezal Shelbourne",
     "Corn header": "Cabezal de maiz",
     "Honey Bee header": "Cabezal Honey Bee",

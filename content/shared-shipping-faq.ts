@@ -46,7 +46,7 @@ export const sharedShippingFaqEn: FaqEntry[] = [
   {
     question: "Which countries do you ship to?",
     answer:
-      "We ship to 27+ countries across Central Asia, South America, Africa, Southeast Asia, and beyond. Check the available containers above for current destinations, or contact us if you don't see your country listed.",
+      "We ship to 27+ countries across Central Asia, South America, África, Southeast Asia, and beyond. Check the available containers above for current destinations, or contact us if you don't see your country listed.",
     category: "Shipping",
   },
 ];

@@ -49,7 +49,7 @@ const servicesEn: Service[] = [
       { question: "What container sizes are available for heavy equipment?", answer: "We use 20ft standard, 40ft standard, 40ft high-cube, flat racks, and open-top containers. The right choice depends on your equipment dimensions and weight. Most agricultural machines fit in a 40ft high-cube; oversized equipment goes on flat racks.", category: "Container Loading" },
       { question: "How do you maximize container space to reduce shipping costs?", answer: "Our loading teams measure every machine and plan the layout digitally before loading day. We fit loose parts, attachments, and smaller items around the main machine to use every cubic foot — reducing the number of containers you need.", category: "Container Loading" },
       { question: "Which shipping lines do you work with?", answer: "We negotiate rates directly with Maersk, Hapag-Lloyd, CMA CGM, MSC, ZIM, and Evergreen. We compare routes and pricing for each shipment and book the carrier that offers the best rate and transit time to your destination.", category: "Container Loading" },
-      { question: "How long does ocean shipping take?", answer: "Transit times vary by destination: 10-15 days to Mexico, 12-18 days to Colombia, 18-25 days to Turkey, 25-30 days to Brazil, and 30-38 days to the Middle East. We provide exact timelines with every quote.", category: "Container Loading" },
+      { question: "How long does ocean shipping take?", answer: "Transit times vary by destination: 10-15 days to México, 12-18 days to Colombia, 18-25 days to Turkey, 25-30 days to Brazil, and 30-38 days to the Middle East. We provide exact timelines with every quote.", category: "Container Loading" },
     ],
   },
   {
@@ -76,15 +76,15 @@ const servicesEn: Service[] = [
     title: "Equipment Sourcing & Procurement",
     shortTitle: "Equipment Sourcing",
     description:
-      "We help international buyers find quality used machinery, OEM parts, and aftermarket components from dealers, auctions, and sellers across the USA and Canada.",
+      "We help international buyers find quality used machinery, OEM parts, and aftermarket components from dealers, auctions, and sellers across the USA and Canadá.",
     longDescription:
-      "Need a specific machine or part? Tell us the make, model, and year — we search our network of dealers, auctions, and private sellers across the USA and Canada. We source complete machines, OEM John Deere parts from authorized dealers, and aftermarket replacement components at competitive prices. Every piece is inspected and documented with photos and a condition report before you commit. We consolidate multiple parts orders into single shipments to reduce your per-item freight cost — most buyers save 30-50% versus shipping items individually. Once you buy, we handle the complete export via air or ocean freight.",
+      "Need a specific machine or part? Tell us the make, model, and year — we search our network of dealers, auctions, and private sellers across the USA and Canadá. We source complete machines, OEM John Deere parts from authorized dealers, and aftermarket replacement components at competitive prices. Every piece is inspected and documented with photos and a condition report before you commit. We consolidate multiple parts orders into single shipments to reduce your per-item freight cost — most buyers save 30-50% versus shipping items individually. Once you buy, we handle the complete export via air or ocean freight.",
     icon: "Search",
-    keywords: ["used farm equipment sourcing USA Canada", "equipment procurement services", "buy machinery for export", "international equipment sourcing agent", "John Deere parts export", "aftermarket parts international shipping"],
+    keywords: ["used farm equipment sourcing USA Canadá", "equipment procurement services", "buy machinery for export", "international equipment sourcing agent", "John Deere parts export", "aftermarket parts international shipping"],
     equipmentTypes: ["Any agricultural equipment", "Construction machinery", "Industrial equipment", "OEM & aftermarket parts", "John Deere components"],
     relatedSlugs: ["agricultural", "documentation"],
     faqs: [
-      { question: "Can you find a specific make and model of equipment?", answer: "Yes. Tell us the make, model, year range, and condition you need — we search our network of dealers, auction houses, and private sellers across the USA and Canada. Most requests get matched within 1-2 weeks.", category: "Equipment Sourcing" },
+      { question: "Can you find a specific make and model of equipment?", answer: "Yes. Tell us the make, model, year range, and condition you need — we search our network of dealers, auction houses, and private sellers across the USA and Canadá. Most requests get matched within 1-2 weeks.", category: "Equipment Sourcing" },
       { question: "Do you inspect equipment before purchase?", answer: "Every machine is inspected on-site by our team. You receive a detailed condition report with photos, hour meter readings, and notes on any issues. All equipment is sold as-is, but you get full transparency before committing.", category: "Equipment Sourcing" },
       { question: "Can you attend auctions like Ritchie Bros on my behalf?", answer: "Yes. We regularly attend Ritchie Bros, Purple Wave, BigIron, and AuctionTime sales. We inspect lots before the auction, bid on your behalf, and handle all post-sale logistics from pickup to export.", category: "Equipment Sourcing" },
       { question: "Do you source and ship John Deere parts internationally?", answer: "Yes. We source OEM John Deere parts from authorized US and European dealers, plus aftermarket replacement components at lower prices. We consolidate multiple parts into single shipments to reduce freight costs — most buyers save 30-50% per item. Parts ship via air freight (7-14 days) or ocean freight for larger orders. Contact us at parts@meridianexport.com for a quote within 1 hour.", category: "Equipment Sourcing" },
@@ -104,7 +104,7 @@ const servicesEn: Service[] = [
     relatedSlugs: ["container-loading", "warehousing"],
     faqs: [
       { question: "What export documents do I need to ship machinery overseas?", answer: "Typically you need a Commercial Invoice, Packing List, Bill of Lading, Certificate of Title, AES/EEI filing with US Customs, and a Shipper's Letter of Instruction. Agricultural equipment may also require a USDA Phytosanitary Certificate.", category: "Documentation" },
-      { question: "Do you handle customs paperwork for the destination country?", answer: "We prepare all US/Canada export documentation and coordinate with customs brokers at the destination port. Country-specific requirements like Brazil's import licenses, Turkey's TAREKS, or Saudi Arabia's SABER certificates are all handled.", category: "Documentation" },
+      { question: "Do you handle customs paperwork for the destination country?", answer: "We prepare all US/Canadá export documentation and coordinate with customs brokers at the destination port. Country-specific requirements like Brazil's import licenses, Turkey's TAREKS, or Saudi Arabia's SABER certificates are all handled.", category: "Documentation" },
       { question: "What happens if documentation is incorrect or missing?", answer: "Incorrect paperwork causes port delays and storage fees — sometimes thousands of dollars. That is why we handle every document in-house and triple-check before shipment. In 1,000+ exports, we have a near-perfect first-time clearance rate.", category: "Documentation" },
       { question: "Do I need an export license for used machinery?", answer: "Most used commercial and agricultural equipment does not require an export license under US EAR regulations. However, certain dual-use items may need Bureau of Industry and Security review. We verify every shipment against the Commerce Control List.", category: "Documentation" },
     ],
@@ -114,15 +114,15 @@ const servicesEn: Service[] = [
     title: "Equipment Storage & Warehousing",
     shortTitle: "Warehouse & Storage",
     description:
-      "Secure storage facilities across the USA and Canada for dismantled equipment, components, and machinery awaiting shipment.",
+      "Secure storage facilities across the USA and Canadá for dismantled equipment, components, and machinery awaiting shipment.",
     longDescription:
       "Sometimes shipping schedules don't align with equipment availability. Our warehouse network in California, Georgia, Illinois, North Dakota, Texas, and Alberta gives you flexibility — stage equipment before loading, or store it long-term while you wait for the right vessel. Everything stays secure, covered, and documented.",
     icon: "Warehouse",
-    keywords: ["equipment storage warehousing USA Canada", "machinery storage for export", "heavy equipment warehouse Iowa", "equipment staging before shipping"],
+    keywords: ["equipment storage warehousing USA Canadá", "machinery storage for export", "heavy equipment warehouse Iowa", "equipment staging before shipping"],
     equipmentTypes: [],
     relatedSlugs: ["machinery-packing", "documentation"],
     faqs: [
-      { question: "Where are your warehouse facilities located?", answer: "Our main packing and loading facility is in Albion, Iowa. We also have partner warehouses in California, Georgia, Illinois, North Dakota, Texas, and Alberta (Canada) for nationwide coverage.", category: "Warehousing" },
+      { question: "Where are your warehouse facilities located?", answer: "Our main packing and loading facility is in Albion, Iowa. We also have partner warehouses in California, Georgia, Illinois, North Dakota, Texas, and Alberta (Canadá) for nationwide coverage.", category: "Warehousing" },
       { question: "How long can I store equipment before shipping?", answer: "There is no fixed limit. Some clients store equipment for days while waiting for a vessel, others for months while purchasing additional machines. Storage rates are competitive and quoted per month based on the equipment size.", category: "Warehousing" },
       { question: "Is my equipment insured while in your warehouse?", answer: "Our facilities carry general liability and property coverage. We recommend maintaining your own equipment insurance during the storage period for full protection. We can provide warehouse receipts for your insurer.", category: "Warehousing" },
     ],
