@@ -39,6 +39,8 @@ interface KazakhstanScheduleSummary {
   featuredRows: PublicScheduleContainer[];
 }
 
+type LaneBoardStatusLabels = typeof kazakhstanMarketPage.laneBoardLabels.status;
+
 const ruDateFormatter = new Intl.DateTimeFormat("ru-RU", {
   day: "numeric",
   month: "short",
@@ -48,8 +50,8 @@ const ruNumberFormatter = new Intl.NumberFormat("ru-RU", {
   maximumFractionDigits: 1,
 });
 
-function formatDate(date: string | null): string {
-  if (!date) return "уточняется";
+function formatDate(date: string | null, placeholder: string): string {
+  if (!date) return placeholder;
   const [year, month, day] = date.split("-").map(Number);
   return ruDateFormatter.format(new Date(Date.UTC(year, month - 1, day)));
 }
@@ -81,11 +83,14 @@ function getScheduleSummary(
   };
 }
 
-function getStatusLabel(container: PublicScheduleContainer): string {
-  if (container.bookabilityStatus === "bookable") return "есть место";
-  if (container.shippingState === "in-transit") return "в пути";
-  if (container.shippingState === "delivered") return "доставлено";
-  return "забронировано";
+function getStatusLabel(
+  container: PublicScheduleContainer,
+  labels: LaneBoardStatusLabels,
+): string {
+  if (container.bookabilityStatus === "bookable") return labels.bookable;
+  if (container.shippingState === "in-transit") return labels.inTransit;
+  if (container.shippingState === "delivered") return labels.delivered;
+  return labels.booked;
 }
 
 function getStatusClass(container: PublicScheduleContainer): string {
@@ -109,6 +114,7 @@ function ScheduleLaneBoard({
   compact?: boolean;
 }) {
   const content = kazakhstanMarketPage;
+  const { laneBoardLabels } = content;
   const rows = compact ? summary.featuredRows.slice(0, 3) : summary.featuredRows;
 
   return (
@@ -123,7 +129,7 @@ function ScheduleLaneBoard({
           </p>
         </div>
         <Badge className="border border-white/15 bg-white/10 text-white hover:bg-white/10">
-          актуально
+          {laneBoardLabels.badge}
         </Badge>
       </div>
 
@@ -168,7 +174,7 @@ function ScheduleLaneBoard({
                 <span
                   className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide ${getStatusClass(container)}`}
                 >
-                  {getStatusLabel(container)}
+                  {getStatusLabel(container, laneBoardLabels.status)}
                 </span>
               </div>
               <div className="mt-3 grid gap-2 text-xs leading-relaxed text-sky-100">
@@ -178,7 +184,7 @@ function ScheduleLaneBoard({
                 </span>
                 <span className="inline-flex items-center gap-2">
                   <CalendarDays className="h-3.5 w-3.5 text-sky-300" />
-                  {formatDate(container.departure_date)} / ETA {formatDate(container.eta_date)}
+                  {formatDate(container.departure_date, laneBoardLabels.datePlaceholder)} / ETA {formatDate(container.eta_date, laneBoardLabels.datePlaceholder)}
                 </span>
                 <span className="inline-flex items-center gap-2">
                   <Container className="h-3.5 w-3.5 text-sky-300" />
@@ -207,6 +213,9 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
     content.hero.whatsappMessage,
   )}`;
   const pageUrl = `${SITE.url}${KAZAKHSTAN_PATH}`;
+  const pagePublishedDate = "2026-04-21";
+  const pageModifiedDate = "2026-04-21";
+
   const webPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -214,12 +223,32 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
     name: content.seo.title,
     description: content.seo.description,
     url: pageUrl,
+    datePublished: pagePublishedDate,
+    dateModified: pageModifiedDate,
     image: `${SITE.url}${SITE.ogImage}`,
     about: [
       "Доставка сельхозтехники из США в Казахстан",
       "Комбайны, тракторы, жатки и запчасти для покупателей в Казахстане",
       "Экспортная логистика от продавца в США до маршрута в Казахстан",
     ],
+    mentions: [
+      { "@type": "Place", name: "Астана" },
+      { "@type": "Place", name: "Алматы" },
+      { "@type": "Place", name: "Костанай" },
+      { "@type": "Place", name: "Акмолинская область" },
+      { "@type": "Place", name: "Кокшетау" },
+      { "@type": "Place", name: "Павлодар" },
+      { "@type": "Place", name: "Шымкент" },
+      { "@type": "Organization", name: "John Deere" },
+      { "@type": "Organization", name: "Case IH" },
+      { "@type": "Organization", name: "Claas" },
+      { "@type": "Organization", name: "MacDon" },
+    ],
+    potentialAction: {
+      "@type": "ContactAction",
+      target: whatsappHref,
+      name: "Связаться в WhatsApp",
+    },
     provider: {
       "@type": "Organization",
       name: COMPANY.name,
@@ -227,6 +256,7 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
       telephone: CONTACT.phoneRaw,
     },
   };
+
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -240,6 +270,59 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
       },
     })),
   };
+
+  const breadcrumbListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Главная",
+        item: `${SITE.url}/ru`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: content.breadcrumbs.destinations,
+        item: `${SITE.url}/ru/destinations`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: content.breadcrumbs.kazakhstan,
+        item: pageUrl,
+      },
+    ],
+  };
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Международная доставка сельхозтехники",
+    name: content.seo.title,
+    description: content.seo.description,
+    url: pageUrl,
+    inLanguage: "ru-RU",
+    availableLanguage: ["ru", "en"],
+    provider: {
+      "@type": "Organization",
+      name: COMPANY.name,
+      url: SITE.url,
+      telephone: CONTACT.phoneRaw,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Казахстан",
+      identifier: "KZ",
+    },
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      priceCurrency: "USD",
+    },
+  };
+
   return (
     <>
       <script
@@ -250,14 +333,22 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
 
       <PageHero
         variant="dark"
         locale="ru"
         currentPath="/destinations/kazakhstan"
         breadcrumbs={[
-          { label: "Направления", href: "/destinations" },
-          { label: "Казахстан" },
+          { label: content.breadcrumbs.destinations, href: "/destinations" },
+          { label: content.breadcrumbs.kazakhstan },
         ]}
         eyebrow={content.hero.eyebrow}
         heading={content.hero.heading}
@@ -450,7 +541,7 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
                         </div>
                         <div>
                           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                            Фокус {idx + 1}
+                            {content.equipmentFocus.cardLabelPrefix} {idx + 1}
                           </p>
                           <h3 className="text-xl font-bold text-foreground">
                             {item.title}
@@ -558,8 +649,8 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
             <DarkCta
               variant="card"
               className="mt-10"
-              heading="Нужна проверка конкретной машины?"
-              description="Пришлите ссылку на объявление до оплаты продавцу. Мы быстро скажем, что может сломать логистику: габариты, штат, забор у продавца, контейнер или документы."
+              heading={content.midCta.heading}
+              description={content.midCta.description}
               icon={
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
                   <ClipboardCheck className="h-6 w-6" />
@@ -585,13 +676,13 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                Следующий шаг
+                {content.proofSection.eyebrow}
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Полезные разделы для проверки машины
+                {content.proofSection.title}
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                После первого расчета покупателю обычно нужны три вещи: проверить ближайший контейнер, посмотреть опубликованные работы и решить, кто помогает с поиском техники.
+                {content.proofSection.intro}
               </p>
             </div>
 
@@ -611,7 +702,7 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
                     {item.description}
                   </p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-                    Открыть
+                    {content.proofSection.openLinkLabel}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </TrackedCtaLink>
@@ -624,7 +715,7 @@ export function KazakhstanMarketPage({ containers }: KazakhstanMarketPageProps) 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                FAQ
+                {content.faq.sectionEyebrow}
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 {content.faq.title}
