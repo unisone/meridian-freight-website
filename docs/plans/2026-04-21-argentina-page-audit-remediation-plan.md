@@ -1,7 +1,7 @@
 # Argentina Page — Phase 1 Remediation Implementation Plan
 
 **Date:** 2026-04-21
-**Status:** Draft v3 — Implementation-ready — Awaits spec approval
+**Status:** v4 — Consolidated single PR — Shipping
 **Author:** AI-drafted (Claude Code), Codex-SOP normalized per `AGENTS.md:439-519`
 **Spec:** [`docs/specs/2026-04-21-argentina-page-audit-remediation-spec.md`](../specs/2026-04-21-argentina-page-audit-remediation-spec.md) (v3)
 
@@ -9,7 +9,8 @@
 
 - **v1 (superseded):** 6 PRs across 3 phases. Too broad.
 - **v2 (superseded):** 2 PRs. Branch conventions right; missing `npm run type-check`, author tag wrong, `R-3`/`R-4` unverified.
-- **v3 (this):** 2 PRs still, but PR 2 expands to cover the Breadcrumbs locale-aware change and the `formatCount` helper. QA adds `npm run type-check` per `package.json:9`. Author/SOP normalized to `AGENTS.md`.
+- **v3 (superseded):** Implementation-ready 2-PR split with verification log.
+- **v4 (this):** **Consolidated to a single PR** per founder directive ("we don't need multiple branches and PRs"). Same functional scope as v3 R-1 through R-6, plus one adjacent elite-level fix: `messages/es.json` digit-separator consistency (11 strings switched from comma to dot to match Argentine/Spanish convention; unrelated to, but visible alongside, the `formatCount` runtime fix). Single branch `codex/argentina-remediation`, squash-merge to main, post-deploy production verification.
 
 ---
 
