@@ -9,7 +9,7 @@ import { DarkCta } from "@/components/dark-cta";
 import { Button } from "@/components/ui/button";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { SITE } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -66,7 +66,7 @@ export default async function EquipmentIndexPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: t("breadcrumb"),
     numberOfItems: equipmentTypes.length,
     itemListElement: equipmentTypes.map((e, idx) => ({

@@ -16,7 +16,7 @@ import { ContactInfo } from "@/components/contact-info";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { getHomepageFaq } from "@/content/faq";
 
 export async function generateMetadata({
@@ -76,7 +76,7 @@ export default async function HomePage({
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     mainEntity: homepageFaq.map((e) => ({
       "@type": "Question",
       name: e.question,
@@ -87,7 +87,7 @@ export default async function HomePage({
   const videoJsonLd = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: "Meridian Freight — Machinery Dismantling, Packing & Container Loading",
     description:
       "Watch our team dismantle, pack, and load heavy equipment into shipping containers at our Iowa facility. Full-service machinery export from USA & Canada.",

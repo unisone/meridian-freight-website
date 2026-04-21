@@ -22,7 +22,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
 import { SourcingNetworkSection } from "@/components/sourcing-network-section";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 const iconMap: Record<string, typeof Package> = {
@@ -93,7 +93,7 @@ export default async function ServicePage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: service.title,
     description: service.longDescription,
     url: `${SITE.url}${locale === "en" ? "" : `/${locale}`}/services/${slug}`,
@@ -123,7 +123,7 @@ export default async function ServicePage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            inLanguage: locale,
+            inLanguage: toBCP47(locale),
             mainEntity: service.faqs.map((e) => ({
               "@type": "Question",
               name: e.question,

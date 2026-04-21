@@ -9,7 +9,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { renderMarkdown } from "@/lib/markdown";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
@@ -76,7 +76,7 @@ export default async function BlogPostPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     headline: post.title,
     description: post.metaDescription,
     datePublished: post.publishedAt,

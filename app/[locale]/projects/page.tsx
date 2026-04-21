@@ -8,7 +8,7 @@ import { PageHero } from "@/components/page-hero";
 import { getAllProjects } from "@/content/projects";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CONTACT, SITE } from "@/lib/constants";
-import { getOgLocale } from "@/lib/i18n-utils";
+import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -65,7 +65,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    inLanguage: locale,
+    inLanguage: toBCP47(locale),
     name: "Meridian Freight Export Projects",
     numberOfItems: projects.length,
     itemListElement: projects.map((p, i) => ({
