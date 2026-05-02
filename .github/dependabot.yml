@@ -18,6 +18,22 @@ updates:
     commit-message:
       prefix: "chore(deps)"
       include: scope
+    # Ignore transitive/bundled deps that Next.js or other tools manage
+    ignore:
+      - dependency-name: "webpack"
+      - dependency-name: "webpack-*"
+      - dependency-name: "react-router"
+      - dependency-name: "react-router-dom"
+      - dependency-name: "@remix-run/*"
+      - dependency-name: "express"
+      - dependency-name: "qs"
+      - dependency-name: "lodash"
+      - dependency-name: "lodash-es"
+      - dependency-name: "node-forge"
+      - dependency-name: "jsonpath"
+      - dependency-name: "js-yaml"
+      - dependency-name: "vite"
+        # vite is a transitive dep of vitest — vitest manages its own version
     # Limit open PRs to avoid flooding
     open-pull-requests-limit: 5
     # Auto-assign for visibility
