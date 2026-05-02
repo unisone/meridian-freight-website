@@ -48,6 +48,7 @@ import {
   generateEventId,
   trackGoogleAdsConversion,
 } from "@/lib/tracking";
+import { hashUserDataForGoogleAds } from "@/lib/hash";
 import { TRACKING } from "@/lib/constants";
 
 // ─── Cargo type options ──────────────────────────────────────────────────────
@@ -167,7 +168,9 @@ export function ScheduleBookingForm({
           value: 300,
           currency: "USD",
         });
-        trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 300);
+        // Enhanced Conversions: hash email/phone for better Google Ads matching
+        hashUserDataForGoogleAds({ email, phone })
+          .then((userData) => trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 300, "USD", userData));
 
         vercelTrack("generate_lead", {
           source: "booking_request",

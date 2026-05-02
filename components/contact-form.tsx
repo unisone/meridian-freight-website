@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/app/actions/contact";
 import { track as vercelTrack } from "@vercel/analytics";
 import { trackGA4Event, trackPixelEvent, trackContactClick, trackGoogleAdsConversion } from "@/lib/tracking";
+import { hashUserDataForGoogleAds } from "@/lib/hash";
 import { TRACKING } from "@/lib/constants";
 import { CONTACT } from "@/lib/constants";
 import { DURATION, EASE } from "@/lib/motion";
@@ -72,7 +73,9 @@ export function ContactForm() {
           value: 500,
           currency: "USD",
         });
-        trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 500);
+        // Enhanced Conversions: hash email/phone for better Google Ads matching
+        hashUserDataForGoogleAds({ email: payload.email, phone: payload.phone })
+          .then((userData) => trackGoogleAdsConversion(TRACKING.gadsLeadLabel, 500, "USD", userData));
         vercelTrack("generate_lead", { source: "contact_form", value: 500 });
         // Fire Pixel event with same eventId as CAPI for deduplication
         if (result.eventId) {

@@ -115,14 +115,42 @@ export function trackPixelEvent(
   }
 }
 
-/** Fire a Google Ads conversion event with a specific conversion label. */
+/**
+ * Enhanced user data for Google Ads Enhanced Conversions.
+ * Values must be pre-hashed with SHA-256 (use hashUserDataForGoogleAds).
+ */
+export interface EnhancedUserData {
+  sha256_email_address?: string;
+  sha256_phone_number?: string;
+}
+
+/**
+ * Fire a Google Ads conversion event with a specific conversion label.
+ *
+ * When `userData` is provided, sets Enhanced Conversions user data via
+ * gtag("set", "user_data", ...) before firing the conversion event.
+ * This improves conversion match rate by 10-15% for offline-to-online
+ * attribution. See: https://support.google.com/google-ads/answer/13262500
+ */
 export function trackGoogleAdsConversion(
   sendTo: string,
   value?: number,
-  currency: string = "USD"
+  currency: string = "USD",
+  userData?: EnhancedUserData,
 ): void {
   if (typeof window === "undefined" || !sendTo) return;
   const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+
+  // Set Enhanced Conversions user data before the conversion event.
+  // gtag("set", "user_data", ...) persists for the page session and is
+  // picked up by subsequent conversion events automatically.
+  if (userData && (userData.sha256_email_address || userData.sha256_phone_number)) {
+    w.gtag?.("set", "user_data", {
+      sha256_email_address: userData.sha256_email_address,
+      sha256_phone_number: userData.sha256_phone_number,
+    });
+  }
+
   w.gtag?.("event", "conversion", {
     send_to: sendTo,
     value,
