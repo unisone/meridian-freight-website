@@ -634,15 +634,16 @@ import { WizardStepEquipment } from "@/components/freight-calculator-v3/wizard/w
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Step 3 prop count (~20 props) — is this acceptable?**
+1. **Step 3 prop count (~20 props) — is this acceptable?** **RESOLVED: ACCEPTED for Phase 1.**
    - What we know: Step 3 (route section) is the most complex and requires the most derived state.
    - What's unclear: Whether the team wants to accept 20 props or introduce a step-specific context.
    - Recommendation: Accept the prop explosion for Phase 1 (pure refactor); address with step-level
      context in a future cleanup if it becomes a pain point.
+   - **Resolution (2026-05-04):** Accept the 20-prop explosion. Phase 1 is a pure refactor — adding step-level Context here would introduce a new pattern that's never been used in this codebase. Reassess in v1.2 if step-level Context becomes warranted across multiple components. Plan-checker confirmed the prop count does not block the orchestrator's ≤500-line target.
 
-2. **Should `wizard-reducer.ts` be unit tested in this phase?**
+2. **Should `wizard-reducer.ts` be unit tested in this phase?** **RESOLVED: YES — included in Task 2.**
    - What we know: The reducer is a pure function that CAN be tested in the node environment.
    - What's unclear: Whether the team wants to expand test coverage in Phase 1 or defer to Phase 2.
    - Recommendation: Add `wizard-reducer.test.ts` as part of Wave 0 if the planner agrees — it's
