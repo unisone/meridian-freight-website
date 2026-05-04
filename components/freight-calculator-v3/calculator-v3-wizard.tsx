@@ -46,7 +46,7 @@ import {
 } from "@/lib/calculator-v3/engine";
 import { getLocalizedText } from "@/lib/calculator-v3/policy";
 import { CONTACT, TRACKING } from "@/lib/constants";
-import { formatDollar } from "@/lib/freight-engine-v2";
+import { formatDollar } from "@/lib/calculator-v3/format";
 import {
   trackCalcFunnel,
   trackContactClick,

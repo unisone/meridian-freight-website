@@ -14,7 +14,7 @@ import { mergeLandedCostProfiles } from "@/lib/calculator-v3/landed-cost-profile
 import { buildCalculatorV3LeadMetadata } from "@/lib/calculator-v3/lead-metadata";
 import { buildRouteCatalog } from "@/lib/calculator-v3/routes";
 import { CONTACT, COMPANY } from "@/lib/constants";
-import { formatDollar } from "@/lib/freight-engine-v2";
+import { formatDollar } from "@/lib/calculator-v3/format";
 import { log, startTimer } from "@/lib/logger";
 import { sendCAPIEvent } from "@/lib/meta-capi";
 import { calculatorV3Schema, type CalculatorV3Data } from "@/lib/schemas";

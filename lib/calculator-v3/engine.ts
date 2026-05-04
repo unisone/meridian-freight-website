@@ -18,7 +18,7 @@ import {
   getEquipmentProfile,
 } from "@/lib/calculator-v3/policy";
 import { compareRoutes, getRouteServiceCostUsd, selectRoute } from "@/lib/calculator-v3/routes";
-import { estimateRoadMiles } from "@/lib/freight-engine-v2";
+import { estimateRoadMiles } from "@/lib/calculator-v3/distance";
 import {
   FLATRACK_INTERNAL_BUNDLE_USD,
   STANDARD_INLAND_DELIVERY_RATE,

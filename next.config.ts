@@ -109,6 +109,29 @@ const nextConfig: NextConfig = {
         destination: "/es/destinations/argentina",
         permanent: true,
       },
+      // Calculator v2/v3 → canonical /pricing/calculator (308 permanent).
+      // Preserves SEO equity from any inbound links to the legacy versioned
+      // URLs and consolidates duplicate-content signals onto one canonical.
+      {
+        source: "/pricing/calculator-v2",
+        destination: "/pricing/calculator",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|ru)/pricing/calculator-v2",
+        destination: "/:locale/pricing/calculator",
+        permanent: true,
+      },
+      {
+        source: "/pricing/calculator-v3",
+        destination: "/pricing/calculator",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|ru)/pricing/calculator-v3",
+        destination: "/:locale/pricing/calculator",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

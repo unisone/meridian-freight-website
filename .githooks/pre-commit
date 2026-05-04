@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# pre-commit: refuse to stage anything under .local-reports/
+#
+# Rationale: .local-reports/ holds raw CRM exports (PII — names, phone numbers,
+# emails, conversation excerpts). The directory is in .gitignore, but a
+# `git add -f` or a future gitignore edit could leak the data. This hook is
+# the second layer of defense.
+
+set -euo pipefail
+
+leaked=$(git diff --cached --name-only --diff-filter=AM | grep -E '^\.local-reports/' || true)
+
+if [ -n "$leaked" ]; then
+  echo "❌ Refusing to commit: PII files staged under .local-reports/" >&2
+  echo "" >&2
+  echo "$leaked" >&2
+  echo "" >&2
+  echo "If this is intentional (it almost never is), bypass with:" >&2
+  echo "  git commit --no-verify" >&2
+  exit 1
+fi

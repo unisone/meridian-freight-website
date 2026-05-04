@@ -43,6 +43,9 @@ next-env.d.ts
 # Playwright MCP logs
 .playwright-mcp/
 
+# Playwright run artifacts (screenshots, traces, reports)
+output/
+
 # Audit screenshots
 *.png
 audit-*.png
