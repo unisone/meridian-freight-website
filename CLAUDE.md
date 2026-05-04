@@ -103,16 +103,22 @@ Contact form and calculator both use Server Actions (not API routes):
 
 **Background processing:** Steps 6-9 use Next.js `after()` from `next/server` to run after the response is sent. This saves ~700-1300ms of perceived latency. The `after()` callback has the same timeout as the function itself.
 
-### Freight Calculator V2 (Supabase-powered)
-The calculator at `/pricing/calculator` uses real freight rates from the shared Supabase database (same as `mf-chatbot-ui`). Key files:
-- `lib/freight-engine-v2.ts` — Multi-component calculation engine (authoritative formulas)
+### Freight Calculator (Supabase-powered)
+The calculator at `/pricing/calculator` uses real freight rates from the shared Supabase database (same as `mf-chatbot-ui`). Legacy `/pricing/calculator-v2` and `/pricing/calculator-v3` are 308-redirected to the canonical URL (see `next.config.ts`). Key files:
+- `lib/calculator-v3/engine.ts` — Multi-component calculation engine (authoritative formulas)
+- `lib/calculator-v3/policy.ts` — Equipment profiles, localized text
+- `lib/calculator-v3/routes.ts` — Route catalog + selection
+- `lib/calculator-v3/route-health.ts`, `import-cost.ts`, `landed-cost-profiles.ts`, `lead-metadata.ts`, `route-transit-fallbacks.ts`, `contracts.ts`
+- `lib/calculator-v3/distance.ts` — Haversine + ZIP→coords + `estimateRoadMiles` (shared with chatbot KZ calculator)
+- `lib/calculator-v3/format.ts` — `formatDollar` helper
+- `lib/freight-policy.ts` — `resolveQuoteContainerType`, flatrack helpers, shared constants
 - `lib/supabase-rates.ts` — Server-side queries for `equipment_packing_rates` and `ocean_freight_rates` tables
-- `app/actions/calculator-data.ts` — Server Action fetches rates on wizard mount
-- `app/actions/calculator.ts` — Server Action re-calculates server-side, sends emails/Slack
+- `app/actions/calculator-v3-data.ts` — Server Action fetches rates on wizard mount
+- `app/actions/calculator-v3.ts` — Server Action re-calculates server-side, sends emails/Slack
 - `lib/types/calculator.ts` — Types, display labels, country name mappings
-- `lib/__tests__/freight-engine-v2.test.ts` — 69 tests including formula verification with hand-calculated values
-- `components/freight-calculator/calculator-wizard.tsx` — Multi-step wizard UI
-- `components/freight-calculator/calculator-estimate-card.tsx` — Live estimate sidebar/card
+- `lib/__tests__/calculator-v3-*.test.ts` — Engine formula tests + import cost + lead metadata + route health
+- `components/freight-calculator-v3/calculator-v3-wizard.tsx` — Multi-step wizard UI
+- `components/freight-calculator/{route-globe,calculator-progress-bar,category-icons,port-coordinates}` — Shared primitives reused by the wizard
 
 #### Calculation Formulas (Current contract)
 
@@ -211,11 +217,11 @@ Marine insurance:
 
 #### Data Pipeline
 ```
-1. Mount → getCalculatorData() → fetches equipment_packing_rates + ocean_freight_rates from Supabase
+1. Mount → getCalculatorDataV3() → fetches equipment_packing_rates + ocean_freight_rates from Supabase
    and returns countryAvailability, contractVersion, and rateBookSignature
-2. User selects equipment + size + country + ZIP → calculateFreightV2() runs CLIENT-SIDE (preview)
-3. User submits email → submitCalculator() SERVER ACTION:
-   a. Zod validation (calculatorV2Schema)
+2. User selects equipment + size + country + ZIP → calculateFreightV3() runs CLIENT-SIDE (preview)
+3. User submits email → submitCalculatorV3() SERVER ACTION:
+   a. Zod validation (calculatorV3Schema)
    b. Honeypot check
    c. Re-fetch rates from Supabase (fresh)
    d. Re-resolve canonical container type from policy (do not trust raw DB/client mode)
@@ -234,7 +240,7 @@ Marine insurance:
 
 **Graceful degradation:** If `SUPABASE_URL` not configured, shows "Calculator unavailable" with contact CTAs. The `/pricing` static table (from `content/pricing.ts`) is unaffected.
 
-**Old engine (`lib/freight-engine.ts`) is deprecated** — kept only for the static pricing table page and its tests.
+**Engine history:** v1 (`lib/freight-engine.ts`) and v2 (`lib/freight-engine-v2.ts`) have been removed. v3 in `lib/calculator-v3/` is the only engine. Legacy URLs `/pricing/calculator-v2` and `/pricing/calculator-v3` 308-redirect to `/pricing/calculator`.
 
 #### DB Data Maintenance
 **Source of truth for flatrack rates:** PDF rate sheet "Mark Instructions - Shipping" (provides bundled "Sea Freight and loading" totals per route). In the DB, this is modeled as `ocean_rate` + `packing_drayage` plus internal server-side bundle policy inputs.
@@ -360,7 +366,7 @@ Homepage, Services, Equipment, Destinations, Calculator, Pricing, Projects, Abou
 | Event | Components | Trigger | Value |
 |-------|-----------|---------|-------|
 | `generate_lead` | `contact-form.tsx` | Contact form submit | $500 |
-| `generate_lead` | `calculator-wizard.tsx` | Calculator email submit | $300 |
+| `generate_lead` | `calculator-v3-wizard.tsx` | Calculator email submit | $300 |
 | `contact_whatsapp` | All 15 WA link locations | WhatsApp link click | — |
 | `contact_phone` | Header, footer, mobile bar, etc. | Phone link click | — |
 | `contact_email` | Footer, contact-info, etc. | Email link click | — |
@@ -368,9 +374,9 @@ Homepage, Services, Equipment, Destinations, Calculator, Pricing, Projects, Abou
 **Micro-Conversion Events:**
 | Event | Component | Trigger |
 |-------|-----------|---------|
-| `calculator_start` | `calculator-wizard.tsx` | Equipment selected |
-| `calculator_step` | `calculator-wizard.tsx` | Wizard step advance |
-| `calculator_complete` | `calculator-wizard.tsx` | Destination selected (ready for email gate) |
+| `calculator_start` | `calculator-v3-wizard.tsx` | Equipment selected |
+| `calculator_step` | `calculator-v3-wizard.tsx` | Wizard step advance |
+| `calculator_complete` | `calculator-v3-wizard.tsx` | Destination selected (ready for email gate) |
 | `video_play` | `video-section.tsx` | Homepage video play button click |
 | `faq_expand` | `faq-accordion.tsx` | FAQ accordion item opened |
 | `cta_click` | Various | CTA button click (with location param) |
@@ -394,7 +400,7 @@ Homepage, Services, Equipment, Destinations, Calculator, Pricing, Projects, Abou
 **Client-side events** (via `track()` from `@vercel/analytics`):
 | Event | Component | Trigger |
 |-------|-----------|---------|
-| `generate_lead` | `contact-form.tsx`, `calculator-wizard.tsx` | Form/calculator submit |
+| `generate_lead` | `contact-form.tsx`, `calculator-v3-wizard.tsx` | Form/calculator submit |
 | `contact_click` | via `trackContactClick()` | WhatsApp/phone/email click |
 | `cta_click` | via `trackCtaClick()` | CTA button click |
 | `calculator_start/step/complete` | via `trackCalcFunnel()` | Calculator funnel steps |
