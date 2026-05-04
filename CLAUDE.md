@@ -17,6 +17,24 @@ npm test           # Vitest unit tests (freight engine)
 npm run test:watch # Vitest watch mode
 ```
 
+## First-Time Clone Setup
+
+Run once after cloning to enable the shared git hooks (PII guards, etc.):
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Hooks live in `.githooks/` (committed). Currently installed:
+- `pre-commit` — blocks any staged file under `.local-reports/` (PII protection).
+
+## Routing Convention (Next.js 16)
+
+Locale middleware lives at `proxy.ts` (project root), **not** `middleware.ts`.
+Next.js 16 renamed the middleware convention to `proxy.ts` as part of the
+Vercel Proxy refactor. Do not rename to `middleware.ts` — the framework
+expects `proxy.ts`. See `proxy.ts:1-7` for the next-intl wiring.
+
 ## Tech Stack
 
 - **Next.js 16** (App Router, React 19, TypeScript strict)
