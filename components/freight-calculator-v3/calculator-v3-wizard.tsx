@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/sheet";
 import { CalculatorProgressBar } from "@/components/freight-calculator/calculator-progress-bar";
 import { CATEGORY_ICONS } from "@/components/freight-calculator/category-icons";
-import { RouteGlobe } from "@/components/freight-calculator/route-globe";
+import { RouteGlobeV3 as RouteGlobe } from "./route-globe-v3";
 import { getCalculatorDataV3 } from "@/app/actions/calculator-v3-data";
 import {
   submitCalculatorV3,
