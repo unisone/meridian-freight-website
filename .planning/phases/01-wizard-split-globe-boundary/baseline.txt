@@ -1,0 +1,54 @@
+=== git ===
+88f280ae43167eae9a71ef7718289832f3bffcc7
+feat/v1.1-wizard-split
+=== file sizes ===
+    2030 components/freight-calculator-v3/calculator-v3-wizard.tsx
+=== type-check ===
+tsc OK
+=== lint ===
+=== tests ===
+
+ RUN  v4.1.5 /Users/zaytsev/Projects/meridian-freight-website
+
+
+ Test Files  11 passed (11)
+      Tests  112 passed (112)
+   Start at  19:04:30
+   Duration  338ms (transform 871ms, setup 0ms, import 1.32s, tests 78ms, environment 1ms)
+
+=== build ===
+│ └ /ru/services
+├ ● /[locale]/services/[slug]
+│ ├ /en/services/machinery-packing
+│ ├ /en/services/container-loading
+│ ├ /en/services/agricultural
+│ └ [+15 more paths]
+├ ● /[locale]/shared-shipping
+│ ├ /en/shared-shipping
+│ ├ /es/shared-shipping
+│ └ /ru/shared-shipping
+├ ● /[locale]/terms
+│ ├ /en/terms
+│ ├ /es/terms
+│ └ /ru/terms
+├ ƒ /api/cron/rate-check
+├ ƒ /api/cron/sync-containers
+├ ƒ /api/indexnow
+├ ƒ /api/indexnow-verify
+├ ƒ /api/track/wa-click
+├ ○ /icon.png
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+=== bundle baseline ===
+5.3M	.next/static/chunks/
+=== pre-fix globe leak check ===
+.next/static/chunks/06_sk3k-6k40a.js
+.next/static/chunks/0u5t2r~4n5sml.js
