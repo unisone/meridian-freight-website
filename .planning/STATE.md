@@ -5,7 +5,7 @@
 ## Current Position
 
 - **Active milestone:** v1.1 — Wizard hardening + security audit
-- **Active phase:** Phase 1 (wizard split + globe boundary) — **planned, ready for execution**
+- **Active phase:** Phase 1a (scaffolding + globe boundary) — **executed, awaiting CI/merge**. Phase 1b (orchestrator slim-down) queued.
 - **Active workstream:** none
 - **Active branch:** `gsd/v3-wizard-hardening` (this branch)
 - **Open PR:** #107 (`chore/codebase-map-cleanup` — v1.0 cleanup, awaiting user merge)
