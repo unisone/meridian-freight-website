@@ -112,6 +112,8 @@ export async function generateMetadata({
         canonical,
         languages: {
           es: canonical,
+          en: `${SITE.url}/destinations/${slug}`,
+          "x-default": `${SITE.url}/destinations/${slug}`,
         },
       },
       robots: { index: true, follow: true },
