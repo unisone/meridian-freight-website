@@ -420,7 +420,7 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
                   </p>
                   <TrackedCtaLink
                     href={item.href}
-                    location={content.tracking.projectLibrary}
+                    location={content.tracking.equipmentLink}
                     text={item.linkLabel}
                     className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"
                   >
@@ -506,7 +506,7 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
             <div>
               <LinkGrid
                 items={content.resourceLinks}
-                location={content.tracking.projectLibrary}
+                location={content.tracking.resourceLink}
                 openResourceLabel={content.labels.openResource}
               />
               <div className="mt-8 rounded-2xl border bg-muted/60 p-6">
