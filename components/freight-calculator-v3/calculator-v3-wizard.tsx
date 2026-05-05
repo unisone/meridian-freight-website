@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   CheckCircle,
-  ChevronDown,
   Clock3,
   DollarSign,
   Globe,
@@ -13,9 +12,7 @@ import {
   Lock,
   MessageCircle,
   Package,
-  PackageCheck,
   Ship,
-  Truck,
 } from "lucide-react";
 import { track as vercelTrack } from "@vercel/analytics";
 import { Button } from "@/components/ui/button";
@@ -32,7 +29,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { CalculatorProgressBar } from "@/components/freight-calculator/calculator-progress-bar";
-import { CATEGORY_ICONS } from "@/components/freight-calculator/category-icons";
 import { RouteGlobeV3 as RouteGlobe } from "./route-globe-v3";
 import { getCalculatorDataV3 } from "@/app/actions/calculator-v3-data";
 import {
@@ -66,6 +62,7 @@ import {
   routeSortCostLabel,
   shortContainerLabel,
 } from "./wizard/copy";
+import { StepEquipment } from "./wizard/step-equipment";
 import { Link } from "@/i18n/navigation";
 import type {
   CalculatorDataV3,
@@ -557,55 +554,16 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
 
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="min-w-0 flex-[3] space-y-8">
-          <section>
-            <SectionHeader num={1} title={t.selectEquipmentCategory} />
-
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-              {visibleProfiles.map((candidate) => {
-                const Icon = CATEGORY_ICONS[candidate.equipmentCategory] ?? Package;
-                const isSelected = profileId === candidate.id;
-                return (
-                  <button
-                    key={candidate.id}
-                    type="button"
-                    onClick={() => selectProfile(candidate)}
-                    className={`group flex min-h-20 flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
-                      isSelected
-                        ? "border-primary bg-primary/5 ring-1 ring-primary/20"
-                        : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
-                    }`}
-                    aria-pressed={isSelected}
-                  >
-                    <Icon
-                      aria-hidden="true"
-                      className={`h-6 w-6 transition-colors ${
-                        isSelected
-                          ? "text-primary"
-                          : "text-muted-foreground group-hover:text-primary/70"
-                      }`}
-                    />
-                    <span
-                      className={`text-xs font-medium leading-tight ${
-                        isSelected ? "text-primary" : "text-foreground"
-                      }`}
-                    >
-                      {getLocalizedText(candidate.label, lang)}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {data.profiles.length > 8 && !showAllProfiles && (
-              <button
-                type="button"
-                onClick={() => setShowAllProfiles(true)}
-                className="mt-2 flex items-center gap-1 rounded py-2 text-xs font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-              >
-                {t.showAllCategories} <ChevronDown className="h-3 w-3" />
-              </button>
-            )}
-          </section>
+          <StepEquipment
+            visibleProfiles={visibleProfiles}
+            profileId={profileId}
+            showAllProfiles={showAllProfiles}
+            profileCount={data.profiles.length}
+            onSelectProfile={selectProfile}
+            onShowAll={() => setShowAllProfiles(true)}
+            locale={lang}
+            t={t}
+          />
 
           <section
             aria-disabled={!profile || undefined}
