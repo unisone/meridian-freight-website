@@ -1,0 +1,69 @@
+=== git ===
+8434f9e0c3064f741ad01830396a9e799bbe837a
+feat/v1.1-phase-2-wizard-slim
+=== orchestrator size (target ≤500 by end of Task 5b) ===
+    1621 components/freight-calculator-v3/calculator-v3-wizard.tsx
+=== existing wizard/* files ===
+(eval):8: no matches found: components/freight-calculator-v3/wizard/*.tsx
+      36 components/freight-calculator-v3/route-globe-v3.tsx
+=== type-check ===
+tsc OK
+=== lint ===
+  16:3  warning  'PackageCheck' is defined but never used  @typescript-eslint/no-unused-vars
+  18:3  warning  'Truck' is defined but never used         @typescript-eslint/no-unused-vars
+
+✖ 2 problems (0 errors, 2 warnings)
+
+=== test count (must be ≥117 throughout the phase) ===
+
+> meridian-freight-website@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.5 /Users/zaytsev/Projects/meridian-freight-website
+
+
+ Test Files  12 passed (12)
+      Tests  117 passed (117)
+   Start at  19:58:17
+   Duration  289ms (transform 902ms, setup 0ms, import 1.42s, tests 77ms, environment 1ms)
+
+=== build ===
+│ └ /ru/services
+├ ● /[locale]/services/[slug]
+│ ├ /en/services/machinery-packing
+│ ├ /en/services/container-loading
+│ ├ /en/services/agricultural
+│ └ [+15 more paths]
+├ ● /[locale]/shared-shipping
+│ ├ /en/shared-shipping
+│ ├ /es/shared-shipping
+│ └ /ru/shared-shipping
+├ ● /[locale]/terms
+│ ├ /en/terms
+│ ├ /es/terms
+│ └ /ru/terms
+├ ƒ /api/cron/rate-check
+├ ƒ /api/cron/sync-containers
+├ ƒ /api/indexnow
+├ ƒ /api/indexnow-verify
+├ ƒ /api/track/wa-click
+├ ○ /icon.png
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+=== bundle baseline size ===
+5.3M	.next/static/chunks/
+=== Phase 1 bundle gate (must still pass) ===
+Calculator route not found in build manifest
+=== Phase 1 bundle gate (App Router scan) ===
+Chunks with react-globe.gl reference: 0
+
+OK: react-globe excluded from initial chunks

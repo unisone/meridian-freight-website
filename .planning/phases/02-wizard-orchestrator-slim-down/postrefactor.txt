@@ -1,0 +1,33 @@
+=== test count ===
+ Test Files  12 passed (12)
+      Tests  117 passed (117)
+   Start at  20:18:24
+   Duration  656ms (transform 2.32s, setup 0ms, import 3.16s, tests 136ms, environment 1ms)
+
+
+=== type-check ===
+tsc OK
+
+=== lint ===
+
+=== file size invariants ===
+     497 components/freight-calculator-v3/calculator-v3-wizard.tsx
+     457 components/freight-calculator-v3/wizard/copy.ts
+     237 components/freight-calculator-v3/wizard/state.ts
+     105 components/freight-calculator-v3/wizard/types.ts
+      70 components/freight-calculator-v3/wizard/estimate-card-helpers.tsx
+     487 components/freight-calculator-v3/wizard/estimate-card.tsx
+      82 components/freight-calculator-v3/wizard/step-equipment.tsx
+     293 components/freight-calculator-v3/wizard/step-route.tsx
+     176 components/freight-calculator-v3/wizard/step-specs.tsx
+     168 components/freight-calculator-v3/wizard/wizard-shell.tsx
+      36 components/freight-calculator-v3/route-globe-v3.tsx
+    2608 total
+
+=== globe leak scan in chunks ===
+Calculator/pricing app chunks: 0
+
+OK: react-globe excluded from initial chunks
+=== Broad globe leak scan: which chunk has Globe? ===
+Chunks with Globe library code: 1
+  06_sk3k-6k40a.js (1583KB)

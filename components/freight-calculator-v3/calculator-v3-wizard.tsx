@@ -1,51 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  ArrowRight,
-  CheckCircle,
-  ChevronDown,
-  Clock3,
-  DollarSign,
-  Globe,
-  Info,
-  Loader2,
-  Lock,
-  MessageCircle,
-  Package,
-  PackageCheck,
-  Ship,
-  Truck,
-} from "lucide-react";
+import { useEffect, useMemo, useReducer, useRef } from "react";
 import { track as vercelTrack } from "@vercel/analytics";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { CalculatorProgressBar } from "@/components/freight-calculator/calculator-progress-bar";
-import { CATEGORY_ICONS } from "@/components/freight-calculator/category-icons";
-import { RouteGlobeV3 as RouteGlobe } from "./route-globe-v3";
 import { getCalculatorDataV3 } from "@/app/actions/calculator-v3-data";
-import {
-  submitCalculatorV3,
-  type CalculatorV3Result,
-} from "@/app/actions/calculator-v3";
+import { submitCalculatorV3 } from "@/app/actions/calculator-v3";
 import { calculateFreightV3 } from "@/lib/calculator-v3/engine";
 import { getLocalizedText } from "@/lib/calculator-v3/policy";
-import { CONTACT, TRACKING } from "@/lib/constants";
-import { formatDollar } from "@/lib/calculator-v3/format";
+import { TRACKING } from "@/lib/constants";
 import {
   trackCalcFunnel,
-  trackContactClick,
   trackGA4Event,
   trackGoogleAdsConversion,
   trackPixelEvent,
@@ -53,76 +17,53 @@ import {
 import {
   COPY,
   EMAIL_RE,
-  containerLabel,
   countryLabel,
-  formatTransit,
-  getDestinationPortLabel,
   getRoutes,
-  importAmountLabel,
-  lineItemLabel,
-  missingInputLabel,
-  modeIcon,
   normalizeLocale,
-  routeSortCostLabel,
-  shortContainerLabel,
 } from "./wizard/copy";
-import { Link } from "@/i18n/navigation";
+import { EstimateCard } from "./wizard/estimate-card";
+import { initialWizardState, wizardReducer } from "./wizard/state";
+import { StepEquipment } from "./wizard/step-equipment";
+import { StepRoute } from "./wizard/step-route";
+import { StepSpecs } from "./wizard/step-specs";
+import type { EstimateCardProps } from "./wizard/types";
+import {
+  WizardLoadingSkeleton,
+  WizardMobileSheet,
+  WizardUnavailableCard,
+} from "./wizard/wizard-shell";
 import type {
-  CalculatorDataV3,
-  CalculatorLocale,
   EquipmentQuoteMode,
   EquipmentQuoteProfile,
   FreightEstimateV3,
-  ImportCostEstimateV3,
   RouteOption,
-  RoutePreference,
-  ShippingMode,
 } from "@/lib/calculator-v3/contracts";
 
 export function CalculatorV3Wizard({ locale }: { locale: string }) {
   const lang = normalizeLocale(locale);
   const t = COPY[lang];
-  const [data, setData] = useState<CalculatorDataV3 | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [dataError, setDataError] = useState(false);
-  const [profileId, setProfileId] = useState("");
-  const [modeId, setModeId] = useState<ShippingMode>("whole");
-  const [quantity, setQuantity] = useState(1);
-  const [destinationCountry, setDestinationCountry] = useState("");
-  const [destinationPortKey, setDestinationPortKey] = useState<string | null>(null);
-  const [routePreference, setRoutePreference] = useState<RoutePreference>("cheapest");
-  const [routeId, setRouteId] = useState<string | null>(null);
-  const [zipCode, setZipCode] = useState("");
-  const [equipmentValueUsd, setEquipmentValueUsd] = useState<number | null>(null);
-  const [rateBookSignature, setRateBookSignature] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [company, setCompany] = useState("");
-  const [phone, setPhone] = useState("");
-  const [preferredContact, setPreferredContact] = useState<"email" | "whatsapp">(
-    "email",
-  );
-  const [website, setWebsite] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
-  const [result, setResult] = useState<CalculatorV3Result | null>(null);
-  const [showAllProfiles, setShowAllProfiles] = useState(false);
-  const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
+  const [state, dispatch] = useReducer(wizardReducer, initialWizardState);
   const submittingRef = useRef(false);
   const customsTrackedRef = useRef(new Set<string>());
+
+  const {
+    data, loading, dataError, rateBookSignature,
+    profileId, modeId, quantity, equipmentValueUsd, showAllProfiles,
+    destinationCountry, destinationPortKey, routePreference, routeId, zipCode,
+    email, name, company, phone, preferredContact, website,
+    isSubmitting, error, result, mobileSheetOpen,
+  } = state;
 
   useEffect(() => {
     getCalculatorDataV3()
       .then((payload) => {
         if (!payload) {
-          setDataError(true);
+          dispatch({ type: "DATA_ERROR" });
           return;
         }
-        setData(payload);
-        setRateBookSignature(payload.rateBookSignature);
+        dispatch({ type: "DATA_LOADED", payload });
       })
-      .catch(() => setDataError(true))
-      .finally(() => setLoading(false));
+      .catch(() => dispatch({ type: "DATA_ERROR" }));
   }, []);
 
   const profile = useMemo(
@@ -273,22 +214,14 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     (step3Done ? 1 : 0) +
     (step4Done ? 1 : 0);
 
-  function resetEstimateState() {
-    setResult(null);
-    setError("");
-  }
-
   function selectProfile(nextProfile: EquipmentQuoteProfile) {
     const nextMode = nextProfile.modes.find((candidate) => candidate.enabled);
-    setProfileId(nextProfile.id);
-    setModeId(nextMode?.id ?? "whole");
-    setQuantity(nextProfile.defaultQuantity);
-    setEquipmentValueUsd(null);
-    setDestinationCountry("");
-    setDestinationPortKey(null);
-    setRouteId(null);
-    setZipCode("");
-    resetEstimateState();
+    dispatch({
+      type: "SELECT_PROFILE",
+      profileId: nextProfile.id,
+      modeId: nextMode?.id ?? "whole",
+      quantity: nextProfile.defaultQuantity,
+    });
     trackCalcFunnel("start", {
       equipment_type: getLocalizedText(nextProfile.label, lang),
       container_type: nextMode?.containerType ?? "unknown",
@@ -297,12 +230,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
 
   function selectMode(nextMode: EquipmentQuoteMode) {
     if (!nextMode.enabled) return;
-    setModeId(nextMode.id);
-    setEquipmentValueUsd(null);
-    setDestinationCountry("");
-    setDestinationPortKey(null);
-    setRouteId(null);
-    resetEstimateState();
+    dispatch({ type: "SELECT_MODE", modeId: nextMode.id });
     trackGA4Event("calculator_mode_selected", {
       equipment_profile: profileId,
       shipping_mode: nextMode.id,
@@ -316,8 +244,7 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
   }
 
   function selectRoute(route: RouteOption) {
-    setRouteId(route.id);
-    resetEstimateState();
+    dispatch({ type: "SELECT_ROUTE", routeId: route.id });
     trackGA4Event("calculator_route_selected", {
       equipment_profile: profileId,
       destination_country: route.destinationCountry,
@@ -331,28 +258,46 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     });
   }
 
+  function selectDestinationCountry(country: string) {
+    dispatch({ type: "SET_DESTINATION_COUNTRY", country });
+    if (country && profile && enabledMode) {
+      trackCalcFunnel("step", {
+        step_number: "3",
+        step_name: "destination",
+        destination_country: country,
+      });
+      trackCalcFunnel("complete", {
+        equipment_type: getLocalizedText(profile.label, lang),
+        destination_country: country,
+        container_type: enabledMode.containerType,
+      });
+    }
+  }
+
   async function handleSubmit() {
     if (website || submittingRef.current) return;
     if (!EMAIL_RE.test(email)) {
-      setError(t.validEmailError);
+      dispatch({ type: "SUBMIT_ERROR", error: t.validEmailError });
       return;
     }
     if (!profile || !enabledMode || !activeDestinationCountry || !selectedRoute || !preview) {
-      setError(t.routeRequired);
+      dispatch({ type: "SUBMIT_ERROR", error: t.routeRequired });
       return;
     }
     if (enabledMode.requiresEquipmentValue && !hasRequiredValue) {
-      setError(t.valueRequired);
+      dispatch({ type: "SUBMIT_ERROR", error: t.valueRequired });
       return;
     }
     if (preferredContact === "whatsapp" && !phone.trim()) {
-      setError("Phone or WhatsApp number is required when WhatsApp is selected.");
+      dispatch({
+        type: "SUBMIT_ERROR",
+        error: "Phone or WhatsApp number is required when WhatsApp is selected.",
+      });
       return;
     }
 
     submittingRef.current = true;
-    setIsSubmitting(true);
-    setError("");
+    dispatch({ type: "SUBMIT_START" });
 
     try {
       const params = new URLSearchParams(window.location.search);
@@ -384,12 +329,12 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
         lang,
       );
 
-      if (res.currentRateBookSignature) {
-        setRateBookSignature(res.currentRateBookSignature);
-      }
-
       if (res.success && res.estimate) {
-        setResult(res);
+        dispatch({
+          type: "SUBMIT_SUCCESS",
+          result: res,
+          currentRateBookSignature: res.currentRateBookSignature,
+        });
         trackGA4Event("generate_lead", {
           event_category: "calculator",
           lead_source: "freight_calculator_v3",
@@ -417,112 +362,24 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
           );
         }
       } else {
-        setResult(res);
-        setError(res.error || "Something went wrong.");
+        dispatch({
+          type: "SUBMIT_ERROR",
+          error: res.error || "Something went wrong.",
+          result: res,
+        });
       }
     } catch {
-      setError("Failed to calculate. Please try again.");
+      dispatch({
+        type: "SUBMIT_ERROR",
+        error: "Failed to calculate. Please try again.",
+      });
     } finally {
-      setIsSubmitting(false);
       submittingRef.current = false;
     }
   }
 
-  function resetAll() {
-    setProfileId("");
-    setModeId("whole");
-    setQuantity(1);
-    setDestinationCountry("");
-    setDestinationPortKey(null);
-    setRoutePreference("cheapest");
-    setRouteId(null);
-    setZipCode("");
-    setEquipmentValueUsd(null);
-    setEmail("");
-    setName("");
-    setCompany("");
-    setPhone("");
-    setPreferredContact("email");
-    setWebsite("");
-    setError("");
-    setResult(null);
-    setMobileSheetOpen(false);
-    setShowAllProfiles(false);
-  }
-
-  if (loading) {
-    return (
-      <div>
-        <div className="mb-6 flex gap-2">
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-1.5 flex-1 rounded-full" />
-          ))}
-        </div>
-        <div className="flex flex-col gap-8 lg:flex-row">
-          <div className="min-w-0 flex-[3] space-y-8">
-            <div>
-              <Skeleton className="mb-4 h-5 w-48" />
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <Skeleton key={i} className="h-20 rounded-xl" />
-                ))}
-              </div>
-            </div>
-            <div className="opacity-40">
-              <Skeleton className="mb-4 h-5 w-36" />
-              <Skeleton className="h-4 w-64" />
-            </div>
-            <div className="opacity-40">
-              <Skeleton className="mb-4 h-5 w-32" />
-              <Skeleton className="h-4 w-56" />
-            </div>
-          </div>
-          <div className="hidden flex-[2] lg:block">
-            <Skeleton className="h-72 rounded-2xl" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (dataError || !data) {
-    return (
-      <Card className="mx-auto max-w-2xl border-primary/20 shadow-xl">
-        <CardContent className="space-y-4 p-8 text-center">
-          <h3 className="text-lg font-bold text-foreground">
-            {t.unavailableTitle}
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            {t.unavailableDescription}
-          </p>
-          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button
-              render={<Link href="/contact" />}
-              className="bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
-            >
-              Contact us
-            </Button>
-            <Button
-              render={
-                <a
-                  href={CONTACT.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() =>
-                    trackContactClick("whatsapp", "calculator_v3_unavailable")
-                  }
-                />
-              }
-              variant="outline"
-              className="border-emerald-600 py-5 font-semibold text-emerald-600 hover:bg-emerald-50"
-            >
-              {t.whatsAppUs}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  if (loading) return <WizardLoadingSkeleton />;
+  if (dataError || !data) return <WizardUnavailableCard t={t} />;
 
   const estimateCardProps = {
     locale: lang,
@@ -534,22 +391,23 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
     selectedRoute,
     isComplete: step3Done,
     email,
-    onEmailChange: setEmail,
+    onEmailChange: (email: string) => dispatch({ type: "SET_EMAIL", email }),
     name,
-    onNameChange: setName,
+    onNameChange: (name: string) => dispatch({ type: "SET_NAME", name }),
     company,
-    onCompanyChange: setCompany,
+    onCompanyChange: (company: string) => dispatch({ type: "SET_COMPANY", company }),
     phone,
-    onPhoneChange: setPhone,
+    onPhoneChange: (phone: string) => dispatch({ type: "SET_PHONE", phone }),
     preferredContact,
-    onPreferredContactChange: setPreferredContact,
+    onPreferredContactChange: (contact: "email" | "whatsapp") =>
+      dispatch({ type: "SET_PREFERRED_CONTACT", contact }),
     website,
-    onWebsiteChange: setWebsite,
+    onWebsiteChange: (website: string) => dispatch({ type: "SET_WEBSITE", website }),
     isSubmitting,
     error,
     onSubmit: handleSubmit,
-    onReset: resetAll,
-  } satisfies CalculatorV3EstimateCardProps;
+    onReset: () => dispatch({ type: "RESET_ALL" }),
+  } satisfies EstimateCardProps;
 
   return (
     <div>
@@ -557,1065 +415,83 @@ export function CalculatorV3Wizard({ locale }: { locale: string }) {
 
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="min-w-0 flex-[3] space-y-8">
-          <section>
-            <SectionHeader num={1} title={t.selectEquipmentCategory} />
+          <StepEquipment
+            visibleProfiles={visibleProfiles}
+            profileId={profileId}
+            showAllProfiles={showAllProfiles}
+            profileCount={data.profiles.length}
+            onSelectProfile={selectProfile}
+            onShowAll={() => dispatch({ type: "SHOW_ALL_PROFILES" })}
+            locale={lang}
+            t={t}
+          />
 
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-              {visibleProfiles.map((candidate) => {
-                const Icon = CATEGORY_ICONS[candidate.equipmentCategory] ?? Package;
-                const isSelected = profileId === candidate.id;
-                return (
-                  <button
-                    key={candidate.id}
-                    type="button"
-                    onClick={() => selectProfile(candidate)}
-                    className={`group flex min-h-20 flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-4 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
-                      isSelected
-                        ? "border-primary bg-primary/5 ring-1 ring-primary/20"
-                        : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
-                    }`}
-                    aria-pressed={isSelected}
-                  >
-                    <Icon
-                      aria-hidden="true"
-                      className={`h-6 w-6 transition-colors ${
-                        isSelected
-                          ? "text-primary"
-                          : "text-muted-foreground group-hover:text-primary/70"
-                      }`}
-                    />
-                    <span
-                      className={`text-xs font-medium leading-tight ${
-                        isSelected ? "text-primary" : "text-foreground"
-                      }`}
-                    >
-                      {getLocalizedText(candidate.label, lang)}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+          <StepSpecs
+            profile={profile}
+            modeId={modeId}
+            quantity={quantity}
+            equipmentValueUsd={equipmentValueUsd}
+            enabledMode={enabledMode}
+            hasRequiredValue={hasRequiredValue}
+            locale={lang}
+            t={t}
+            onSelectMode={selectMode}
+            onSetQuantity={(quantity) => dispatch({ type: "SET_QUANTITY", quantity })}
+            onSetEquipmentValue={(value) => dispatch({ type: "SET_EQUIPMENT_VALUE", value })}
+            onResetEstimate={() => dispatch({ type: "RESET_ESTIMATE" })}
+          />
 
-            {data.profiles.length > 8 && !showAllProfiles && (
-              <button
-                type="button"
-                onClick={() => setShowAllProfiles(true)}
-                className="mt-2 flex items-center gap-1 rounded py-2 text-xs font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-              >
-                {t.showAllCategories} <ChevronDown className="h-3 w-3" />
-              </button>
-            )}
-          </section>
-
-          <section
-            aria-disabled={!profile || undefined}
-            className={`transition-[opacity,transform] duration-300 ${
-              !profile
-                ? "pointer-events-none translate-y-2 opacity-40"
-                : "translate-y-0 opacity-100"
-            }`}
-          >
-            <SectionHeader num={2} title={t.equipmentSpecs} />
-
-            {!profile ? (
-              <p className="mt-3 text-sm text-muted-foreground">
-                {t.selectEquipmentHint}
-              </p>
-            ) : (
-              <div className="mt-4 space-y-4">
-                <div>
-                  <Label className="text-sm">{t.shippingMode}</Label>
-                  <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                    {profile.modes.map((candidate) => {
-                      const Icon = modeIcon(candidate);
-                      const isSelected = modeId === candidate.id;
-                      return (
-                        <button
-                          key={candidate.id}
-                          type="button"
-                          disabled={!candidate.enabled}
-                          onClick={() => selectMode(candidate)}
-                          className={`flex min-h-24 items-start gap-3 rounded-xl border-2 px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 ${
-                            isSelected
-                              ? "border-primary bg-primary/5 ring-1 ring-primary/20"
-                              : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
-                          }`}
-                        >
-                          <Icon
-                            aria-hidden="true"
-                            className={`mt-0.5 h-5 w-5 shrink-0 ${
-                              isSelected ? "text-primary" : "text-muted-foreground"
-                            }`}
-                          />
-                          <span>
-                            <span className="block text-sm font-semibold text-foreground">
-                              {getLocalizedText(candidate.label, lang)}
-                            </span>
-                            <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                              {getLocalizedText(
-                                candidate.enabled
-                                  ? candidate.description
-                                  : candidate.disabledReason ?? candidate.description,
-                                lang,
-                              )}
-                            </span>
-                            <Badge variant="secondary" className="mt-2 text-[10px]">
-                              {candidate.enabled
-                                ? containerLabel(candidate.containerType)
-                                : t.confirmWithMeridian}
-                            </Badge>
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {enabledMode && (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <Label htmlFor="v3-quantity" className="text-sm">
-                        {getLocalizedText(profile.quantityLabel, lang)}
-                      </Label>
-                      <Input
-                        id="v3-quantity"
-                        aria-label={getLocalizedText(profile.quantityLabel, lang)}
-                        type="number"
-                        min={1}
-                        max={profile.maxQuantity}
-                        value={quantity}
-                        onChange={(event) => {
-                          const parsed = Number.parseInt(event.target.value || "1", 10);
-                          setQuantity(Math.min(profile.maxQuantity, Math.max(1, parsed)));
-                          resetEstimateState();
-                        }}
-                        className="mt-1.5 max-w-40"
-                      />
-                      <p className="mt-1.5 text-xs text-muted-foreground">
-                        {getLocalizedText(profile.quantityHelp, lang)}
-                      </p>
-                    </div>
-
-                    {enabledMode.requiresEquipmentValue && (
-                      <div>
-                        <Label htmlFor="v3-equipment-value" className="text-sm">
-                          {t.equipmentValueUsd}
-                        </Label>
-                        <Input
-                          id="v3-equipment-value"
-                          aria-label={t.equipmentValueUsd}
-                          type="number"
-                          inputMode="decimal"
-                          min={1}
-                          step={100}
-                          value={equipmentValueUsd ?? ""}
-                          onChange={(event) => {
-                            const parsed = Number.parseFloat(event.target.value);
-                            setEquipmentValueUsd(
-                              Number.isFinite(parsed) && parsed > 0 ? parsed : null,
-                            );
-                            resetEstimateState();
-                          }}
-                          placeholder={t.equipmentValuePlaceholder}
-                          className="mt-1.5 max-w-56"
-                        />
-                        <p className="mt-1.5 text-xs text-muted-foreground">
-                          {t.equipmentValueHint}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {enabledMode && (
-                  <div className="rounded-xl bg-muted p-4">
-                    <div className="flex items-center gap-2">
-                      <Info className="h-4 w-4 text-primary" />
-                      <span className="text-sm font-medium text-foreground">
-                        {getLocalizedText(enabledMode.shortLabel, lang)} ·{" "}
-                        {containerLabel(enabledMode.containerType)}
-                      </span>
-                    </div>
-                    <p className="mt-1.5 text-xs text-muted-foreground">
-                      {getLocalizedText(enabledMode.description, lang)}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </section>
-
-          <section
-            aria-disabled={!step2Done || undefined}
-            className={`transition-[opacity,transform] duration-300 ${
-              !step2Done
-                ? "pointer-events-none translate-y-2 opacity-40"
-                : "translate-y-0 opacity-100"
-            }`}
-          >
-            <SectionHeader num={3} title={t.shippingRoute} />
-
-            {!step2Done ? (
-              <p className="mt-3 text-sm text-muted-foreground">
-                {profile && enabledMode?.requiresEquipmentValue && !hasRequiredValue
-                  ? t.valueRequired
-                  : t.completeEquipmentHint}
-              </p>
-            ) : eligibleCountries.length === 0 ? (
-              <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
-                <div className="font-semibold">{t.noPublishedRoutesTitle}</div>
-                <p className="mt-1 text-amber-900/80">
-                  {t.noPublishedRoutesDescription}
-                </p>
-              </div>
-            ) : (
-              <div className="mt-4 space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <Label
-                      htmlFor="v3-dest-country"
-                      className="flex items-center gap-1.5 text-sm"
-                    >
-                      <Globe className="h-3.5 w-3.5 text-primary" />
-                      {t.destinationCountry}
-                    </Label>
-                    <select
-                      id="v3-dest-country"
-                      aria-label={t.destinationCountry}
-                      value={activeDestinationCountry}
-                      onChange={(event) => {
-                        const country = event.target.value;
-                        setDestinationCountry(country);
-                        setDestinationPortKey(null);
-                        setRouteId(null);
-                        resetEstimateState();
-                        if (country && profile && enabledMode) {
-                          trackCalcFunnel("step", {
-                            step_number: "3",
-                            step_name: "destination",
-                            destination_country: country,
-                          });
-                          trackCalcFunnel("complete", {
-                            equipment_type: getLocalizedText(profile.label, lang),
-                            destination_country: country,
-                            container_type: enabledMode.containerType,
-                          });
-                        }
-                      }}
-                      className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-base transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary md:text-sm"
-                    >
-                      <option value="">{t.selectCountry}</option>
-                      {eligibleCountries.map((code) => (
-                        <option key={code} value={code}>
-                          {countryLabel(code)}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <Label
-                      htmlFor="v3-zip-code"
-                      className="flex items-center gap-1.5 text-sm"
-                    >
-                      <Package className="h-3.5 w-3.5 text-primary" />
-                      {t.usPickupZip}
-                      <span className="text-xs text-muted-foreground">
-                        {t.optional}
-                      </span>
-                    </Label>
-                    <Input
-                      id="v3-zip-code"
-                      aria-label={`${t.usPickupZip} ${t.optional}`}
-                      type="text"
-                      inputMode="numeric"
-                      autoComplete="postal-code"
-                      maxLength={5}
-                      value={zipCode}
-                      onChange={(event) => {
-                        setZipCode(event.target.value.replace(/\D/g, "").slice(0, 5));
-                        setRouteId(null);
-                        resetEstimateState();
-                      }}
-                      placeholder={t.zipPlaceholder}
-                      className="mt-1.5"
-                    />
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {t.zipHint}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <Label className="text-sm">{t.routePreference}</Label>
-                    <div
-                      className="mt-2 grid max-w-xs grid-cols-2 overflow-hidden rounded-lg border"
-                      role="group"
-                      aria-label={t.routePreference}
-                    >
-                      {(["cheapest", "fastest"] as const).map((preference) => (
-                        <button
-                          key={preference}
-                          type="button"
-                          onClick={() => {
-                            setRoutePreference(preference);
-                            setRouteId(null);
-                            resetEstimateState();
-                          }}
-                          className={`h-10 text-sm font-medium transition-colors ${
-                            routePreference === preference
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-background text-foreground hover:bg-muted"
-                          }`}
-                        >
-                          {preference === "cheapest" ? t.cheapest : t.fastest}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {showPortTabs && (
-                    <div>
-                      <Label className="text-sm">{t.destinationPort}</Label>
-                      <div
-                        className="mt-2 flex flex-wrap gap-2"
-                        role="group"
-                        aria-label={t.destinationPort}
-                      >
-                        {destinationPortKeys.map((key) => (
-                          <button
-                            key={key}
-                            type="button"
-                            onClick={() => {
-                              setDestinationPortKey(key);
-                              setRouteId(null);
-                              resetEstimateState();
-                            }}
-                            className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
-                              selectedDestinationPortKey === key
-                                ? "border-primary bg-primary text-primary-foreground"
-                                : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
-                            }`}
-                          >
-                            {getDestinationPortLabel(routesForCountry, key)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {activeDestinationCountry && (
-                  <div>
-                    <div className="mb-2 text-sm font-semibold text-foreground">
-                      {t.routeOptions}
-                    </div>
-                    <div className="grid gap-2 md:grid-cols-2">
-                      {routeOptions.slice(0, 4).map((route) => {
-                        const active = selectedRoute?.id === route.id;
-                        return (
-                          <button
-                            key={route.id}
-                            type="button"
-                            onClick={() => selectRoute(route)}
-                            className={`rounded-xl border-2 px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
-                              active
-                                ? "border-primary bg-primary/5 ring-1 ring-primary/20"
-                                : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div>
-                                <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                                  {t.route}
-                                </div>
-                                <div className="mt-1 text-sm font-semibold text-foreground">
-                                  {route.origin.label} → {route.destination.label}
-                                </div>
-                              </div>
-                              <Badge variant="secondary" className="text-[10px]">
-                                {route.carrier}
-                              </Badge>
-                            </div>
-                            <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                              <span className="flex items-center gap-1.5">
-                                <DollarSign className="h-3.5 w-3.5 text-emerald-700" />
-                                {enabledMode
-                                  ? routeSortCostLabel({
-                                      route,
-                                      mode: enabledMode,
-                                      quantity,
-                                      equipmentValueUsd,
-                                      zipCode: zipCode || null,
-                                    })
-                                  : "—"}
-                              </span>
-                              <span className="flex items-center gap-1.5">
-                                <Clock3 className="h-3.5 w-3.5 text-primary" />
-                                {formatTransit(route, lang)}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                {preview && (
-                  <div className="rounded-xl bg-muted p-4 text-sm">
-                    <div className="font-semibold text-foreground">
-                      {t.shippingRoute}
-                    </div>
-                    <div className="mt-1 text-muted-foreground">
-                      {zipCode ? `ZIP ${zipCode}` : t.usPickup} →{" "}
-                      {preview.route.origin.label} → {preview.route.destination.label}
-                    </div>
-                    <div className="mt-2 font-mono text-lg font-bold text-primary">
-                      {formatDollar(preview.freightTotal)}
-                      {preview.totalExcludesInland && (
-                        <span className="ml-1 text-xs font-normal text-muted-foreground">
-                          ({t.exclInlandTransport})
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                <div className="mt-4 overflow-hidden rounded-xl">
-                  <RouteGlobe
-                    originPort={
-                      preview?.route.origin.label ?? selectedRoute?.origin.label ?? null
-                    }
-                    destinationPort={
-                      preview?.route.destination.label ??
-                      selectedRoute?.destination.label ??
-                      null
-                    }
-                    destinationCountry={activeDestinationCountry || null}
-                    containerType={enabledMode?.containerType ?? null}
-                  />
-                </div>
-              </div>
-            )}
-          </section>
+          <StepRoute
+            data={data}
+            profile={profile}
+            enabledMode={enabledMode}
+            eligibleCountries={eligibleCountries}
+            activeDestinationCountry={activeDestinationCountry}
+            zipCode={zipCode}
+            routePreference={routePreference}
+            showPortTabs={showPortTabs}
+            destinationPortKeys={destinationPortKeys}
+            selectedDestinationPortKey={selectedDestinationPortKey}
+            routesForCountry={routesForCountry}
+            routeOptions={routeOptions}
+            selectedRoute={selectedRoute}
+            preview={preview}
+            step2Done={step2Done}
+            hasRequiredValue={hasRequiredValue}
+            quantity={quantity}
+            equipmentValueUsd={equipmentValueUsd}
+            locale={lang}
+            t={t}
+            onSetDestinationCountry={selectDestinationCountry}
+            onSetDestinationPortKey={(portKey) => dispatch({ type: "SET_DESTINATION_PORT", portKey })}
+            onSetRoutePreference={(preference) => dispatch({ type: "SET_ROUTE_PREFERENCE", preference })}
+            onSelectRoute={selectRoute}
+            onSetZip={(zip) => dispatch({ type: "SET_ZIP", zip })}
+            onResetEstimate={() => dispatch({ type: "RESET_ESTIMATE" })}
+          />
 
           <p className="text-xs text-muted-foreground">{t.disclaimer}</p>
         </div>
 
         <div className="hidden flex-[2] lg:block">
           <div className="sticky top-24">
-            <CalculatorV3EstimateCard {...estimateCardProps} />
+            <EstimateCard {...estimateCardProps} />
           </div>
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden">
-        <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
-          <div className="flex items-center justify-between bg-slate-900 px-4 py-3 shadow-2xl">
-            <SheetTrigger
-              aria-label={t.viewEstimateDetails}
-              className="flex items-center gap-2 text-white"
-            >
-              {preview ? (
-                <>
-                  <span className="text-xs text-slate-400">Est.</span>
-                  <span className="font-mono text-lg font-bold">
-                    {formatDollar(preview.freightTotal)}
-                  </span>
-                </>
-              ) : profile ? (
-                <span className="text-sm text-slate-400">
-                  {t.selectDestinationForEstimate}
-                </span>
-              ) : (
-                <span className="text-sm text-slate-400">
-                  {t.selectEquipmentToBegin}
-                </span>
-              )}
-            </SheetTrigger>
-            <Button
-              size="sm"
-              className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
-              disabled={!step3Done}
-              onClick={() => setMobileSheetOpen(true)}
-            >
-              {result?.success ? t.viewEstimate : t.bookThisFreight}
-              <ArrowRight className="ml-1 h-3.5 w-3.5" />
-            </Button>
-          </div>
-
-          <SheetContent
-            side="bottom"
-            className="max-h-[85vh] overflow-y-auto rounded-t-2xl p-0"
-            showCloseButton={true}
-          >
-            <SheetHeader className="bg-muted px-5 py-4">
-              <SheetTitle>{t.yourFreightEstimate}</SheetTitle>
-            </SheetHeader>
-            <div className="p-5">
-              <CalculatorV3EstimateCard {...estimateCardProps} />
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
+      <WizardMobileSheet
+        open={mobileSheetOpen}
+        onOpenChange={(open) => dispatch({ type: "TOGGLE_MOBILE_SHEET", open })}
+        preview={preview}
+        profile={profile}
+        result={result}
+        step3Done={step3Done}
+        t={t}
+        estimateCard={<EstimateCard {...estimateCardProps} />}
+      />
 
       <div className="h-16 lg:hidden" />
-    </div>
-  );
-}
-
-interface CalculatorV3EstimateCardProps {
-  locale: CalculatorLocale;
-  preview: FreightEstimateV3 | null;
-  result: CalculatorV3Result | null;
-  profile: EquipmentQuoteProfile | null;
-  mode: EquipmentQuoteMode | null;
-  destinationCountry: string;
-  selectedRoute: RouteOption | null;
-  isComplete: boolean;
-  email: string;
-  onEmailChange: (value: string) => void;
-  name: string;
-  onNameChange: (value: string) => void;
-  company: string;
-  onCompanyChange: (value: string) => void;
-  phone: string;
-  onPhoneChange: (value: string) => void;
-  preferredContact: "email" | "whatsapp";
-  onPreferredContactChange: (value: "email" | "whatsapp") => void;
-  website: string;
-  onWebsiteChange: (value: string) => void;
-  isSubmitting: boolean;
-  error: string;
-  onSubmit: () => void;
-  onReset: () => void;
-}
-
-function CalculatorV3EstimateCard({
-  locale,
-  preview,
-  result,
-  profile,
-  mode,
-  destinationCountry,
-  selectedRoute,
-  isComplete,
-  email,
-  onEmailChange,
-  name,
-  onNameChange,
-  company,
-  onCompanyChange,
-  phone,
-  onPhoneChange,
-  preferredContact,
-  onPreferredContactChange,
-  website,
-  onWebsiteChange,
-  isSubmitting,
-  error,
-  onSubmit,
-  onReset,
-}: CalculatorV3EstimateCardProps) {
-  const t = COPY[locale];
-  const [emailGateOpen, setEmailGateOpen] = useState(false);
-  const isEmailValid = EMAIL_RE.test(email);
-  const hasResult = result?.success && result.estimate;
-  const estimate = result?.estimate ?? preview;
-
-  if (!profile) {
-    return (
-      <div className="flex min-h-[280px] items-center justify-center rounded-2xl bg-muted p-6 text-center">
-        <div>
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-            <Ship className="h-6 w-6 text-muted-foreground" />
-          </div>
-          <p className="text-sm text-muted-foreground">{t.emptyStateText}</p>
-        </div>
-      </div>
-    );
-  }
-
-  const estimateMode = estimate?.mode ?? mode;
-  const estimateRoute = estimate?.route ?? selectedRoute;
-  const whatsappText = encodeURIComponent(
-    `Hi! Your calculator estimated ${
-      estimate ? formatDollar(estimate.freightTotal) : "N/A"
-    } for ${profile ? getLocalizedText(profile.label, locale) : "equipment"} to ${
-      destinationCountry ? countryLabel(destinationCountry) : "destination"
-    }. Can I get a confirmed quote?`,
-  );
-
-  return (
-    <div className="rounded-2xl bg-slate-900 p-6 text-white" aria-live="polite">
-      {hasResult && (
-        <div className="mb-4 flex items-center gap-2">
-          <CheckCircle className="h-5 w-5 text-emerald-500" />
-          <span className="text-sm font-medium text-emerald-500">
-            {t.estimateSentTo.replace("{email}", email)}
-          </span>
-        </div>
-      )}
-
-      <div className="mb-1 flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-          {t.estimatedFreight}
-        </span>
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
-          <Ship className="h-4 w-4 text-primary" />
-        </div>
-      </div>
-      <p className="mb-4 text-xs text-slate-400">{t.basedOnRates}</p>
-
-      {estimate ? (
-        <>
-          <div className="mb-1 font-mono tabular-nums text-4xl font-bold tracking-tight text-white">
-            {formatDollar(estimate.freightTotal)}
-          </div>
-          <p className="mb-5 text-xs font-semibold uppercase tracking-wider text-primary">
-            {estimate.totalExcludesInland
-              ? t.exclInlandTransport
-              : t.optimizedRouteRate}
-          </p>
-        </>
-      ) : (
-        <>
-          <div className="mb-1 font-mono text-4xl font-bold tracking-tight text-slate-600">
-            $—,———
-          </div>
-          <p className="mb-5 text-xs text-slate-600">
-            {destinationCountry ? t.routeUnavailableEstimate : t.selectDestination}
-          </p>
-        </>
-      )}
-
-      <div className="-mx-6 mt-4 space-y-3 rounded-lg bg-white/5 px-6 pt-4 pb-4">
-        <DetailRow
-          label={t.transit}
-          value={estimateRoute ? formatTransit(estimateRoute, locale) : "—"}
-          mono
-        />
-        <DetailRow
-          label={t.container}
-          value={estimateMode ? shortContainerLabel(estimateMode.containerType) : "—"}
-          mono
-        />
-        <DetailRow
-          label={t.carrier}
-          value={estimateRoute?.carrier ?? "—"}
-          highlight
-          mono
-        />
-        {estimateRoute && (
-          <DetailRow
-            label={t.route}
-            value={`${estimateRoute.origin.label} → ${estimateRoute.destination.label}`}
-          />
-        )}
-      </div>
-
-      {estimate && (
-        <div className="mt-5 space-y-5">
-          <div>
-            <h3 className="mb-2 text-sm font-semibold">{t.lineItems}</h3>
-            <div className="space-y-3">
-              {estimate.lineItems
-                .filter((line) => line.amountUsd !== 0 || line.id !== "packing_loading")
-                .map((line) => (
-                  <div key={line.id} className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-sm text-slate-300">
-                        {lineItemLabel(line, locale)}
-                      </div>
-                      {line.note && (
-                        <div className="text-xs text-slate-400">{line.note}</div>
-                      )}
-                    </div>
-                    <span className="font-mono font-bold text-white">
-                      {line.amountUsd == null
-                        ? line.includedInTotal
-                          ? t.quoteConfirmed
-                          : t.notAvailable
-                        : formatDollar(line.amountUsd)}
-                    </span>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          <div className="rounded-lg bg-white/5 p-3">
-            <div className="flex items-baseline justify-between">
-              <span className="font-semibold text-white">{t.freightTotal}</span>
-              <span className="font-mono text-3xl font-bold text-white">
-                {formatDollar(estimate.freightTotal)}
-              </span>
-            </div>
-          </div>
-
-          <div className="space-y-3 border-t border-slate-700 pt-4">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <div className="text-sm font-medium text-slate-200">
-                  {t.compliancePrep}
-                </div>
-                {estimate.compliancePrep.note && (
-                  <div className="mt-1 text-xs text-slate-400">
-                    {getLocalizedText(estimate.compliancePrep.note, locale)}
-                  </div>
-                )}
-              </div>
-              <span className="text-right font-mono text-sm font-bold text-white">
-                {estimate.compliancePrep.amountStatus === "priced" &&
-                estimate.compliancePrep.amountUsd != null
-                  ? formatDollar(estimate.compliancePrep.amountUsd)
-                  : estimate.compliancePrep.amountStatus === "not_applicable"
-                    ? t.noAutomaticCharge
-                    : t.brokerConfirmed}
-              </span>
-            </div>
-
-            {estimate.dedicatedContainerFreightTotal != null && (
-              <div className="flex items-start justify-between gap-4">
-                <div className="text-sm text-slate-300">
-                  {t.dedicatedComparison}
-                </div>
-                <span className="font-mono text-sm font-bold text-white">
-                  {formatDollar(estimate.dedicatedContainerFreightTotal)}
-                </span>
-              </div>
-            )}
-
-            <div>
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-sm font-medium text-slate-200">
-                    {t.importEstimate}
-                  </div>
-                  <div className="mt-1 text-xs text-slate-400">
-                    {t.importNotIncluded}
-                    {estimate.importCost.hsCode
-                      ? ` · HS ${estimate.importCost.hsCode}`
-                      : ""}
-                  </div>
-                </div>
-                <span className="text-right font-mono text-sm font-bold text-white">
-                  {importAmountLabel(estimate.importCost, locale)}
-                </span>
-              </div>
-              <ImportCostNote importCost={estimate.importCost} locale={locale} />
-            </div>
-          </div>
-
-          {(estimate.warnings.length > 0 || estimate.notes.length > 0) && (
-            <div className="space-y-2">
-              {estimate.warnings.slice(0, 2).map((warning, index) => (
-                <p
-                  key={`${warning.en}-${index}`}
-                  className="flex items-start gap-1.5 text-xs text-amber-500"
-                >
-                  <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                  {getLocalizedText(warning, locale)}
-                </p>
-              ))}
-              {estimate.notes.slice(0, 2).map((note, index) => (
-                <p
-                  key={`${note.en}-${index}`}
-                  className="flex items-start gap-1.5 text-xs text-slate-400"
-                >
-                  <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                  {getLocalizedText(note, locale)}
-                </p>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {emailGateOpen && !hasResult ? (
-        <div className="-mx-6 mt-5 space-y-3 rounded-lg bg-white/5 px-6 py-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            {t.getYourDetailedEstimate}
-          </p>
-
-          <div>
-            <Label htmlFor="v3-est-email" className="text-xs text-slate-300">
-              {t.emailLabel}
-            </Label>
-            <Input
-              id="v3-est-email"
-              aria-label={t.emailLabel}
-              name="email"
-              type="email"
-              autoComplete="email"
-              spellCheck={false}
-              value={email}
-              onChange={(event) => onEmailChange(event.target.value)}
-              placeholder={t.emailPlaceholder}
-              required
-              aria-invalid={email ? !isEmailValid : undefined}
-              aria-describedby={
-                email && !isEmailValid ? "v3-est-email-error" : undefined
-              }
-              className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 focus:border-primary"
-            />
-            {email && !isEmailValid && (
-              <p id="v3-est-email-error" className="mt-1 text-xs text-red-500">
-                {t.validEmailError}
-              </p>
-            )}
-          </div>
-
-          <div className="grid gap-2 sm:grid-cols-2">
-            <div>
-              <Label htmlFor="v3-est-name" className="text-xs text-slate-300">
-                {t.nameLabel}
-              </Label>
-              <Input
-                id="v3-est-name"
-                aria-label={t.nameLabel}
-                name="name"
-                autoComplete="name"
-                value={name}
-                onChange={(event) => onNameChange(event.target.value)}
-                placeholder={t.optionalPlaceholder}
-                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
-              />
-            </div>
-            <div>
-              <Label htmlFor="v3-est-company" className="text-xs text-slate-300">
-                {t.companyLabel}
-              </Label>
-              <Input
-                id="v3-est-company"
-                aria-label={t.companyLabel}
-                name="company"
-                autoComplete="organization"
-                value={company}
-                onChange={(event) => onCompanyChange(event.target.value)}
-                placeholder={t.optionalPlaceholder}
-                className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="v3-est-phone" className="text-xs text-slate-300">
-              {t.phoneLabel}
-            </Label>
-            <Input
-              id="v3-est-phone"
-              aria-label={t.phoneLabel}
-              name="phone"
-              autoComplete="tel"
-              value={phone}
-              onChange={(event) => onPhoneChange(event.target.value)}
-              placeholder={t.optionalPlaceholder}
-              className="mt-1 border-slate-700 bg-slate-800 text-white placeholder:text-slate-500"
-            />
-          </div>
-
-          <div>
-            <Label className="text-xs text-slate-300">{t.preferredContact}</Label>
-            <div
-              className="mt-1 grid grid-cols-2 overflow-hidden rounded-lg border border-slate-700"
-              role="group"
-              aria-label={t.preferredContact}
-            >
-              {(["email", "whatsapp"] as const).map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => onPreferredContactChange(option)}
-                  className={`h-10 text-sm font-medium transition-colors ${
-                    preferredContact === option
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                  }`}
-                >
-                  {option === "email" ? t.emailOption : t.whatsappOption}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div
-            aria-hidden="true"
-            style={{
-              opacity: 0,
-              position: "absolute",
-              pointerEvents: "none",
-              height: 0,
-              overflow: "hidden",
-            }}
-          >
-            <Label htmlFor="v3-est-website">Website</Label>
-            <Input
-              id="v3-est-website"
-              aria-label="Website"
-              type="text"
-              value={website}
-              onChange={(event) => onWebsiteChange(event.target.value)}
-              tabIndex={-1}
-              autoComplete="off"
-            />
-          </div>
-
-          {error && <p className="text-center text-xs text-red-500">{error}</p>}
-
-          <Button
-            type="button"
-            onClick={onSubmit}
-            disabled={!isEmailValid || isSubmitting}
-            className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t.calculating}
-              </>
-            ) : (
-              <>
-                {t.calculateAndSend}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </>
-            )}
-          </Button>
-
-          <p className="flex items-center justify-center gap-1.5 text-xs text-slate-400">
-            <Lock className="h-3 w-3" />
-            {t.emailBreakdownNote}
-          </p>
-        </div>
-      ) : !hasResult ? (
-        <div className="mt-5 space-y-2">
-          <Button
-            type="button"
-            onClick={() => setEmailGateOpen(true)}
-            disabled={!isComplete}
-            className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
-          >
-            {t.bookThisFreight}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            className="w-full text-slate-300 hover:text-white"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            {t.refineQuote}
-          </Button>
-        </div>
-      ) : (
-        <div className="mt-5 space-y-2">
-          <Button
-            render={<Link href="/contact" />}
-            className="w-full bg-primary py-5 font-semibold text-primary-foreground hover:bg-primary/90"
-          >
-            {t.getDetailedQuote}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-          <Button
-            render={
-              <a
-                href={`${CONTACT.whatsappUrl}?text=${whatsappText}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackContactClick("whatsapp", "calculator_v3_estimate")}
-              />
-            }
-            variant="outline"
-            className="w-full border-emerald-600/50 py-5 font-semibold text-emerald-500 hover:bg-emerald-600/10"
-          >
-            <MessageCircle className="mr-2 h-4 w-4" />
-            {t.whatsAppUs}
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onReset}
-            className="w-full text-slate-300 hover:text-white"
-          >
-            {t.calculateAnother}
-          </Button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ImportCostNote({
-  importCost,
-  locale,
-}: {
-  importCost: ImportCostEstimateV3;
-  locale: CalculatorLocale;
-}) {
-  const t = COPY[locale];
-  if (importCost.available) {
-    return (
-      <div className="mt-2 space-y-1 text-xs leading-relaxed text-slate-400">
-        <p>{t.importBrokerNote}</p>
-        {importCost.recoverableCreditsUsd != null &&
-          importCost.recoverableCreditsUsd > 0 && (
-            <p>
-              {t.recoverableCredits}:{" "}
-              {formatDollar(importCost.recoverableCreditsUsd)}
-            </p>
-          )}
-      </div>
-    );
-  }
-
-  return (
-    <div className="mt-2 space-y-1 text-xs leading-relaxed text-slate-400">
-      {importCost.note && <p>{getLocalizedText(importCost.note, locale)}</p>}
-      {importCost.missingInputs.length > 0 && (
-        <p>
-          {t.missingInputs}:{" "}
-          {importCost.missingInputs
-            .map((key) => missingInputLabel(key, locale))
-            .join(", ")}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function DetailRow({
-  label,
-  value,
-  highlight,
-  mono,
-}: {
-  label: string;
-  value: string;
-  highlight?: boolean;
-  mono?: boolean;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4 text-sm">
-      <span className="text-slate-400">{label}</span>
-      <span
-        className={`text-right ${
-          highlight ? "font-semibold text-primary" : "font-medium text-white"
-        }${mono ? " font-mono" : ""}`}
-      >
-        {value}
-      </span>
-    </div>
-  );
-}
-
-function SectionHeader({ num, title }: { num: number; title: string }) {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-        {String(num).padStart(2, "0")}
-      </div>
-      <h2 className="text-lg font-bold text-foreground">{title}</h2>
     </div>
   );
 }
