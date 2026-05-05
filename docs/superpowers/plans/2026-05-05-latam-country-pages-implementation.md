@@ -4,7 +4,7 @@
 
 **Goal:** Build Spanish-only strategic buyer hubs for Paraguay, Uruguay, and Bolivia that replace the thin Spanish generic destination experience while preserving English/Russian generic destination coverage.
 
-**Architecture:** Add a typed country-market content module and a reusable server-rendered page component. Route `/es/destinations/paraguay`, `/es/destinations/uruguay`, and `/es/destinations/bolivia` through the new component from the existing dynamic destination route, while keeping `/destinations/*` and `/ru/destinations/*` on the generic destination template. Metadata, sitemap, JSON-LD, CTAs, and content tests must enforce the strategy spec.
+**Architecture:** Add a typed country-market content module and a reusable server-rendered page component. Route `/es/destinations/paraguay`, `/es/destinations/uruguay`, and `/es/destinations/bolivia` through the new component from the existing dynamic destination route, while keeping `/destinations/*` and `/ru/destinations/*` on the generic destination template. Metadata, sitemap, JSON-LD, CTAs, and content tests must enforce the strategy spec without presenting the Spanish buyer hubs as direct translations of generic EN/RU pages.
 
 **Tech Stack:** Next.js 16 App Router, React 19, TypeScript strict, Tailwind CSS 4, shadcn/ui, lucide-react, next-intl, Vitest.
 
@@ -14,9 +14,9 @@
 
 - Create `content/latam-market-pages.ts`: typed source of truth for Paraguay, Uruguay, and Bolivia buyer hub copy, official source links, CTA labels, schema inputs, route steps, compliance sections, and FAQ.
 - Create `content/__tests__/latam-market-pages.test.ts`: pure content contract tests for slugs, Spanish-only paths, source links, CTA tracking keys, banned proof claims, and country-specific strategy.
-- Create `components/destinations/latam-market-page.tsx`: reusable server component that renders one country hub from the typed content module and emits WebPage, Service, BreadcrumbList, and FAQPage JSON-LD.
+- Create `components/destinations/latam-market-page.tsx`: reusable server component that renders one country hub from the typed content module and emits WebPage, Service, and FAQPage JSON-LD. BreadcrumbList stays owned by `PageHero`/`Breadcrumbs`.
 - Modify `app/[locale]/destinations/[slug]/page.tsx`: branch Spanish LATAM slugs to the market component and metadata while keeping generic EN/RU route behavior.
-- Modify `app/sitemap.ts`: add explicit Spanish buyer hub sitemap entries and `x-default` alternates.
+- Modify `app/sitemap.ts`: add explicit Spanish buyer hub sitemap entries and remove false Spanish alternates from generic destination entries for these three slugs.
 - Optionally modify `app/[locale]/destinations/page.tsx` only if rendered Spanish destination index needs a stronger internal-link callout after inspection.
 - Keep `next.config.ts` unchanged unless QA proves redirects are needed. For these pages, English and Russian generic pages remain live, so no redirect is expected.
 
@@ -26,7 +26,7 @@
 - Create: `content/__tests__/latam-market-pages.test.ts`
 - Create: `content/latam-market-pages.ts`
 
-- [ ] **Step 1: Write failing content contract tests**
+- [x] **Step 1: Write failing content contract tests**
 
 Add tests that import `latamMarketPages`, `getLatamMarketPage`, and `latamMarketSlugs`.
 
@@ -46,7 +46,7 @@ Required assertions:
 Run: `npm test -- content/__tests__/latam-market-pages.test.ts`
 Expected: FAIL because the content module does not exist yet.
 
-- [ ] **Step 2: Implement `content/latam-market-pages.ts`**
+- [x] **Step 2: Implement `content/latam-market-pages.ts`**
 
 Create a typed module with:
 
@@ -61,11 +61,11 @@ The content must include the strategic copy for each country in Spanish, using t
 
 - Paraguay: used U.S. ag machinery, Ley 7565/2025, five-year age rule, prior import license, cleaning/treatment/certificate/inspection, Hidrovia/Asuncion/Villeta route, importer/despachante confirmation.
 - Uruguay: Montevideo, DGSA Resolucion 98/016, clean machinery, phytosanitary certificate, inspection/re-export risk, U.S. as second agricultural equipment supplier behind Brazil, despachante confirmation for tax/NCM.
-- Bolivia: Santa Cruz, landlocked route through transit port planning, SENASAG/VUCE broker-confirmed documentation, Trade.gov best-prospect machinery categories, careful Ley 1391/DS 4579 language as tax-benefit eligibility rather than universal import cap.
+- Bolivia: Santa Cruz, landlocked route through transit port planning, SENASAG and broker-confirmed documentation, Trade.gov best-prospect machinery categories, careful tax-benefit language rather than universal import-cap language.
 
 All user-visible labels required by the component must live in this content file, not hardcoded inside JSX.
 
-- [ ] **Step 3: Run content contract tests**
+- [x] **Step 3: Run content contract tests**
 
 Run: `npm test -- content/__tests__/latam-market-pages.test.ts`
 Expected: PASS.
@@ -76,7 +76,7 @@ Expected: PASS.
 - Create: `components/destinations/latam-market-page.tsx`
 - Read-only reference: `app/[locale]/destinations/argentina/page.tsx`
 
-- [ ] **Step 1: Implement the component**
+- [x] **Step 1: Implement the component**
 
 Create `LatamMarketPage({ content }: { content: LatamMarketPageContent })`.
 
@@ -86,12 +86,12 @@ The component must:
 - use `TrackedContactLink` for WhatsApp CTAs
 - use `TrackedCtaLink` for calculator/equipment/service CTAs
 - render a scope split, route section, compliance section, equipment section, "send us this" block, process, credibility, FAQ, and final CTA
-- emit JSON-LD scripts for WebPage, Service, BreadcrumbList, and FAQPage
+- emit JSON-LD scripts for WebPage, Service, and FAQPage; do not duplicate BreadcrumbList because `PageHero` already renders breadcrumbs
 - keep visible section labels and CTA text from `content`, not JSX literals
 - avoid claiming country-specific shipment history
 - use site constants for organization, contact, stats, and OG image
 
-- [ ] **Step 2: Check for JSX hardcoded public strings**
+- [x] **Step 2: Check for JSX hardcoded public strings**
 
 Run a targeted grep:
 
@@ -99,7 +99,7 @@ Run a targeted grep:
 
 Expected: any matches are reviewed. Intentional values must be non-public technical labels or replaced by content fields.
 
-- [ ] **Step 3: Run TypeScript**
+- [x] **Step 3: Run TypeScript**
 
 Run: `npm run type-check`
 Expected: PASS after component creation.
@@ -110,39 +110,39 @@ Expected: PASS after component creation.
 - Modify: `app/[locale]/destinations/[slug]/page.tsx`
 - Modify: `app/sitemap.ts`
 
-- [ ] **Step 1: Add Spanish route branch**
+- [x] **Step 1: Add Spanish route branch**
 
 In `app/[locale]/destinations/[slug]/page.tsx`, import `getLatamMarketPage` and `LatamMarketPage`.
 
 In `generateMetadata`:
 
-- if `locale === "es"` and the slug has a LATAM market page, return country-specific title, description, keywords, canonical, EN/ES/RU language alternates, `x-default` to the English generic URL, Open Graph, and Twitter metadata.
+- if `locale === "es"` and the slug has a LATAM market page, return country-specific title, description, keywords, canonical, Spanish-only language alternate, Open Graph, and Twitter metadata.
 - keep Kazakhstan and generic branches intact.
-- add `x-default` to generic destination metadata alternates.
+- for generic destination metadata on these three slugs, keep EN/RU generic alternates but do not advertise the Spanish buyer hub as equivalent translation content.
 
 In default page render:
 
 - if `locale === "es"` and the slug has a LATAM market page, return `<LatamMarketPage content={page} />`.
 - keep Kazakhstan and generic branches intact.
 
-- [ ] **Step 2: Add sitemap entries**
+- [x] **Step 2: Add sitemap entries**
 
 In `app/sitemap.ts`:
 
 - import `latamMarketPages`
-- add `x-default` to `withAlternates`
-- add one explicit sitemap entry per LATAM market page with URL set to each Spanish path, weekly change frequency, priority `0.85`, and alternates matching metadata.
+- add one explicit sitemap entry per LATAM market page with URL set to each Spanish path, weekly change frequency, priority `0.85`, and Spanish-only alternates matching metadata.
+- ensure generic destination sitemap entries for Paraguay, Uruguay, and Bolivia do not list `/es/destinations/{slug}` as a language alternate because those Spanish pages are richer buyer hubs, not equivalent translations.
 
-- [ ] **Step 3: Build route/metadata test opportunity if practical**
+- [x] **Step 3: Build route/metadata test opportunity if practical**
 
 If a pure test can import sitemap without Next runtime friction, add or extend a test to assert:
 
 - sitemap includes `/es/destinations/paraguay`, `/es/destinations/uruguay`, `/es/destinations/bolivia`
-- their alternates include `x-default`
+- their alternates include the Spanish canonical URL and generic destination entries for these slugs do not list Spanish alternates.
 
 If importing `app/sitemap.ts` creates runtime friction, skip the automated sitemap test and verify by `npm run build` plus manual inspection of generated route output.
 
-- [ ] **Step 4: Run validation**
+- [x] **Step 4: Run validation**
 
 Run:
 
@@ -157,17 +157,17 @@ Expected: all pass.
 **Files:**
 - No required file changes unless QA finds issues.
 
-- [ ] **Step 1: Run production build**
+- [x] **Step 1: Run production build**
 
 Run: `npm run build`
 Expected: PASS. Note existing non-blocking warnings separately.
 
-- [ ] **Step 2: Start dev server**
+- [x] **Step 2: Start dev server**
 
 Run: `npm run dev -- --port 3001`
 Expected: dev server starts on `http://localhost:3001`.
 
-- [ ] **Step 3: Browser QA**
+- [x] **Step 3: Browser QA**
 
 Use browser automation or Playwright against:
 
@@ -187,7 +187,7 @@ Check:
 - structured data scripts exist
 - generic English pages still load at `/destinations/paraguay`, `/destinations/uruguay`, `/destinations/bolivia`
 
-- [ ] **Step 4: Browser console QA**
+- [x] **Step 4: Browser console QA**
 
 Check browser console for red errors on each new page.
 
@@ -198,7 +198,7 @@ Expected: no material runtime errors.
 **Files:**
 - No code changes unless verification finds issues.
 
-- [ ] **Step 1: Run full gates**
+- [x] **Step 1: Run full gates**
 
 Run:
 
@@ -209,7 +209,7 @@ Run:
 
 Expected: all pass.
 
-- [ ] **Step 2: Commit implementation**
+- [x] **Step 2: Commit implementation**
 
 Commit only the LATAM page files and plan/spec changes from this worktree.
 
@@ -227,4 +227,3 @@ Report:
 - changed routes
 - verification commands and results
 - any known caveats
-

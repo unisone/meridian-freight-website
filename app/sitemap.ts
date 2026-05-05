@@ -4,15 +4,22 @@ import { getAllServices } from "@/content/services";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { getAllDestinations } from "@/content/destinations";
 import { blogPosts } from "@/content/blog";
+import { isLatamMarketSlug, latamMarketPages } from "@/content/latam-market-pages";
+
+type LocaleAlternate = "en" | "es" | "ru";
 
 /** Generate hreflang alternates for a given path */
-function withAlternates(path: string) {
+function withAlternates(path: string, locales: LocaleAlternate[] = ["en", "es", "ru"]) {
+  const languages: Record<LocaleAlternate, string> = {
+    en: `${SITE.url}${path}`,
+    es: `${SITE.url}/es${path}`,
+    ru: `${SITE.url}/ru${path}`,
+  };
+
   return {
-    languages: {
-      en: `${SITE.url}${path}`,
-      es: `${SITE.url}/es${path}`,
-      ru: `${SITE.url}/ru${path}`,
-    },
+    languages: Object.fromEntries(
+      locales.map((locale) => [locale, languages[locale]]),
+    ) as Partial<Record<LocaleAlternate, string>>,
   };
 }
 
@@ -67,7 +74,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
     changeFrequency: d.slug === "kazakhstan" ? "weekly" as const : "monthly" as const,
     priority: d.slug === "kazakhstan" ? 0.85 : 0.7,
-    alternates: withAlternates(`/destinations/${d.slug}`),
+    alternates: withAlternates(
+      `/destinations/${d.slug}`,
+      isLatamMarketSlug(d.slug) ? ["en", "ru"] : ["en", "es", "ru"],
+    ),
+  }));
+
+  const latamMarketSitemapPages: MetadataRoute.Sitemap = latamMarketPages.map((page) => ({
+    url: `${SITE.url}${page.path}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+    alternates: {
+      languages: {
+        es: `${SITE.url}${page.path}`,
+      },
+    },
   }));
 
   const blogPages: MetadataRoute.Sitemap = blogPosts.map((p) => ({
@@ -78,5 +100,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: withAlternates(`/blog/${p.slug}`),
   }));
 
-  return [...staticPages, ...servicePages, ...equipmentPages, ...destinationPages, ...blogPages];
+  return [
+    ...staticPages,
+    ...servicePages,
+    ...equipmentPages,
+    ...destinationPages,
+    ...latamMarketSitemapPages,
+    ...blogPages,
+  ];
 }

@@ -6,7 +6,7 @@ interface TrackedContactLinkProps {
   href: string;
   type: "whatsapp" | "phone" | "email";
   location: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   target?: string;
   rel?: string;
