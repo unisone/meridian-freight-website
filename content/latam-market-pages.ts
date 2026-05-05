@@ -517,308 +517,331 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     locale: "es-UY",
     path: "/es/destinations/uruguay",
     seo: {
-      title: "Importar maquinaria agricola usada de EE.UU. a Uruguay",
+      title: "Importar maquinaria agrícola usada de EE.UU. a Uruguay",
       description:
-        "Guia para compradores uruguayos: maquinaria usada de EE.UU. hacia Montevideo, DGSA Resolucion 98/016, limpieza, certificado fitosanitario e inspeccion.",
+        "DGSA Resolución 98/016 exige limpieza, certificado fitosanitario e inspección. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. y Canadá a Montevideo.",
       keywords: [
-        "importar maquinaria agricola usada de estados unidos a uruguay",
+        "importar maquinaria agrícola usada de estados unidos a uruguay",
         "importar tractor usado desde usa a uruguay",
         "importar cosechadora usada estados unidos uruguay",
-        "dgsa resolucion 98/016 maquinaria agricola usada",
-        "certificado fitosanitario maquinaria usada uruguay",
-        "envio maquinaria agricola puerto de montevideo",
+        "dgsa resolución 98/016 maquinaria agrícola usada uruguay",
+        "tasa global arancelaria tga maquinaria agrícola uruguay",
+        "decreto 426/011 bienes de capital uruguay",
+        "certificado fitosanitario maquinaria usada montevideo",
+        "envío maquinaria agrícola puerto de montevideo",
       ],
     },
     labels: sharedLabels,
     hero: {
-      eyebrow: "Guia para compradores uruguayos",
-      heading: "Maquinaria agricola usada de EE.UU. a Uruguay, preparada para inspeccion",
+      eyebrow: "Guía para compradores uruguayos",
+      heading: "Importar maquinaria agrícola usada de EE.UU. a Uruguay",
       description:
-        "Uruguay puede ser una ruta ordenada para maquinaria usada de Estados Unidos, pero la maquina debe llegar limpia, documentada y lista para revision DGSA. Meridian coordina el tramo de compra, retiro, preparacion, exportacion y flete hasta el alcance acordado.",
+        "En 2024, EE.UU. fue el segundo proveedor de maquinaria agrícola del Uruguay con 18,4% de participación, en plena recuperación frente al año anterior. Para una unidad concreta, Meridian coordina compra asistida, retiro, desmontaje, embalaje y flete marítimo a Montevideo, dejando explícito desde el primer mensaje qué confirma su despachante en destino con DGSA y Aduana.",
       image: {
         src: "/images/project-jd-s670-port.jpg",
-        alt: "Cosechadora John Deere en operacion portuaria para exportacion",
-        caption: "Preparacion y documentacion antes de entrada por Montevideo.",
+        alt: "Cosechadora John Deere en operación portuaria para exportación",
+        caption: "Preparación y documentación antes del ingreso por Montevideo.",
       },
       highlights: [
-        "Enfocada en Montevideo, limpieza, certificado fitosanitario y control documental.",
-        "Pensada para compradores que comparan maquinaria de EE.UU. con oferta de Brasil o Argentina.",
-        "WhatsApp para revisar una unidad especifica antes de moverla; calculadora como apoyo logistico.",
+        "Acceso oceánico directo a Montevideo: 14 a 18 días desde la Costa Este de EE.UU.",
+        "Limpieza, certificado fitosanitario USDA APHIS o CFIA y reserva marítima coordinados desde EE.UU. y Canadá.",
+        "Comparación honesta frente a la oferta brasileña y argentina: EE.UU. compite por configuración, no por norma.",
       ],
-      primaryCtaLabel: "Revisar envio a Montevideo",
+      primaryCtaLabel: "Cotizar por WhatsApp",
       secondaryCtaLabel: "Calcular flete estimado",
       whatsappMessage:
-        "Hola. Estoy evaluando importar maquinaria agricola usada desde EE.UU. a Uruguay. Quiero revisar limpieza, documentacion, ruta a Montevideo y cotizacion.",
+        "Hola. Estoy evaluando importar maquinaria agrícola usada desde EE.UU. a Uruguay y necesito una cotización orientativa.",
       scopeIncluded: [
-        "Revision de vendedor, maquina, ubicacion y requisitos visibles antes de comprar.",
-        "Coordinacion de retiro, desmontaje, limpieza/preparacion operativa, embalaje y carga.",
-        "Documentacion de exportacion y reserva maritima hacia Montevideo u otro alcance aprobado.",
+        "Compra asistida y coordinación con vendedor en EE.UU. o Canadá (subasta, concesionario o privado).",
+        "Retiro en origen, desmontaje técnico, etiquetado, embalaje y carga.",
+        "Documentación de exportación, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Montevideo.",
       ],
       scopeExcluded: [
-        "Clasificacion NCM, tributos, tasas y decisiones de despacho local.",
-        "Despachante uruguayo, permisos locales y tramites ante autoridad de ingreso.",
-        "Costos posteriores a puerto si no fueron cotizados como parte del alcance.",
+        "Despachante uruguayo (ADAU), DUA, clasificación NCM y trámites locales ante Aduana.",
+        "TGA, IVA, recargo único cuando aplique, tasas portuarias y costos de inspección DGSA.",
+        "Entrega interior desde Montevideo a campo o taller si no fue cotizada como alcance adicional.",
       ],
       scopeFootnote:
-        "El mejor momento para corregir limpieza, fotos, documentos y dimensiones es antes de que la maquina salga del vendedor.",
+        "El control en Uruguay no está en la ruta marítima sino en la limpieza y la documentación. Esos puntos se cierran antes de que la unidad salga del vendedor.",
     },
     route: {
-      eyebrow: "Montevideo como punto de entrada",
-      title: "La ruta es mas directa; el control esta en la preparacion",
+      eyebrow: "Acceso oceánico directo",
+      title: "La ruta es simple; el control está en la preparación",
       intro:
-        "A diferencia de destinos sin litoral, Uruguay concentra el riesgo en documentacion, limpieza y coordinacion con el despachante. El tramo oceanico debe planificarse junto con la condicion real de la maquina.",
+        "A diferencia de Paraguay o Bolivia, Uruguay tiene un solo tramo internacional: del puerto de origen en EE.UU. al Puerto de Montevideo. Eso simplifica el calendario y la coordinación de naviera, pero traslada el riesgo a la preparación de la unidad y a la inspección DGSA al ingreso.",
       steps: [
         {
-          title: "Revisar condicion",
+          title: "Costa Este de EE.UU. → Montevideo",
           description:
-            "Se piden fotos y datos de la maquina para detectar tierra, residuos, accesorios y dimensiones antes de cotizar.",
+            "Tránsito marítimo de 14 a 18 días con servicios semanales o quincenales de Maersk, Hapag-Lloyd, CMA CGM, MSC y ZIM.",
         },
         {
-          title: "Preparar salida en EE.UU.",
+          title: "Houston → Montevideo",
           description:
-            "Se coordina retiro, desmontaje, embalaje y carga con la documentacion de exportacion correspondiente.",
+            "Ruta del Golfo: 20 a 25 días. Preferida cuando la unidad sale de Iowa o el Sur de las Llanuras.",
         },
         {
-          title: "Reservar hacia Montevideo",
+          title: "Preparación y certificación en origen",
           description:
-            "La ruta maritima se arma segun origen, equipo, contenedor o flat rack, y fecha objetivo.",
+            "Lavado interno y externo, certificado fitosanitario USDA APHIS o CFIA con declaración adicional sobre limpieza, embalaje de madera ISPM-15.",
         },
         {
-          title: "Coordinacion con el despachante",
+          title: "Llegada a Puerto de Montevideo y despacho local",
           description:
-            "El comprador y su despachante confirman NCM, tributos, certificado, inspeccion y retiro local.",
+            "Su despachante coordina DUA, NCM, TGA, IVA, inspección DGSA y retiro hacia Soriano, Colonia, Paysandú u otro destino interior.",
         },
       ],
       note:
-        "Montevideo puede ser un punto de entrada claro, pero la inspeccion DGSA exige tomar en serio limpieza y documentacion antes del embarque.",
+        "Evite la ruta US West Coast → Montevideo (45 a 60 días) cuando la Costa Este o Houston están disponibles. La diferencia de tránsito y costo no compensa salvo casos puntuales.",
     },
     compliance: {
-      eyebrow: "DGSA Resolucion 98/016",
-      title: "La maquina usada debe llegar limpia y documentada",
+      eyebrow: "DGSA Resolución 98/016",
+      title: "Limpieza, certificado e inspección antes de embarcar",
       intro:
-        "DGSA exige que la maquinaria agricola usada llegue sin suelo, restos vegetales ni plagas, con certificado y sujeta a inspeccion. El comprador debe tratar esto como parte central de la decision, no como detalle de ultimo minuto.",
+        "La Resolución 98/016 de DGSA exige que la maquinaria agrícola, forestal o de jardinería usada que ingrese a Uruguay llegue limpia interna y externamente, libre de suelo, plagas y restos vegetales, con certificado fitosanitario de origen y sujeta a inspección. Aplica independientemente del régimen aduanero (importación, admisión temporaria, tránsito a zona franca o a depósitos fiscales).",
       required: [
-        "Revisar limpieza interna y externa antes de coordinar retiro o carga.",
-        "Preparar documentacion de exportacion y datos necesarios para certificado fitosanitario cuando aplique.",
-        "Coordinar con el despachante uruguayo antes de asumir costo final.",
+        "Limpieza interna y externa por hidrolavado, vapor, aire forzado, aspirado u otro método aceptado, desmontando partes cuando corresponda.",
+        "Certificado fitosanitario de origen (USDA APHIS para EE.UU., CFIA para Canadá) con declaración adicional sobre limpieza.",
+        "Tratamiento fitosanitario en origen cuando aplique, con especificaciones en la sección correspondiente del certificado.",
+        "Embalaje de madera ISPM-15 cuando se utilice.",
+        "Datos completos de modelo, año, horas, condición, accesorios y vendedor antes de reservar flete.",
       ],
       brokerConfirmed: [
-        "NCM, aranceles, IVA, tasas y tratamiento tributario aplicable.",
-        "Certificado fitosanitario, tratamiento en origen y requisitos de inspeccion.",
-        "Retiro del puerto, costos locales y cualquier accion requerida por DGSA tras inspeccion.",
+        "DUA (Documento Único Aduanero) ante DNA y clasificación NCM (BK Bienes de Capital cuando aplica).",
+        "TGA 2% por Decreto 426/011 sobre bienes de capital BK con AEC mayor a 0%; IVA 22% estándar (reducido o exento para ciertos bienes agrícolas).",
+        "Recargo único sobre tractores armados y maquinaria agrícola cuando aplique, confirmado por el despachante para la NCM concreta.",
+        "Retiro del puerto, costos locales y cualquier acción adicional requerida por DGSA tras inspección.",
       ],
       avoid: [
-        "Comprar solo por precio publicado sin revisar limpieza y documentacion.",
-        "Asumir que la maquinaria de EE.UU. siempre es mas conveniente que Brasil o Argentina.",
-        "Publicar un porcentaje de arancel sin validar NCM y regla vigente con el despachante.",
+        "Embarcar una unidad sin documentar la limpieza: si DGSA detecta suelo, restos o plagas en inspección, exige reexportación dentro de 30 días con la unidad bajo custodia.",
+        "Asumir que la maquinaria de Mercosur (Brasil, Argentina, Paraguay) y la de EE.UU. tienen el mismo tratamiento arancelario: el origen EE.UU. no goza de preferencias Mercosur.",
+        "Publicar un porcentaje de arancel sin validar NCM y régimen vigente con su despachante para la unidad concreta.",
       ],
     },
     equipmentFocus: {
-      eyebrow: "Categorias con mejor ajuste",
-      title: "Cuando mirar Estados Unidos desde Uruguay",
+      eyebrow: "Categorías donde EE.UU. compite con Brasil y Argentina",
+      title: "Cuándo conviene mirar Estados Unidos desde Uruguay",
       intro:
-        "Uruguay ya tiene alternativas regionales. EE.UU. cobra sentido cuando la configuracion, condicion, horas, tecnologia o documentacion justifican traer una unidad especifica.",
+        "Brasil concentra cerca del 43% de las importaciones de maquinaria agrícola del Uruguay y EE.UU. el 18,4%. La oferta brasileña y argentina es competitiva en precio cuando la configuración existe localmente. EE.UU. cobra sentido cuando la configuración, la tecnología o la documentación justifican el flete adicional.",
       items: [
         {
-          title: "Cosechadoras",
+          title: "Cosechadoras de alta capacidad",
           summary:
-            "Unidades usadas o reacondicionadas pueden interesar cuando la configuracion no aparece en la oferta regional.",
+            "Cosechadoras 250-500 hp con cabezal draper, configuración de cultivos extensivos, tecnología de precisión.",
           reason:
-            "La revision debe incluir limpieza, plataforma, dimensiones y compatibilidad antes de reservar.",
+            "El usado regional brasileño y argentino tiene profundidad de inventario, pero EE.UU. domina cuando se busca un cabezal draper específico o un paquete completo.",
           href: "/equipment/combines",
           linkLabel: "Ver cosechadoras",
         },
         {
-          title: "Tractores",
+          title: "Tractores 200-400 hp",
           summary:
-            "Tractores usados de EE.UU. pueden competir cuando el comprador prioriza potencia, estado y equipamiento.",
+            "Tractores con doble tracción, cabina con tecnología de precisión, hidráulica de alta capacidad.",
           reason:
-            "El pais tiene demanda de maquinaria usada/reacondicionada, pero el caso debe analizarse maquina por maquina.",
+            "El comprador uruguayo ya está acostumbrado al usado brasileño; EE.UU. compite cuando la unidad tiene horas verificables y configuración exacta.",
           href: "/equipment/tractors",
           linkLabel: "Ver tractores",
         },
         {
-          title: "Sembradoras y equipos de suelo",
+          title: "Sembradoras de precisión",
           summary:
-            "Equipos de preparacion, siembra y tecnologia agricola pueden justificar una busqueda fuera de la region.",
+            "Sembradoras con control por sección, monitoreo electrónico, dosificación variable, compatibilidad con tecnología de aplicación variable.",
           reason:
-            "La coordinacion temprana evita sorpresas por dimensiones, desmontaje y limpieza.",
+            "El equipamiento electrónico de fábrica es donde EE.UU. supera al usado regional; el flete se justifica cuando la siembra de soja u otros cultivos lo requiere.",
           href: "/equipment/planters",
           linkLabel: "Ver sembradoras",
         },
         {
-          title: "Pulverizadoras y precision",
+          title: "Pulverizadoras autopropulsadas",
           summary:
-            "Equipos con tecnologia o configuracion especifica pueden valer mas por disponibilidad que por precio base.",
+            "Pulverizadoras con tecnología GPS, control automático de boquillas, configuración para campos grandes.",
           reason:
-            "El comprador necesita revisar condicion, documentacion y servicio local antes de cerrar.",
+            "La oferta uruguaya local está creciendo, pero EE.UU. ofrece configuraciones específicas no siempre disponibles en mercados regionales.",
           href: "/equipment/sprayers",
           linkLabel: "Ver pulverizadoras",
         },
       ],
     },
     sendUsThis: {
-      eyebrow: "Datos para cotizar sin adivinar",
-      title: "Que enviar si la maquina va a Uruguay",
+      eyebrow: "Información mínima para no cotizar a ciegas",
+      title: "Qué enviar por WhatsApp para revisar una unidad para Uruguay",
       intro:
-        "Con una ficha completa podemos decir si tiene sentido avanzar y que debe revisar su despachante antes de nacionalizar.",
+        "Con una ficha completa podemos confirmar la limpieza, la documentación de origen y armar el alcance de exportación antes de comprometer fondos.",
       items: [
-        "Link de la maquina o datos del vendedor.",
-        "Modelo, ano, horas y numero de serie si esta disponible.",
-        "Fotos de limpieza, interior, ruedas/orugas, plataforma y accesorios.",
-        "Ubicacion de retiro en EE.UU. o Canada.",
-        "Destino previsto: Montevideo o punto interior.",
+        "Link de subasta, concesionario o vendedor privado.",
+        "Marca, modelo, año, horas de motor y número de serie si está disponible.",
+        "Ubicación de retiro en EE.UU. o Canadá con código postal.",
+        "Fotos de limpieza interior, ruedas u orugas, plataforma, accesorios y placa de identificación.",
+        "Destino previsto: Montevideo o destino interior (Soriano, Colonia, Paysandú u otro departamento).",
         "Despachante asignado o nombre del importador en Uruguay.",
-        "Fecha objetivo y si hay urgencia por campana agricola.",
+        "Fecha objetivo de embarque y si la operación responde a una campaña agrícola específica.",
       ],
     },
     processSteps: {
-      eyebrow: "Del link al embarque",
-      title: "Como reducimos riesgo antes de mover la unidad",
+      eyebrow: "Cuatro decisiones antes de mover la unidad",
+      title: "Cómo reducimos riesgo antes de embarcar a Montevideo",
       intro:
-        "La preparacion correcta empieza cuando se revisa la maquina, no cuando ya esta en puerto.",
+        "La preparación correcta empieza cuando se revisa la unidad, no cuando ya está en puerto.",
       steps: [
         {
           title: "Filtrar la unidad",
           description:
-            "Revisamos fotos, dimensiones, ano, horas, accesorios, vendedor y ubicacion.",
+            "Validamos año, horas, condición, dimensiones, accesorios, vendedor y ubicación. Si la unidad presenta riesgo claro de inspección, lo marcamos antes de avanzar.",
         },
         {
-          title: "Marcar riesgos DGSA",
+          title: "Marcar requisitos DGSA",
           description:
-            "Identificamos puntos de limpieza, certificado, tratamiento o inspeccion que debe confirmar el despachante.",
+            "Identificamos puntos concretos de limpieza, certificado, tratamiento o desmontaje que su despachante debe confirmar para la unidad.",
         },
         {
-          title: "Preparar exportacion",
+          title: "Coordinar tramo EE.UU. y Canadá",
           description:
-            "Coordinamos retiro, desmontaje, embalaje, carga y documentos de exportacion.",
+            "Retiro, desmontaje, embalaje, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Montevideo.",
         },
         {
-          title: "Cotizar el alcance correcto",
+          title: "Cotizar con alcance separado",
           description:
-            "La propuesta separa tramo Meridian de costos y decisiones locales en Uruguay.",
+            "El presupuesto separa el tramo Meridian del costo de despacho local. Sin esa separación, comparar con el usado brasileño o argentino se vuelve trampa.",
         },
       ],
     },
     credibility: {
-      eyebrow: "Compra selectiva",
-      title: "EE.UU. vale la pena cuando la unidad justifica el flete",
+      eyebrow: "Comparación honesta",
+      title: "EE.UU. compite cuando la unidad correcta existe",
       intro:
-        "Uruguay tiene alternativas regionales fuertes. La busqueda en EE.UU. debe concentrarse en unidades donde configuracion, horas, estado, tecnologia o documentacion compensan el costo logistico.",
+        "Uruguay tiene alternativas regionales fuertes: Brasil con cerca del 43% de las importaciones agrícolas, Argentina próxima detrás. La búsqueda en EE.UU. funciona cuando la configuración, la tecnología, las horas o la documentación justifican el flete adicional. No se presenta como solución universal.",
       pillars: [
         {
-          title: "Preparacion visible",
+          title: "Una sola contraparte en EE.UU. y Canadá",
           description:
-            "Fotos, desmontaje, embalaje y documentacion ayudan al comprador y al despachante a revisar la operacion.",
+            "Un equipo coordina vendedor, retiro, desmontaje, embalaje, certificado fitosanitario y reserva internacional.",
         },
         {
-          title: "DGSA en el centro",
+          title: "Disciplina sobre Resolución 98/016",
           description:
-            "Limpieza, certificado, tratamiento e inspeccion se tratan como parte de la compra, no como tramite posterior.",
+            "Limpieza, certificado, tratamiento e inspección se tratan como parte central de la compra, no como trámite posterior.",
         },
         {
-          title: "Comparacion honesta",
+          title: "Cotización por alcance, no por suposición",
           description:
-            "EE.UU. no se presenta como siempre mas barato; se presenta como opcion fuerte cuando la unidad correcta existe.",
+            "El flete internacional se separa de TGA, IVA, despacho ADAU y costos locales que define su despachante.",
         },
       ],
-      noteTitle: "Como trabajamos con Uruguay",
+      noteTitle: "Experiencia aplicada al caso",
       note:
-        "Meridian revisa vendedor, maquina, ubicacion, preparacion y flete internacional. El comprador mantiene NCM, tributos y despacho local con su despachante uruguayo.",
-      projectGalleryLabel: "Ver capacidades",
+        "Meridian ha coordinado más de 1.000 exportaciones a más de 40 países. Para Uruguay, la propuesta se arma con datos de la unidad, requisitos DGSA y ruta concreta a Montevideo, no con una tarifa genérica.",
+      projectGalleryLabel: "Ver proyectos y capacidades",
       projectGalleryDescription:
-        "Revise equipos, embalajes y operaciones internacionales que ayudan a dimensionar el trabajo logistico.",
+        "Tipos de equipos, embalajes y operaciones internacionales similares a las que se preparan para compradores agrícolas.",
       projectGalleryHref: "/projects",
     },
     faq: {
-      eyebrow: "Preguntas de compradores y despachantes",
-      title: "Antes de embarcar a Uruguay",
+      eyebrow: "Preguntas reales antes del embarque",
+      title: "Cuestiones que conviene cerrar antes de comprar",
       intro:
-        "Las respuestas estan escritas para ordenar el primer intercambio, no para reemplazar asesoramiento del despachante.",
+        "Estas respuestas ordenan la conversación con Meridian y con su despachante en Uruguay.",
       entries: [
         {
-          question: "Que exige DGSA para maquinaria agricola usada?",
+          question: "¿Qué exige DGSA Resolución 98/016 para maquinaria agrícola usada?",
           answer:
-            "La Resolucion 98/016 exige maquinaria limpia interna y externamente, libre de suelo, restos vegetales y plagas, con certificado y sujeta a inspeccion al ingreso.",
+            "La Resolución 98/016 exige que la unidad llegue limpia interna y externamente, libre de suelo, plagas y restos vegetales, con certificado fitosanitario de origen que incluya declaración adicional sobre limpieza. La inspección se realiza al ingreso, independientemente del régimen aduanero (importación, admisión temporaria, tránsito a zona franca o depósito fiscal).",
           category: "Uruguay",
         },
         {
-          question: "Que pasa si DGSA encuentra tierra o residuos?",
+          question: "¿Qué pasa si DGSA encuentra suelo, restos vegetales o plagas en la inspección?",
           answer:
-            "Puede requerir acciones adicionales y, en casos de incumplimiento, rechazo o reexportacion. Por eso las fotos, la limpieza y la preparacion antes de embarcar importan.",
+            "DGSA puede exigir tratamiento fitosanitario adicional o, en casos de incumplimiento, reexportación dentro de 30 días con la unidad bajo condiciones de custodia. Por eso la limpieza, las fotos y la documentación se cierran antes de embarcar, no después.",
           category: "Uruguay",
         },
         {
-          question: "Meridian puede encargarse del certificado fitosanitario?",
+          question: "¿Cuánto demora un envío puerta a Montevideo?",
           answer:
-            "Podemos coordinar el tramo de exportacion y la documentacion disponible en origen. El despachante/importador uruguayo debe confirmar exactamente que certificado, tratamiento y tramite aplica.",
+            "Costa Este de EE.UU. a Montevideo toma entre 14 y 18 días en operación normal con servicios semanales o quincenales de Maersk, Hapag-Lloyd, CMA CGM, MSC y ZIM. Houston suma 5 a 7 días adicionales. La Costa Oeste de EE.UU. (45 a 60 días) se evita salvo casos puntuales.",
           category: "Uruguay",
         },
         {
-          question: "Conviene comprar en EE.UU. en vez de Brasil?",
+          question: "¿Conviene comprar en EE.UU. en lugar de Brasil o Argentina?",
           answer:
-            "Depende de la unidad. EE.UU. puede ser atractivo por disponibilidad, configuracion, horas, marca o documentacion, pero Brasil y Argentina siguen siendo alternativas regionales fuertes.",
+            "Depende de la unidad. En 2024, Brasil concentró cerca del 43% de las importaciones uruguayas de maquinaria agrícola y EE.UU. el 18,4% (en recuperación frente al año anterior). EE.UU. compite cuando la configuración, la tecnología o la documentación de origen justifican el flete adicional, no como regla universal.",
           category: "Uruguay",
         },
         {
-          question: "La cotizacion incluye impuestos y despacho en Uruguay?",
+          question: "¿Qué cubre Meridian y qué queda para mi despachante?",
           answer:
-            "No por defecto. Meridian cotiza el alcance internacional acordado; NCM, tributos, tasas, despacho y retiro local se confirman con el despachante uruguayo.",
+            "Meridian coordina compra asistida, retiro, desmontaje, embalaje, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Montevideo. Su despachante o importador maneja DUA, clasificación NCM, TGA 2% sobre bienes de capital BK por Decreto 426/011, IVA, recargo único cuando aplique, inspección DGSA y retiro local.",
+          category: "Uruguay",
+        },
+        {
+          question: "¿Cuánto paga maquinaria agrícola usada de origen EE.UU. al ingresar a Uruguay?",
+          answer:
+            "El origen EE.UU. no goza de preferencias Mercosur, así que paga el AEC. Para bienes de capital (BK) con AEC mayor a 0%, aplica TGA del 2% por Decreto 426/011. IVA estándar es 22%, con régimen reducido o exento para ciertos bienes agrícolas según NCM. La regla concreta para una unidad la confirma su despachante (ADAU).",
           category: "Uruguay",
         },
       ],
     },
     officialSources: [
       {
-        label: "Uruguay Agricultural Equipment - Trade.gov",
-        href: "https://www.trade.gov/country-commercial-guides/uruguay-agricultural-equipment",
-        description:
-          "Datos de mercado, importaciones 2024, proveedores y demanda por maquinaria usada/reacondicionada.",
-      },
-      {
-        label: "DGSA Resolucion 98/016",
+        label: "Resolución Nº 98/016 (DGSA, MGAP)",
         href: "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-98016-dgsa-requisitos-fitosanitarios-para-introduccion-pais",
         description:
-          "Requisitos fitosanitarios para introduccion de maquinaria usada.",
+          "Requisitos fitosanitarios para maquinaria, equipos e implementos agrícolas, forestales y de jardinería usados.",
       },
       {
-        label: "USDA IPAD Uruguay Soybean",
-        href: "https://ipad.fas.usda.gov/countrysummary/Default.aspx?crop=Soybean&id=UY",
+        label: "DNA — Tasa Global Arancelaria (TGA)",
+        href: "https://www.aduanas.gub.uy/innovaportal/v/7032/3/innova.front/tasa-global-arancelaria-tga.html",
         description:
-          "Contexto agricola general para el mercado uruguayo.",
+          "Documento oficial de Aduanas sobre la TGA aplicada a bienes de capital BK con AEC mayor a 0%.",
+      },
+      {
+        label: "DNA — Decreto 426/011",
+        href: "https://www.aduanas.gub.uy/innovaportal/v/8915/3/innova.front/decreto-n%C2%B0-426_011.html",
+        description:
+          "Decreto que fija la TGA en 2% para bienes de capital y bienes de informática y telecomunicaciones.",
+      },
+      {
+        label: "DGSA institucional (MGAP)",
+        href: "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/dgsa",
+        description:
+          "Dirección General de Servicios Agrícolas: autoridad fitosanitaria del Uruguay.",
+      },
+      {
+        label: "Uruguay Agricultural Equipment — Trade.gov",
+        href: "https://www.trade.gov/country-commercial-guides/uruguay-agricultural-equipment",
+        description:
+          "Guía comercial con datos de importaciones 2024, ranking de proveedores y demanda por maquinaria usada y reacondicionada.",
       },
     ],
     resourceLinks: [
       {
-        label: "Servicio agricola",
+        label: "Servicio agrícola",
         href: "/services/agricultural",
         description:
-          "Alcance de preparacion y exportacion de maquinaria agricola.",
+          "Alcance de preparación y exportación de maquinaria agrícola desde EE.UU. y Canadá.",
       },
       {
         label: "Embalaje de maquinaria",
         href: "/services/machinery-packing",
         description:
-          "Referencia para desmontaje, proteccion y carga de equipos.",
+          "Referencia para desmontaje, protección y carga de equipos.",
       },
       {
         label: "Calculadora de flete",
         href: "/pricing/calculator",
         description:
-          "Estimacion inicial del tramo logistico cuando la ruta esta disponible.",
+          "Referencia para el tramo internacional cuando la ruta está soportada.",
       },
       {
         label: "Proyectos",
         href: "/projects",
         description:
-          "Muestras globales de maquinaria manejada por Meridian.",
+          "Ejemplos de capacidad operativa y tipos de equipos manejados.",
       },
     ],
     cta: {
-      heading: "Tiene una maquina vista en EE.UU. para Uruguay?",
+      heading: "¿Tiene una máquina vista en EE.UU. para Uruguay?",
       description:
-        "Envie el link, fotos, ano, horas, ubicacion y destino. Revisamos el tramo internacional y marcamos que debe confirmar su despachante.",
-      whatsappLabel: "Revisar envio por WhatsApp",
+        "Envíenos el link, año de fabricación, horas, ubicación y destino. Confirmamos limpieza y documentación, y separamos el tramo Meridian del costo que confirma su despachante.",
+      whatsappLabel: "Cotizar por WhatsApp",
       calculatorLabel: "Calcular flete",
     },
     tracking: {
@@ -830,9 +853,22 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       resourceLink: "uruguay_resource_link",
     },
     schema: {
-      serviceType: "Exportacion de maquinaria agricola usada de EE.UU. a Uruguay",
+      serviceType: "Exportación de maquinaria agrícola usada de EE.UU. a Uruguay",
       areaServed: "Uruguay",
-      mentions: ["Montevideo", "DGSA", "Resolucion 98/016", "maquinaria usada", "certificado fitosanitario"],
+      mentions: [
+        "Montevideo",
+        "Soriano",
+        "Colonia",
+        "Paysandú",
+        "DGSA",
+        "Resolución 98/016",
+        "DNA",
+        "MGAP",
+        "ADAU",
+        "Decreto 426/011",
+        "TGA",
+        "Mercosur",
+      ],
       datePublished: "2026-05-05",
       dateModified: "2026-05-05",
     },

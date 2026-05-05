@@ -43,7 +43,7 @@ describe("LATAM market buyer hub content", () => {
 
     const uruguay = flattenText(getLatamMarketPage("uruguay"));
     expect(uruguay).toContain("DGSA");
-    expect(uruguay).toContain("Resolucion 98/016");
+    expect(uruguay).toContain("Resolución 98/016");
 
     const bolivia = flattenText(getLatamMarketPage("bolivia"));
     expect(bolivia).toContain("broker/importador");
