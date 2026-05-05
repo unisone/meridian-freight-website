@@ -4,8 +4,8 @@
 
 ### Must-Have
 
-- **REQ-01** — Split `components/freight-calculator-v3/calculator-v3-wizard.tsx` (2,030 lines) into per-step modules with shared state. Each step (origin/equipment/destination/contact/result) lives in its own file. Source: CONCERNS.md ("calculator-v3-wizard.tsx is 2,030 lines").
-- **REQ-02** — Lift `RouteGlobe` to a sibling component dynamically loaded via `next/dynamic({ssr:false})` from the v3 wizard, so three.js never enters the main client bundle by default. Source: CONCERNS.md ("v3 wizard does not appear to use the same dynamic-loaded globe boundary").
+- **[x] REQ-01** — Split `components/freight-calculator-v3/calculator-v3-wizard.tsx` (2,030 lines) into per-step modules with shared state. Each step (origin/equipment/destination/contact/result) lives in its own file. Source: CONCERNS.md ("calculator-v3-wizard.tsx is 2,030 lines"). **Shipped via PR #110 (Phase 2). Final orchestrator: 497 lines; every wizard/* file ≤500 lines.**
+- **[x] REQ-02** — Lift `RouteGlobe` to a sibling component dynamically loaded via `next/dynamic({ssr:false})` from the v3 wizard, so three.js never enters the main client bundle by default. Source: CONCERNS.md ("v3 wizard does not appear to use the same dynamic-loaded globe boundary"). **Shipped via PR #108 (Phase 1); regression-guarded in Phase 2 via forbidden-import grep + bundle gate.**
 - **REQ-03** — Add component/integration tests for the v3 wizard covering: equipment-category selection, country selection, ZIP entry → freight estimate render, email-gate submission. Target ≥3 happy-path tests + ≥2 edge cases. Source: CONCERNS.md ("No component or e2e tests for the v3 wizard").
 - **REQ-04** — Audit and patch the 2 Dependabot moderate vulnerabilities flagged on `main`. Pin transitive dependencies if root-level patch unavailable; document any unpatchable advisories with mitigation rationale. Source: GitHub Dependabot alerts surfaced on PR #107 push.
 

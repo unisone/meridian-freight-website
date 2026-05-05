@@ -12,7 +12,7 @@ After v1.0 cleared the v1/v2 calculator noise from the codebase, v1.1 addresses 
 ## Phases
 
 - [x] **Phase 1: Wizard scaffolding + globe boundary** — wizard module structure (state.ts, types.ts, copy.ts, route-globe-v3.tsx) + globe lazy-load. ~1.58MB three.js excluded from initial bundle. (Shipped: PR #108)
-- [ ] **Phase 2: Wizard orchestrator slim-down** — Extract step components and migrate from 18 useState calls to the wizardReducer. Brings orchestrator below 500 lines.
+- [x] **Phase 2: Wizard orchestrator slim-down** — Step JSX extracted (step-equipment, step-specs, step-route, estimate-card, estimate-card-helpers, wizard-shell). Orchestrator migrated to useReducer. Down from 1,621 → 497 lines. Every `wizard/*` file ≤500 lines. (Shipped: PR #110)
 - [ ] **Phase 3: V3 wizard tests** — Component/integration tests for the modular wizard plus server-action tests
 - [ ] **Phase 4: Dependabot vuln audit** — Patch 2 moderate advisories (postcss XSS, uuid bounds check)
 
@@ -44,10 +44,10 @@ Plans:
   4. `submittingRef` guard preserved
   5. Calculator funnel still renders and submits identically (browser-verified)
   6. All tests still pass; type-check, lint, build all green
-**Plans**: TBD (planner will determine — should reuse the 01-01-PLAN.md task definitions for Tasks 5-8 as the basis)
+**Plans**: 02-01-PLAN.md (Tasks 1-8 executed). SHIPPED via PR #110 on 2026-05-05.
 
 Plans:
-- [ ] 02-01: TBD
+- [x] 02-01: Wizard orchestrator slim-down (Tasks 5-8 of original plan, executed as Tasks 1-8 of Phase 2)
 
 ### Phase 3: V3 wizard tests
 **Goal**: Add component/integration tests for the now-modular v3 wizard covering the funnel happy path + edge cases. Bundle in server-action tests for `app/actions/calculator-v3.ts` while we are in the testing context.
@@ -84,6 +84,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Wizard scaffolding + globe boundary | 1/1 | Complete | 2026-05-04 |
-| 2. Wizard orchestrator slim-down | 0/TBD | Not started | - |
+| 2. Wizard orchestrator slim-down | 1/1 | Complete | 2026-05-05 |
 | 3. V3 wizard tests | 0/TBD | Not started | - |
 | 4. Dependabot vuln audit | 0/TBD | Not started | - |
