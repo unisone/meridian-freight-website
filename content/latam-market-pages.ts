@@ -149,6 +149,20 @@ const sharedLabels: LatamMarketPageContent["labels"] = {
   yearsLabel: "años en operación",
 };
 
+function buildQualifiedWhatsappMessage(country: string) {
+  return [
+    `Hola. Estoy evaluando importar maquinaria agrícola usada o repuestos desde EE.UU. a ${country}.`,
+    "",
+    "Necesito cotizar:",
+    "Equipo o parte:",
+    "Año/modelo:",
+    "Ubicación en origen:",
+    "Destino final:",
+    "Cantidad/configuración:",
+    "Link del anuncio:",
+  ].join("\n");
+}
+
 export const latamMarketPages: LatamMarketPageContent[] = [
   {
     slug: "paraguay",
@@ -185,12 +199,11 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       highlights: [
         "Filtro de antigüedad de cinco años (Ley 7565/2025) aplicado antes de coordinar compra o flete.",
         "Retiro, desmontaje, embalaje, certificado fitosanitario de origen y reserva marítima desde EE.UU. y Canadá.",
-        "Tránsito por la Hidrovía Paraná-Paraguay con visibilidad sobre las restricciones de calado vigentes 2025/26.",
+        "Tránsito por la Hidrovía Paraná-Paraguay con calendario confirmado por naviera y operador fluvial.",
       ],
       primaryCtaLabel: "Cotizar por WhatsApp",
       secondaryCtaLabel: "Calcular flete estimado",
-      whatsappMessage:
-        "Hola. Estoy evaluando importar maquinaria agrícola usada desde EE.UU. a Paraguay y necesito una cotización orientativa.",
+      whatsappMessage: buildQualifiedWhatsappMessage("Paraguay"),
       scopeIncluded: [
         "Compra asistida y coordinación con vendedor en EE.UU. o Canadá (subasta, concesionario o privado).",
         "Retiro en origen, desmontaje técnico, etiquetado, embalaje y carga.",
@@ -223,16 +236,16 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           title: "Hidrovía hasta Asunción o Villeta",
           description:
-            "Tramo fluvial de 10 a 15 días en operación normal. Con la bajante actual del río Paraguay (calado restringido a 8-9 pies frente a 10-12 normales), planificar entre 5 y 15 días adicionales según el corredor.",
+            "Tramo fluvial de 10 a 15 días en operación normal. En temporada seca o con restricciones de calado informadas por resolución, naviera u operador fluvial, se planifican días adicionales según el corredor.",
         },
         {
           title: "Llegada a terminal y despacho",
           description:
-            "Puerto Villeta (concesión PTP Group) es la terminal principal de contenedores; Asunción opera volúmenes menores. Su despachante coordina DNIT, SENAVE, Licencia Previa y entrega interior.",
+            "Villeta y Asunción concentran operaciones fluviales relevantes; el punto exacto depende de naviera, operador, tipo de carga y coordinación del despachante.",
         },
       ],
       note:
-        "La bajante 2025/2026 mantiene capacidad por barcaza alrededor del 75% del máximo y, según pronósticos, se extenderá hasta febrero o marzo de 2026. Cotizamos con el calendario actualizado de la naviera y del operador fluvial, no con uno teórico.",
+        "Las restricciones de calado en la Hidrovía cambian por resolución y por condiciones hidrométricas. Antes de cotizar, Meridian confirma el calendario con la naviera y el operador fluvial.",
     },
     compliance: {
       eyebrow: "Ley 7565/2025",
@@ -391,7 +404,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           question: "¿Cómo funciona el tránsito por la Hidrovía Paraná-Paraguay en 2026?",
           answer:
-            "La ruta normal es Costa Este o Houston de EE.UU. → Buenos Aires → Hidrovía → Asunción o Villeta, con un tránsito típico de 36 a 54 días. La bajante actual del río Paraguay limita el calado a 8-9 pies (frente a 10-12 normales) y reduce la capacidad por barcaza alrededor del 25%. Las previsiones indican que la bajante puede mantenerse hasta febrero o marzo de 2026.",
+            "La ruta normal es Costa Este o Houston de EE.UU. → Buenos Aires → Hidrovía → Asunción o Villeta, con un tránsito típico de 36 a 54 días. Las restricciones de calado cambian por resolución y por condiciones hidrométricas; antes de cotizar, Meridian confirma el calendario con la naviera y el operador fluvial.",
           category: "Paraguay",
         },
         {
@@ -416,6 +429,30 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           question: "¿Hay nuevos tributos asociados a la Ley 7565/2025?",
           answer:
             "Sí. La ley creó la Tasa para la Conservación de la Biodiversidad, escalada según antigüedad, tipo de motor, horas de uso, emisiones contaminantes y otros elementos potencialmente contaminantes. La determina SENAVE en cooperación con DNIT y la confirma su despachante para la unidad concreta.",
+          category: "Paraguay",
+        },
+        {
+          question: "¿Qué datos necesita mi despachante antes de emitir la Licencia Previa?",
+          answer:
+            "Normalmente necesita datos completos de la unidad: marca, modelo, año de fabricación, número de serie, horas, país de origen, vendedor, factura o proforma, fotos, dimensiones, peso, accesorios incluidos, certificado fitosanitario de origen e inspección técnica cuando corresponda. Meridian prepara el paquete del lado de origen; su despachante confirma el formato final ante MIC, DNIT y SENAVE.",
+          category: "Paraguay",
+        },
+        {
+          question: "¿Qué pasa si la unidad tiene accesorios, cabezal o draper?",
+          answer:
+            "Se revisan como parte de la misma operación, pero no se tratan como un detalle menor. Cabezal, draper, neumáticos dobles, monitor, GPS, kits o repuestos cambian dimensiones, embalaje, documentación, fotos requeridas y, a veces, clasificación o tasas locales. Envíe la lista completa antes de cotizar.",
+          category: "Paraguay",
+        },
+        {
+          question: "¿Pueden cotizar repuestos John Deere por separado?",
+          answer:
+            "Sí. Para repuestos, envíe número de parte, cantidad, fotos, urgencia, ubicación de origen y destino final. Meridian puede separar una cotización de repuestos de la maquinaria principal y comparar envío aéreo, consolidado o marítimo según peso, volumen y calendario.",
+          category: "Paraguay",
+        },
+        {
+          question: "¿La calculadora incluye DNIT, SENAVE o la Tasa de Biodiversidad?",
+          answer:
+            "No. La calculadora sirve como referencia del tramo logístico que Meridian puede coordinar. DNIT, SENAVE, Tasa de Conservación de la Biodiversidad, IVA, tasas portuarias, honorarios de despachante y despacho local se confirman en Paraguay con su despachante para la unidad concreta.",
           category: "Paraguay",
         },
       ],
@@ -519,7 +556,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     seo: {
       title: "Importar maquinaria agrícola usada de EE.UU. a Uruguay",
       description:
-        "DGSA Resolución 98/016 exige limpieza, certificado fitosanitario e inspección. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. y Canadá a Montevideo.",
+        "DGSA 98/016 exige limpieza y certificado fitosanitario. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. a Montevideo.",
       keywords: [
         "importar maquinaria agrícola usada de estados unidos a uruguay",
         "importar tractor usado desde usa a uruguay",
@@ -536,7 +573,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       eyebrow: "Guía para compradores uruguayos",
       heading: "Importar maquinaria agrícola usada de EE.UU. a Uruguay",
       description:
-        "En 2024, EE.UU. fue el segundo proveedor de maquinaria agrícola del Uruguay con 18,4% de participación, en plena recuperación frente al año anterior. Para una unidad concreta, Meridian coordina compra asistida, retiro, desmontaje, embalaje y flete marítimo a Montevideo, dejando explícito desde el primer mensaje qué confirma su despachante en destino con DGSA y Aduana.",
+        "Uruguay tiene una ruta marítima directa hacia Montevideo, pero la operación se gana antes del embarque: limpieza, desmontaje, certificado fitosanitario, documentación y coordinación clara con su despachante.",
       image: {
         src: "/images/project-jd-s670-port.jpg",
         alt: "Cosechadora John Deere en operación portuaria para exportación",
@@ -549,8 +586,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       ],
       primaryCtaLabel: "Cotizar por WhatsApp",
       secondaryCtaLabel: "Calcular flete estimado",
-      whatsappMessage:
-        "Hola. Estoy evaluando importar maquinaria agrícola usada desde EE.UU. a Uruguay y necesito una cotización orientativa.",
+      whatsappMessage: buildQualifiedWhatsappMessage("Uruguay"),
       scopeIncluded: [
         "Compra asistida y coordinación con vendedor en EE.UU. o Canadá (subasta, concesionario o privado).",
         "Retiro en origen, desmontaje técnico, etiquetado, embalaje y carga.",
@@ -754,15 +790,33 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           category: "Uruguay",
         },
         {
+          question: "¿Qué diferencia hay entre cotización a Montevideo y costo nacionalizado?",
+          answer:
+            "La cotización a Montevideo cubre el tramo que Meridian coordina: compra asistida, retiro, desmontaje, embalaje, documentación de exportación, certificado fitosanitario y reserva marítima. El costo nacionalizado suma DUA, NCM, TGA, IVA, recargos, inspección DGSA, puerto, despachante y retiro local, y debe confirmarlo su despachante uruguayo.",
+          category: "Uruguay",
+        },
+        {
+          question: "¿Pueden coordinar limpieza/desmontaje antes del certificado fitosanitario?",
+          answer:
+            "Sí. La limpieza y el desmontaje se coordinan antes del certificado fitosanitario de origen para reducir el riesgo de observaciones en Uruguay. Si la unidad necesita hidrolavado, aire forzado, desmontaje de plataformas o tratamiento, se define antes de reservar flete.",
+          category: "Uruguay",
+        },
+        {
           question: "¿Cuánto demora un envío puerta a Montevideo?",
           answer:
             "Costa Este de EE.UU. a Montevideo toma entre 14 y 18 días en operación normal con servicios semanales o quincenales de Maersk, Hapag-Lloyd, CMA CGM, MSC y ZIM. Houston suma 5 a 7 días adicionales. La Costa Oeste de EE.UU. (45 a 60 días) se evita salvo casos puntuales.",
           category: "Uruguay",
         },
         {
-          question: "¿Conviene comprar en EE.UU. en lugar de Brasil o Argentina?",
+          question: "¿Por qué EE.UU. aparece como proveedor relevante para Uruguay?",
           answer:
-            "Depende de la unidad. En 2024, Brasil concentró cerca del 43% de las importaciones uruguayas de maquinaria agrícola y EE.UU. el 18,4% (en recuperación frente al año anterior). EE.UU. compite cuando la configuración, la tecnología o la documentación de origen justifican el flete adicional, no como regla universal.",
+            "En 2024, Brasil concentró cerca del 43% de las importaciones uruguayas de maquinaria agrícola y EE.UU. el 18,4%, en recuperación frente al año anterior. El dato sirve como señal de mercado, pero la decisión se toma por unidad concreta, configuración, horas, documentación y costo nacionalizado.",
+          category: "Uruguay",
+        },
+        {
+          question: "¿Cuándo conviene comprar en EE.UU. frente a Brasil o Argentina?",
+          answer:
+            "Conviene mirar EE.UU. cuando busca una configuración específica, horas verificables, tecnología de precisión, cabezal draper o paquete completo que no aparece en el usado regional. Brasil o Argentina pueden ser mejores si la unidad equivalente existe cerca y el costo nacionalizado total es menor.",
           category: "Uruguay",
         },
         {
@@ -881,12 +935,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     seo: {
       title: "Importar maquinaria agrícola usada de EE.UU. a Bolivia",
       description:
-        "Bolivia exige máximo 10 años para bienes de capital usados. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. y Canadá vía Arica hasta Santa Cruz.",
+        "Broker boliviano confirma antigüedad, SENASAG y tributos. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. vía Arica.",
       keywords: [
         "importar maquinaria agrícola usada de estados unidos a bolivia",
         "importar tractor usado desde usa a bolivia",
         "importar cosechadora usada estados unidos bolivia",
-        "antigüedad máxima diez años bienes de capital bolivia",
+        "antigüedad bienes de capital bolivia",
         "ley 1391 decreto supremo 4579 maquinaria usada",
         "senasag permiso fitosanitario importación maquinaria",
         "arica iquique antofagasta tránsito bolivia maquinaria",
@@ -899,28 +953,27 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       eyebrow: "Guía para compradores bolivianos",
       heading: "Importar maquinaria agrícola usada de EE.UU. a Bolivia",
       description:
-        "Bolivia limita la importación de bienes de capital usados a una antigüedad máxima de diez años (Ley 1391/2021 art. 5 y Decreto Supremo 4579/2021). Meridian coordina compra asistida, retiro, desmontaje, embalaje y flete internacional para unidades que cumplen ese filtro vía Arica, y deja explícito desde el primer mensaje qué confirma su broker o importador en destino con SENASAG, Aduana Nacional y ASPB.",
+        "Para bienes de capital incluidos en regímenes de incentivo fiscal, la antigüedad puede ser determinante. Meridian coordina compra asistida, retiro, desmontaje, embalaje y flete internacional vía Arica, dejando explícito desde el primer mensaje qué confirma su broker o importador con SENASAG, Aduana Nacional y ASPB.",
       image: {
         src: "/images/project-jd-sprayer-port-crane.jpg",
         alt: "Pulverizadora agrícola cargada con grúa para exportación internacional",
         caption: "Ruta internacional, puerto de tránsito y destino interior definidos antes de mover la máquina.",
       },
       highlights: [
-        "Filtro de diez años de antigüedad aplicado antes de coordinar compra o flete (modelos 2016 en adelante a mayo de 2026).",
+        "Antigüedad, año de fabricación y documentación revisados antes de coordinar compra o flete.",
         "Tránsito por Arica bajo el Tratado de 1904: 365 días de almacenaje libre, ASPB como agente de Bolivia en puerto chileno.",
         "Ruta Costa Oeste de EE.UU. → Arica en 12 a 16 días cuando el origen lo permite; Costa Este suma 22 a 28 días.",
       ],
       primaryCtaLabel: "Cotizar por WhatsApp",
       secondaryCtaLabel: "Calcular flete estimado",
-      whatsappMessage:
-        "Hola. Estoy evaluando importar maquinaria agrícola usada desde EE.UU. a Bolivia y necesito una cotización orientativa.",
+      whatsappMessage: buildQualifiedWhatsappMessage("Bolivia"),
       scopeIncluded: [
         "Compra asistida y coordinación con vendedor en EE.UU. o Canadá (subasta, concesionario o privado).",
         "Retiro en origen, desmontaje técnico, etiquetado, embalaje y carga.",
         "Documentación de exportación, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Arica, Iquique o Antofagasta.",
       ],
       scopeExcluded: [
-        "Padrón de Importadores de la Aduana Nacional, permiso SENASAG vía VUCE y trámites locales en Bolivia.",
+        "Padrón de Importadores de la Aduana Nacional, permiso fitosanitario ante SENASAG cuando aplique y trámites locales en Bolivia.",
         "Tributos, aranceles NANDINA, IVA cuando aplique, costos de tránsito ASPB y despacho final.",
         "Tramo overland Arica → Santa Cruz, Cochabamba o La Paz si no fue cotizado como alcance adicional.",
       ],
@@ -959,14 +1012,14 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     },
     compliance: {
       eyebrow: "Ley 1391/2021 + Decreto Supremo 4579/2021",
-      title: "Antigüedad máxima diez años, broker confirma IVA y permisos",
+      title: "Broker confirma antigüedad, IVA y permisos",
       intro:
-        "Bolivia exige máximo diez años de antigüedad para bienes de capital usados destinados a los sectores industrial y agropecuario (Artículo 5 de la Ley 1391/2021, reglamentada por el Decreto Supremo 4579/2021). El permiso fitosanitario de SENASAG se gestiona vía VUCE bajo Análisis de Riesgo Plaga. La exoneración de IVA del Artículo 8 de la Ley 1613/2025 estuvo vigente sólo durante 2025; para 2026 el régimen tributario aplicable debe confirmarse con su broker.",
+        "Para bienes de capital incluidos en regímenes de incentivo fiscal, la antigüedad puede ser determinante. Su broker o importador debe confirmar si la unidad califica, qué documentación respalda el año de fabricación y qué tributos aplican si no entra en el régimen vigente. El Permiso Fitosanitario de Importación (PFI) de SENASAG debe revisarse por subpartida, producto, origen y condición de artículo reglamentado.",
       required: [
-        "Antigüedad menor o igual a diez años para bienes de capital de los sectores industrial y agropecuario.",
+        "Año de fabricación, modelo, horas y documentos que permitan revisar si la unidad califica para el régimen aplicable.",
         "Documentación que respalde la antigüedad (factura, certificación) o, si no se cuenta con ella, declaración jurada del importador en formato Aduana Nacional.",
         "Certificado fitosanitario de origen (USDA APHIS para EE.UU., CFIA para Canadá).",
-        "Permiso de Importación Fitosanitaria de SENASAG, gestionado vía VUCE antes del embarque.",
+        "Permiso Fitosanitario de Importación (PFI) de SENASAG antes del embarque cuando aplique a la subpartida, producto, origen o condición de artículo reglamentado.",
         "Limpieza y datos completos de modelo, año, horas y condición antes de reservar flete.",
       ],
       brokerConfirmed: [
@@ -976,24 +1029,24 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "Costos y responsabilidades del tramo Arica → destino boliviano (Santa Cruz, Cochabamba, La Paz u otro).",
       ],
       avoid: [
-        "Comprar una unidad fabricada antes del año límite (2016 en adelante a mayo de 2026) sin verificarla con su broker.",
+        "Comprar una unidad sin validar año de fabricación, documentación y régimen aplicable con su broker.",
         "Asumir que la exoneración de IVA por Ley 1613/2025 sigue vigente en 2026: cubrió únicamente el ejercicio 2025 y debe confirmarse para el año en curso.",
-        "Convertir un beneficio tributario condicionado en regla general de importación.",
+        "Convertir un beneficio tributario condicionado o una regla de incentivo fiscal en regla general de importación.",
         "Comprometer tramo overland Arica → Santa Cruz sin cotización confirmada por agentes y transportistas autorizados.",
       ],
     },
     equipmentFocus: {
       eyebrow: "Demanda agrícola en Santa Cruz",
-      title: "Equipos donde EE.UU. compite dentro del filtro de diez años",
+      title: "Equipos donde EE.UU. compite cuando la unidad califica",
       intro:
-        "Santa Cruz concentra alrededor de 1,3 millones de hectáreas de soja sembrada en la campaña verano 2025/26 (datos ANAPO). La oferta de maquinaria agrícola en Bolivia se importa: EE.UU., China, Argentina y Brasil son los proveedores principales. Con cap de diez años, la búsqueda se concentra en unidades modelo 2016 en adelante.",
+        "Santa Cruz concentra alrededor de 1,3 millones de hectáreas de soja sembrada en la campaña verano 2025/26 (datos ANAPO). La oferta de maquinaria agrícola en Bolivia se importa: EE.UU., China, Argentina y Brasil son los proveedores principales. La búsqueda se concentra en unidades con año, condición y documentación que su broker pueda respaldar.",
       items: [
         {
           title: "Tractores 200-400 hp",
           summary:
             "Tractores con doble tracción, cabina con tecnología de precisión, configuración para cultivos extensivos.",
           reason:
-            "El comprador boliviano valida horas, configuración y soporte de repuestos antes del flete; EE.UU. ofrece profundidad de inventario en el rango menor a diez años.",
+            "El comprador boliviano valida horas, configuración, año de fabricación y soporte de repuestos antes del flete; EE.UU. ofrece profundidad de inventario para comparar unidades concretas.",
           href: "/equipment/tractors",
           linkLabel: "Ver tractores",
         },
@@ -1030,10 +1083,10 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       eyebrow: "Información mínima para no cotizar a ciegas",
       title: "Qué enviar por WhatsApp para revisar una unidad para Bolivia",
       intro:
-        "Con una ficha completa podemos confirmar si la unidad cumple el cap de diez años, armar la ruta vía Arica y marcar lo que su broker debe confirmar para SENASAG, Aduana y régimen tributario.",
+        "Con una ficha completa podemos revisar año, documentación, ruta vía Arica y lo que su broker debe confirmar para SENASAG, Aduana y régimen tributario.",
       items: [
         "Link de subasta, concesionario o vendedor privado.",
-        "Marca, modelo, año de fabricación (preferentemente 2016 o más nuevo) y horas de motor.",
+        "Marca, modelo, año de fabricación y horas de motor.",
         "Ubicación de retiro en EE.UU. o Canadá con código postal.",
         "Fotos de limpieza interior, tren de rodaje, plataforma, accesorios y placa de identificación.",
         "Destino en Bolivia: Santa Cruz, Cochabamba, La Paz u otro punto.",
@@ -1050,12 +1103,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           title: "Filtrar por antigüedad y origen",
           description:
-            "Validamos año (debe ser 2016 o más nuevo a mayo de 2026), horas, condición, dimensiones, accesorios, vendedor y ubicación. Si la unidad supera los diez años, lo decimos antes de avanzar.",
+            "Validamos año, horas, condición, dimensiones, accesorios, vendedor y ubicación. Si la antigüedad o la documentación puede impedir el régimen previsto, lo marcamos antes de avanzar.",
         },
         {
           title: "Marcar responsabilidades locales",
           description:
-            "Listamos lo que confirma su broker o importador: Padrón de Importadores, permiso SENASAG vía VUCE, clasificación NANDINA, régimen tributario vigente y tramo Arica → destino.",
+            "Listamos lo que confirma su broker o importador: Padrón de Importadores, permiso fitosanitario ante SENASAG cuando aplique, clasificación NANDINA, régimen tributario vigente y tramo Arica → destino.",
         },
         {
           title: "Coordinar tramo EE.UU. y Canadá",
@@ -1081,9 +1134,9 @@ export const latamMarketPages: LatamMarketPageContent[] = [
             "Un equipo coordina vendedor, retiro, desmontaje, embalaje, documentos de exportación y reserva internacional a Arica.",
         },
         {
-          title: "Disciplina sobre Ley 1391/2021",
+          title: "Disciplina sobre clasificación y antigüedad",
           description:
-            "El cap de diez años se trata como filtro de selección, no como sorpresa al final del proceso.",
+            "Año, clasificación NANDINA, documentación y régimen tributario se tratan como filtro de selección, no como sorpresa al final del proceso.",
         },
         {
           title: "Cotización por alcance, no por suposición",
@@ -1093,7 +1146,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       ],
       noteTitle: "Experiencia aplicada al caso",
       note:
-        "Meridian ha coordinado más de 1.000 exportaciones a más de 40 países. Para Bolivia, la propuesta se arma con datos de la unidad, ruta vía Arica y filtro de antigüedad concreto, no con una tarifa genérica.",
+        "Meridian ha coordinado más de 1.000 exportaciones a más de 40 países. Para Bolivia, la propuesta se arma con datos de la unidad, ruta vía Arica y validación concreta del broker, no con una tarifa genérica.",
       projectGalleryLabel: "Ver proyectos y capacidades",
       projectGalleryDescription:
         "Tipos de equipos, embalajes y operaciones internacionales similares a las que se preparan para compradores agrícolas.",
@@ -1106,9 +1159,9 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "Estas respuestas ordenan la conversación con Meridian y con su broker o importador en Bolivia.",
       entries: [
         {
-          question: "¿Por qué solo trabajan con maquinaria menor a diez años?",
+          question: "¿Qué debe confirmar el broker antes de comprar?",
           answer:
-            "El Artículo 5 de la Ley 1391/2021, reglamentado por el Decreto Supremo 4579/2021, fija una antigüedad máxima de diez años para bienes de capital de los sectores industrial y agropecuario. La regla aplica a la importación; la documentación que respalde la antigüedad la presenta el importador (factura, certificación), o si no la tiene, una declaración jurada en formato Aduana Nacional.",
+            "Debe confirmar clasificación NANDINA, régimen tributario vigente, permiso SENASAG, Padrón de Importadores, documentación que respalda el año de fabricación y si la unidad califica para algún régimen de incentivo fiscal. Para bienes de capital incluidos en esos regímenes, la antigüedad puede ser determinante; si no califica, debe confirmar qué tributos aplican.",
           category: "Bolivia",
         },
         {
@@ -1124,9 +1177,9 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           category: "Bolivia",
         },
         {
-          question: "¿Qué exige SENASAG para maquinaria agrícola usada?",
+          question: "¿Qué debe confirmar mi broker con SENASAG?",
           answer:
-            "SENASAG emite el Permiso de Importación Fitosanitaria, que se tramita vía VUCE (Ventanilla Única de Comercio Exterior) antes del embarque. SENASAG fija requisitos por producto y origen sobre la base de un Análisis de Riesgo Plaga. El certificado fitosanitario de origen (USDA APHIS para EE.UU., CFIA para Canadá) acompaña el embarque, y la inspección se realiza al ingreso.",
+            "Debe confirmar si la subpartida, producto, origen o condición de artículo reglamentado requiere Permiso Fitosanitario de Importación (PFI) de SENASAG antes del embarque. El certificado fitosanitario de origen (USDA APHIS para EE.UU., CFIA para Canadá) acompaña el embarque cuando corresponde, y SENASAG puede verificar requisitos al ingreso.",
           category: "Bolivia",
         },
         {
@@ -1136,9 +1189,21 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           category: "Bolivia",
         },
         {
+          question: "¿Qué cambia si el destino es Santa Cruz versus La Paz o Cochabamba?",
+          answer:
+            "Cambia el tramo terrestre, el transportista, el calendario y el costo local. Santa Cruz suele ser el destino agrícola principal; La Paz y Cochabamba pueden requerir otra planificación por ruta, altura, permisos, dimensiones y coordinación del broker. Por eso el destino final debe enviarse desde el primer mensaje.",
+          category: "Bolivia",
+        },
+        {
+          question: "¿Qué documentos del vendedor ayudan a respaldar antigüedad y condición?",
+          answer:
+            "Factura o proforma, placa con número de serie, año/modelo, horas, fotos de la unidad, historial de mantenimiento si existe, ficha técnica, lista de accesorios y cualquier certificación del vendedor ayudan al broker a respaldar antigüedad, condición y clasificación antes de comprar.",
+          category: "Bolivia",
+        },
+        {
           question: "¿Qué cubre Meridian y qué queda para mi broker o importador?",
           answer:
-            "Meridian coordina compra asistida, retiro, desmontaje, embalaje, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Arica, Iquique o Antofagasta. Su broker o importador maneja el Padrón de Importadores ante Aduana Nacional, el permiso SENASAG vía VUCE, la clasificación NANDINA y régimen tributario vigente, el tránsito ASPB y el tramo overland al destino boliviano.",
+            "Meridian coordina compra asistida, retiro, desmontaje, embalaje, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Arica, Iquique o Antofagasta. Su broker o importador maneja el Padrón de Importadores ante Aduana Nacional, el permiso fitosanitario ante SENASAG cuando aplique, la clasificación NANDINA y régimen tributario vigente, el tránsito ASPB y el tramo overland al destino boliviano.",
           category: "Bolivia",
         },
       ],
@@ -1160,13 +1225,13 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         label: "Decreto Supremo 4579/2021 (Lexivox)",
         href: "https://www.lexivox.org/norms/BO-DS-N4579.html",
         description:
-          "Reglamenta la Ley 1391/2021: tasa cero IVA y antigüedad máxima de diez años para bienes de capital agropecuarios e industriales.",
+          "Reglamenta la Ley 1391/2021 para bienes de capital agropecuarios e industriales; debe revisarse junto con el régimen tributario vigente.",
       },
       {
-        label: "VUCE — Procedimiento SENASAG",
-        href: "https://www.vuce.gob.bo/es/SENASAG_importacion_fitozanitario_requisitos",
+        label: "SENASAG — Cuarentena Vegetal",
+        href: "https://www.senasag.gob.bo/index.php/institucional/unidades-nacionales/sanidad-vegetal/area-de-cuarentena-vegetal",
         description:
-          "Ventanilla Única de Comercio Exterior: trámite del permiso fitosanitario de importación con SENASAG.",
+          "Área que establece control cuarentenario y emisión/seguimiento de Permisos Fitosanitarios para la Importación (PFI).",
       },
       {
         label: "Bolivia Agricultural Sectors — Trade.gov",
@@ -1204,7 +1269,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     cta: {
       heading: "¿Tiene una máquina vista en EE.UU. para Bolivia?",
       description:
-        "Envíenos el link, año de fabricación, horas, ubicación y destino. Confirmamos si entra dentro del cap de diez años, separamos el tramo Meridian del costo que confirma su broker, y marcamos la ruta vía Arica.",
+        "Envíenos el link, año de fabricación, horas, ubicación y destino. Revisamos el tramo Meridian, marcamos la ruta vía Arica y dejamos claro qué debe confirmar su broker antes de comprar.",
       whatsappLabel: "Cotizar por WhatsApp",
       calculatorLabel: "Calcular flete",
     },
@@ -1234,7 +1299,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "Aduana Nacional",
         "ASPB",
         "ANAPO",
-        "VUCE",
+        "Permiso Fitosanitario de Importación",
       ],
       datePublished: "2026-05-05",
       dateModified: "2026-05-05",

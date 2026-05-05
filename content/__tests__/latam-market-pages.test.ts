@@ -29,11 +29,62 @@ describe("LATAM market buyer hub content", () => {
   it("keeps every country page deep enough for a strategic buyer hub", () => {
     for (const page of latamMarketPages) {
       expect(page.officialSources.length).toBeGreaterThanOrEqual(3);
-      expect(page.faq.entries.length).toBeGreaterThanOrEqual(5);
+      expect(page.faq.entries.length).toBeGreaterThanOrEqual(8);
       expect(page.equipmentFocus.items).toHaveLength(4);
       expect(page.sendUsThis.items.length).toBeGreaterThanOrEqual(6);
       expect(page.route.steps.length).toBeGreaterThanOrEqual(4);
     }
+  });
+
+  it("uses structured WhatsApp prefills that qualify the lead", () => {
+    const requiredFields = [
+      "Necesito cotizar:",
+      "Equipo o parte:",
+      "Año/modelo:",
+      "Ubicación en origen:",
+      "Destino final:",
+      "Cantidad/configuración:",
+      "Link del anuncio:",
+    ];
+
+    for (const page of latamMarketPages) {
+      expect(page.hero.whatsappMessage).toContain(
+        `Hola. Estoy evaluando importar maquinaria agrícola usada o repuestos desde EE.UU. a ${page.country}.`,
+      );
+      expect(page.hero.whatsappMessage).not.toContain("cotización orientativa");
+      for (const field of requiredFields) {
+        expect(page.hero.whatsappMessage).toContain(field);
+      }
+    }
+  });
+
+  it("keeps the Paraguay Hidrovía and terminal copy durable", () => {
+    const paraguay = flattenText(getLatamMarketPage("paraguay"));
+
+    expect(paraguay).toContain(
+      "Las restricciones de calado en la Hidrovía cambian por resolución y por condiciones hidrométricas.",
+    );
+    expect(paraguay).toContain(
+      "Villeta y Asunción concentran operaciones fluviales relevantes",
+    );
+    expect(paraguay).not.toContain("febrero o marzo de 2026");
+    expect(paraguay).not.toContain("bajante actual");
+    expect(paraguay).not.toContain("terminal principal de contenedores");
+  });
+
+  it("keeps Uruguay metadata concise and buyer-facing", () => {
+    const uruguay = getLatamMarketPage("uruguay");
+    expect(uruguay).toBeDefined();
+    if (!uruguay) throw new Error("Uruguay LATAM page is missing");
+
+    expect(uruguay.seo.description).toBe(
+      "DGSA 98/016 exige limpieza y certificado fitosanitario. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. a Montevideo.",
+    );
+    expect(uruguay.seo.description.length).toBeLessThanOrEqual(155);
+    expect(uruguay.hero.description).toContain(
+      "Uruguay tiene una ruta marítima directa hacia Montevideo",
+    );
+    expect(uruguay.hero.description).not.toContain("18,4%");
   });
 
   it("locks the country-specific compliance strategies", () => {
@@ -48,8 +99,44 @@ describe("LATAM market buyer hub content", () => {
     const bolivia = flattenText(getLatamMarketPage("bolivia"));
     expect(bolivia).toContain("broker o importador");
     expect(bolivia).toContain("confirmar");
+    expect(bolivia).toContain(
+      "Para bienes de capital incluidos en regímenes de incentivo fiscal, la antigüedad puede ser determinante.",
+    );
     expect(bolivia.toLowerCase()).not.toContain("tope universal de 10 años");
     expect(bolivia.toLowerCase()).not.toContain("limite universal de 10 años");
+    expect(bolivia).not.toContain("Bolivia exige máximo 10 años");
+    expect(bolivia).not.toContain("Bolivia exige máximo diez años");
+    expect(bolivia).not.toContain("Bolivia limita la importación de bienes de capital usados");
+    expect(bolivia).not.toContain("tasa cero IVA");
+  });
+
+  it("includes the requested FAQ depth questions by country", () => {
+    const expectedQuestions: Record<string, string[]> = {
+      paraguay: [
+        "¿Qué datos necesita mi despachante antes de emitir la Licencia Previa?",
+        "¿Qué pasa si la unidad tiene accesorios, cabezal o draper?",
+        "¿Pueden cotizar repuestos John Deere por separado?",
+        "¿La calculadora incluye DNIT, SENAVE o la Tasa de Biodiversidad?",
+      ],
+      uruguay: [
+        "¿Qué diferencia hay entre cotización a Montevideo y costo nacionalizado?",
+        "¿Pueden coordinar limpieza/desmontaje antes del certificado fitosanitario?",
+        "¿Cuándo conviene comprar en EE.UU. frente a Brasil o Argentina?",
+      ],
+      bolivia: [
+        "¿Qué debe confirmar el broker antes de comprar?",
+        "¿Qué cambia si el destino es Santa Cruz versus La Paz o Cochabamba?",
+        "¿Qué documentos del vendedor ayudan a respaldar antigüedad y condición?",
+      ],
+    };
+
+    for (const [slug, questions] of Object.entries(expectedQuestions)) {
+      const pageQuestions = getLatamMarketPage(slug)?.faq.entries.map((entry) => entry.question);
+      expect(pageQuestions).toBeDefined();
+      for (const question of questions) {
+        expect(pageQuestions).toContain(question);
+      }
+    }
   });
 
   it("does not include banned proof, price, or placeholder language", () => {

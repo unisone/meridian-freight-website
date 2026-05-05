@@ -28,6 +28,7 @@ import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { fetchScheduleContainersWithBookingData } from "@/lib/supabase-containers";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { buildLatamMarketMetadata } from "@/lib/latam-market-metadata";
 
 export const revalidate = 900; // Keep the Kazakhstan lane board aligned with the public schedule.
 
@@ -102,42 +103,7 @@ export async function generateMetadata({
 
   const latamMarketPage = getLatamMarketPage(slug);
   if (locale === "es" && latamMarketPage) {
-    const canonical = `${SITE.url}${latamMarketPage.path}`;
-
-    return {
-      title: latamMarketPage.seo.title,
-      description: latamMarketPage.seo.description,
-      keywords: latamMarketPage.seo.keywords,
-      alternates: {
-        canonical,
-        languages: {
-          es: canonical,
-          en: `${SITE.url}/destinations/${slug}`,
-          "x-default": `${SITE.url}/destinations/${slug}`,
-        },
-      },
-      robots: { index: true, follow: true },
-      openGraph: {
-        locale: getOgLocale(locale),
-        title: `${latamMarketPage.seo.title} | ${SITE.name}`,
-        description: latamMarketPage.seo.description,
-        url: canonical,
-        images: [
-          {
-            url: latamMarketPage.hero.image.src,
-            width: 1200,
-            height: 900,
-            alt: latamMarketPage.hero.image.alt,
-          },
-        ],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: `${latamMarketPage.seo.title} | ${SITE.name}`,
-        description: latamMarketPage.seo.description,
-        images: [latamMarketPage.hero.image.src],
-      },
-    };
+    return buildLatamMarketMetadata(latamMarketPage);
   }
 
   const dest = getDestinationBySlug(slug, locale);
