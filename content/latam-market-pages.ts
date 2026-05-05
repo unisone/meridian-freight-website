@@ -115,11 +115,10 @@ export interface LatamMarketPageContent {
   tracking: {
     heroWhatsapp: string;
     heroCalculator: string;
-    midWhatsapp: string;
-    midCalculator: string;
     finalWhatsapp: string;
     finalCalculator: string;
-    projectLibrary: string;
+    equipmentLink: string;
+    resourceLink: string;
   };
   schema: {
     serviceType: string;
@@ -489,11 +488,10 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     tracking: {
       heroWhatsapp: "paraguay_hero_whatsapp",
       heroCalculator: "paraguay_hero_calculator",
-      midWhatsapp: "paraguay_mid_whatsapp",
-      midCalculator: "paraguay_mid_calculator",
       finalWhatsapp: "paraguay_final_whatsapp",
       finalCalculator: "paraguay_final_calculator",
-      projectLibrary: "paraguay_project_library",
+      equipmentLink: "paraguay_equipment_link",
+      resourceLink: "paraguay_resource_link",
     },
     schema: {
       serviceType: "Exportación de maquinaria agrícola usada de EE.UU. a Paraguay",
@@ -826,11 +824,10 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     tracking: {
       heroWhatsapp: "uruguay_hero_whatsapp",
       heroCalculator: "uruguay_hero_calculator",
-      midWhatsapp: "uruguay_mid_whatsapp",
-      midCalculator: "uruguay_mid_calculator",
       finalWhatsapp: "uruguay_final_whatsapp",
       finalCalculator: "uruguay_final_calculator",
-      projectLibrary: "uruguay_project_library",
+      equipmentLink: "uruguay_equipment_link",
+      resourceLink: "uruguay_resource_link",
     },
     schema: {
       serviceType: "Exportacion de maquinaria agricola usada de EE.UU. a Uruguay",
@@ -1153,11 +1150,10 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     tracking: {
       heroWhatsapp: "bolivia_hero_whatsapp",
       heroCalculator: "bolivia_hero_calculator",
-      midWhatsapp: "bolivia_mid_whatsapp",
-      midCalculator: "bolivia_mid_calculator",
       finalWhatsapp: "bolivia_final_whatsapp",
       finalCalculator: "bolivia_final_calculator",
-      projectLibrary: "bolivia_project_library",
+      equipmentLink: "bolivia_equipment_link",
+      resourceLink: "bolivia_resource_link",
     },
     schema: {
       serviceType: "Exportacion de maquinaria agricola usada de EE.UU. a Bolivia",
