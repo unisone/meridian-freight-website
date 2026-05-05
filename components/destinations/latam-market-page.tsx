@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DarkCta } from "@/components/dark-cta";
+import { LatamRouteDiagram } from "@/components/destinations/latam-route-diagram";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
@@ -319,32 +320,20 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
             title={content.route.title}
             intro={content.route.intro}
           />
-          <div className="mt-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="rounded-2xl border bg-muted/50 p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Route className="h-6 w-6" />
-              </div>
-              <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                {content.route.note}
-              </p>
+          <div className="mt-12">
+            <LatamRouteDiagram
+              steps={content.route.steps}
+              country={content.slug}
+              stepLabel={content.labels.stepLabel}
+            />
+          </div>
+          <div className="mt-12 flex items-start gap-4 rounded-2xl border bg-muted/50 p-6">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Route className="h-6 w-6" />
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {content.route.steps.map((step, index) => (
-                <Card key={step.title} className="h-full border-0 shadow-sm">
-                  <CardContent className="p-6">
-                    <Badge variant="secondary" className="mb-4">
-                      {content.labels.stepLabel} {index + 1}
-                    </Badge>
-                    <h3 className="text-lg font-bold leading-snug text-foreground">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {step.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <p className="text-base leading-relaxed text-muted-foreground">
+              {content.route.note}
+            </p>
           </div>
         </div>
       </section>
