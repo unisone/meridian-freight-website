@@ -6,13 +6,19 @@ import {
   ClipboardCheck,
   ExternalLink,
   FileText,
+  Layers,
+  type LucideIcon,
   MessageCircle,
-  PackageCheck,
+  Network,
+  ReceiptText,
   Route,
   Scale,
   ShieldCheck,
   Ship,
+  Sprout,
+  SprayCan,
   Tractor,
+  Wheat,
 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +35,16 @@ import { COMPANY, CONTACT, SITE } from "@/lib/constants";
 interface LatamMarketPageProps {
   content: LatamMarketPageContent;
 }
+
+const EQUIPMENT_ICON_BY_HREF: Record<string, LucideIcon> = {
+  "/equipment/combines": Wheat,
+  "/equipment/tractors": Tractor,
+  "/equipment/planters": Sprout,
+  "/equipment/sprayers": SprayCan,
+  "/services/equipment-sales": Layers,
+};
+
+const CREDIBILITY_PILLAR_ICONS: LucideIcon[] = [Network, Scale, ReceiptText];
 
 function SectionIntro({
   eyebrow,
@@ -400,11 +416,13 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
             intro={content.equipmentFocus.intro}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {content.equipmentFocus.items.map((item, index) => (
+            {content.equipmentFocus.items.map((item, index) => {
+              const ItemIcon = EQUIPMENT_ICON_BY_HREF[item.href] ?? Tractor;
+              return (
               <Card key={item.title} className="group h-full border-0 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
                 <CardContent className="flex h-full flex-col p-6">
                   <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Tractor className="h-5 w-5" />
+                    <ItemIcon className="h-5 w-5" />
                   </div>
                   <Badge variant="secondary" className="mb-4 w-fit">
                     {content.labels.blockLabel} {index + 1}
@@ -429,7 +447,8 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
                   </TrackedCtaLink>
                 </CardContent>
               </Card>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -487,15 +506,18 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
           />
           <div className="mt-10 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="space-y-4">
-              {content.credibility.pillars.map((pillar) => (
+              {content.credibility.pillars.map((pillar, index) => {
+                const PillarIcon = CREDIBILITY_PILLAR_ICONS[index % CREDIBILITY_PILLAR_ICONS.length];
+                return (
                 <div key={pillar.title} className="rounded-xl border bg-white p-5 shadow-sm">
-                  <PackageCheck className="h-6 w-6 text-primary" />
+                  <PillarIcon className="h-6 w-6 text-primary" />
                   <h3 className="mt-3 font-bold text-foreground">{pillar.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {pillar.description}
                   </p>
                 </div>
-              ))}
+                );
+              })}
               <div className="rounded-xl border border-primary/20 bg-primary/5 p-5">
                 <h3 className="font-bold text-foreground">{content.credibility.noteTitle}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
