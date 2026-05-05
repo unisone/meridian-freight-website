@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DarkCta } from "@/components/dark-cta";
 import { PageHero } from "@/components/page-hero";
+import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { TrustBar } from "@/components/trust-bar";
@@ -355,7 +356,7 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
             title={content.compliance.title}
             intro={content.compliance.intro}
           />
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <ScrollReveal className="mt-10 grid gap-6 lg:grid-cols-3">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-6">
                 <ClipboardCheck className="h-8 w-8 text-primary" />
@@ -404,7 +405,7 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
                 </ul>
               </CardContent>
             </Card>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -419,7 +420,8 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
             {content.equipmentFocus.items.map((item, index) => {
               const ItemIcon = EQUIPMENT_ICON_BY_HREF[item.href] ?? Tractor;
               return (
-              <Card key={item.title} className="group h-full border-0 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+              <StaggerItem key={item.title} index={index} className="h-full">
+              <Card className="group h-full border-0 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
                 <CardContent className="flex h-full flex-col p-6">
                   <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <ItemIcon className="h-5 w-5" />
@@ -447,6 +449,7 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
                   </TrackedCtaLink>
                 </CardContent>
               </Card>
+              </StaggerItem>
               );
             })}
           </div>
@@ -573,7 +576,7 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
             title={content.faq.title}
             intro={content.faq.intro}
           />
-          <div className="mt-10 max-w-4xl">
+          <ScrollReveal className="mt-10 max-w-4xl">
             <Accordion className="space-y-3">
               {content.faq.entries.map((entry, index) => (
                 <AccordionItem
@@ -590,7 +593,7 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
                 </AccordionItem>
               ))}
             </Accordion>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
