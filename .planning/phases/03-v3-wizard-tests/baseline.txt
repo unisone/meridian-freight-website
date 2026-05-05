@@ -1,0 +1,13 @@
+# Phase 3 Pre-flight Baseline
+Date: 2026-05-04
+Branch: feat/v1.1-phase-3-wizard-tests
+Vitest: 4.1.5
+
+## npm test (initial)
+Test Files: 12 passed (12)
+Tests: 117 passed (117)
+Duration: 336ms
+
+## Goal
+Add component + server-action tests for v3 wizard.
+Target: ≥125 tests passing.
