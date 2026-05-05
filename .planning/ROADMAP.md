@@ -3,18 +3,18 @@
 ## Milestones
 
 - ✅ **v1.0 Cleanup** — codebase map + v1/v2 calculator decommission + PII guard (shipped via PR #107, merged 2026-05-04)
-- 🚧 **v1.1 Wizard Hardening + Security Audit** — Phases 1-4 (in progress)
+- ✅ **v1.1 Wizard Hardening + Security Audit** — All 4 phases shipped (2026-05-04 to 2026-05-05)
 
 ## Overview
 
-After v1.0 cleared the v1/v2 calculator noise from the codebase, v1.1 addresses the medium-priority debt the codebase map surfaced: a 2,030-line monolithic wizard, missing test coverage on the v3 wizard, and 2 Dependabot moderate vulnerabilities on `main`. Each phase ships as its own PR.
+After v1.0 cleared the v1/v2 calculator noise from the codebase, v1.1 addressed the medium-priority debt the codebase map surfaced: a 2,030-line monolithic wizard, missing test coverage on the v3 wizard, and 2 Dependabot moderate vulnerabilities on `main`. Each phase shipped as its own PR per CLAUDE.md SOP.
 
 ## Phases
 
-- [x] **Phase 1: Wizard scaffolding + globe boundary** — wizard module structure (state.ts, types.ts, copy.ts, route-globe-v3.tsx) + globe lazy-load. ~1.58MB three.js excluded from initial bundle. (Shipped: PR #108)
-- [x] **Phase 2: Wizard orchestrator slim-down** — Step JSX extracted (step-equipment, step-specs, step-route, estimate-card, estimate-card-helpers, wizard-shell). Orchestrator migrated to useReducer. Down from 1,621 → 497 lines. Every `wizard/*` file ≤500 lines. (Shipped: PR #110)
-- [ ] **Phase 3: V3 wizard tests** — Component/integration tests for the modular wizard plus server-action tests
-- [ ] **Phase 4: Dependabot vuln audit** — Patch 2 moderate advisories (postcss XSS, uuid bounds check)
+- [x] **Phase 1: Wizard scaffolding + globe boundary** — `wizard/state.ts` + `types.ts` + `copy.ts` + `route-globe-v3.tsx` + reducer tests. ~1.58 MB three.js excluded from initial bundle. (Shipped: PR #108, 2026-05-04)
+- [x] **Phase 2: Wizard orchestrator slim-down** — Step JSX extracted (equipment/specs/route/estimate-card/helpers/shell). Orchestrator migrated to `useReducer`. Down from 1,621 → 497 lines. Every `wizard/*` file ≤500 lines. (Shipped: PR #110 + #111, 2026-05-05)
+- [x] **Phase 3: V3 wizard tests** — RTL + jsdom infrastructure. 5 component tests (3 happy + 2 edge), 5 server-action tests, reducer tests 5 → 16. Total 117 → 138 tests. (Shipped: PR #113, 2026-05-05)
+- [x] **Phase 4: Dependabot vuln audit** — postcss XSS patched via override. uuid pinned to `^11.0.0`; residual advisory documented as accepted (no v14 exists upstream; vulnerable code path unreachable). (Shipped: PR #112, 2026-05-05)
 
 ## Phase Details
 

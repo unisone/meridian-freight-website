@@ -4,32 +4,58 @@
 
 ## Current Position
 
-- **Active milestone:** v1.1 — Wizard hardening + security audit
-- **Active phase:** Phase 2 (orchestrator slim-down) — **shipped via PR #110, merged to main 2026-05-05**. Phase 3 (V3 wizard tests) queued.
+- **Active milestone:** v1.1 — **COMPLETE** (all 4 phases shipped)
+- **Active phase:** none — milestone closeout in flight
 - **Active workstream:** none
-- **Active branch:** `chore/v1.1-phase-2-summary` (this branch — Phase 2 retro paperwork)
-- **Open PR:** none
+- **Active branch:** `chore/v1.1-milestone-complete` (this branch — milestone retro paperwork)
+- **Open PR:** none (PR #114 milestone-close pending)
 
 ## What's Done
 
-- v1.0 cleanup committed and pushed (PR #107): codebase map, v1+v2 calculator decommission, formatDollar/estimateRoadMiles decoupling, 308 redirects for legacy URLs, PII pre-commit guard, output/ gitignore, CLAUDE.md updates.
-- GSD project structure bootstrapped: PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STATE.md, config.json.
-- **Phase 1 shipped (PR #108, 2026-05-04):** wizard module foundation + globe lazy-load. `wizard/state.ts` + `types.ts` + `copy.ts` + `route-globe-v3.tsx` landed; ~1.58MB three.js excluded from `/pricing/calculator` initial bundle.
-- **Phase 2 shipped (PR #110, 2026-05-05):** orchestrator slim-down + useReducer migration. `calculator-v3-wizard.tsx`: 1,621 → 497 lines. Four step components extracted (`step-equipment.tsx`, `step-specs.tsx`, `step-route.tsx`, `estimate-card.tsx`) plus helpers (`estimate-card-helpers.tsx`) and shell (`wizard-shell.tsx`). Every `wizard/*` file ≤500 lines. 117 tests still passing. REQ-02 globe boundary preserved (post-merge production verification: `meridianexport.com/pricing/calculator` 200, zero `react-globe` references in initial HTML).
+### v1.0 Cleanup (PR #107)
+Codebase map + v1/v2 calculator decommission + PII guard + 308 redirects + CLAUDE.md docs + ESLint pin fix.
+
+### v1.1 Milestone — Wizard Hardening + Security Audit (4 phases, 5 production PRs)
+
+| Phase | PR | Date | What |
+|---|---|---|---|
+| **1** Scaffolding + globe boundary | #108 | 2026-05-04 | `wizard/state.ts` reducer + tests, `wizard/types.ts` step prop interfaces, `wizard/copy.ts` extracted COPY dict, `route-globe-v3.tsx` lazy boundary. ~1.58 MB three.js excluded from initial paint. |
+| **2** Orchestrator slim-down | #110 + #111 | 2026-05-05 | `calculator-v3-wizard.tsx`: 1,621 → 497 lines. Step components extracted (equipment/specs/route/estimate-card) + helpers + shell. 18 `useState` → `useReducer(wizardReducer)`. Every `wizard/*` file ≤500 lines. Tracking-call guard verified (zero hits in reducer body). |
+| **3** V3 wizard tests | #113 | 2026-05-05 | RTL + jsdom setup. 5 component tests (3 happy + 2 edge). 5 server-action tests covering Zod gates + honeypot + stale rateBookSignature. Reducer tests expanded 5 → 16. Total: 117 → 138 (+21 tests). |
+| **4** Dependabot vuln audit | #112 | 2026-05-05 | postcss XSS patched (override → `^8.5.0`, all instances at 8.5.14). uuid pinned to `^11.0.0` (latest stable). Residual uuid advisory documented as accepted (no v14 exists upstream; vulnerable code path unreachable — uuid is transitive via svix via resend, no webhook usage in this codebase). Audit doc at `.planning/security/v1.1-vuln-audit.md`. |
+
+### Verified at meridianexport.com (production)
+
+- `/pricing/calculator` → 200 OK
+- `/pricing/calculator-v2` → 308 → `/pricing/calculator`
+- `/pricing/calculator-v3` → 308 → `/pricing/calculator`
+- `/es/pricing/calculator` → 200 OK
+- `/ru/pricing/calculator` → 200 OK
+- Initial HTML for `/pricing/calculator` contains zero `react-globe` references
+- Three.js (~1.58 MB) loads only when route step mounts the globe
 
 ## What's Next
 
-1. `/gsd-plan-phase 3` — V3 wizard tests (REQ-03, REQ-06): RTL/jsdom setup, ≥3 happy-path component tests, ≥2 edge-case tests, server-action tests for `submitCalculatorV3`.
-2. After Phase 3 ships: `/gsd-plan-phase 4` (Dependabot vuln audit — REQ-04). Phase 4 is independent and can run in parallel if useful.
+v1.1 is complete. Reasonable next-milestone candidates (NOT scoped here):
+
+1. **v1.2 Polish** — REQ-05 (replace 3 `useRef<any>` with proper types), residual map of medium concerns from `.planning/codebase/CONCERNS.md`
+2. **Auto-merge config audit** — `.github/workflows/auto-merge-dependabot.yml` merged PR #105 (ESLint 10 bump) with FAILING CI on April 27. Filed as session follow-up; needs the auto-merge action to actually require `Lint, Build & Test: SUCCESS` before merging.
+3. **Lighthouse re-audit** — measure the bundle perf win from Phase 1 quantitatively (LCP / TBT improvement on `/pricing/calculator`)
+4. **eslint-config-next ESLint 10 support** — track upstream; unpin ESLint when supported
+5. **Track `uuid` upstream** — when v14 ships or `svix` migrates to `crypto.randomUUID()`, drop the override
 
 ## Open Threads
 
-- 2 Dependabot moderate vulns flagged on `main` (Phase 4 target).
-- Should-have requirements REQ-1.5 and REQ-1.6 may slip to v1.2 if Phase 3+4 effort overruns.
+- None blocking. The 2 Dependabot moderate alerts are now: 1 closed (postcss), 1 documented residual (uuid).
+- Should-have requirements from v1.1 — REQ-05 not done, can roll into v1.2.
 
 ## Notes
 
-- Codebase map at `.planning/codebase/` is the authoritative reference doc.
-- Pattern mapper, plan checker, verifier all enabled per `config.json`.
-- TDD mode disabled. Tests written alongside, not via strict gates.
-- Phase 2 confirmed Phase 1's globe boundary remained intact through the orchestrator slim-down — `step-route.tsx` imports `RouteGlobeV3` from `../route-globe-v3`, never the raw `RouteGlobe`. Phase verification gate #2 enforces this on every future PR via `grep`.
+- Codebase map at `.planning/codebase/` remains the authoritative reference doc.
+- Pattern mapper, plan checker, verifier still enabled per `config.json`.
+- TDD mode still disabled. Tests written alongside, not via strict gates.
+- v1.1 ran with mixed tooling tiers per the right-tier-discipline lesson:
+  - Phase 1 + 2: full `/gsd-plan-phase` + `/gsd-execute-phase` pipelines (state-machine migration justified the ceremony)
+  - Phase 3: lightweight `/gsd-quick`-style — 1-page plan + executor, skipped researcher/checker
+  - Phase 4: `/gsd-fast`-style — manual lightweight execution (`npm overrides` + audit doc + PR)
+- Lesson: match tooling to risk profile. Full pipeline for state machines, fast tier for dependency patches.
