@@ -5,24 +5,59 @@ on: pull_request
 permissions:
   contents: write
   pull-requests: write
+  checks: read
 
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
-    # Waits for CI to pass before auto-merging
+    # Defense-in-depth so this never silently merges red CI again:
+    #
+    #   1. Branch protection on `main` requires "Lint, Build & Test" before any
+    #      merge can happen via `gh pr merge --auto`. Configured at the platform
+    #      layer (PR #115 — see commit message).
+    #
+    #   2. wait-on-check-action below blocks the workflow until the named check
+    #      reaches `success`. Stuck on a different conclusion → step fails.
+    #
+    #   3. Explicit re-verification via gh api before calling `pr merge`. If
+    #      anything raced or the named check renamed itself between steps,
+    #      the assertion fails and we don't enable auto-merge.
+    #
+    # Background (2026-04-27): Dependabot PR #105 (eslint 9 → 10 bump) merged
+    # to main with FAILING `Lint, Build & Test` because branch protection
+    # required zero status checks AND wait-on-check-action@v1.6.1 had a known
+    # race condition. Layer 1 closes the platform hole; layers 2 + 3 add belt-
+    # and-suspenders for future regressions.
     needs: []
     steps:
       - name: Wait for CI checks to pass
-        uses: lewagon/wait-on-check-action@v1.6.1
+        uses: lewagon/wait-on-check-action@v1.7.0
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           check-name: "Lint, Build & Test"
           wait-interval: 15
           allowed-conclusions: success
+          verbose: true
 
-      - name: Auto-merge Dependabot PRs
+      - name: Re-verify "Lint, Build & Test" is success before merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          conclusion=$(gh api "repos/${REPO}/commits/${PR_HEAD_SHA}/check-runs" \
+            --jq '.check_runs[] | select(.name == "Lint, Build & Test") | .conclusion' \
+            | head -1)
+          echo "Lint, Build & Test conclusion = '${conclusion}'"
+          if [ "${conclusion}" != "success" ]; then
+            echo "::error::Refusing to enable auto-merge — Lint, Build & Test is '${conclusion}', not success."
+            exit 1
+          fi
+
+      - name: Auto-merge Dependabot PR (squash)
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
