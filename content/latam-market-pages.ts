@@ -482,7 +482,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       heading: "¿Tiene una máquina vista en EE.UU. para Paraguay?",
       description:
         "Envíenos el link, año de fabricación, horas, ubicación y destino. Confirmamos si entra dentro de la Ley 7565/2025 y separamos el tramo Meridian del costo que confirma su despachante.",
-      whatsappLabel: "Revisar por WhatsApp",
+      whatsappLabel: "Cotizar por WhatsApp",
       calculatorLabel: "Ver calculadora",
     },
     tracking: {
@@ -879,275 +879,300 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     locale: "es-BO",
     path: "/es/destinations/bolivia",
     seo: {
-      title: "Importar maquinaria agricola usada de EE.UU. a Bolivia",
+      title: "Importar maquinaria agrícola usada de EE.UU. a Bolivia",
       description:
-        "Guia para compradores bolivianos: maquinaria agricola usada de EE.UU., ruta hacia Santa Cruz, transito por puerto, SENASAG y validacion con broker/importador.",
+        "Bolivia exige máximo 10 años para bienes de capital usados. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. y Canadá vía Arica hasta Santa Cruz.",
       keywords: [
-        "importar maquinaria agricola usada de estados unidos a bolivia",
+        "importar maquinaria agrícola usada de estados unidos a bolivia",
         "importar tractor usado desde usa a bolivia",
         "importar cosechadora usada estados unidos bolivia",
-        "maquinaria agricola usada santa cruz bolivia",
-        "senasag permiso fitosanitario importacion maquinaria",
-        "arica chile transito bolivia maquinaria",
+        "antigüedad máxima diez años bienes de capital bolivia",
+        "ley 1391 decreto supremo 4579 maquinaria usada",
+        "senasag permiso fitosanitario importación maquinaria",
+        "arica iquique antofagasta tránsito bolivia maquinaria",
+        "tratado 1904 chile bolivia tránsito mercancía",
+        "aduana nacional padrón importadores bolivia",
       ],
     },
     labels: sharedLabels,
     hero: {
-      eyebrow: "Guia para compradores bolivianos",
-      heading: "Maquinaria agricola usada de EE.UU. a Bolivia con ruta definida",
+      eyebrow: "Guía para compradores bolivianos",
+      heading: "Importar maquinaria agrícola usada de EE.UU. a Bolivia",
       description:
-        "Para compradores en Santa Cruz y otras zonas agricolas, Meridian revisa la unidad en EE.UU., coordina retiro, preparacion, embalaje y flete internacional, y entrega la informacion que su broker/importador necesita para confirmar permisos, tributos y destino interior.",
+        "Bolivia limita la importación de bienes de capital usados a una antigüedad máxima de diez años (Ley 1391/2021 art. 5 y Decreto Supremo 4579/2021). Meridian coordina compra asistida, retiro, desmontaje, embalaje y flete internacional para unidades que cumplen ese filtro vía Arica, y deja explícito desde el primer mensaje qué confirma su broker o importador en destino con SENASAG, Aduana Nacional y ASPB.",
       image: {
         src: "/images/project-jd-sprayer-port-crane.jpg",
-        alt: "Pulverizadora agricola cargada con grua para exportacion internacional",
-        caption: "Ruta internacional, puerto de transito y destino interior definidos antes de mover la maquina.",
+        alt: "Pulverizadora agrícola cargada con grúa para exportación internacional",
+        caption: "Ruta internacional, puerto de tránsito y destino interior definidos antes de mover la máquina.",
       },
       highlights: [
-        "Enfocada en Santa Cruz y compradores que buscan tractores, cosechadoras, sembradoras y equipos de precision.",
-        "SENASAG, Aduana, incentivos y antiguedad se revisan con el broker/importador antes de embarcar.",
-        "La ruta se arma considerando puerto de transito, dimensiones, documentos y destino interior.",
+        "Filtro de diez años de antigüedad aplicado antes de coordinar compra o flete (modelos 2016 en adelante a mayo de 2026).",
+        "Tránsito por Arica bajo el Tratado de 1904: 365 días de almacenaje libre, ASPB como agente de Bolivia en puerto chileno.",
+        "Ruta Costa Oeste de EE.UU. → Arica en 12 a 16 días cuando el origen lo permite; Costa Este suma 22 a 28 días.",
       ],
-      primaryCtaLabel: "Revisar ruta y elegibilidad",
+      primaryCtaLabel: "Cotizar por WhatsApp",
       secondaryCtaLabel: "Calcular flete estimado",
       whatsappMessage:
-        "Hola. Estoy evaluando importar maquinaria agricola usada desde EE.UU. a Bolivia. Quiero revisar ruta, ano, documentacion, destino y que debe confirmar mi broker/importador.",
+        "Hola. Estoy evaluando importar maquinaria agrícola usada desde EE.UU. a Bolivia y necesito una cotización orientativa.",
       scopeIncluded: [
-        "Revision de maquina, vendedor, ano, horas, ubicacion y dimensiones.",
-        "Coordinacion de retiro, preparacion, embalaje, documentacion de exportacion y reserva internacional.",
-        "Resumen de datos para que el broker/importador boliviano confirme permisos, tributos y despacho.",
+        "Compra asistida y coordinación con vendedor en EE.UU. o Canadá (subasta, concesionario o privado).",
+        "Retiro en origen, desmontaje técnico, etiquetado, embalaje y carga.",
+        "Documentación de exportación, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Arica, Iquique o Antofagasta.",
       ],
       scopeExcluded: [
-        "Confirmacion final de SENASAG, Aduana Nacional, tributos, incentivos y despacho local.",
-        "Entrega interior en Bolivia si no fue aprobada como parte del alcance cotizado.",
-        "Decision final sobre beneficios tributarios, antiguedad aplicable o clasificacion aduanera.",
+        "Padrón de Importadores de la Aduana Nacional, permiso SENASAG vía VUCE y trámites locales en Bolivia.",
+        "Tributos, aranceles NANDINA, IVA cuando aplique, costos de tránsito ASPB y despacho final.",
+        "Tramo overland Arica → Santa Cruz, Cochabamba o La Paz si no fue cotizado como alcance adicional.",
       ],
       scopeFootnote:
-        "Para Bolivia, el flete oceanico es solo una parte del costo. El destino interior y el broker/importador deben estar en la conversacion desde el primer mensaje.",
+        "Para Bolivia, el flete oceánico es solo una parte del costo. El destino interior, la antigüedad de la unidad y el broker o importador deben estar en la conversación desde el primer mensaje.",
     },
     route: {
-      eyebrow: "Destino sin litoral",
-      title: "Bolivia requiere pensar en puerto de transito y destino interior",
+      eyebrow: "Tránsito por Arica bajo el Tratado de 1904",
+      title: "Bolivia es destino sin litoral: planee puerto de tránsito y tramo interior",
       intro:
-        "La ruta hacia Bolivia combina retiro en Norteamerica, flete internacional, puerto de transito y tramo posterior hacia el destino final. Cada parte cambia el costo y la responsabilidad de la operacion.",
+        "El Tratado de 1904 entre Bolivia y Chile garantiza el libre tránsito de carga boliviana por Arica, Iquique y Antofagasta. ASPB (Administradora de Servicios Portuarios Bolivia) actúa como agente de Bolivia en territorio chileno y procesa la carga. Cada tramo cambia el calendario y el costo, así que la ruta se planifica desde el primer mensaje.",
       steps: [
         {
-          title: "Origen en EE.UU.",
+          title: "Costa Oeste de EE.UU. → Arica",
           description:
-            "Se revisa ubicacion, dimensiones, tipo de carga, accesorios y si la maquina necesita desmontaje.",
+            "Tránsito marítimo de 12 a 16 días desde Los Ángeles, Long Beach u Oakland. Es la ruta más rápida cuando la unidad sale de la Costa Oeste.",
         },
         {
-          title: "Puerto y reserva",
+          title: "Costa Este o Houston → Arica",
           description:
-            "Se define una ruta internacional viable segun origen, equipo y disponibilidad de naviera.",
+            "Costa Este: 22 a 28 días con servicios Maersk, Hapag-Lloyd, CMA CGM y MSC. Houston suma hasta 30 días según naviera.",
         },
         {
-          title: "Puerto de transito",
+          title: "Llegada a Arica + tránsito ASPB",
           description:
-            "El puerto de transito y el tramo posterior se coordinan con agentes y broker antes de cerrar el costo final.",
+            "ASPB procesa la carga boliviana en territorio chileno: despacho de tránsito de 3 a 5 días. El Tratado de 1904 otorga 365 días de almacenaje libre para carga de importación.",
         },
         {
-          title: "Destino boliviano",
+          title: "Arica → Santa Cruz overland",
           description:
-            "Santa Cruz, Cochabamba, La Paz u otro destino cambian el alcance y deben informarse desde el primer mensaje.",
+            "Tramo terrestre de aproximadamente 1.650 km vía Tambo Quemado-Patacamaya-Cochabamba-Santa Cruz: 3 a 7 días. Su broker coordina transporte y despacho final.",
         },
       ],
       note:
-        "Trade.gov identifica Santa Cruz como el centro principal de agricultura comercial en Bolivia. Eso vuelve clave preguntar destino interior desde el inicio.",
+        "Tránsito típico puerta a Santa Cruz: 30 a 40 días por Costa Este, 20 a 30 días por Costa Oeste. La ruta exacta depende del origen de la unidad, naviera disponible y agentes que coordina su importador en Bolivia.",
     },
     compliance: {
-      eyebrow: "Broker/importador confirmado",
-      title: "Lo que debe quedar confirmado antes de embarcar a Bolivia",
+      eyebrow: "Ley 1391/2021 + Decreto Supremo 4579/2021",
+      title: "Antigüedad máxima diez años, broker confirma IVA y permisos",
       intro:
-        "Bolivia importa maquinaria agricola y concentra gran parte de su agricultura comercial en Santa Cruz. Para una compra usada, el comprador debe confirmar por unidad la clasificacion, permisos, tributos, incentivos y documentos con su broker/importador.",
+        "Bolivia exige máximo diez años de antigüedad para bienes de capital usados destinados a los sectores industrial y agropecuario (Artículo 5 de la Ley 1391/2021, reglamentada por el Decreto Supremo 4579/2021). El permiso fitosanitario de SENASAG se gestiona vía VUCE bajo Análisis de Riesgo Plaga. La exoneración de IVA del Artículo 8 de la Ley 1613/2025 estuvo vigente sólo durante 2025; para 2026 el régimen tributario aplicable debe confirmarse con su broker.",
       required: [
-        "Revisar ano, horas, condicion, documentos y destino antes de comprar.",
-        "Confirmar si la carga necesita documentacion fitosanitaria o sanitaria segun producto y autoridad aplicable.",
-        "Definir si el comprador busca solo llegada a puerto de transito o apoyo para analizar tramo interior.",
+        "Antigüedad menor o igual a diez años para bienes de capital de los sectores industrial y agropecuario.",
+        "Documentación que respalde la antigüedad (factura, certificación) o, si no se cuenta con ella, declaración jurada del importador en formato Aduana Nacional.",
+        "Certificado fitosanitario de origen (USDA APHIS para EE.UU., CFIA para Canadá).",
+        "Permiso de Importación Fitosanitaria de SENASAG, gestionado vía VUCE antes del embarque.",
+        "Limpieza y datos completos de modelo, año, horas y condición antes de reservar flete.",
       ],
       brokerConfirmed: [
-        "SENASAG, Aduana Nacional, permisos, clasificacion, tributos y despacho.",
-        "Si aplica algun incentivo tributario y que antiguedad exige ese beneficio para la unidad concreta.",
-        "Costos y responsabilidades del tramo desde puerto de transito hasta destino boliviano.",
+        "Inscripción en el Padrón de Importadores de la Aduana Nacional (registro online, sin trámite presencial).",
+        "Clasificación NANDINA y aranceles aplicables a la unidad concreta (Capítulo 84 para maquinaria agrícola).",
+        "Régimen tributario vigente: la exoneración de IVA por Ley 1613/2025 art. 8 cubrió enero a diciembre de 2025; para 2026, confirmar con su broker si fue prorrogada o si aplica un régimen distinto.",
+        "Costos y responsabilidades del tramo Arica → destino boliviano (Santa Cruz, Cochabamba, La Paz u otro).",
       ],
       avoid: [
-        "Convertir una condicion de beneficio tributario en regla general de importacion.",
-        "Asumir exencion de IVA o incentivo vigente sin confirmacion 2026.",
-        "Comprar una unidad sin validar importador, ruta y destino interior.",
+        "Comprar una unidad fabricada antes del año límite (2016 en adelante a mayo de 2026) sin verificarla con su broker.",
+        "Asumir que la exoneración de IVA por Ley 1613/2025 sigue vigente en 2026: cubrió únicamente el ejercicio 2025 y debe confirmarse para el año en curso.",
+        "Convertir un beneficio tributario condicionado en regla general de importación.",
+        "Comprometer tramo overland Arica → Santa Cruz sin cotización confirmada por agentes y transportistas autorizados.",
       ],
     },
     equipmentFocus: {
-      eyebrow: "Demanda agricola en Santa Cruz",
-      title: "Equipos que pueden justificar busqueda en EE.UU.",
+      eyebrow: "Demanda agrícola en Santa Cruz",
+      title: "Equipos donde EE.UU. compite dentro del filtro de diez años",
       intro:
-        "Bolivia importa maquinaria agricola y concentra mucha agricultura comercial en Santa Cruz. La oportunidad esta en traer la unidad correcta con una ruta realista.",
+        "Santa Cruz concentra alrededor de 1,3 millones de hectáreas de soja sembrada en la campaña verano 2025/26 (datos ANAPO). La oferta de maquinaria agrícola en Bolivia se importa: EE.UU., China, Argentina y Brasil son los proveedores principales. Con cap de diez años, la búsqueda se concentra en unidades modelo 2016 en adelante.",
       items: [
         {
-          title: "Tractores",
+          title: "Tractores 200-400 hp",
           summary:
-            "Categoria amplia para compradores que buscan potencia, disponibilidad y estado verificable.",
+            "Tractores con doble tracción, cabina con tecnología de precisión, configuración para cultivos extensivos.",
           reason:
-            "El ano y la documentacion deben revisarse temprano porque pueden afectar elegibilidad o beneficios locales.",
+            "El comprador boliviano valida horas, configuración y soporte de repuestos antes del flete; EE.UU. ofrece profundidad de inventario en el rango menor a diez años.",
           href: "/equipment/tractors",
           linkLabel: "Ver tractores",
         },
         {
-          title: "Cosechadoras",
+          title: "Cosechadoras de alta capacidad",
           summary:
-            "Equipos de alto valor pueden tener sentido si la configuracion y el estado justifican la ruta.",
+            "Cosechadoras 250-500 hp con cabezal compatible con soja, maíz, sorgo o girasol; tecnología de precisión.",
           reason:
-            "Antes de moverlas se deben revisar dimensiones, accesorios, limpieza, ano y destino final.",
+            "ANAPO coordina alrededor de 14.000 productores en Santa Cruz; el comprador frecuentemente busca configuraciones específicas no disponibles en el secundario regional.",
           href: "/equipment/combines",
           linkLabel: "Ver cosechadoras",
         },
         {
-          title: "Sembradoras y equipos de suelo",
+          title: "Sembradoras de precisión",
           summary:
-            "Maquinaria para preparacion, siembra y produccion extensiva puede encajar con compradores de Santa Cruz.",
+            "Sembradoras con control por sección, monitoreo electrónico, dosificación variable y compatibilidad con tecnología de aplicación variable.",
           reason:
-            "La revision debe incluir ancho, desmontaje, accesorios, embalaje y ruta interior.",
+            "La rotación soja-maíz-sorgo-girasol exige flexibilidad de equipo; el equipamiento electrónico de fábrica de EE.UU. es difícil de igualar localmente.",
           href: "/equipment/planters",
           linkLabel: "Ver sembradoras",
         },
         {
-          title: "Pulverizadoras y tecnologia agricola",
+          title: "Pulverizadoras autopropulsadas",
           summary:
-            "Equipos de aplicacion, precision o riego pueden ser relevantes cuando no hay equivalente disponible localmente.",
+            "Pulverizadoras con tecnología GPS, control automático de boquillas y alta despeje para cultivos altos.",
           reason:
-            "El caso se decide por condicion, soporte, repuestos y capacidad de importar correctamente.",
+            "Las comunidades menonitas y los productores grandes de Santa Cruz buscan configuraciones específicas; EE.UU. y Brasil compiten cuando la unidad existe en inventario.",
           href: "/equipment/sprayers",
           linkLabel: "Ver pulverizadoras",
         },
       ],
     },
     sendUsThis: {
-      eyebrow: "Informacion minima para no cotizar a ciegas",
-      title: "Que enviar si la maquina va a Bolivia",
+      eyebrow: "Información mínima para no cotizar a ciegas",
+      title: "Qué enviar por WhatsApp para revisar una unidad para Bolivia",
       intro:
-        "Con estos datos podemos revisar si la unidad merece avanzar, como saldria de EE.UU. y que debe confirmar el broker/importador antes del embarque.",
+        "Con una ficha completa podemos confirmar si la unidad cumple el cap de diez años, armar la ruta vía Arica y marcar lo que su broker debe confirmar para SENASAG, Aduana y régimen tributario.",
       items: [
-        "Link de concesionario, subasta o vendedor.",
-        "Marca, modelo, ano, horas y condicion visible.",
-        "Ubicacion de retiro en EE.UU. o Canada.",
-        "Destino en Bolivia: Santa Cruz, Cochabamba, La Paz u otro.",
-        "Si el comprador ya tiene broker/importador registrado.",
-        "Si necesita analizar solo puerto de transito o tambien tramo interior.",
-        "Fotos y datos de accesorios, dimensiones y posibles modificaciones.",
+        "Link de subasta, concesionario o vendedor privado.",
+        "Marca, modelo, año de fabricación (preferentemente 2016 o más nuevo) y horas de motor.",
+        "Ubicación de retiro en EE.UU. o Canadá con código postal.",
+        "Fotos de limpieza interior, tren de rodaje, plataforma, accesorios y placa de identificación.",
+        "Destino en Bolivia: Santa Cruz, Cochabamba, La Paz u otro punto.",
+        "Si su broker o importador ya está registrado en el Padrón de Importadores de la Aduana Nacional.",
+        "Si la operación incluye tramo overland Arica → destino boliviano o sólo termina en puerto de tránsito chileno.",
       ],
     },
     processSteps: {
-      eyebrow: "Primero elegibilidad, despues flete",
-      title: "Como ordenar una compra para Bolivia",
+      eyebrow: "Cuatro decisiones antes de mover la unidad",
+      title: "Cómo ordenamos una compra para Bolivia",
       intro:
-        "La ruta boliviana requiere filtrar antes de comprometerse con el vendedor.",
+        "El orden importa. Primero filtramos por la regla, después armamos ruta y alcance.",
       steps: [
         {
-          title: "Revisar maquina",
+          title: "Filtrar por antigüedad y origen",
           description:
-            "Validamos ano, horas, estado, dimensiones, accesorios, ubicacion y vendedor.",
+            "Validamos año (debe ser 2016 o más nuevo a mayo de 2026), horas, condición, dimensiones, accesorios, vendedor y ubicación. Si la unidad supera los diez años, lo decimos antes de avanzar.",
         },
         {
-          title: "Identificar validaciones locales",
+          title: "Marcar responsabilidades locales",
           description:
-            "Listamos lo que debe confirmar el broker/importador: SENASAG, Aduana, tributos, incentivo y destino interior.",
+            "Listamos lo que confirma su broker o importador: Padrón de Importadores, permiso SENASAG vía VUCE, clasificación NANDINA, régimen tributario vigente y tramo Arica → destino.",
         },
         {
-          title: "Armar ruta internacional",
+          title: "Coordinar tramo EE.UU. y Canadá",
           description:
-            "Cotizamos retiro, preparacion, embalaje, documentos y reserva segun alcance aprobado.",
+            "Retiro, desmontaje, embalaje, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Arica, Iquique o Antofagasta.",
         },
         {
-          title: "Definir la entrega operativa en Bolivia",
+          title: "Cotizar con alcance separado",
           description:
-            "Queda definido donde termina Meridian y que debe cerrar el equipo local antes de nacionalizar.",
+            "El presupuesto separa el tramo Meridian del costo de despacho local y del tramo overland en Bolivia. Sin esa separación no hay comparación honesta.",
         },
       ],
     },
     credibility: {
-      eyebrow: "Ruta antes que impulso",
-      title: "Bolivia exige claridad desde el primer mensaje",
+      eyebrow: "Operación verificable",
+      title: "Una propuesta que se sostiene con la unidad y la ruta concretas",
       intro:
-        "Una buena compra en EE.UU. solo funciona si la maquina, la ruta de transito y el destino boliviano se revisan juntos. El objetivo es evitar compras que parezcan atractivas en origen pero fallen por documentos, dimensiones o costo interior.",
+        "Antes de transferir fondos, conviene tener un mapa simple: año y estado de la máquina, costo de retiro y embalaje, certificación de origen, reserva marítima a Arica y responsabilidades del broker o importador en Bolivia.",
       pillars: [
         {
-          title: "Santa Cruz en el centro",
+          title: "Una sola contraparte en EE.UU. y Canadá",
           description:
-            "El flujo esta pensado para compradores agricolas que miran tractores, cosechadoras, sembradoras y tecnologia para produccion extensiva.",
+            "Un equipo coordina vendedor, retiro, desmontaje, embalaje, documentos de exportación y reserva internacional a Arica.",
         },
         {
-          title: "Permisos definidos",
+          title: "Disciplina sobre Ley 1391/2021",
           description:
-            "SENASAG, Aduana, tributos e incentivos se tratan como puntos de decision del importador, no como supuestos de venta.",
+            "El cap de diez años se trata como filtro de selección, no como sorpresa al final del proceso.",
         },
         {
-          title: "Entrega operativa clara",
+          title: "Cotización por alcance, no por suposición",
           description:
-            "Meridian coordina el lado EE.UU. y exportacion; el tramo boliviano se confirma con el equipo local del comprador.",
+            "El flete internacional se separa de SENASAG, Aduana, NANDINA, IVA y costos overland que define su broker.",
         },
       ],
-      noteTitle: "Que aporta Meridian",
+      noteTitle: "Experiencia aplicada al caso",
       note:
-        "Meridian aporta revision de unidad, coordinacion con vendedor, retiro, preparacion, embalaje y flete internacional, con informacion util para que el importador cierre el despacho local.",
-      projectGalleryLabel: "Ver proyectos y servicios",
+        "Meridian ha coordinado más de 1.000 exportaciones a más de 40 países. Para Bolivia, la propuesta se arma con datos de la unidad, ruta vía Arica y filtro de antigüedad concreto, no con una tarifa genérica.",
+      projectGalleryLabel: "Ver proyectos y capacidades",
       projectGalleryDescription:
-        "Revise tipos de equipos, embalajes y operaciones internacionales para dimensionar el trabajo logistico.",
+        "Tipos de equipos, embalajes y operaciones internacionales similares a las que se preparan para compradores agrícolas.",
       projectGalleryHref: "/projects",
     },
     faq: {
-      eyebrow: "Preguntas para ordenar la operacion",
-      title: "Antes de comprar maquinaria para Bolivia",
+      eyebrow: "Preguntas reales antes del embarque",
+      title: "Cuestiones que conviene cerrar antes de comprar",
       intro:
-        "Las respuestas ayudan a saber que enviar a Meridian y que debe confirmar el broker/importador.",
+        "Estas respuestas ordenan la conversación con Meridian y con su broker o importador en Bolivia.",
       entries: [
         {
-          question: "Que ruta se usa para maquinaria hacia Bolivia?",
+          question: "¿Por qué solo trabajan con maquinaria menor a diez años?",
           answer:
-            "Depende del origen, equipo, naviera y destino final. Normalmente hay que pensar en un puerto de transito y un tramo posterior hacia Bolivia, que debe coordinarse con agentes y broker.",
+            "El Artículo 5 de la Ley 1391/2021, reglamentado por el Decreto Supremo 4579/2021, fija una antigüedad máxima de diez años para bienes de capital de los sectores industrial y agropecuario. La regla aplica a la importación; la documentación que respalde la antigüedad la presenta el importador (factura, certificación), o si no la tiene, una declaración jurada en formato Aduana Nacional.",
           category: "Bolivia",
         },
         {
-          question: "La antiguedad de la maquinaria afecta beneficios o permisos?",
+          question: "¿Cómo funciona el tránsito por Arica bajo el Tratado de 1904?",
           answer:
-            "Puede afectar la evaluacion local. Algunas referencias oficiales han vinculado antiguedad con beneficios tributarios para bienes de capital, pero su broker/importador debe confirmar si aplica al equipo y al ano actual.",
+            "El Tratado de 1904 entre Bolivia y Chile garantiza el libre tránsito de carga boliviana por los puertos chilenos de Arica, Iquique y Antofagasta. ASPB (Administradora de Servicios Portuarios Bolivia) actúa como agente de Bolivia en territorio chileno y procesa la carga. La carga de importación tiene 365 días de almacenaje libre. El despacho de tránsito típico es de 3 a 5 días.",
           category: "Bolivia",
         },
         {
-          question: "SENASAG aplica a toda maquinaria agricola usada?",
+          question: "¿La Ley 1613/2025 me exonera de IVA al importar maquinaria en 2026?",
           answer:
-            "SENASAG es autoridad relevante en sanidad vegetal y documentacion fitosanitaria, pero el tramite especifico depende del producto, condicion y operacion. Su broker/importador debe confirmarlo para la unidad concreta.",
+            "La exoneración del Artículo 8 de la Ley 1613/2025 cubrió la importación y venta interna de bienes de capital y plantas industriales para los sectores agropecuario, industrial, construcción y minería del 1 de enero al 31 de diciembre de 2025. Para 2026, su broker o importador debe confirmar si fue prorrogada o si aplica un régimen tributario distinto antes del embarque.",
           category: "Bolivia",
         },
         {
-          question: "Meridian puede cotizar hasta Santa Cruz?",
+          question: "¿Qué exige SENASAG para maquinaria agrícola usada?",
           answer:
-            "Podemos revisar destino, ruta y alcance. El tramo interior en Bolivia debe confirmarse antes de prometer precio final, porque depende de agentes, documentos y responsabilidades locales.",
+            "SENASAG emite el Permiso de Importación Fitosanitaria, que se tramita vía VUCE (Ventanilla Única de Comercio Exterior) antes del embarque. SENASAG fija requisitos por producto y origen sobre la base de un Análisis de Riesgo Plaga. El certificado fitosanitario de origen (USDA APHIS para EE.UU., CFIA para Canadá) acompaña el embarque, y la inspección se realiza al ingreso.",
           category: "Bolivia",
         },
         {
-          question: "Que equipos conviene buscar en EE.UU.?",
+          question: "¿Cuánto demora un envío puerta a Santa Cruz?",
           answer:
-            "Tractores, cosechadoras, sembradoras, equipos de suelo, pulverizadoras y tecnologia agricola pueden tener sentido si la unidad esta bien documentada y la ruta local es viable.",
+            "Costa Este de EE.UU. a Santa Cruz toma típicamente 30 a 40 días: 22 a 28 días Costa Este → Arica, 3 a 5 días tránsito ASPB en Arica, 3 a 7 días overland Arica → Santa Cruz por aproximadamente 1.650 km vía Tambo Quemado-Patacamaya-Cochabamba. La Costa Oeste de EE.UU. reduce el total a 20 a 30 días cuando el origen lo permite.",
+          category: "Bolivia",
+        },
+        {
+          question: "¿Qué cubre Meridian y qué queda para mi broker o importador?",
+          answer:
+            "Meridian coordina compra asistida, retiro, desmontaje, embalaje, certificado fitosanitario USDA APHIS o CFIA y reserva marítima a Arica, Iquique o Antofagasta. Su broker o importador maneja el Padrón de Importadores ante Aduana Nacional, el permiso SENASAG vía VUCE, la clasificación NANDINA y régimen tributario vigente, el tránsito ASPB y el tramo overland al destino boliviano.",
           category: "Bolivia",
         },
       ],
     },
     officialSources: [
       {
-        label: "Bolivia Agricultural Sectors - Trade.gov",
+        label: "Aduana Nacional de Bolivia",
+        href: "https://www.aduana.gob.bo/",
+        description:
+          "Autoridad aduanera nacional. Mantiene el Padrón de Importadores y valida las declaraciones de importación.",
+      },
+      {
+        label: "SENASAG",
+        href: "https://www.senasag.gob.bo/",
+        description:
+          "Servicio Nacional de Sanidad Agropecuaria e Inocuidad Alimentaria. Emite el Permiso de Importación Fitosanitaria.",
+      },
+      {
+        label: "Decreto Supremo 4579/2021 (Lexivox)",
+        href: "https://www.lexivox.org/norms/BO-DS-N4579.html",
+        description:
+          "Reglamenta la Ley 1391/2021: tasa cero IVA y antigüedad máxima de diez años para bienes de capital agropecuarios e industriales.",
+      },
+      {
+        label: "VUCE — Procedimiento SENASAG",
+        href: "https://www.vuce.gob.bo/es/SENASAG_importacion_fitozanitario_requisitos",
+        description:
+          "Ventanilla Única de Comercio Exterior: trámite del permiso fitosanitario de importación con SENASAG.",
+      },
+      {
+        label: "Bolivia Agricultural Sectors — Trade.gov",
         href: "https://www.trade.gov/country-commercial-guides/bolivia-agricultural-sectors",
         description:
-          "Referencia comercial sobre produccion local, importaciones y mejores perspectivas para maquinaria agricola.",
-      },
-      {
-        label: "SENASAG - Cuarentena Vegetal",
-        href: "https://www.senasag.gob.bo/index.php/institucional/unidades-nacionales/sanidad-vegetal/area-de-cuarentena-vegetal",
-        description:
-          "Referencia institucional para autoridad fitosanitaria y cuarentena vegetal.",
-      },
-      {
-        label: "Aduana Nacional - incentivos bienes de capital",
-        href: "https://www.aduana.gob.bo/node/1377518",
-        description:
-          "Referencia sobre beneficios vinculados a bienes de capital; requiere confirmacion vigente por broker/importador.",
+          "Guía comercial con datos sobre la producción agrícola, importaciones de maquinaria y proveedores principales.",
       },
     ],
     resourceLinks: [
@@ -1155,32 +1180,32 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         label: "Compra asistida",
         href: "/services/equipment-sales",
         description:
-          "Para revisar vendedor, maquina y documentos antes de comprometer fondos.",
+          "Para validar vendedor, máquina y documentos antes de comprometer fondos.",
       },
       {
-        label: "Maquinaria agricola",
+        label: "Maquinaria agrícola",
         href: "/services/agricultural",
         description:
-          "Alcance de exportacion para equipos agricolas desde EE.UU. y Canada.",
+          "Alcance de exportación para equipos agrícolas desde EE.UU. y Canadá.",
       },
       {
-        label: "Calculadora",
+        label: "Calculadora de flete",
         href: "/pricing/calculator",
         description:
-          "Referencia de flete cuando la ruta esta soportada y los datos son suficientes.",
+          "Referencia para el tramo internacional cuando la ruta está soportada.",
       },
       {
         label: "Contacto",
         href: "/contact",
         description:
-          "Para enviar una consulta con datos de maquina, origen y destino.",
+          "Para enviar una consulta con datos de máquina, origen y destino.",
       },
     ],
     cta: {
-      heading: "Tiene una maquina vista para Bolivia?",
+      heading: "¿Tiene una máquina vista en EE.UU. para Bolivia?",
       description:
-        "Envie el link, ano, horas, ubicacion y destino. Revisamos ruta y marcamos que debe confirmar su broker/importador.",
-      whatsappLabel: "Revisar por WhatsApp",
+        "Envíenos el link, año de fabricación, horas, ubicación y destino. Confirmamos si entra dentro del cap de diez años, separamos el tramo Meridian del costo que confirma su broker, y marcamos la ruta vía Arica.",
+      whatsappLabel: "Cotizar por WhatsApp",
       calculatorLabel: "Calcular flete",
     },
     tracking: {
@@ -1192,9 +1217,25 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       resourceLink: "bolivia_resource_link",
     },
     schema: {
-      serviceType: "Exportacion de maquinaria agricola usada de EE.UU. a Bolivia",
+      serviceType: "Exportación de maquinaria agrícola usada de EE.UU. a Bolivia",
       areaServed: "Bolivia",
-      mentions: ["Santa Cruz", "SENASAG", "Aduana Nacional", "maquinaria agricola usada", "puerto de transito"],
+      mentions: [
+        "Santa Cruz",
+        "Cochabamba",
+        "La Paz",
+        "Arica",
+        "Iquique",
+        "Antofagasta",
+        "Ley 1391/2021",
+        "Decreto Supremo 4579/2021",
+        "Ley 1613/2025",
+        "Tratado de 1904",
+        "SENASAG",
+        "Aduana Nacional",
+        "ASPB",
+        "ANAPO",
+        "VUCE",
+      ],
       datePublished: "2026-05-05",
       dateModified: "2026-05-05",
     },

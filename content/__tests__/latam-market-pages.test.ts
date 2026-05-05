@@ -46,7 +46,7 @@ describe("LATAM market buyer hub content", () => {
     expect(uruguay).toContain("Resolución 98/016");
 
     const bolivia = flattenText(getLatamMarketPage("bolivia"));
-    expect(bolivia).toContain("broker/importador");
+    expect(bolivia).toContain("broker o importador");
     expect(bolivia).toContain("confirmar");
     expect(bolivia.toLowerCase()).not.toContain("tope universal de 10 años");
     expect(bolivia.toLowerCase()).not.toContain("limite universal de 10 años");
