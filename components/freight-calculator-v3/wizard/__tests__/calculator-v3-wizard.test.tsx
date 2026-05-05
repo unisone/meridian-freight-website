@@ -427,7 +427,7 @@ describe("CalculatorV3Wizard", () => {
     expect(submitInGate).toBeDisabled();
 
     // Even if the user manages to click, the server action must NOT fire.
-    await user.click(submitInGate, { pointerEventsCheck: 0 }).catch(() => {});
+    await user.click(submitInGate).catch(() => {});
     expect(mocks.submitCalculatorV3).not.toHaveBeenCalled();
   });
 });
