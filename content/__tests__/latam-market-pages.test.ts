@@ -75,4 +75,35 @@ describe("LATAM market buyer hub content", () => {
       }
     }
   });
+
+  it("keeps public copy buyer-facing instead of editorial or internal", () => {
+    const internalPatterns = [
+      /la pagina/i,
+      /esta pagina/i,
+      /desde una pagina web/i,
+      /no presentamos/i,
+      /no afirma/i,
+      /no necesitamos/i,
+      /sin inventar/i,
+      /historial no probado/i,
+      /prueba interna/i,
+      /prueba especifica/i,
+      /evidencia publicada/i,
+      /no debe leerse/i,
+      /sobria/i,
+      /cuidadosa/i,
+      /sobrepromesas/i,
+      /\bhandoff\b/i,
+      /row-crop/i,
+      /\bdealer\b/i,
+      /\bZIP\b/,
+    ];
+
+    for (const page of latamMarketPages) {
+      const text = flattenText(page);
+      for (const pattern of internalPatterns) {
+        expect(text).not.toMatch(pattern);
+      }
+    }
+  });
 });

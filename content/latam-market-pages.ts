@@ -132,22 +132,22 @@ export interface LatamMarketPageContent {
 
 const sharedLabels: LatamMarketPageContent["labels"] = {
   breadcrumbsDestinations: "Destinos",
-  scopeCaption: "Antes de comprar, separe alcance logistico y validacion local",
+  scopeCaption: "Antes de comprar: ruta, documentos y alcance",
   meridianHandles: "Meridian coordina",
-  localSideConfirms: "El importador o broker confirma",
-  sourceLinks: "Fuentes oficiales y referencias",
-  routeSection: "Ruta logistica",
+  localSideConfirms: "Su despachante confirma en destino",
+  sourceLinks: "Documentos para revisar con su despachante",
+  routeSection: "Ruta logística",
   complianceSection: "Cumplimiento local",
-  equipmentSection: "Seleccion de equipo",
-  sendUsThisSection: "Para revisar una maquina",
+  equipmentSection: "Selección de equipo",
+  sendUsThisSection: "Para revisar una máquina",
   processSection: "Flujo de trabajo",
   credibilitySection: "Credibilidad operativa",
   faqSection: "Preguntas frecuentes",
-  openResource: "Abrir recurso",
-  blockLabel: "Bloque",
+  openResource: "Ver recurso",
+  blockLabel: "Equipo",
   stepLabel: "Paso",
-  exportsLabel: "exportaciones ejecutadas",
-  yearsLabel: "anos en operacion",
+  exportsLabel: "exportaciones",
+  yearsLabel: "años en operación",
 };
 
 export const latamMarketPages: LatamMarketPageContent[] = [
@@ -157,276 +157,300 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     locale: "es-PY",
     path: "/es/destinations/paraguay",
     seo: {
-      title: "Importar maquinaria agricola usada de EE.UU. a Paraguay",
+      title: "Importar maquinaria agrícola usada de EE.UU. a Paraguay",
       description:
-        "Guia para compradores paraguayos: maquinaria usada de EE.UU., Ley 7565/2025, limpieza, certificados y ruta por Hidrovia hacia Asuncion o Villeta.",
+        "La Ley 7565/2025 fija máximo de 5 años para maquinaria agrícola usada en Paraguay. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. y Canadá.",
       keywords: [
-        "importar maquinaria agricola usada de estados unidos a paraguay",
+        "importar maquinaria agrícola usada de estados unidos a paraguay",
         "importar cosechadora usada estados unidos paraguay",
         "importar tractor usado desde usa a paraguay",
-        "ley 7565 maquinaria agricola usada paraguay",
-        "senave maquinaria agricola usada limpieza certificado",
-        "envio maquinaria agricola asuncion villeta",
-        "hidrovia paraguay parana maquinaria agricola",
+        "ley 7565 2025 maquinaria agrícola usada paraguay",
+        "antigüedad máxima cinco años maquinaria agrícola paraguay",
+        "registro importadores maquinaria usada MIC paraguay",
+        "senave certificado fitosanitario maquinaria usada",
+        "hidrovía paraná paraguay tránsito barcaza asunción villeta",
+        "tasa biodiversidad maquinaria agrícola paraguay",
       ],
     },
     labels: sharedLabels,
     hero: {
-      eyebrow: "Guia para compradores paraguayos",
-      heading: "Importar maquinaria agricola usada de EE.UU. a Paraguay",
+      eyebrow: "Guía para compradores paraguayos",
+      heading: "Importar maquinaria agrícola usada de EE.UU. a Paraguay",
       description:
-        "Meridian ayuda a revisar la maquina, coordinar retiro, preparacion, documentacion de exportacion y flete hacia Paraguay antes de que el comprador cierre una operacion en Estados Unidos. La pagina separa el tramo que controlamos del trabajo que debe confirmar el importador local bajo Ley 7565/2025.",
+        "Desde el 13 de noviembre de 2025, la Ley 7565/2025 establece que la maquinaria agrícola usada que ingresa a Paraguay no puede superar los cinco años desde su año de fabricación. Meridian coordina compra asistida, retiro, desmontaje, embalaje y flete internacional para unidades que cumplen ese filtro, y deja explícito desde el primer mensaje qué confirma su despachante en destino.",
       image: {
         src: "/images/project-jd-9650sts-transport.jpg",
         alt: "Cosechadora John Deere usada preparada para transporte internacional",
-        caption: "Revision de unidad, retiro y preparacion antes de exportar.",
+        caption: "Revisión de unidad, retiro y preparación antes de exportar.",
       },
       highlights: [
-        "Pensada para compradores de cosechadoras, tractores, sembradoras, pulverizadoras y cabezales.",
-        "Enfocada en edad de la maquina, limpieza, certificado, inspeccion y ruta multimodal.",
-        "WhatsApp para revisar la maquina antes de comprar; calculadora como referencia logistica cuando el equipo y la ruta estan soportados.",
+        "Filtro de antigüedad de cinco años (Ley 7565/2025) aplicado antes de coordinar compra o flete.",
+        "Retiro, desmontaje, embalaje, certificado fitosanitario de origen y reserva marítima desde EE.UU. y Canadá.",
+        "Tránsito por la Hidrovía Paraná-Paraguay con visibilidad sobre las restricciones de calado vigentes 2025/26.",
       ],
-      primaryCtaLabel: "Revisar mi maquina para Paraguay",
+      primaryCtaLabel: "Cotizar por WhatsApp",
       secondaryCtaLabel: "Calcular flete estimado",
       whatsappMessage:
-        "Hola. Estoy evaluando importar maquinaria agricola usada desde EE.UU. a Paraguay. Quiero revisar ruta, edad, limpieza y documentacion antes de comprar.",
+        "Hola. Estoy evaluando importar maquinaria agrícola usada desde EE.UU. a Paraguay y necesito una cotización orientativa.",
       scopeIncluded: [
-        "Revision inicial de la maquina, vendedor, ubicacion y ruta de exportacion desde EE.UU. o Canada.",
-        "Coordinacion de retiro, desmontaje, embalaje, fotos de referencia y carga.",
-        "Documentacion de exportacion, reserva maritima y coordinacion hasta puerto o punto de transito acordado.",
+        "Compra asistida y coordinación con vendedor en EE.UU. o Canadá (subasta, concesionario o privado).",
+        "Retiro en origen, desmontaje técnico, etiquetado, embalaje y carga.",
+        "Documentación de exportación, certificado fitosanitario USDA APHIS o CFIA y reserva marítima.",
       ],
       scopeExcluded: [
-        "Registro de importador, licencia previa y requisitos locales que confirma el importador paraguayo.",
-        "DNIT, SENAVE, tributos, tasas, despacho local y costos de inspeccion en Paraguay.",
-        "Entrega a campo o taller si no fue aprobada y cotizada como alcance adicional.",
+        "Registro de Importadores de Maquinarias Usadas y Licencia Previa de Importación ante el MIC.",
+        "DNIT, SENAVE, Tasa de Conservación de la Biodiversidad, IVA, tasas portuarias y despacho local.",
+        "Entrega interior a campo o taller si no fue aprobada y cotizada como alcance adicional.",
       ],
       scopeFootnote:
-        "La cotizacion correcta empieza antes de comprar: si la maquina no cumple edad, limpieza o documentacion, el problema aparece tarde y cuesta mas corregirlo.",
+        "Una unidad que parece bien en subasta no entra a Paraguay si supera los cinco años o si la documentación no cumple con la Ley 7565/2025. Esos puntos se revisan antes de transferir fondos.",
     },
     route: {
-      eyebrow: "Paraguay es un destino multimodal",
-      title: "La compra no termina en el puerto oceanico",
+      eyebrow: "Hidrovía Paraná-Paraguay",
+      title: "La operación termina en Asunción o Villeta, no en el puerto oceánico",
       intro:
-        "Paraguay depende de corredores fluviales y de transbordo. Por eso el comprador necesita una ruta clara desde el vendedor en EE.UU. hasta Asuncion, Villeta u otro punto definido por su importador.",
+        "Paraguay es destino sin litoral. Toda unidad que sale de EE.UU. cruza el océano hasta Buenos Aires, hace transbordo y llega a Asunción o Villeta por la Hidrovía. Cada tramo cambia el calendario y el costo, así que la ruta se planifica desde el primer mensaje.",
       steps: [
         {
-          title: "Retiro en origen",
+          title: "Costa Este de EE.UU. → Buenos Aires",
           description:
-            "Se valida la ubicacion de la maquina, dimensiones, accesorios, estado visible y distancia hasta el punto de embalaje o puerto.",
+            "Tránsito marítimo de 23 a 32 días con servicios regulares de Maersk, Hapag-Lloyd, CMA CGM y MSC. Houston suma 5 a 7 días adicionales.",
         },
         {
-          title: "Preparacion para exportacion",
+          title: "Transbordo en Buenos Aires",
           description:
-            "La maquina se desmonta y prepara para contenedor, flat rack u otra solucion aprobada por dimensiones y condicion.",
+            "El contenedor se descarga del buque oceánico y se reposiciona para flete fluvial. De 3 a 7 días según naviera y coordinación local.",
         },
         {
-          title: "Tramo maritimo",
+          title: "Hidrovía hasta Asunción o Villeta",
           description:
-            "El embarque se reserva hacia el puerto oceanico que mejor conecte con la ruta Paraguay-Parana definida para la operacion.",
+            "Tramo fluvial de 10 a 15 días en operación normal. Con la bajante actual del río Paraguay (calado restringido a 8-9 pies frente a 10-12 normales), planificar entre 5 y 15 días adicionales según el corredor.",
         },
         {
-          title: "Hidrovia y handoff local",
+          title: "Llegada a terminal y despacho",
           description:
-            "El tramo fluvial y el despacho local se coordinan con el importador o broker paraguayo para evitar prometer alcance no confirmado.",
+            "Puerto Villeta (concesión PTP Group) es la terminal principal de contenedores; Asunción opera volúmenes menores. Su despachante coordina DNIT, SENAVE, Licencia Previa y entrega interior.",
         },
       ],
       note:
-        "La Hidrovia Paraguay-Parana es parte central del comercio paraguayo. La ruta final depende de naviera, temporada, punto de llegada y broker local.",
+        "La bajante 2025/2026 mantiene capacidad por barcaza alrededor del 75% del máximo y, según pronósticos, se extenderá hasta febrero o marzo de 2026. Cotizamos con el calendario actualizado de la naviera y del operador fluvial, no con uno teórico.",
     },
     compliance: {
       eyebrow: "Ley 7565/2025",
-      title: "La edad, limpieza y certificacion deben revisarse antes del pago",
+      title: "Antigüedad, limpieza, certificación e inspección antes de pagar la unidad",
       intro:
-        "La Ley 7565/2025 establece requisitos para maquinaria, equipos e implementos agricolas usados. Meridian no reemplaza al importador local, pero si puede ayudar a filtrar la maquina y preparar el tramo de exportacion con esos riesgos a la vista.",
+        "La Ley 7565/2025, promulgada el 13 de noviembre de 2025, regula la importación de maquinaria, equipos e implementos agrícolas usados a Paraguay. Su reglamentación específica está en desarrollo a mayo de 2026, pero el filtro de antigüedad y los requisitos de la ley aplican desde la promulgación.",
       required: [
-        "Confirmar que la maquina usada entra dentro de la antiguedad maxima aplicable.",
-        "Preparar limpieza y sanitizacion para reducir riesgo de suelo, restos vegetales o plagas.",
-        "Reunir datos de modelo, ano, horas, condicion, accesorios y vendedor antes de reservar flete.",
+        "Antigüedad máxima de cinco años contados desde el año de fabricación (Artículo 4).",
+        "Certificado fitosanitario de origen emitido por la autoridad acreditada (USDA APHIS para EE.UU., CFIA para Canadá).",
+        "Inspección técnica certificada por una empresa independiente y autorizada en origen sobre el estado de la máquina, motor y odómetro, con declaración obligatoria de horas de uso.",
+        "Limpieza interna y externa libre de suelo, plagas y restos vegetales, con métodos aceptados (hidrolavado, vapor, aire forzado, aspirado, desmontaje cuando corresponde).",
+        "Cumplimiento de los límites de emisiones contaminantes que fija el Ministerio del Ambiente y Desarrollo Sostenible.",
       ],
       brokerConfirmed: [
-        "Registro de importador y licencia previa ante autoridades paraguayas.",
-        "Certificado de tratamiento, certificado fitosanitario, inspeccion tecnica e inspeccion fitosanitaria.",
-        "DNIT, SENAVE, tributos, tasas, canon, despacho local y cualquier costo por medidas fitosanitarias.",
+        "Inscripción en el Registro de Importadores de Maquinarias Usadas ante la Subsecretaría de Estado de Comercio del MIC.",
+        "Licencia Previa de Importación tramitada antes del embarque (Artículo 5).",
+        "Tasa para la Conservación de la Biodiversidad escalada por antigüedad, motor, horas, emisiones y otros elementos potencialmente contaminantes.",
+        "DNIT, IVA, tasas portuarias, honorarios del despachante e inspección fitosanitaria final por SENAVE en destino, con desmontaje y pruebas si lo requiere.",
       ],
       avoid: [
-        "Comprar una maquina sin revisar edad de fabricacion y documentacion disponible.",
-        "Asumir que una cotizacion de flete equivale a costo final nacionalizado.",
-        "Enviar equipo con tierra, restos vegetales o modificaciones no documentadas.",
+        "Comprar una unidad fabricada antes del año límite vigente sin verificarlo con su despachante.",
+        "Adquirir maquinaria con manipulación de motor u odómetro: el Artículo 7 prohíbe explícitamente el ingreso.",
+        "Embarcar equipo que sufrió volcadura o daño estructural: la ley impide el ingreso, no solo lo restringe.",
+        "Asumir que la cotización puerta a puerto incluye DNIT, SENAVE o la Tasa de Biodiversidad: son responsabilidad del despachante en destino.",
       ],
     },
     equipmentFocus: {
-      eyebrow: "Donde EE.UU. puede tener sentido",
-      title: "Equipos que justifican una revision seria desde Paraguay",
+      eyebrow: "Categorías que califican dentro del filtro de cinco años",
+      title: "Equipos donde EE.UU. tiene oferta sólida bajo la antigüedad máxima",
       intro:
-        "La oportunidad no esta en traer cualquier maquina. Esta en encontrar unidades con configuracion, horas, estado y documentacion que justifiquen el costo logistico y el proceso local.",
+        "Con la Ley 7565/2025 vigente, la búsqueda se concentra en unidades modelo 2021 en adelante. EE.UU. mantiene profundidad de inventario en cuatro categorías que las cooperativas paraguayas y las comunidades menonitas piden con frecuencia.",
       items: [
         {
-          title: "Cosechadoras usadas",
+          title: "Cosechadoras",
           summary:
-            "Categoria de alto valor cuando el comprador busca capacidad, horas razonables y configuracion dificil de encontrar localmente.",
+            "Modelos 2021 o más nuevos, capacidad de 250 a 500 hp, configuración para cultivos extensivos.",
           reason:
-            "Antes de comprar conviene revisar ano, horas, plataforma, dimensiones, limpieza y ruta disponible.",
+            "El cabezal draper compatible y los paquetes con plataforma completa son donde EE.UU. supera la oferta regional.",
           href: "/equipment/combines",
           linkLabel: "Ver cosechadoras",
         },
         {
           title: "Tractores de alta potencia",
           summary:
-            "Tractores de mayor potencia pueden ser candidatos cuando la oferta regional no tiene la configuracion buscada.",
+            "Tractores 200-400 hp, doble tracción, cabina con tecnología de precisión y configuraciones específicas.",
           reason:
-            "La revision debe separar valor de compra, preparacion, flete y validacion del importador.",
+            "Cuando la unidad existe modelo 2021 o más nuevo, la disponibilidad de configuración supera al usado regional.",
           href: "/equipment/tractors",
           linkLabel: "Ver tractores",
         },
         {
           title: "Sembradoras y plantadoras",
           summary:
-            "Equipos row-crop pueden encajar con compradores que buscan capacidad y precision para agricultura extensiva.",
+            "Sembradoras de precisión con control por sección, monitoreo electrónico y compatibilidad con tecnología de aplicación variable.",
           reason:
-            "La clave es confirmar ancho, accesorios, desmontaje, embalaje y documentacion antes del retiro.",
+            "El equipamiento electrónico de fábrica es difícil de igualar en mercados secundarios brasileño o argentino.",
           href: "/equipment/planters",
           linkLabel: "Ver sembradoras",
         },
         {
-          title: "Cabezales y paquetes completos",
+          title: "Cabezales draper y paquetes completos",
           summary:
-            "Muchas operaciones dependen del paquete correcto: cosechadora, draper, cabezal o accesorios compatibles.",
+            "Cabezales draper, paquetes cosechadora + plataforma + accesorios compatibles para una sola operación de embarque.",
           reason:
-            "Meridian puede ayudar a coordinar vendedor, fotos, retiro y carga del paquete completo.",
+            "Las cooperativas y las comunidades menonitas frecuentemente compran paquetes en lugar de unidades aisladas.",
           href: "/services/equipment-sales",
           linkLabel: "Ver compra asistida",
         },
       ],
     },
     sendUsThis: {
-      eyebrow: "Mejor informacion, mejor filtro",
-      title: "Que enviar por WhatsApp para revisar una maquina",
+      eyebrow: "Información mínima para no cotizar a ciegas",
+      title: "Qué enviar por WhatsApp para revisar una unidad para Paraguay",
       intro:
-        "El objetivo del primer mensaje no es cerrar una venta. Es saber si la maquina merece avanzar antes de comprometer dinero con el vendedor.",
+        "Con una ficha completa podemos confirmar si la unidad cumple la Ley 7565/2025 y armar el alcance de exportación antes de comprometer fondos.",
       items: [
-        "Link del dealer, subasta o vendedor privado.",
-        "Marca, modelo, ano de fabricacion y horas.",
-        "Ubicacion en EE.UU. o Canada, idealmente con ZIP.",
-        "Fotos de limpieza, tren de rodaje, plataforma, accesorios y numero de serie si esta disponible.",
-        "Destino previsto en Paraguay: Asuncion, Villeta u otro punto.",
-        "Nombre del importador, broker o despachante si ya esta definido.",
-        "Fecha objetivo de embarque y si la compra incluye cabezales o accesorios.",
+        "Link de subasta, concesionario o vendedor privado.",
+        "Marca, modelo, año de fabricación y horas de motor.",
+        "Ubicación de retiro en EE.UU. o Canadá con código postal.",
+        "Fotos de limpieza interior, tren de rodaje, plataforma, accesorios y placa con número de serie.",
+        "Destino previsto en Paraguay: Asunción, Villeta, Itapúa, Alto Paraná u otro punto.",
+        "Nombre del importador o despachante si ya está definido.",
+        "Fecha objetivo de embarque y si la operación incluye cabezales o accesorios.",
       ],
     },
     processSteps: {
-      eyebrow: "Trabajo antes de mover la maquina",
-      title: "Como convertimos un link de venta en un plan de exportacion",
+      eyebrow: "Cuatro decisiones antes de mover la unidad",
+      title: "Cómo convertimos un link de venta en un plan de exportación",
       intro:
-        "La secuencia evita cotizar a ciegas. Primero se filtra la maquina, luego se arma ruta y alcance.",
+        "El orden importa. Primero filtramos por la ley, después armamos ruta y alcance.",
       steps: [
         {
-          title: "Revisar la unidad",
+          title: "Filtrar por antigüedad y origen",
           description:
-            "Miramos modelo, ano, horas, ubicacion, vendedor, dimensiones y condicion visible.",
+            "Validamos año de fabricación, dimensiones, condición visible, vendedor y ubicación. Si la unidad supera los cinco años, lo decimos antes de avanzar.",
         },
         {
-          title: "Separar riesgos locales",
+          title: "Marcar responsabilidades locales",
           description:
-            "Marcamos lo que debe confirmar el importador paraguayo: edad, licencia, SENAVE, DNIT y despacho.",
+            "Listamos lo que confirma su despachante: Registro de Importadores ante MIC, Licencia Previa, DNIT, SENAVE y Tasa de Conservación de la Biodiversidad.",
         },
         {
-          title: "Armar tramo EE.UU.",
+          title: "Coordinar tramo EE.UU. y Canadá",
           description:
-            "Coordinamos retiro, preparacion, embalaje, carga y reserva maritima segun el equipo.",
+            "Retiro, desmontaje, embalaje, certificado fitosanitario USDA APHIS o CFIA y reserva marítima hacia Buenos Aires.",
         },
         {
-          title: "Cotizar con alcance claro",
+          title: "Cotizar con alcance separado",
           description:
-            "La propuesta muestra que cubre Meridian y que queda para broker/importador antes de nacionalizar.",
+            "El presupuesto separa el tramo Meridian del costo de despacho local. Sin esa separación no hay comparación honesta entre opciones.",
         },
       ],
     },
     credibility: {
-      eyebrow: "Sin inventar historial local",
-      title: "Confianza basada en operacion real, no en promesas",
+      eyebrow: "Operación verificable",
+      title: "Una propuesta que se sostiene con la unidad y la ruta concretas",
       intro:
-        "Para Paraguay usamos pruebas de capacidad global de Meridian y fuentes oficiales. No presentamos casos paraguayos si no hay prueba interna lista para publicar.",
+        "Antes de transferir fondos, conviene tener un mapa simple: año y estado de la máquina, costo de retiro y embalaje, certificación de origen, reserva marítima y responsabilidades del despachante en Paraguay.",
       pillars: [
         {
-          title: "Compra y exportacion en un solo flujo",
+          title: "Una sola contraparte en EE.UU. y Canadá",
           description:
-            "El mismo equipo puede coordinar vendedor, retiro, preparacion, documentos y reserva internacional.",
+            "Un equipo coordina vendedor, retiro, desmontaje, embalaje, documentos de exportación y reserva internacional.",
         },
         {
-          title: "Fuentes visibles",
+          title: "Disciplina regulatoria sobre Ley 7565/2025",
           description:
-            "La pagina enlaza la ley y referencias de ruta para que el comprador y su broker puedan revisar el marco.",
+            "Antigüedad, limpieza, certificación e inspección se filtran antes de mover fondos, no después.",
         },
         {
-          title: "Alcance separado",
+          title: "Cotización por alcance, no por suposición",
           description:
-            "La propuesta no mezcla flete internacional con tributos, despacho y costos locales no confirmados.",
+            "El flete internacional se separa de tributos, despacho y costos locales que define su despachante.",
         },
       ],
-      noteTitle: "Capacidad Meridian",
+      noteTitle: "Experiencia aplicada al caso",
       note:
-        "Meridian comunica experiencia global de exportacion. La pagina evita sugerir volumen especifico en Paraguay sin evidencia publicada.",
+        "Meridian ha coordinado más de 1.000 exportaciones a más de 40 países. Para Paraguay, la propuesta se arma con datos de la unidad y la Ley 7565/2025 como filtro inicial, no con una tarifa genérica.",
       projectGalleryLabel: "Ver proyectos y capacidades",
       projectGalleryDescription:
-        "La galeria muestra tipos de maquinaria y operaciones internacionales; no debe leerse como prueba especifica de Paraguay.",
+        "Tipos de equipos, embalajes y operaciones internacionales similares a las que se preparan para compradores agrícolas.",
       projectGalleryHref: "/projects",
     },
     faq: {
-      eyebrow: "Objeciones reales",
-      title: "Preguntas que conviene resolver antes de comprar",
+      eyebrow: "Objeciones reales antes del pago",
+      title: "Preguntas que conviene cerrar antes de comprar",
       intro:
-        "Estas respuestas ayudan a ordenar la conversacion con Meridian y con el importador local.",
+        "Estas respuestas ordenan la conversación con Meridian y con su despachante en Paraguay.",
       entries: [
         {
-          question: "Puedo importar a Paraguay una maquina agricola usada de mas de cinco anos?",
+          question: "¿Puedo importar una cosechadora con más de cinco años de antigüedad?",
           answer:
-            "La Ley 7565/2025 establece una antiguedad maxima para maquinaria agricola usada. Antes de comprar, el importador o broker paraguayo debe confirmar si la unidad especifica cumple por ano de fabricacion y categoria.",
+            "No bajo la Ley 7565/2025. El Artículo 4 fija una antigüedad máxima de cinco años contados desde el año de fabricación. La ley fue promulgada el 13 de noviembre de 2025; su reglamentación específica sigue en desarrollo, pero la edad límite aplica desde la promulgación.",
           category: "Paraguay",
         },
         {
-          question: "Que parte puede manejar Meridian?",
+          question: "¿Cómo funciona el tránsito por la Hidrovía Paraná-Paraguay en 2026?",
           answer:
-            "Meridian puede revisar la unidad, coordinar vendedor, retiro, preparacion, embalaje, documentacion de exportacion y flete internacional. El importador local confirma licencia, SENAVE, DNIT, despacho, tributos y costos locales.",
+            "La ruta normal es Costa Este o Houston de EE.UU. → Buenos Aires → Hidrovía → Asunción o Villeta, con un tránsito típico de 36 a 54 días. La bajante actual del río Paraguay limita el calado a 8-9 pies (frente a 10-12 normales) y reduce la capacidad por barcaza alrededor del 25%. Las previsiones indican que la bajante puede mantenerse hasta febrero o marzo de 2026.",
           category: "Paraguay",
         },
         {
-          question: "Que pasa si la maquina tiene tierra o restos vegetales?",
+          question: "¿Qué cubre Meridian y qué queda para mi despachante?",
           answer:
-            "Ese es un riesgo serio. La maquinaria usada debe prepararse limpia y con documentacion adecuada. Si hay residuos, plagas o limpieza insuficiente, el importador puede enfrentar inspecciones, costos o rechazo.",
+            "Meridian coordina compra asistida, retiro, desmontaje, embalaje, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva marítima hacia Buenos Aires. Su despachante o importador maneja el Registro de Importadores ante MIC, la Licencia Previa, la inspección final de SENAVE, DNIT, IVA, la Tasa de Conservación de la Biodiversidad y el despacho local.",
           category: "Paraguay",
         },
         {
-          question: "Meridian puede cotizar hasta Asuncion o Villeta?",
+          question: "¿Qué pasa si la unidad llega con tierra, restos vegetales o un odómetro manipulado?",
           answer:
-            "Podemos revisar la ruta y el alcance disponible para la operacion. Si se requiere tramo fluvial o entrega posterior, debe confirmarse con naviera, agente y broker antes de prometer precio final.",
+            "El Artículo 7 de la Ley 7565/2025 obliga a que la unidad llegue limpia y certificada, con métodos como hidrolavado, vapor, aire forzado o aspirado, desmontando partes cuando sea necesario. SENAVE inspecciona en destino y puede exigir desmontaje y pruebas. La manipulación de motor u odómetro y las maquinarias con volcadura están prohibidas: no se trata de un sobrecosto, sino de un rechazo.",
           category: "Paraguay",
         },
         {
-          question: "Conviene comprar en EE.UU. frente a Brasil o Argentina?",
+          question: "¿Conviene comprar en EE.UU. o en Brasil/Argentina?",
           answer:
-            "Depende de configuracion, ano, horas, disponibilidad y documentacion. EE.UU. puede tener sentido cuando el comprador busca una unidad especifica y acepta revisar el costo logistico completo antes de comprar.",
+            "Depende de la unidad. EE.UU. tiene profundidad en cosechadoras con cabezal draper, tractores de alta potencia con tecnología de precisión y paquetes completos. Brasil y Argentina son competitivos en precio cuando la configuración existe localmente. Con el filtro de cinco años, EE.UU. mantiene oferta de modelos 2021 en adelante.",
+          category: "Paraguay",
+        },
+        {
+          question: "¿Hay nuevos tributos asociados a la Ley 7565/2025?",
+          answer:
+            "Sí. La ley creó la Tasa para la Conservación de la Biodiversidad, escalada según antigüedad, tipo de motor, horas de uso, emisiones contaminantes y otros elementos potencialmente contaminantes. La determina SENAVE en cooperación con DNIT y la confirma su despachante para la unidad concreta.",
           category: "Paraguay",
         },
       ],
     },
     officialSources: [
       {
-        label: "Ley 7565/2025 - BACN",
+        label: "Ley Nº 7565/2025 — BACN",
         href: "https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados",
         description:
-          "Texto legal sobre maquinaria, equipos e implementos agricolas usados.",
+          "Texto oficial: cinco años máximo, registro de importadores, licencia previa, certificación, inspección y Tasa de Biodiversidad.",
       },
       {
-        label: "Paraguay-Parana Waterway - Trade.gov",
+        label: "DNIT — Dirección Nacional de Ingresos Tributarios",
+        href: "https://www.dnit.gov.py/",
+        description:
+          "Autoridad aduanera y tributaria. Sucesora de la antigua ANA por Ley 7143/2023.",
+      },
+      {
+        label: "SENAVE — Servicio Nacional de Calidad y Sanidad Vegetal",
+        href: "https://www.senave.gov.py/",
+        description:
+          "Autoridad fitosanitaria. Verifica certificación, limpieza e inspección de la maquinaria importada.",
+      },
+      {
+        label: "MIC — Ministerio de Industria y Comercio",
+        href: "https://www.mic.gov.py/",
+        description:
+          "Administra el Registro de Importadores de Maquinarias Usadas y la Licencia Previa de Importación.",
+      },
+      {
+        label: "Hidrovía Paraná-Paraguay — Trade.gov",
         href: "https://www.trade.gov/country-commercial-guides/paraguay-paraguay-parana-waterway-system",
         description:
-          "Referencia sobre la importancia del sistema fluvial para el comercio paraguayo.",
-      },
-      {
-        label: "Paraguay soybean summary - USDA IPAD",
-        href: "https://ipad.fas.usda.gov/countrysummary/default.aspx?id=PA",
-        description:
-          "Contexto agricola para dimensionar demanda, no prueba de clientes Meridian.",
+          "Referencia comercial sobre el sistema fluvial paraguayo y su importancia para el transporte de carga.",
       },
     ],
     resourceLinks: [
@@ -434,31 +458,31 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         label: "Compra asistida",
         href: "/services/equipment-sales",
         description:
-          "Para compradores que necesitan validar vendedor, maquina y paquete antes de exportar.",
+          "Para validar vendedor, máquina y paquete antes de comprometer fondos.",
       },
       {
-        label: "Maquinaria agricola",
+        label: "Maquinaria agrícola",
         href: "/services/agricultural",
         description:
-          "Alcance de embalaje, desmontaje y exportacion para equipos agricolas.",
+          "Alcance de embalaje, desmontaje y exportación para equipos agrícolas.",
       },
       {
         label: "Calculadora de flete",
         href: "/pricing/calculator",
         description:
-          "Referencia inicial para rutas soportadas; no reemplaza confirmacion local paraguaya.",
+          "Referencia para el tramo internacional cuando la ruta está soportada.",
       },
       {
         label: "Proyectos",
         href: "/projects",
         description:
-          "Ejemplos globales de capacidad operativa y tipos de equipos manejados.",
+          "Ejemplos de capacidad operativa y tipos de equipos manejados.",
       },
     ],
     cta: {
-      heading: "Antes de pagar una maquina en EE.UU., revise si sirve para Paraguay",
+      heading: "¿Tiene una máquina vista en EE.UU. para Paraguay?",
       description:
-        "Envieme el link, ano, horas, ubicacion y destino. Le diremos que podemos cotizar y que debe validar su broker/importador.",
+        "Envíenos el link, año de fabricación, horas, ubicación y destino. Confirmamos si entra dentro de la Ley 7565/2025 y separamos el tramo Meridian del costo que confirma su despachante.",
       whatsappLabel: "Revisar por WhatsApp",
       calculatorLabel: "Ver calculadora",
     },
@@ -472,9 +496,19 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       projectLibrary: "paraguay_project_library",
     },
     schema: {
-      serviceType: "Exportacion de maquinaria agricola usada de EE.UU. a Paraguay",
+      serviceType: "Exportación de maquinaria agrícola usada de EE.UU. a Paraguay",
       areaServed: "Paraguay",
-      mentions: ["Asuncion", "Villeta", "Alto Parana", "Itapua", "Ley 7565/2025", "SENAVE"],
+      mentions: [
+        "Asunción",
+        "Villeta",
+        "Alto Paraná",
+        "Itapúa",
+        "Ley 7565/2025",
+        "Hidrovía Paraná-Paraguay",
+        "SENAVE",
+        "DNIT",
+        "MIC",
+      ],
       datePublished: "2026-05-05",
       dateModified: "2026-05-05",
     },
@@ -528,7 +562,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "Costos posteriores a puerto si no fueron cotizados como parte del alcance.",
       ],
       scopeFootnote:
-        "La ventaja no es prometer despacho automatico. Es evitar que una maquina mal limpia o mal documentada llegue a inspeccion con problemas evitables.",
+        "El mejor momento para corregir limpieza, fotos, documentos y dimensiones es antes de que la maquina salga del vendedor.",
     },
     route: {
       eyebrow: "Montevideo como punto de entrada",
@@ -552,7 +586,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
             "La ruta maritima se arma segun origen, equipo, contenedor o flat rack, y fecha objetivo.",
         },
         {
-          title: "Handoff al despachante",
+          title: "Coordinacion con el despachante",
           description:
             "El comprador y su despachante confirman NCM, tributos, certificado, inspeccion y retiro local.",
         },
@@ -669,10 +703,10 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       ],
     },
     credibility: {
-      eyebrow: "Precision antes que promesa",
-      title: "Uruguay requiere una pagina sobria y verificable",
+      eyebrow: "Compra selectiva",
+      title: "EE.UU. vale la pena cuando la unidad justifica el flete",
       intro:
-        "La confianza se gana mostrando fuentes, alcance y limites. No necesitamos inflar la pagina con historial no probado.",
+        "Uruguay tiene alternativas regionales fuertes. La busqueda en EE.UU. debe concentrarse en unidades donde configuracion, horas, estado, tecnologia o documentacion compensan el costo logistico.",
       pillars: [
         {
           title: "Preparacion visible",
@@ -680,9 +714,9 @@ export const latamMarketPages: LatamMarketPageContent[] = [
             "Fotos, desmontaje, embalaje y documentacion ayudan al comprador y al despachante a revisar la operacion.",
         },
         {
-          title: "Fuentes oficiales",
+          title: "DGSA en el centro",
           description:
-            "La pagina cita DGSA y Trade.gov para separar hechos de opinion comercial.",
+            "Limpieza, certificado, tratamiento e inspeccion se tratan como parte de la compra, no como tramite posterior.",
         },
         {
           title: "Comparacion honesta",
@@ -690,12 +724,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
             "EE.UU. no se presenta como siempre mas barato; se presenta como opcion fuerte cuando la unidad correcta existe.",
         },
       ],
-      noteTitle: "Capacidad Meridian",
+      noteTitle: "Como trabajamos con Uruguay",
       note:
-        "Meridian muestra experiencia global de exportacion y mantiene el costo uruguayo final del lado del importador y su despachante.",
+        "Meridian revisa vendedor, maquina, ubicacion, preparacion y flete internacional. El comprador mantiene NCM, tributos y despacho local con su despachante uruguayo.",
       projectGalleryLabel: "Ver capacidades",
       projectGalleryDescription:
-        "La galeria ayuda a entender tipos de maquinaria y embalaje; no se usa como prueba de envios especificos a Uruguay.",
+        "Revise equipos, embalajes y operaciones internacionales que ayudan a dimensionar el trabajo logistico.",
       projectGalleryHref: "/projects",
     },
     faq: {
@@ -713,7 +747,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           question: "Que pasa si DGSA encuentra tierra o residuos?",
           answer:
-            "Puede requerir acciones adicionales y, en casos de incumplimiento, rechazo o reexportacion. Por eso la limpieza y la evidencia antes de embarcar importan.",
+            "Puede requerir acciones adicionales y, en casos de incumplimiento, rechazo o reexportacion. Por eso las fotos, la limpieza y la preparacion antes de embarcar importan.",
           category: "Uruguay",
         },
         {
@@ -827,18 +861,18 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     labels: sharedLabels,
     hero: {
       eyebrow: "Guia para compradores bolivianos",
-      heading: "Maquinaria agricola usada de EE.UU. a Bolivia con ruta y validacion local",
+      heading: "Maquinaria agricola usada de EE.UU. a Bolivia con ruta definida",
       description:
-        "Para Bolivia, la oportunidad esta en revisar la unidad correcta y no subestimar el tramo terrestre, el broker/importador y la documentacion. Meridian coordina el lado EE.UU. y ayuda a ordenar la informacion antes de que el comprador avance.",
+        "Para compradores en Santa Cruz y otras zonas agricolas, Meridian revisa la unidad en EE.UU., coordina retiro, preparacion, embalaje y flete internacional, y entrega la informacion que su broker/importador necesita para confirmar permisos, tributos y destino interior.",
       image: {
         src: "/images/project-jd-sprayer-port-crane.jpg",
         alt: "Pulverizadora agricola cargada con grua para exportacion internacional",
-        caption: "Ruta internacional y handoff local definidos antes de mover la maquina.",
+        caption: "Ruta internacional, puerto de transito y destino interior definidos antes de mover la maquina.",
       },
       highlights: [
         "Enfocada en Santa Cruz y compradores que buscan tractores, cosechadoras, sembradoras y equipos de precision.",
-        "Trata SENASAG y documentacion como puntos a confirmar, no como promesa cerrada.",
-        "Evita presentar beneficios tributarios o antiguedad como regla universal sin validacion local.",
+        "SENASAG, Aduana, incentivos y antiguedad se revisan con el broker/importador antes de embarcar.",
+        "La ruta se arma considerando puerto de transito, dimensiones, documentos y destino interior.",
       ],
       primaryCtaLabel: "Revisar ruta y elegibilidad",
       secondaryCtaLabel: "Calcular flete estimado",
@@ -847,21 +881,21 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       scopeIncluded: [
         "Revision de maquina, vendedor, ano, horas, ubicacion y dimensiones.",
         "Coordinacion de retiro, preparacion, embalaje, documentacion de exportacion y reserva internacional.",
-        "Separacion clara entre alcance Meridian y validaciones del broker/importador boliviano.",
+        "Resumen de datos para que el broker/importador boliviano confirme permisos, tributos y despacho.",
       ],
       scopeExcluded: [
         "Confirmacion final de SENASAG, Aduana Nacional, tributos, incentivos y despacho local.",
         "Entrega interior en Bolivia si no fue aprobada como parte del alcance cotizado.",
-        "Garantia de que un beneficio tributario o requisito de antiguedad aplica a la unidad.",
+        "Decision final sobre beneficios tributarios, antiguedad aplicable o clasificacion aduanera.",
       ],
       scopeFootnote:
-        "Para Bolivia, una respuesta honesta vale mas que una promesa rapida: primero se revisa la maquina, luego la ruta y despues lo que confirma el broker/importador.",
+        "Para Bolivia, el flete oceanico es solo una parte del costo. El destino interior y el broker/importador deben estar en la conversacion desde el primer mensaje.",
     },
     route: {
       eyebrow: "Destino sin litoral",
       title: "Bolivia requiere pensar en puerto de transito y destino interior",
       intro:
-        "La conversacion no debe quedarse en el flete oceanico. El comprador necesita saber como se movera la unidad hacia Bolivia y que parte del alcance queda confirmada localmente.",
+        "La ruta hacia Bolivia combina retiro en Norteamerica, flete internacional, puerto de transito y tramo posterior hacia el destino final. Cada parte cambia el costo y la responsabilidad de la operacion.",
       steps: [
         {
           title: "Origen en EE.UU.",
@@ -876,7 +910,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           title: "Puerto de transito",
           description:
-            "El uso de puerto de transito y el tramo posterior deben coordinarse con agentes y broker antes de prometer costo final.",
+            "El puerto de transito y el tramo posterior se coordinan con agentes y broker antes de cerrar el costo final.",
         },
         {
           title: "Destino boliviano",
@@ -889,9 +923,9 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     },
     compliance: {
       eyebrow: "Broker/importador confirmado",
-      title: "La documentacion boliviana no debe asumirse desde una pagina web",
+      title: "Lo que debe quedar confirmado antes de embarcar a Bolivia",
       intro:
-        "Bolivia tiene oportunidad comercial, pero las reglas practicas deben confirmarse por unidad, importador, clasificacion y tramite. La pagina usa fuentes oficiales para orientar la conversacion sin reemplazar al broker local.",
+        "Bolivia importa maquinaria agricola y concentra gran parte de su agricultura comercial en Santa Cruz. Para una compra usada, el comprador debe confirmar por unidad la clasificacion, permisos, tributos, incentivos y documentos con su broker/importador.",
       required: [
         "Revisar ano, horas, condicion, documentos y destino antes de comprar.",
         "Confirmar si la carga necesita documentacion fitosanitaria o sanitaria segun producto y autoridad aplicable.",
@@ -904,12 +938,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       ],
       avoid: [
         "Convertir una condicion de beneficio tributario en regla general de importacion.",
-        "Prometer exencion de IVA o incentivo vigente sin confirmacion 2026.",
+        "Asumir exencion de IVA o incentivo vigente sin confirmacion 2026.",
         "Comprar una unidad sin validar importador, ruta y destino interior.",
       ],
     },
     equipmentFocus: {
-      eyebrow: "Santa Cruz como senal comercial",
+      eyebrow: "Demanda agricola en Santa Cruz",
       title: "Equipos que pueden justificar busqueda en EE.UU.",
       intro:
         "Bolivia importa maquinaria agricola y concentra mucha agricultura comercial en Santa Cruz. La oportunidad esta en traer la unidad correcta con una ruta realista.",
@@ -956,9 +990,9 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       eyebrow: "Informacion minima para no cotizar a ciegas",
       title: "Que enviar si la maquina va a Bolivia",
       intro:
-        "La primera revision debe permitir separar oportunidad comercial, ruta posible y validaciones del broker/importador.",
+        "Con estos datos podemos revisar si la unidad merece avanzar, como saldria de EE.UU. y que debe confirmar el broker/importador antes del embarque.",
       items: [
-        "Link de dealer, subasta o vendedor.",
+        "Link de concesionario, subasta o vendedor.",
         "Marca, modelo, ano, horas y condicion visible.",
         "Ubicacion de retiro en EE.UU. o Canada.",
         "Destino en Bolivia: Santa Cruz, Cochabamba, La Paz u otro.",
@@ -981,7 +1015,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           title: "Identificar validaciones locales",
           description:
-            "Marcamos que debe confirmar el broker/importador: SENASAG, Aduana, tributos, incentivo y destino interior.",
+            "Listamos lo que debe confirmar el broker/importador: SENASAG, Aduana, tributos, incentivo y destino interior.",
         },
         {
           title: "Armar ruta internacional",
@@ -989,40 +1023,40 @@ export const latamMarketPages: LatamMarketPageContent[] = [
             "Cotizamos retiro, preparacion, embalaje, documentos y reserva segun alcance aprobado.",
         },
         {
-          title: "Separar el handoff boliviano",
+          title: "Definir la entrega operativa en Bolivia",
           description:
-            "La propuesta deja claro donde termina Meridian y que queda pendiente de confirmacion local.",
+            "Queda definido donde termina Meridian y que debe cerrar el equipo local antes de nacionalizar.",
         },
       ],
     },
     credibility: {
-      eyebrow: "Criterio comercial",
-      title: "Bolivia necesita una pagina cuidadosa, no sobrepromesas",
+      eyebrow: "Ruta antes que impulso",
+      title: "Bolivia exige claridad desde el primer mensaje",
       intro:
-        "La pagina debe atraer compradores serios, pero tambien filtrar operaciones que no estan listas para cotizar.",
+        "Una buena compra en EE.UU. solo funciona si la maquina, la ruta de transito y el destino boliviano se revisan juntos. El objetivo es evitar compras que parezcan atractivas en origen pero fallen por documentos, dimensiones o costo interior.",
       pillars: [
         {
           title: "Santa Cruz en el centro",
           description:
-            "El contenido habla al comprador agricola donde se concentra gran parte de la demanda comercial.",
+            "El flujo esta pensado para compradores agricolas que miran tractores, cosechadoras, sembradoras y tecnologia para produccion extensiva.",
         },
         {
-          title: "Validacion local explicita",
+          title: "Permisos definidos",
           description:
-            "La pagina reconoce que el broker/importador confirma permisos, tributos e incentivos.",
+            "SENASAG, Aduana, tributos e incentivos se tratan como puntos de decision del importador, no como supuestos de venta.",
         },
         {
-          title: "Operacion Meridian acotada",
+          title: "Entrega operativa clara",
           description:
-            "Meridian se presenta como socio del lado EE.UU. y exportacion, con handoff claro para Bolivia.",
+            "Meridian coordina el lado EE.UU. y exportacion; el tramo boliviano se confirma con el equipo local del comprador.",
         },
       ],
-      noteTitle: "Capacidad Meridian",
+      noteTitle: "Que aporta Meridian",
       note:
-        "Meridian puede coordinar compra, retiro, preparacion y exportacion internacional. La pagina no afirma historial especifico en Bolivia sin evidencia publicada.",
+        "Meridian aporta revision de unidad, coordinacion con vendedor, retiro, preparacion, embalaje y flete internacional, con informacion util para que el importador cierre el despacho local.",
       projectGalleryLabel: "Ver proyectos y servicios",
       projectGalleryDescription:
-        "Use la galeria para entender tipos de equipos manejados, no como prueba especifica de envios a Bolivia.",
+        "Revise tipos de equipos, embalajes y operaciones internacionales para dimensionar el trabajo logistico.",
       projectGalleryHref: "/projects",
     },
     faq: {
@@ -1046,7 +1080,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           question: "SENASAG aplica a toda maquinaria agricola usada?",
           answer:
-            "SENASAG es autoridad relevante en sanidad vegetal y documentacion fitosanitaria, pero el tramite especifico debe confirmarse segun producto, condicion y operacion. No conviene asumirlo desde una pagina web.",
+            "SENASAG es autoridad relevante en sanidad vegetal y documentacion fitosanitaria, pero el tramite especifico depende del producto, condicion y operacion. Su broker/importador debe confirmarlo para la unidad concreta.",
           category: "Bolivia",
         },
         {
