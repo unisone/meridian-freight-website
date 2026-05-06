@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
+import { getAllEquipmentSlugs } from "@/content/equipment";
 import {
   getLatamMarketPage,
   latamMarketPages,
   latamMarketSlugs,
 } from "@/content/latam-market-pages";
+import { getAllServices } from "@/content/services";
 
 function flattenText(value: unknown): string {
   if (typeof value === "string") return value;
@@ -89,6 +91,37 @@ describe("LATAM market buyer hub content", () => {
       expect(
         hrefs.some((href) => href === "/equipment/sprayers" || href === "/equipment/planters"),
       ).toBe(true);
+    }
+  });
+
+  it("keeps buyer-hub internal links on supported localized route families", () => {
+    const supportedServicePaths = new Set(
+      getAllServices("es").map((service) => `/services/${service.slug}`),
+    );
+    const supportedEquipmentPaths = new Set(
+      getAllEquipmentSlugs().map((slug) => `/equipment/${slug}`),
+    );
+    const supportedStaticPaths = new Set(["/pricing/calculator", "/projects", "/contact"]);
+
+    for (const page of latamMarketPages) {
+      const hrefs = [
+        ...page.resourceLinks.map((item) => item.href),
+        ...page.equipmentFocus.items.map((item) => item.href),
+        page.credibility.projectGalleryHref,
+      ];
+
+      expect(hrefs).not.toContain("/projects/equipment/combines");
+
+      for (const href of hrefs) {
+        expect(href.startsWith("/")).toBe(true);
+
+        const isSupported =
+          supportedStaticPaths.has(href) ||
+          supportedServicePaths.has(href) ||
+          supportedEquipmentPaths.has(href);
+
+        expect(isSupported, `${page.slug} has unsupported internal link ${href}`).toBe(true);
+      }
     }
   });
 
