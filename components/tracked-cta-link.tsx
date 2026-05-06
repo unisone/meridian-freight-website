@@ -9,7 +9,7 @@ interface TrackedCtaLinkProps
   href: string;
   location: string;
   text: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 /**

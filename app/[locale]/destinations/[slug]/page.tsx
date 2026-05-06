@@ -21,11 +21,14 @@ import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
 import { KazakhstanMarketPage } from "@/components/destinations/kazakhstan-market-page";
+import { LatamMarketPage } from "@/components/destinations/latam-market-page";
 import { KAZAKHSTAN_PATH, kazakhstanMarketPage } from "@/content/kazakhstan-market";
+import { getLatamMarketPage, isLatamMarketSlug } from "@/content/latam-market-pages";
 import { SITE, COMPANY, CONTACT } from "@/lib/constants";
 import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { fetchScheduleContainersWithBookingData } from "@/lib/supabase-containers";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { buildLatamMarketMetadata } from "@/lib/latam-market-metadata";
 
 export const revalidate = 900; // Keep the Kazakhstan lane board aligned with the public schedule.
 
@@ -39,6 +42,19 @@ function getEquipmentSlug(name: string, locale: string): string | null {
 
 export function generateStaticParams() {
   return getAllDestinations('en').map((d) => ({ slug: d.slug }));
+}
+
+function getGenericDestinationLanguageAlternates(slug: string) {
+  const languages: Record<string, string> = {
+    en: `${SITE.url}/destinations/${slug}`,
+    ru: `${SITE.url}/ru/destinations/${slug}`,
+  };
+
+  if (!isLatamMarketSlug(slug)) {
+    languages.es = `${SITE.url}/es/destinations/${slug}`;
+  }
+
+  return languages;
 }
 
 export async function generateMetadata({
@@ -85,6 +101,11 @@ export async function generateMetadata({
     };
   }
 
+  const latamMarketPage = getLatamMarketPage(slug);
+  if (locale === "es" && latamMarketPage) {
+    return buildLatamMarketMetadata(latamMarketPage);
+  }
+
   const dest = getDestinationBySlug(slug, locale);
   if (!dest) return {};
   const localePath = locale === "en" ? "" : `/${locale}`;
@@ -95,11 +116,7 @@ export async function generateMetadata({
     keywords: dest.keywords,
     alternates: {
       canonical: `${SITE.url}${localePath}/destinations/${slug}`,
-      languages: {
-        en: `${SITE.url}/destinations/${slug}`,
-        es: `${SITE.url}/es/destinations/${slug}`,
-        ru: `${SITE.url}/ru/destinations/${slug}`,
-      },
+      languages: getGenericDestinationLanguageAlternates(slug),
     },
     openGraph: {
       locale: getOgLocale(locale),
@@ -127,6 +144,11 @@ export default async function DestinationPage({
   if (locale === "ru" && slug === "kazakhstan") {
     const containers = await fetchScheduleContainersWithBookingData();
     return <KazakhstanMarketPage containers={containers} />;
+  }
+
+  const latamMarketPage = getLatamMarketPage(slug);
+  if (locale === "es" && latamMarketPage) {
+    return <LatamMarketPage content={latamMarketPage} />;
   }
 
   const td = await getTranslations("DestinationDetailPage");

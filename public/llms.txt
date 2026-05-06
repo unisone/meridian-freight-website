@@ -23,6 +23,9 @@ Our key differentiator: one company handles the entire chain from seller to port
 - [Pricing](https://meridianexport.com/pricing): Reference rates for 60+ equipment types and 20+ shipping routes
 - [Freight Calculator](https://meridianexport.com/pricing/calculator): Free instant cost estimator for machinery export
 - [Argentina Buyer Guide](https://meridianexport.com/es/destinations/argentina): Spanish guide for Argentine buyers evaluating used U.S. ag equipment, port-to-port scope, and local-import handoff
+- [Paraguay Buyer Guide](https://meridianexport.com/es/destinations/paraguay): Spanish guide for Paraguayan buyers evaluating used U.S. agricultural machinery, Ley 7565/2025, cleaning, certificates, and Paraguay-Parana routing
+- [Uruguay Buyer Guide](https://meridianexport.com/es/destinations/uruguay): Spanish guide for Uruguayan buyers evaluating used U.S. agricultural machinery, Montevideo routing, DGSA Resolucion 98/016, cleaning, and inspection
+- [Bolivia Buyer Guide](https://meridianexport.com/es/destinations/bolivia): Spanish guide for Bolivian buyers evaluating used U.S. agricultural machinery, Santa Cruz demand, transit routing, SENASAG context, and broker/importador validation
 - [Projects](https://meridianexport.com/projects): Portfolio of completed exports — John Deere combines, Case IH headers, sprayers, excavators
 - [FAQ](https://meridianexport.com/faq): Answers to common questions about shipping timelines, container sizes, pricing, documentation
 - [About](https://meridianexport.com/about): Company history, locations, and differentiators
@@ -41,6 +44,7 @@ Latin America (Brazil, Colombia, Mexico), Middle East (UAE, Turkey, Saudi Arabia
 This website is available in three languages:
 - English (default): https://meridianexport.com
 - Spanish (Latin America): https://meridianexport.com/es
+- Spanish LATAM buyer hubs: Paraguay, Uruguay, Bolivia, and Argentina under https://meridianexport.com/es/destinations/
 - Russian (Kazakhstan/CIS): https://meridianexport.com/ru
 - Russian Kazakhstan buyer hub: https://meridianexport.com/ru/destinations/kazakhstan
 

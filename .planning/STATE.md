@@ -1,6 +1,7 @@
 # State
 
 **Last updated:** 2026-05-05
+**Last activity:** 2026-05-05 — Completed quick task 260505-pal: tracking event renames + hreflang alternates for LatAm hubs (P1-1, P1-2, P1-4)
 
 ## Current Position
 
@@ -48,6 +49,12 @@ v1.1 is complete. Reasonable next-milestone candidates (NOT scoped here):
 
 - None blocking. The 2 Dependabot moderate alerts are now: 1 closed (postcss), 1 documented residual (uuid).
 - Should-have requirements from v1.1 — REQ-05 not done, can roll into v1.2.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260505-pal | Tracking event renames + hreflang alternates for LatAm hubs (P1-1, P1-2, P1-4) | 2026-05-05 | 91394da | [260505-pal-tracking-event-renames-hreflang-alternat](./quick/260505-pal-tracking-event-renames-hreflang-alternat/) |
 
 ## Notes
 
