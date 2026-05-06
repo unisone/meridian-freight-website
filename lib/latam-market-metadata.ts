@@ -19,6 +19,7 @@ export function buildLatamMarketMetadata(page: LatamMarketPageContent): Metadata
     },
     robots: { index: true, follow: true },
     openGraph: {
+      type: "website",
       locale: getOgLocale("es"),
       title: `${page.seo.title} | ${SITE.name}`,
       description: page.seo.description,

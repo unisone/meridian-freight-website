@@ -170,8 +170,8 @@ const servicesEs: Service[] = [
   },
   {
     slug: "agricultural",
-    title: "Servicios de Equipo Agrícola",
-    shortTitle: "Equipo Agrícola",
+    title: "Servicios de maquinaria agrícola",
+    shortTitle: "Maquinaria agrícola",
     description:
       "Manejo especializado de maquinaria agrícola incluyendo cosechadoras, tractores, sembradoras, pulverizadoras y equipo de labranza.",
     longDescription:
