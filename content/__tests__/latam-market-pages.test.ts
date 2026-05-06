@@ -136,6 +136,8 @@ describe("LATAM market buyer hub content", () => {
     expect(bolivia).toContain("Permiso Fitosanitario");
     expect(bolivia).toContain("Repuestos y componentes John Deere");
     expect(bolivia).toContain("broker o importador");
+    expect(bolivia).toContain("Su broker/importador confirma en Bolivia");
+    expect(bolivia).toContain("Documentos para revisar con su broker/importador");
     expect(bolivia).toContain("confirmar");
     expect(bolivia).toContain(
       "Para bienes de capital incluidos en regímenes de incentivo fiscal, la antigüedad puede ser determinante.",

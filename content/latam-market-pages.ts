@@ -972,7 +972,11 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "aduana nacional padrón importadores bolivia",
       ],
     },
-    labels: sharedLabels,
+    labels: {
+      ...sharedLabels,
+      localSideConfirms: "Su broker/importador confirma en Bolivia",
+      sourceLinks: "Documentos para revisar con su broker/importador",
+    },
     hero: {
       eyebrow: "Guía para compradores bolivianos",
       heading: "Importar maquinaria agrícola usada de EE.UU. a Bolivia",
