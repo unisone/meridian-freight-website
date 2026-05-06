@@ -70,7 +70,7 @@
       "Contact": "Contacto",
       "Machinery Dismantling & Packing": "Desmontaje y Embalaje de Maquinaria",
       "Container Loading & Export": "Carga en Contenedor y Exportación",
-      "Agricultural Equipment": "Equipo Agrícola",
+      "Agricultural Equipment": "Maquinaria agrícola",
       "Equipment Sourcing & Procurement": "Búsqueda y adquisición de equipos",
       "Export Documentation": "Documentación de Exportación",
       "Warehouse & Storage": "Almacén y bodega"
@@ -98,7 +98,7 @@
     "nav": {
       "Machinery Dismantling & Packing": "Desmontaje y Embalaje de Maquinaria",
       "Container Loading & Export": "Carga en Contenedor y Exportación",
-      "Agricultural Equipment": "Equipo Agrícola",
+      "Agricultural Equipment": "Maquinaria agrícola",
       "Equipment Sourcing & Procurement": "Búsqueda y adquisición de equipos",
       "Export Documentation": "Documentación de Exportación",
       "Warehouse & Storage": "Almacén y bodega"
@@ -529,7 +529,7 @@
     "suggestedLinksHeading": "Busca alguno de estos?",
     "machineryPacking": "Embalaje y Desmontaje de Maquinaria",
     "containerLoading": "Carga en Contenedor y Exportación",
-    "agriculturalEquipment": "Equipo Agrícola",
+    "agriculturalEquipment": "Maquinaria agrícola",
     "shipToBrazil": "Enviar a Brasil",
     "shipToUAE": "Enviar a EAU",
     "shipToTurkey": "Enviar a Turquía",

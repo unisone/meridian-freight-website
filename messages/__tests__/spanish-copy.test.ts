@@ -34,6 +34,7 @@ describe("Spanish message catalog copy", () => {
       /Equipos que Enviamos/,
       /Lo Que Necesita Saber/,
       /lo que necesita saber/i,
+      /Equipo Agrícola/,
       /¿{2,}/,
       /Ã|Â/,
     ];
@@ -45,6 +46,7 @@ describe("Spanish message catalog copy", () => {
     expect(text).toContain("Enlaces rápidos");
     expect(text).toContain("Búsqueda y adquisición de equipos");
     expect(text).toContain("Almacén y bodega");
+    expect(text).toContain("Maquinaria agrícola");
     expect(text).toContain("Hablamos inglés, español, ruso y árabe");
     expect(text).toContain("tráfico");
     expect(text).toContain("análisis");

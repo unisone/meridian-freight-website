@@ -12,6 +12,8 @@ describe("LATAM destination metadata", () => {
       expect(metadata.alternates?.languages).toEqual({
         es: `${SITE.url}${page.path}`,
       });
+      expect(metadata.robots).toEqual({ index: true, follow: true });
+      expect((metadata.openGraph as { type?: string }).type).toBe("website");
     }
   });
 

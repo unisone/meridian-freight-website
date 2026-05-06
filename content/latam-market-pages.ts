@@ -885,6 +885,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     ],
     resourceLinks: [
       {
+        label: "Compra asistida",
+        href: "/services/equipment-sales",
+        description:
+          "Para validar vendedor, máquina y paquete antes de comprometer fondos.",
+      },
+      {
         label: "Servicio agrícola",
         href: "/services/agricultural",
         description:
@@ -1087,13 +1093,13 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           linkLabel: "Ver sembradoras",
         },
         {
-          title: "Pulverizadoras autopropulsadas",
+          title: "Repuestos y componentes John Deere",
           summary:
-            "Pulverizadoras con tecnología GPS, control automático de boquillas y alta despeje para cultivos altos.",
+            "Componentes de cosechadora, repuestos OEM y paquetes de piezas que pueden consolidarse aparte de la máquina principal.",
           reason:
-            "Las comunidades menonitas y los productores grandes de Santa Cruz buscan configuraciones específicas; EE.UU. y Brasil compiten cuando la unidad existe en inventario.",
-          href: "/equipment/sprayers",
-          linkLabel: "Ver pulverizadoras",
+            "Cuando la máquina ya está en Bolivia o el tiempo de campaña no permite esperar una unidad completa, una cotización separada de repuestos puede ser más útil que forzar una operación mayor.",
+          href: "/projects",
+          linkLabel: "Ver proyectos con repuestos",
         },
       ],
     },
@@ -1300,6 +1306,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         href: "/pricing/calculator",
         description:
           "Referencia para el tramo internacional cuando la ruta está soportada.",
+      },
+      {
+        label: "Proyectos",
+        href: "/projects",
+        description:
+          "Ejemplos de capacidad operativa, embalaje y componentes manejados.",
       },
       {
         label: "Contacto",

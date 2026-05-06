@@ -66,6 +66,32 @@ describe("LATAM market buyer hub content", () => {
     }
   });
 
+  it("keeps required internal links available on each buyer hub", () => {
+    const requiredLinks = [
+      "/services/equipment-sales",
+      "/services/agricultural",
+      "/pricing/calculator",
+      "/projects",
+      "/equipment/combines",
+      "/equipment/tractors",
+    ];
+
+    for (const page of latamMarketPages) {
+      const hrefs = [
+        ...page.resourceLinks.map((item) => item.href),
+        ...page.equipmentFocus.items.map((item) => item.href),
+      ];
+
+      for (const href of requiredLinks) {
+        expect(hrefs).toContain(href);
+      }
+
+      expect(
+        hrefs.some((href) => href === "/equipment/sprayers" || href === "/equipment/planters"),
+      ).toBe(true);
+    }
+  });
+
   it("keeps the Paraguay Hidrovía and terminal copy durable", () => {
     const paraguay = flattenText(getLatamMarketPage("paraguay"));
 
@@ -108,12 +134,14 @@ describe("LATAM market buyer hub content", () => {
     const bolivia = flattenText(getLatamMarketPage("bolivia"));
     expect(bolivia).toContain("SENASAG");
     expect(bolivia).toContain("Permiso Fitosanitario");
+    expect(bolivia).toContain("Repuestos y componentes John Deere");
     expect(bolivia).toContain("broker o importador");
     expect(bolivia).toContain("confirmar");
     expect(bolivia).toContain(
       "Para bienes de capital incluidos en regímenes de incentivo fiscal, la antigüedad puede ser determinante.",
     );
     expect(bolivia.toLowerCase()).not.toContain("tope universal de 10 años");
+    expect(bolivia.toLowerCase()).not.toContain("límite universal de 10 años");
     expect(bolivia.toLowerCase()).not.toContain("limite universal de 10 años");
     expect(bolivia).not.toContain("Bolivia exige máximo 10 años");
     expect(bolivia).not.toContain("Bolivia exige máximo diez años");

@@ -46,6 +46,7 @@ const EQUIPMENT_ICON_BY_HREF: Record<string, LucideIcon> = {
   "/equipment/planters": Sprout,
   "/equipment/sprayers": SprayCan,
   "/services/equipment-sales": Layers,
+  "/projects": FileText,
 };
 
 const CREDIBILITY_PILLAR_ICONS: LucideIcon[] = [Network, Scale, ReceiptText];
