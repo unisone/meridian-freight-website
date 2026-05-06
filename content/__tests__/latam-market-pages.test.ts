@@ -36,6 +36,14 @@ describe("LATAM market buyer hub content", () => {
     }
   });
 
+  it("keeps SEO titles and descriptions within search-result limits", () => {
+    for (const page of latamMarketPages) {
+      expect(page.seo.title.length).toBeLessThanOrEqual(60);
+      expect(page.seo.description.length).toBeGreaterThanOrEqual(120);
+      expect(page.seo.description.length).toBeLessThanOrEqual(160);
+    }
+  });
+
   it("uses structured WhatsApp prefills that qualify the lead", () => {
     const requiredFields = [
       "Necesito cotizar:",
@@ -90,6 +98,7 @@ describe("LATAM market buyer hub content", () => {
   it("locks the country-specific compliance strategies", () => {
     const paraguay = flattenText(getLatamMarketPage("paraguay"));
     expect(paraguay).toContain("Ley 7565/2025");
+    expect(paraguay).toContain("cinco años");
     expect(paraguay.toLowerCase()).not.toContain("pending");
 
     const uruguay = flattenText(getLatamMarketPage("uruguay"));
@@ -97,6 +106,8 @@ describe("LATAM market buyer hub content", () => {
     expect(uruguay).toContain("Resolución 98/016");
 
     const bolivia = flattenText(getLatamMarketPage("bolivia"));
+    expect(bolivia).toContain("SENASAG");
+    expect(bolivia).toContain("Permiso Fitosanitario");
     expect(bolivia).toContain("broker o importador");
     expect(bolivia).toContain("confirmar");
     expect(bolivia).toContain(
@@ -113,20 +124,39 @@ describe("LATAM market buyer hub content", () => {
   it("includes the requested FAQ depth questions by country", () => {
     const expectedQuestions: Record<string, string[]> = {
       paraguay: [
-        "¿Qué datos necesita mi despachante antes de emitir la Licencia Previa?",
+        "¿Puedo importar una cosechadora con más de cinco años de antigüedad?",
+        "¿Qué documentos necesita mi despachante antes de emitir la Licencia Previa?",
+        "¿Cómo funciona el tránsito por la Hidrovía Paraná-Paraguay?",
+        "¿Qué cubre Meridian y qué queda para mi despachante?",
+        "¿Qué pasa si la unidad llega con tierra, restos vegetales o un odómetro manipulado?",
         "¿Qué pasa si la unidad tiene accesorios, cabezal o draper?",
-        "¿Pueden cotizar repuestos John Deere por separado?",
+        "¿Conviene comprar en EE.UU. o en Brasil/Argentina?",
+        "¿Hay nuevos tributos asociados a la Ley 7565/2025?",
         "¿La calculadora incluye DNIT, SENAVE o la Tasa de Biodiversidad?",
+        "¿También cotizan repuestos John Deere por separado?",
       ],
       uruguay: [
-        "¿Qué diferencia hay entre cotización a Montevideo y costo nacionalizado?",
+        "¿Meridian entrega la maquinaria nacionalizada en Uruguay?",
+        "¿Qué exige la Resolución DGSA 98/016?",
+        "¿Qué pasa si la máquina llega con tierra, restos vegetales o plagas?",
         "¿Pueden coordinar limpieza/desmontaje antes del certificado fitosanitario?",
+        "¿Cuál es la diferencia entre cotización a Montevideo y costo nacionalizado?",
+        "¿Qué arancel, TGA o impuestos aplican a maquinaria agrícola usada?",
         "¿Cuándo conviene comprar en EE.UU. frente a Brasil o Argentina?",
+        "¿También manejan repuestos John Deere?",
+        "¿Qué datos necesitan para cotizar una cosechadora o tractor?",
       ],
       bolivia: [
-        "¿Qué debe confirmar el broker antes de comprar?",
+        "¿Por qué Bolivia necesita una ruta especial?",
+        "¿Qué debe confirmar mi broker antes de comprar?",
+        "¿La regla de 10 años aplica a toda maquinaria agrícola usada?",
+        "¿Qué pasó con la tasa cero/IVA de 2025?",
+        "¿Qué documentos ayudan a respaldar antigüedad y condición?",
         "¿Qué cambia si el destino es Santa Cruz versus La Paz o Cochabamba?",
-        "¿Qué documentos del vendedor ayudan a respaldar antigüedad y condición?",
+        "¿Qué rol tiene SENASAG?",
+        "¿Meridian nacionaliza la maquinaria en Bolivia?",
+        "¿También manejan repuestos John Deere?",
+        "¿Cuánto tarda una operación?",
       ],
     };
 

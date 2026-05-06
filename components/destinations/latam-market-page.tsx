@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DarkCta } from "@/components/dark-cta";
 import { LatamRouteDiagram } from "@/components/destinations/latam-route-diagram";
+import { JsonLdScript } from "@/components/json-ld-script";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
@@ -33,6 +34,7 @@ import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { TrustBar } from "@/components/trust-bar";
 import type { LatamMarketPageContent } from "@/content/latam-market-pages";
 import { COMPANY, CONTACT, SITE } from "@/lib/constants";
+import { encodeJsonLd } from "@/lib/json-ld";
 
 interface LatamMarketPageProps {
   content: LatamMarketPageContent;
@@ -233,18 +235,9 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLdScript encodedJson={encodeJsonLd(webPageJsonLd)} />
+      <JsonLdScript encodedJson={encodeJsonLd(serviceJsonLd)} />
+      <JsonLdScript encodedJson={encodeJsonLd(faqJsonLd)} />
 
       <PageHero
         variant="dark"

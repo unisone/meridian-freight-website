@@ -1,6 +1,8 @@
 import { Link } from "@/i18n/navigation";
 import { ChevronRight, Home } from "lucide-react";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-json-ld";
+import { encodeJsonLd } from "@/lib/json-ld";
+import { JsonLdScript } from "@/components/json-ld-script";
 import { useTranslations } from "next-intl";
 
 interface BreadcrumbItem {
@@ -27,10 +29,7 @@ export function Breadcrumbs({ items, locale, currentPath }: BreadcrumbsProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLdScript encodedJson={encodeJsonLd(jsonLd)} />
       <nav aria-label={t("breadcrumbLabel")} className="py-4">
         <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
           <li>
