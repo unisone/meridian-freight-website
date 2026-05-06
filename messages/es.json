@@ -720,10 +720,10 @@
     "breadcrumb": "Equipos",
     "eyebrow": "Equipos que Exportamos",
     "heading": "<accent>Tipos</accent> de equipos que exportamos",
-    "description": "Exportamos todo tipo de maquinaria pesada y equipo agrícola desde EE.UU. y Canadá. Seleccione su tipo de equipo para ver precios, marcas, detalles de embalaje y rutas de envío disponibles.",
+    "description": "Exportamos todo tipo de maquinaria pesada y maquinaria agrícola desde EE.UU. y Canadá. Seleccione su tipo de equipo para ver precios, marcas, detalles de embalaje y rutas de envío disponibles.",
     "from": "Desde",
-    "ctaHeading": "No Ve Su Equipo?",
-    "ctaDescription": "Enviamos cualquier tipo de maquinaria pesada o equipo agrícola. Envíenos los detalles y le cotizaremos en 24 horas.",
+    "ctaHeading": "¿No ve su equipo?",
+    "ctaDescription": "Enviamos cualquier tipo de maquinaria pesada o maquinaria agrícola. Envíenos los detalles y le cotizaremos en 24 horas.",
     "ctaButton": "Solicitar Cotización"
   },
   "EquipmentDetailPage": {

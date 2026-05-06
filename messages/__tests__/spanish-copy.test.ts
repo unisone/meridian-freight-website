@@ -34,7 +34,7 @@ describe("Spanish message catalog copy", () => {
       /Equipos que Enviamos/,
       /Lo Que Necesita Saber/,
       /lo que necesita saber/i,
-      /Equipo Agrícola/,
+      /equipo agrícola/i,
       /¿{2,}/,
       /Ã|Â/,
     ];
