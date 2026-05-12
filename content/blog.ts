@@ -15,6 +15,189 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "import-farm-machinery-united-states-paraguay",
+    title: "How to Import Farm Machinery from the United States to Paraguay",
+    metaTitle: "How to Import Farm Machinery from the USA to Paraguay",
+    metaDescription:
+      "A practical guide to importing farm machinery from the United States to Paraguay: Ley 7565/2025, route options, documents, costs, and buyer responsibilities.",
+    keywords: [
+      "how to import farm machinery from USA to Paraguay",
+      "import used agricultural machinery Paraguay",
+      "ship farm equipment from USA to Paraguay",
+      "Ley 7565 machinery Paraguay",
+      "Paraguay farm machinery import guide",
+      "used combine harvester import Paraguay",
+    ],
+    publishedAt: "2026-05-12",
+    author: "Meridian Freight Team",
+    excerpt:
+      "A practical route, document, and responsibility checklist for Paraguayan buyers evaluating tractors, combines, planters, sprayers, and other farm machinery in the United States.",
+    category: "Destinations",
+    readingTimeMinutes: 9,
+    content: `## The Short Answer
+
+Importing farm machinery from the United States to Paraguay is possible, but the process is only predictable when three questions are answered before money changes hands:
+
+- Does the machine qualify under Paraguay's current used-machinery rules?
+- Which route fits the equipment size and final handoff plan?
+- Which costs belong to the U.S. export side, and which costs must be confirmed by the buyer's Paraguay broker or local carrier?
+
+This guide is written for buyers looking at U.S. tractors, combines, planters, sprayers, headers, and other agricultural machinery. It is not a replacement for a Paraguayan customs broker. Its purpose is to help you ask the right questions early so the purchase does not become confusing after the machine is already paid for.
+
+## Why Paraguayan Buyers Look at U.S. Farm Machinery
+
+Paraguay's agricultural economy depends on reliable machinery for soybeans, corn, wheat, rice, and livestock operations. Trade.gov notes that tractors, harvesting machinery, bulldozers, backhoes, and excavators are usually in high demand in Paraguay, and that Paraguay is one of the few Latin American markets that permits imports of used machinery.
+
+The United States is attractive because the market has deep inventory in late-model agricultural equipment: high-horsepower tractors, high-capacity combines, precision planters, self-propelled sprayers, draper headers, GPS/monitor packages, and parts availability. That does not mean every U.S. unit is a good purchase. Brazil or Argentina can be more competitive when the same configuration is already available regionally. The benefit of searching the United States is selection, maintenance history, and configuration depth.
+
+## Step 1: Check Ley 7565/2025 Before You Bid
+
+Paraguay's Ley 7565/2025 regulates the entry of used agricultural machinery, equipment, and implements. For a buyer, the practical takeaway is simple: do not treat age, cleaning, and certificates as afterthoughts.
+
+Before bidding on a machine, confirm:
+
+- **Manufacturing year:** the official law sets a five-year age limit for used agricultural machinery entering Paraguay.
+- **Clean condition:** the machine must be free of soil, plant residue, pests, and contamination risk.
+- **Origin certification:** cleaning, treatment, phytosanitary, or inspection documents may be required before shipment.
+- **Technical condition:** engine, odometer/hour meter, serial number, structural condition, and rollover history matter.
+- **Importer readiness:** the Paraguay importer and broker must confirm registry, prior license, DNIT, SENAVE, taxes, and destination-side handling.
+
+The safest sequence is to screen the machine first, confirm the import path with the Paraguay broker, and only then commit funds to the seller or auction.
+
+## Step 2: Gather the Information Needed for a Real Quote
+
+A freight quote is only useful if it is tied to a specific unit. Before asking for a serious estimate, collect:
+
+- Listing or auction link
+- Make, model, manufacturing year, serial number, and engine hours
+- Exact pickup location in the United States, including ZIP code
+- Photos of the full machine, tires/tracks, cab, engine area, undercarriage, serial plate, and attachments
+- Dimensions and weight if available
+- Accessories included, such as headers, drapers, GPS receivers, monitors, dual wheels, toolboxes, or spare parts
+- Final destination in Paraguay: Asunción, Villeta, Itapúa, Alto Paraná, Canindeyú, or another city or department
+- Name of the importer or Paraguay customs broker if already selected
+
+This information prevents one of the most common mistakes: comparing routes without knowing whether the machine fits a container, needs a flat rack, requires dismantling, or has attachments that change the plan.
+
+## Step 3: Choose the Route That Matches the Equipment
+
+Paraguay is landlocked, so the route decision matters more than it does for a coastal country. Trade.gov describes the Paraguay-Paraná waterway as a central corridor for Paraguayan trade, carrying nearly 80 percent of the country's trade. For machinery buyers, that means the "port" question is really a handoff question.
+
+### Route Option 1: Asunción or Villeta River-Port Handoff
+
+This route is usually easiest to understand from the buyer's side: the shipment is planned toward a Paraguay river-port handoff, commonly Asunción or Villeta depending on carrier, cargo type, and local coordination.
+
+It can be a good fit when:
+
+- The buyer wants the international freight scope to end in Paraguay.
+- The equipment fits the container or routing model available to Paraguay.
+- The buyer's broker is ready to handle destination clearance, taxes, inspection, and local pickup.
+
+The buyer still needs to confirm final delivery from the river port to farm, dealership, cooperative, or workshop.
+
+### Route Option 2: Paranagua, Brazil, Then Paraguay-Side Trucking
+
+For some oversize or flat-rack machinery, a Brazil-port option can be worth comparing, especially when the final destination is in Paraguay's eastern agricultural region. Paranagua is a major southern Brazil port with strong agricultural cargo flows.
+
+The key is scope discipline. A quote to a Brazil port is not the same as a delivered-to-farm Paraguay quote. The Paraguay-side trucking, Brazil transit handling, border process, Paraguay customs, and final unloading must be confirmed separately with the buyer's local team, broker, or trucking provider.
+
+This option can be useful, but it should never be evaluated as "cheaper" unless the local leg is included or clearly separated.
+
+### Route Option 3: Montevideo Pickup or Customer-Arranged Inland
+
+Montevideo can be useful when the buyer already has a local logistics network and wants a port handoff that they control from Uruguay onward. This can make sense for buyers with their own trucks, customs team, or established regional partners.
+
+The important distinction is that Montevideo is not Paraguay delivery. A CFR or port quote to Montevideo leaves the buyer responsible for Montevideo-to-Paraguay movement, Paraguay customs, taxes, and local delivery unless those services are separately quoted in writing.
+
+## Step 4: Prepare the U.S. Export Side
+
+Once the machine is approved for purchase and the route is selected, the U.S. side usually includes:
+
+- Seller coordination and pickup scheduling
+- Inland transport from the seller, dealer, farm, or auction yard
+- Dismantling if needed for container, flat rack, or road limits
+- Cleaning and preparation for inspection
+- Labeling, photo documentation, blocking, bracing, and loading
+- Commercial invoice and packing list
+- Bill of lading and carrier booking
+- AES/EEI export filing when required
+- Origin-side certificates or inspection documents required for the specific route and commodity
+
+For container-fit equipment, dismantling and packing discipline are critical. For oversize equipment, the route, port, flat-rack availability, and port-side handling become more important.
+
+## Step 5: Confirm What Your Paraguay Broker Handles
+
+The Paraguay side should be confirmed by a licensed local broker before shipment. Trade.gov notes that companies operating in Paraguay must contract a customs broker for import/export transactions.
+
+Your broker or importer should confirm:
+
+- Importer registration and tax status
+- Prior import license requirements
+- DNIT requirements
+- SENAVE inspection and phytosanitary handling
+- IVA and other applicable taxes or fees
+- Biodiversity-related fee treatment under Ley 7565/2025
+- Port, terminal, storage, demurrage, and local handling exposure
+- Whether final delivery to the farm or yard is included
+
+Do not assume that an ocean freight quote includes nationalization, local delivery, or taxes. Those are separate parts of the landed-cost picture.
+
+## What Costs Should You Budget For?
+
+A serious budget separates the cost into buckets:
+
+- **Equipment price:** what you pay the dealer, auction, or private seller.
+- **U.S. inland transport:** moving the machine from origin to the packing point or port.
+- **Dismantling, cleaning, packing, and loading:** depends on the machine and route.
+- **Ocean or multimodal freight:** container, flat rack, river leg, or port handoff depending on route.
+- **Documents and certificates:** export filings, inspection support, and route-specific paperwork.
+- **Insurance:** optional or required depending on the transaction and risk tolerance.
+- **Paraguay customs and taxes:** confirmed by the broker, not guessed from a generic freight quote.
+- **Local trucking and final delivery:** river port, Brazil port, or Montevideo onward movement if not included.
+
+This structure matters because a low port quote can become expensive if the missing local leg is large or poorly defined.
+
+## Common Mistakes to Avoid
+
+- Buying a machine before checking age and import eligibility.
+- Assuming a U.S. auction invoice is enough for Paraguay customs.
+- Comparing Asunción, Brazil, and Montevideo routes without separating local responsibilities.
+- Ignoring headers, drapers, dual wheels, GPS monitors, and spare parts in the packing plan.
+- Shipping a dirty machine and expecting the destination inspection to be routine.
+- Treating an ocean freight quote as a full landed-cost estimate.
+- Waiting until the machine reaches port before involving the Paraguay broker.
+
+## A Practical Pre-Purchase Checklist
+
+Before you send money for a U.S. machine, confirm:
+
+- Machine year, serial number, and hours are documented.
+- Photos show condition, attachments, and contamination risk.
+- Paraguay broker has reviewed eligibility and import requirements.
+- Route is chosen: Asunción/Villeta, Brazil-port comparison, or Montevideo pickup.
+- The quote clearly separates U.S. export scope from Paraguay-side costs.
+- Accessories and parts are listed before packing.
+- Cleaning, inspection, and certificate responsibilities are clear.
+- Final delivery responsibility is written down.
+
+## How Meridian Freight Fits Into This Process
+
+Meridian Freight helps buyers coordinate the U.S. side of the transaction: equipment review, seller communication, pickup, dismantling, packing, export documentation, and international freight planning. For Paraguay, the most useful role is not just "shipping a machine." It is helping the buyer separate the U.S. export scope from the Paraguay broker, tax, inspection, and local delivery scope.
+
+If you are evaluating a machine, send the listing, year, hours, pickup ZIP code, photos, attachments, and intended destination in Paraguay. A clear first message makes it possible to compare route options before the purchase becomes expensive to unwind.
+
+You can also review our [Paraguay buyer hub](/es/destinations/paraguay), [agricultural machinery export service](/services/agricultural), [assisted equipment purchase service](/services/equipment-sales), and [freight calculator](/pricing/calculator).
+
+## Sources
+
+- [Trade.gov: Paraguay agricultural sectors](https://www.trade.gov/country-commercial-guides/paraguay-agricultural-sectors)
+- [Trade.gov: Paraguay-Paraná waterway system](https://www.trade.gov/country-commercial-guides/paraguay-paraguay-parana-waterway-system)
+- [Trade.gov: Paraguay customs regulations](https://www.trade.gov/country-commercial-guides/paraguay-customs-regulations)
+- [Trade.gov: Paraguay import requirements and documentation](https://www.trade.gov/country-commercial-guides/paraguay-import-requirements-documentation)
+- [BACN: Ley Nº 7565/2025](https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados)
+- [ABC Rural: Importación de maquinarias usadas en alza](https://www.abc.com.py/negocios/abc-campo/2026/01/24/importacion-de-maquinarias-usadas-en-alza/)`,
+  },
+  {
     slug: "complete-guide-shipping-farm-equipment-usa",
     title: "Complete Guide to Shipping Farm Equipment from the USA",
     metaTitle:

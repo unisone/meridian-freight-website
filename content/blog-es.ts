@@ -2,6 +2,189 @@ import type { BlogPost } from "./blog";
 
 export const blogPostsEs: BlogPost[] = [
   {
+    slug: "import-farm-machinery-united-states-paraguay",
+    title: "Cómo importar maquinaria agrícola de Estados Unidos a Paraguay",
+    metaTitle: "Cómo importar maquinaria agrícola de EE.UU. a Paraguay",
+    metaDescription:
+      "Guía práctica para importar maquinaria agrícola de Estados Unidos a Paraguay: Ley 7565/2025, rutas, documentos, costos y responsabilidades.",
+    keywords: [
+      "importar maquinaria agricola usada de Estados Unidos a Paraguay",
+      "importar cosechadora usada USA Paraguay",
+      "enviar maquinaria agricola de Estados Unidos a Paraguay",
+      "Ley 7565 maquinaria agricola Paraguay",
+      "flete maquinaria agricola Paraguay",
+      "importar tractor usado desde USA a Paraguay",
+    ],
+    publishedAt: "2026-05-12",
+    author: "Meridian Freight Team",
+    excerpt:
+      "Una guía práctica de ruta, documentos y responsabilidades para compradores paraguayos que evalúan tractores, cosechadoras, sembradoras, pulverizadoras y otros equipos agrícolas en Estados Unidos.",
+    category: "Destinos",
+    readingTimeMinutes: 9,
+    content: `## Resumen rápido
+
+Importar maquinaria agrícola desde Estados Unidos a Paraguay es posible, pero la operación se vuelve predecible solo cuando tres preguntas quedan respondidas antes de pagar la unidad:
+
+- ¿La máquina cumple las reglas vigentes para maquinaria usada en Paraguay?
+- ¿Qué ruta corresponde según tamaño, tipo de carga y punto de entrega?
+- ¿Qué costos pertenecen al tramo de exportación desde EE.UU. y cuáles debe confirmar el despachante o transportista local en Paraguay?
+
+Esta guía está pensada para compradores que miran tractores, cosechadoras, sembradoras, pulverizadoras, cabezales y otros equipos agrícolas en Estados Unidos. No reemplaza al despachante paraguayo. Su objetivo es ordenar la decisión para que el comprador sepa qué confirmar antes de transferir fondos.
+
+## Por qué Paraguay mira maquinaria agrícola en Estados Unidos
+
+La agricultura paraguaya necesita maquinaria confiable para soja, maíz, trigo, arroz y operaciones ganaderas. Trade.gov indica que tractores, maquinaria de cosecha, bulldozers, retroexcavadoras y excavadoras suelen tener alta demanda en Paraguay, y que Paraguay está entre los pocos mercados latinoamericanos que permiten importar maquinaria usada.
+
+Estados Unidos es atractivo por la profundidad de inventario en equipos recientes: tractores de alta potencia, cosechadoras de gran capacidad, sembradoras de precisión, pulverizadoras autopropulsadas, cabezales draper, monitores, GPS y repuestos. Eso no significa que toda unidad en EE.UU. convenga. Brasil o Argentina pueden ser mejores si la misma configuración ya existe en la región. La ventaja de buscar en Estados Unidos está en selección, historial de mantenimiento y configuraciones específicas.
+
+## Paso 1: revise Ley 7565/2025 antes de ofertar
+
+La Ley 7565/2025 regula el ingreso a Paraguay de maquinaria, equipos e implementos agrícolas usados. Para el comprador, el punto práctico es claro: antigüedad, limpieza y certificados no son detalles para resolver después.
+
+Antes de ofertar o comprar, confirme:
+
+- **Año de fabricación:** la ley establece un límite de cinco años para maquinaria agrícola usada que ingresa a Paraguay.
+- **Condición de limpieza:** la máquina debe estar libre de tierra, restos vegetales, plagas y riesgos de contaminación.
+- **Certificación en origen:** pueden requerirse documentos de limpieza, tratamiento, certificado fitosanitario o inspección antes del embarque.
+- **Condición técnica:** motor, odómetro u horómetro, número de serie, estructura y antecedentes de vuelco importan.
+- **Importador preparado:** el importador y su despachante deben confirmar registro, licencia previa, DNIT, SENAVE, tributos y manejo en destino.
+
+La secuencia más segura es revisar la unidad, validar el camino de importación con el despachante en Paraguay y recién después comprometer fondos con vendedor o subasta.
+
+## Paso 2: reúna los datos para una cotización real
+
+Una cotización de flete solo sirve si está vinculada a una unidad concreta. Antes de pedir una estimación seria, prepare:
+
+- Link de subasta, concesionario o vendedor privado
+- Marca, modelo, año de fabricación, número de serie y horas
+- Ubicación exacta de retiro en Estados Unidos, con código postal
+- Fotos de máquina completa, neumáticos u orugas, cabina, motor, tren inferior, placa de serie y accesorios
+- Dimensiones y peso si están disponibles
+- Accesorios incluidos, como cabezal, draper, GPS, monitores, ruedas duales, cajas de herramientas o repuestos
+- Destino final en Paraguay: Asunción, Villeta, Itapúa, Alto Paraná, Canindeyú u otro punto
+- Nombre del importador o despachante si ya está definido
+
+Esto evita un error común: comparar rutas sin saber si la máquina entra en contenedor, requiere flat rack, necesita desmontaje o trae accesorios que cambian el plan.
+
+## Paso 3: elija la ruta según la máquina y el punto de entrega
+
+Paraguay no tiene salida directa al mar, por eso la ruta pesa más que en un país costero. Trade.gov describe la Hidrovía Paraguay-Paraná como un corredor central para el comercio paraguayo, con casi 80 por ciento del comercio del país. Para maquinaria, la pregunta de "puerto" es en realidad una pregunta de punto de entrega y responsabilidad.
+
+### Opción 1: entrega en puerto fluvial de Asunción o Villeta
+
+Es la ruta más fácil de entender desde el lado del comprador: el flete internacional se planifica hacia un punto fluvial en Paraguay, normalmente Asunción o Villeta según naviera, tipo de carga y coordinación local.
+
+Puede ser buena opción cuando:
+
+- El comprador quiere que el tramo internacional termine en Paraguay.
+- La maquinaria encaja en el modelo de contenedor o ruta disponible para Paraguay.
+- El despachante está listo para manejar nacionalización, tributos, inspección y retiro local.
+
+El comprador igual debe confirmar el movimiento final desde el puerto fluvial hasta campo, concesionario, cooperativa o taller.
+
+### Opción 2: Paranaguá, Brasil, y transporte local hacia Paraguay
+
+Para algunas máquinas sobredimensionadas o en flat rack, una opción por puerto brasileño puede valer la comparación, especialmente si el destino final está en la región agrícola oriental de Paraguay. Paranaguá es un puerto relevante del sur de Brasil con fuerte movimiento agroindustrial.
+
+La clave es separar responsabilidades. Una cotización a puerto brasileño no es una cotización entregada en campo en Paraguay. El transporte desde Brasil, tránsito, frontera, aduana paraguaya y descarga final deben confirmarse aparte con el equipo local del comprador, su despachante o el transportista.
+
+Esta opción puede ser útil, pero no debe evaluarse como más económica si el tramo local no está incluido o claramente separado.
+
+### Opción 3: retiro en Montevideo o tramo interior organizado por el comprador
+
+Montevideo puede servir cuando el comprador ya tiene red logística propia y quiere controlar el movimiento desde Uruguay. Esto puede tener sentido para compradores con camiones, equipo aduanero o socios regionales establecidos.
+
+La distinción importante: Montevideo no es entrega en Paraguay. Una cotización CFR o a puerto Montevideo deja al comprador responsable por el tramo Montevideo-Paraguay, nacionalización, tributos y entrega local salvo que esos servicios estén cotizados por escrito.
+
+## Paso 4: prepare el tramo de exportación en Estados Unidos
+
+Cuando la máquina está aprobada para compra y la ruta está elegida, el lado estadounidense suele incluir:
+
+- Coordinación con vendedor y agenda de retiro
+- Transporte interno desde concesionario, subasta, campo o vendedor privado
+- Desmontaje cuando lo exigen contenedor, flat rack o límites de carretera
+- Limpieza y preparación para inspección
+- Etiquetado, fotos, bloqueo, amarre y carga
+- Factura comercial y packing list
+- Bill of lading y reserva con naviera
+- Declaración AES/EEI cuando corresponde
+- Certificados o inspecciones de origen requeridos por la ruta y la unidad
+
+Para equipos que entran en contenedor, el desmontaje y embalaje son críticos. Para equipos sobredimensionados, pesan más la ruta, el puerto, disponibilidad de flat rack y manejo portuario.
+
+## Paso 5: confirme qué maneja su despachante en Paraguay
+
+El tramo paraguayo debe confirmarse con un despachante local antes del embarque. Trade.gov indica que las empresas que operan en Paraguay deben contratar un despachante de aduanas para operaciones de importación y exportación.
+
+Su despachante o importador debe confirmar:
+
+- Registro del importador y situación tributaria
+- Requisitos de licencia previa
+- Requisitos de DNIT
+- Inspección SENAVE y manejo fitosanitario
+- IVA y otros tributos o tasas aplicables
+- Tratamiento de la tasa vinculada a biodiversidad bajo Ley 7565/2025
+- Costos de puerto, terminal, almacenamiento, demoras y manejo local
+- Si la entrega final al campo o patio está incluida
+
+No asuma que una cotización marítima incluye nacionalización, entrega local o tributos. Son partes separadas del costo puesto en destino.
+
+## Qué costos conviene presupuestar
+
+Un presupuesto serio separa los costos por bloques:
+
+- **Precio de la máquina:** lo que paga al concesionario, subasta o vendedor.
+- **Transporte interno en EE.UU.:** traslado desde origen hasta punto de embalaje o puerto.
+- **Desmontaje, limpieza, embalaje y carga:** depende de la máquina y la ruta.
+- **Flete marítimo o multimodal:** contenedor, flat rack, tramo fluvial o entrega a puerto según ruta.
+- **Documentos y certificados:** trámites de exportación, inspección y papeles específicos.
+- **Seguro:** opcional o requerido según la operación y tolerancia al riesgo.
+- **Aduana y tributos en Paraguay:** los confirma el despachante, no una cotización genérica de flete.
+- **Transporte local y entrega final:** desde puerto fluvial, puerto brasileño o Montevideo si no está incluido.
+
+Esta separación importa porque una cotización baja a puerto puede resultar cara si el tramo local faltante es grande o no está bien definido.
+
+## Errores comunes
+
+- Comprar una máquina sin revisar antigüedad y elegibilidad.
+- Asumir que la factura de subasta alcanza para aduana paraguaya.
+- Comparar Asunción, Brasil y Montevideo sin separar responsabilidades locales.
+- Olvidar cabezales, drapers, ruedas duales, monitores, GPS y repuestos en el plan de carga.
+- Embarcar una máquina con tierra o residuos vegetales.
+- Tratar una cotización marítima como costo final nacionalizado.
+- Involucrar al despachante recién cuando la máquina ya llegó a puerto.
+
+## Checklist antes de enviar dinero
+
+Antes de pagar una máquina en Estados Unidos, confirme:
+
+- Año, número de serie y horas documentadas.
+- Fotos suficientes de condición, accesorios y riesgo de contaminación.
+- Revisión de elegibilidad por parte del despachante paraguayo.
+- Ruta elegida: Asunción/Villeta, comparación por Brasil o retiro en Montevideo.
+- Cotización separada entre tramo de exportación y costos en Paraguay.
+- Accesorios y repuestos listados antes del embalaje.
+- Responsabilidades de limpieza, inspección y certificados claras.
+- Entrega final escrita y asignada a una parte concreta.
+
+## Cómo entra Meridian Freight en este proceso
+
+Meridian Freight ayuda a coordinar el lado estadounidense de la operación: revisión de unidad, comunicación con vendedor, retiro, desmontaje, embalaje, documentación de exportación y planificación del flete internacional. Para Paraguay, el rol más útil no es solo "enviar una máquina". Es ayudar al comprador a separar el alcance de exportación desde EE.UU. del alcance del despachante, tributos, inspección y entrega local en Paraguay.
+
+Si está evaluando una máquina, envíe link, año, horas, código postal de retiro, fotos, accesorios y destino previsto en Paraguay. Un primer mensaje claro permite comparar rutas antes de que la compra sea difícil de revertir.
+
+También puede revisar nuestra [guía para compradores de Paraguay](/es/destinations/paraguay), el servicio de [exportación de maquinaria agrícola](/services/agricultural), la [compra asistida de equipos](/services/equipment-sales) y la [calculadora de flete](/pricing/calculator).
+
+## Fuentes
+
+- [Trade.gov: sectores agrícolas de Paraguay](https://www.trade.gov/country-commercial-guides/paraguay-agricultural-sectors)
+- [Trade.gov: sistema de la Hidrovía Paraguay-Paraná](https://www.trade.gov/country-commercial-guides/paraguay-paraguay-parana-waterway-system)
+- [Trade.gov: regulaciones aduaneras de Paraguay](https://www.trade.gov/country-commercial-guides/paraguay-customs-regulations)
+- [Trade.gov: requisitos y documentación de importación](https://www.trade.gov/country-commercial-guides/paraguay-import-requirements-documentation)
+- [BACN: Ley Nº 7565/2025](https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados)
+- [ABC Rural: importación de maquinarias usadas en alza](https://www.abc.com.py/negocios/abc-campo/2026/01/24/importacion-de-maquinarias-usadas-en-alza/)`,
+  },
+  {
     slug: "complete-guide-shipping-farm-equipment-usa",
     title:
       "Guia Completa para Enviar Maquinaria Agricola desde los Estados Unidos",
