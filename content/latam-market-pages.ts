@@ -1368,7 +1368,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
     locale: "es-CL",
     path: "/es/destinations/chile",
     seo: {
-      title: "Importar maquinaria agrícola usada de EE.UU. a Chile",
+      title: "Importar maquinaria usada a Chile",
       description:
         "SAG exige maquinaria usada limpia y libre de suelo. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. a San Antonio.",
       keywords: [
@@ -1378,20 +1378,20 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "sag maquinaria usada chile resolución 3103",
         "maquinaria agrícola usada san antonio chile",
         "certificado fitosanitario maquinaria usada chile",
-        "despachante aduana maquinaria agrícola chile",
+        "despachador de aduanas maquinaria agrícola chile",
         "repuestos john deere chile desde estados unidos",
       ],
     },
     labels: {
       ...sharedLabels,
-      localSideConfirms: "Su despachante confirma en Chile",
-      sourceLinks: "Documentos para revisar con su despachante",
+      localSideConfirms: "Su despachador de aduanas confirma en Chile",
+      sourceLinks: "Documentos para revisar con su despachador de aduanas",
     },
     hero: {
       eyebrow: "Guía para compradores chilenos",
       heading: "Importar maquinaria agrícola usada de EE.UU. a Chile",
       description:
-        "Chile tiene acceso marítimo directo por San Antonio y Valparaíso, pero la operación se define antes del embarque: limpieza SAG, revisión de documentación, dimensiones, embalaje y alcance claro con su despachante chileno.",
+        "Chile tiene acceso marítimo directo por San Antonio y Valparaíso, pero la operación se define antes del embarque: limpieza SAG, revisión de documentación, dimensiones, embalaje y alcance claro con su despachador de aduanas.",
       image: {
         src: "/images/project-jd-hydraflex-header.jpg",
         alt: "Cabezal John Deere HydraFlex preparado para exportación a Chile",
@@ -1400,7 +1400,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       highlights: [
         "Ruta marítima a San Antonio o Valparaíso con puerto final confirmado por naviera, dimensiones y destino interior.",
         "SAG exige maquinaria usada limpia, sin suelo, restos vegetales ni plagas reglamentadas antes de ingresar.",
-        "Alcance separado: Meridian coordina origen y exportación; su despachante confirma Aduana, SAG, tributos y retiro local.",
+        "Alcance separado: Meridian coordina origen y exportación; su despachador de aduanas confirma Aduana, SAG, tributos y retiro local.",
       ],
       primaryCtaLabel: "Cotizar por WhatsApp",
       secondaryCtaLabel: "Calcular flete estimado",
@@ -1411,12 +1411,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "Documentación de exportación, soporte para revisión SAG y reserva marítima hacia San Antonio o Valparaíso.",
       ],
       scopeExcluded: [
-        "Declaración de ingreso, clasificación arancelaria, tributos, IVA, acuerdos comerciales y honorarios del despachante.",
+        "Declaración de ingreso, clasificación arancelaria, tributos, IVA, acuerdos comerciales y honorarios del despachador de aduanas.",
         "Inspección SAG en punto de ingreso, tratamientos, limpieza adicional o reembarque si la autoridad lo exige.",
         "Entrega interior desde puerto a Santiago, O'Higgins, Maule, Ñuble, Biobío, La Araucanía u otro destino si no fue cotizada.",
       ],
       scopeFootnote:
-        "La cotización de Meridian ordena el tramo de origen y exportación. Los costos de nacionalización, inspección y retiro local se confirman en Chile con su despachante para la unidad concreta.",
+        "La cotización de Meridian ordena el tramo de origen y exportación. Los costos de nacionalización, inspección y retiro local se confirman en Chile con su despachador de aduanas para la unidad concreta.",
     },
     route: {
       eyebrow: "San Antonio, Valparaíso y zona central",
@@ -1442,7 +1442,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           title: "SAG, Aduana y retiro interior",
           description:
-            "Su despachante coordina vistos buenos, declaración, inspección SAG, pagos locales y retiro hacia la zona agrícola o taller.",
+            "Su despachador de aduanas coordina vistos buenos, declaración, inspección SAG, pagos locales y retiro hacia la zona agrícola o taller.",
         },
       ],
       note:
@@ -1461,14 +1461,14 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         "Inspección al arribo por inspectores SAG en el punto de ingreso.",
       ],
       brokerConfirmed: [
-        "Declaración de ingreso ante Aduana y si corresponde usar despachante por el valor y carácter comercial de la operación.",
+        "Declaración de ingreso ante Aduana y si corresponde usar despachador de aduanas por el valor y carácter comercial de la operación.",
         "Clasificación arancelaria, derechos, IVA, acuerdos comerciales, recargos o exenciones aplicables a la unidad concreta.",
         "Vistos buenos sectoriales, coordinación SAG, costos portuarios y retiro local desde San Antonio o Valparaíso.",
         "Si la máquina requiere tratamiento, limpieza adicional, custodia o acción correctiva después de la inspección.",
       ],
       avoid: [
         "Embarcar una unidad con suelo, paja, semillas o restos vegetales visibles en ruedas, orugas, plataformas o tolvas.",
-        "Asumir que un acuerdo comercial elimina todos los costos locales: Aduana, SAG, puerto y despachante se calculan por partida y operación.",
+        "Asumir que un acuerdo comercial elimina todos los costos locales: Aduana, SAG, puerto y despachador de aduanas se calculan por partida y operación.",
         "Cotizar entrega interior sin revisar permisos, dimensiones, sobreancho y transportista local.",
         "Comprar antes de validar si la unidad puede limpiarse y documentarse bien en origen.",
       ],
@@ -1521,14 +1521,14 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       eyebrow: "Información mínima para no cotizar a ciegas",
       title: "Qué enviar por WhatsApp para revisar una unidad para Chile",
       intro:
-        "Con una ficha completa podemos revisar ruta, limpieza, dimensiones y lo que su despachante debe confirmar con SAG y Aduana antes de comprar.",
+        "Con una ficha completa podemos revisar ruta, limpieza, dimensiones y lo que su despachador de aduanas debe confirmar con SAG y Aduana antes de comprar.",
       items: [
         "Link de subasta, concesionario o vendedor privado.",
         "Marca, modelo, año, horas y número de serie si está disponible.",
         "Ubicación de retiro en EE.UU. o Canadá con código postal.",
         "Fotos de ruedas, orugas, tolvas, cabezal, plataforma, interior, tren de rodaje y zonas con posible acumulación de suelo.",
         "Destino en Chile: Santiago, O'Higgins, Maule, Ñuble, Biobío, La Araucanía, Los Lagos u otro punto.",
-        "Si ya tiene despachante chileno y puerto preferido (San Antonio o Valparaíso).",
+        "Si ya tiene despachador de aduanas en Chile y puerto preferido (San Antonio o Valparaíso).",
         "Lista de accesorios, cabezales, repuestos o componentes que viajan junto con la unidad.",
       ],
     },
@@ -1551,7 +1551,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           title: "Separar responsabilidades",
           description:
-            "Meridian toma el tramo de origen y exportación; su despachante confirma Aduana, SAG, tributos, vistos buenos y retiro local.",
+            "Meridian toma el tramo de origen y exportación; su despachador de aduanas confirma Aduana, SAG, tributos, vistos buenos y retiro local.",
         },
         {
           title: "Cotizar con alcance cerrado",
@@ -1564,7 +1564,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       eyebrow: "Operación verificable",
       title: "Chile necesita preparación, no una promesa de precio",
       intro:
-        "Antes de transferir fondos, conviene tener un mapa simple: estado de la máquina, limpieza posible, dimensiones, costo de retiro y embalaje, puerto confirmado y responsabilidades del despachante chileno.",
+        "Antes de transferir fondos, conviene tener un mapa simple: estado de la máquina, limpieza posible, dimensiones, costo de retiro y embalaje, puerto confirmado y responsabilidades del despachador de aduanas.",
       pillars: [
         {
           title: "Experiencia real hacia Chile",
@@ -1579,7 +1579,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           title: "Cotización por alcance, no por suposición",
           description:
-            "El flete internacional se separa de Aduana, SAG, puerto, despachante y retiro interior definidos en Chile.",
+            "El flete internacional se separa de Aduana, SAG, puerto, despachador de aduanas y retiro interior definidos en Chile.",
         },
       ],
       noteTitle: "Experiencia aplicada al caso",
@@ -1594,7 +1594,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       eyebrow: "Preguntas reales antes del embarque",
       title: "Cuestiones que conviene cerrar antes de comprar",
       intro:
-        "Estas respuestas ordenan la conversación con Meridian y con su despachante en Chile.",
+        "Estas respuestas ordenan la conversación con Meridian y con su despachador de aduanas en Chile.",
       entries: [
         {
           question: "¿Qué exige SAG para maquinaria usada que entra a Chile?",
@@ -1611,7 +1611,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           question: "¿La cotización incluye nacionalización en Chile?",
           answer:
-            "No como alcance estándar. Meridian coordina compra asistida, retiro, desmontaje, embalaje, documentación de exportación y flete internacional. Su despachante chileno confirma declaración de ingreso, clasificación, derechos, IVA, SAG, costos portuarios y retiro local.",
+            "No. La cotización estándar de Meridian coordina compra asistida, retiro, desmontaje, embalaje, documentación de exportación y flete internacional. Su despachador de aduanas confirma declaración de ingreso, clasificación, derechos, IVA, SAG, costos portuarios y retiro local.",
           category: "Chile",
         },
         {
@@ -1627,7 +1627,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           category: "Chile",
         },
         {
-          question: "¿Qué debe confirmar mi despachante antes de comprar?",
+          question: "¿Qué debe confirmar mi despachador de aduanas antes de comprar?",
           answer:
             "Debe confirmar clasificación arancelaria, documentos requeridos, derechos, IVA, posibles beneficios de origen, recargos o restricciones para maquinaria usada, coordinación SAG, costos portuarios y retiro desde San Antonio o Valparaíso. También debe revisar si hacen falta vistos buenos sectoriales adicionales.",
           category: "Chile",
@@ -1635,7 +1635,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           question: "¿El TLC EE.UU.-Chile elimina todos los costos?",
           answer:
-            "No conviene asumirlo. Un acuerdo comercial puede afectar derechos para una partida y origen concretos, pero no elimina por sí solo IVA, costos portuarios, honorarios del despachante, inspección SAG, transporte interior ni eventuales medidas fitosanitarias. Eso se confirma por unidad.",
+            "No conviene asumirlo. Un acuerdo comercial puede afectar derechos para una partida y origen concretos, pero no elimina por sí solo IVA, costos portuarios, honorarios del despachador de aduanas, inspección SAG, transporte interior ni eventuales medidas fitosanitarias. Eso se confirma por unidad.",
           category: "Chile",
         },
         {
@@ -1653,7 +1653,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           question: "¿Qué datos necesitan para revisar una unidad?",
           answer:
-            "Envíe link del anuncio, marca, modelo, año, horas, número de serie si está disponible, ubicación en EE.UU. o Canadá, fotos de limpieza y tren de rodaje, accesorios incluidos, destino en Chile, puerto preferido y datos del despachante si ya está definido.",
+            "Envíe link del anuncio, marca, modelo, año, horas, número de serie si está disponible, ubicación en EE.UU. o Canadá, fotos de limpieza y tren de rodaje, accesorios incluidos, destino en Chile, puerto preferido y datos del despachador de aduanas si ya está definido.",
           category: "Chile",
         },
       ],
@@ -1666,10 +1666,10 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           "Requisitos fitosanitarios para importación, admisión temporal y tránsito de maquinaria usada.",
       },
       {
-        label: "Servicio Nacional de Aduanas — importación e impuestos",
-        href: "https://www.aduana.cl/viajeros-internacionales/aduana/2007-02-28/143620.html",
+        label: "Servicio Nacional de Aduanas — normas generales",
+        href: "https://www.aduana.cl/capitulo-1-normas-generales/aduana/2007-02-15/151856.html",
         description:
-          "Referencia oficial sobre derechos, IVA, límites de declaración simplificada y uso de despachador de aduanas.",
+          "Definiciones oficiales de importación, derechos de aduana, despacho de mercancías y despachador de aduana.",
       },
       {
         label: "Puerto San Antonio — operación portuaria",

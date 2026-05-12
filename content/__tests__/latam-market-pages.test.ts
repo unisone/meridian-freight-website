@@ -187,7 +187,7 @@ describe("LATAM market buyer hub content", () => {
     expect(chile).toContain("SAG");
     expect(chile).toContain("Resolución 3.103/2016");
     expect(chile).toContain("libre de suelo, restos vegetales y plagas reglamentadas");
-    expect(chile).toContain("Su despachante confirma en Chile");
+    expect(chile).toContain("Su despachador de aduanas confirma en Chile");
     expect(chile).not.toContain("libre de aranceles");
     expect(chile).not.toContain("costo final nacionalizado");
   });
@@ -234,6 +234,7 @@ describe("LATAM market buyer hub content", () => {
         "¿Qué pasa si SAG encuentra suelo, restos vegetales o plagas?",
         "¿La cotización incluye nacionalización en Chile?",
         "¿San Antonio es siempre el puerto correcto?",
+        "¿Qué debe confirmar mi despachador de aduanas antes de comprar?",
         "¿El TLC EE.UU.-Chile elimina todos los costos?",
         "¿Conviene comprar en EE.UU. frente a proveedores europeos o chinos?",
         "¿También manejan repuestos John Deere?",
