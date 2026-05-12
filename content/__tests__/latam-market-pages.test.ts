@@ -287,6 +287,7 @@ describe("LATAM market buyer hub content", () => {
       /sin inventar/i,
       /historial no probado/i,
       /prueba interna/i,
+      /referencia interna/i,
       /prueba especifica/i,
       /evidencia publicada/i,
       /no debe leerse/i,

@@ -1623,7 +1623,7 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         {
           question: "¿Cuánto demora un envío a San Antonio?",
           answer:
-            "Depende del origen, puerto de salida, tipo de carga y naviera. Como referencia interna, Meridian envió un cabezal John Deere HydraFlex a Santiago en flat rack en 32 días por la ruta del Canal de Panamá. Para una unidad nueva se confirma el tránsito con la naviera antes de cotizar.",
+            "Depende del origen, puerto de salida, tipo de carga y naviera. Como antecedente operativo, Meridian envió un cabezal John Deere HydraFlex a Santiago en flat rack en 32 días por la ruta del Canal de Panamá. Para una unidad nueva se confirma el tránsito con la naviera antes de cotizar.",
           category: "Chile",
         },
         {
