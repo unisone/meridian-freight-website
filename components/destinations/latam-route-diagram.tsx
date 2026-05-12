@@ -1,5 +1,6 @@
 import { Anchor, Plane, Ship, Truck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { LatamMarketSlug } from "@/content/latam-market-pages";
 
 interface RouteStep {
   title: string;
@@ -10,12 +11,12 @@ interface LatamRouteDiagramProps {
   /** Four route legs: origin → transit → ... → destination */
   steps: RouteStep[];
   /** Country slug — drives accent color */
-  country: "paraguay" | "uruguay" | "bolivia";
+  country: LatamMarketSlug;
   /** Step number label (e.g. "Paso") */
   stepLabel: string;
 }
 
-const ACCENT: Record<LatamRouteDiagramProps["country"], { bg: string; ring: string; line: string; chip: string }> = {
+const ACCENT: Record<LatamMarketSlug, { bg: string; ring: string; line: string; chip: string }> = {
   paraguay: {
     bg: "bg-rose-500",
     ring: "ring-rose-200",
@@ -33,6 +34,12 @@ const ACCENT: Record<LatamRouteDiagramProps["country"], { bg: string; ring: stri
     ring: "ring-emerald-200",
     line: "from-emerald-200 via-emerald-500 to-emerald-200",
     chip: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/60",
+  },
+  chile: {
+    bg: "bg-blue-600",
+    ring: "ring-blue-200",
+    line: "from-blue-200 via-red-400 to-blue-200",
+    chip: "bg-blue-50 text-blue-700 ring-1 ring-blue-200/60",
   },
 };
 

@@ -1,6 +1,6 @@
 import type { FaqEntry } from "@/content/faq";
 
-export type LatamMarketSlug = "paraguay" | "uruguay" | "bolivia";
+export type LatamMarketSlug = "paraguay" | "uruguay" | "bolivia" | "chile";
 
 type LinkItem = {
   label: string;
@@ -1360,6 +1360,395 @@ export const latamMarketPages: LatamMarketPageContent[] = [
       ],
       datePublished: "2026-05-05",
       dateModified: "2026-05-05",
+    },
+  },
+  {
+    slug: "chile",
+    country: "Chile",
+    locale: "es-CL",
+    path: "/es/destinations/chile",
+    seo: {
+      title: "Importar maquinaria agrícola usada de EE.UU. a Chile",
+      description:
+        "SAG exige maquinaria usada limpia y libre de suelo. Meridian coordina compra, retiro, embalaje y flete desde EE.UU. a San Antonio.",
+      keywords: [
+        "importar maquinaria agrícola usada de estados unidos a chile",
+        "importar tractor usado desde usa a chile",
+        "importar cosechadora usada estados unidos chile",
+        "sag maquinaria usada chile resolución 3103",
+        "maquinaria agrícola usada san antonio chile",
+        "certificado fitosanitario maquinaria usada chile",
+        "despachante aduana maquinaria agrícola chile",
+        "repuestos john deere chile desde estados unidos",
+      ],
+    },
+    labels: {
+      ...sharedLabels,
+      localSideConfirms: "Su despachante confirma en Chile",
+      sourceLinks: "Documentos para revisar con su despachante",
+    },
+    hero: {
+      eyebrow: "Guía para compradores chilenos",
+      heading: "Importar maquinaria agrícola usada de EE.UU. a Chile",
+      description:
+        "Chile tiene acceso marítimo directo por San Antonio y Valparaíso, pero la operación se define antes del embarque: limpieza SAG, revisión de documentación, dimensiones, embalaje y alcance claro con su despachante chileno.",
+      image: {
+        src: "/images/project-jd-hydraflex-header.jpg",
+        alt: "Cabezal John Deere HydraFlex preparado para exportación a Chile",
+        caption: "Cabezal HydraFlex enviado a Santiago, Chile, en flat rack por la ruta del Canal de Panamá.",
+      },
+      highlights: [
+        "Ruta marítima a San Antonio o Valparaíso con puerto final confirmado por naviera, dimensiones y destino interior.",
+        "SAG exige maquinaria usada limpia, sin suelo, restos vegetales ni plagas reglamentadas antes de ingresar.",
+        "Alcance separado: Meridian coordina origen y exportación; su despachante confirma Aduana, SAG, tributos y retiro local.",
+      ],
+      primaryCtaLabel: "Cotizar por WhatsApp",
+      secondaryCtaLabel: "Calcular flete estimado",
+      whatsappMessage: buildQualifiedWhatsappMessage("Chile"),
+      scopeIncluded: [
+        "Compra asistida y coordinación con vendedor en EE.UU. o Canadá (subasta, concesionario o privado).",
+        "Retiro en origen, desmontaje técnico, etiquetado, embalaje, fotos de condición y carga.",
+        "Documentación de exportación, soporte para revisión SAG y reserva marítima hacia San Antonio o Valparaíso.",
+      ],
+      scopeExcluded: [
+        "Declaración de ingreso, clasificación arancelaria, tributos, IVA, acuerdos comerciales y honorarios del despachante.",
+        "Inspección SAG en punto de ingreso, tratamientos, limpieza adicional o reembarque si la autoridad lo exige.",
+        "Entrega interior desde puerto a Santiago, O'Higgins, Maule, Ñuble, Biobío, La Araucanía u otro destino si no fue cotizada.",
+      ],
+      scopeFootnote:
+        "La cotización de Meridian ordena el tramo de origen y exportación. Los costos de nacionalización, inspección y retiro local se confirman en Chile con su despachante para la unidad concreta.",
+    },
+    route: {
+      eyebrow: "San Antonio, Valparaíso y zona central",
+      title: "La ruta es directa, pero el puerto se define por carga y destino",
+      intro:
+        "San Antonio concentra una parte clave del movimiento de contenedores de la macrozona central y sirve a Santiago y a los valles agrícolas del centro-sur. Valparaíso también puede ser opción según naviera, tipo de carga, calendario y destino interior. La decisión se toma por unidad, no por costumbre.",
+      steps: [
+        {
+          title: "Origen en EE.UU. o Canadá → puerto de salida",
+          description:
+            "Validamos ubicación, dimensiones, peso, necesidad de desmontaje y si conviene 40HC, flat rack o carga consolidada antes de mover la unidad.",
+        },
+        {
+          title: "Ruta marítima por Canal de Panamá",
+          description:
+            "Para salidas desde Costa Este o Golfo, el tránsito a San Antonio o Valparaíso suele planificarse por Panamá; el calendario final lo confirma la naviera.",
+        },
+        {
+          title: "Ingreso por San Antonio o Valparaíso",
+          description:
+            "El puerto final depende de servicio disponible, terminal, tipo de contenedor, sobredimensión, costos locales y destino interior.",
+        },
+        {
+          title: "SAG, Aduana y retiro interior",
+          description:
+            "Su despachante coordina vistos buenos, declaración, inspección SAG, pagos locales y retiro hacia la zona agrícola o taller.",
+        },
+      ],
+      note:
+        "La experiencia de Meridian incluye un cabezal John Deere HydraFlex enviado a Santiago, Chile, en flat rack en 32 días. Ese antecedente ayuda a dimensionar operaciones similares, pero cada unidad se cotiza con ruta y naviera confirmadas.",
+    },
+    compliance: {
+      eyebrow: "SAG Resolución 3.103/2016",
+      title: "Limpieza, inspección y responsabilidad local antes de embarcar",
+      intro:
+        "La Resolución 3.103/2016 de SAG regula la importación, admisión temporal y tránsito de maquinaria usada. La unidad debe llegar limpia, libre de suelo, restos vegetales y plagas reglamentadas; si no cumple, SAG puede aplicar medidas fitosanitarias y el importador asume costos o reembarque.",
+      required: [
+        "Limpieza interna y externa en origen por hidrolavado, vapor, aire forzado, aspirado u otro método adecuado, desmontando partes si es necesario.",
+        "Maquinaria libre de suelo, restos vegetales y plagas reglamentadas antes de llegar al punto de ingreso.",
+        "Embalaje de madera y material de acomodación alineado con regulaciones fitosanitarias aplicables.",
+        "Fotos y datos de condición suficientes para revisar tren de rodaje, plataformas, tolvas, ruedas, orugas y puntos donde se acumula tierra.",
+        "Inspección al arribo por inspectores SAG en el punto de ingreso.",
+      ],
+      brokerConfirmed: [
+        "Declaración de ingreso ante Aduana y si corresponde usar despachante por el valor y carácter comercial de la operación.",
+        "Clasificación arancelaria, derechos, IVA, acuerdos comerciales, recargos o exenciones aplicables a la unidad concreta.",
+        "Vistos buenos sectoriales, coordinación SAG, costos portuarios y retiro local desde San Antonio o Valparaíso.",
+        "Si la máquina requiere tratamiento, limpieza adicional, custodia o acción correctiva después de la inspección.",
+      ],
+      avoid: [
+        "Embarcar una unidad con suelo, paja, semillas o restos vegetales visibles en ruedas, orugas, plataformas o tolvas.",
+        "Asumir que un acuerdo comercial elimina todos los costos locales: Aduana, SAG, puerto y despachante se calculan por partida y operación.",
+        "Cotizar entrega interior sin revisar permisos, dimensiones, sobreancho y transportista local.",
+        "Comprar antes de validar si la unidad puede limpiarse y documentarse bien en origen.",
+      ],
+    },
+    equipmentFocus: {
+      eyebrow: "Categorías donde EE.UU. puede competir",
+      title: "Chile compra por configuración, tecnología y preparación",
+      intro:
+        "El mercado chileno es competitivo y no siempre favorece maquinaria grande. EE.UU. cobra sentido cuando el comprador busca configuración específica, tecnología de precisión, repuestos o un paquete que no aparece igual en proveedores regionales, europeos o chinos.",
+      items: [
+        {
+          title: "Cabezales draper y plataformas",
+          summary:
+            "Cabezales John Deere, MacDon y plataformas que requieren embalaje rígido, cunas, protección de molinete y control de medidas.",
+          reason:
+            "Meridian ya preparó un cabezal HydraFlex hacia Santiago; este tipo de carga exige más cuidado de embalaje que una tarifa genérica.",
+          href: "/equipment/combines",
+          linkLabel: "Ver cosechadoras y cabezales",
+        },
+        {
+          title: "Tractores con tecnología de precisión",
+          summary:
+            "Tractores 150-350 hp con autoguiado, hidráulica específica, cabina y compatibilidad con implementos.",
+          reason:
+            "Chile valora eficiencia, trazabilidad y reducción de costos; la unidad correcta debe justificar flete y nacionalización.",
+          href: "/equipment/tractors",
+          linkLabel: "Ver tractores",
+        },
+        {
+          title: "Pulverizadoras y equipos de aplicación",
+          summary:
+            "Pulverizadoras autopropulsadas o equipos de aplicación con control de secciones, GPS y documentación clara.",
+          reason:
+            "La demanda por automatización y uso eficiente de insumos hace relevante revisar tecnología, estado y soporte antes de comprar.",
+          href: "/equipment/sprayers",
+          linkLabel: "Ver pulverizadoras",
+        },
+        {
+          title: "Repuestos y componentes John Deere",
+          summary:
+            "Partes OEM, componentes de cabezal, tren de alimentación, electrónica y paquetes consolidados para taller.",
+          reason:
+            "Cuando la máquina ya está en Chile, una cotización de repuestos puede resolver la urgencia sin mover una unidad completa.",
+          href: "/projects",
+          linkLabel: "Ver proyectos y componentes",
+        },
+      ],
+    },
+    sendUsThis: {
+      eyebrow: "Información mínima para no cotizar a ciegas",
+      title: "Qué enviar por WhatsApp para revisar una unidad para Chile",
+      intro:
+        "Con una ficha completa podemos revisar ruta, limpieza, dimensiones y lo que su despachante debe confirmar con SAG y Aduana antes de comprar.",
+      items: [
+        "Link de subasta, concesionario o vendedor privado.",
+        "Marca, modelo, año, horas y número de serie si está disponible.",
+        "Ubicación de retiro en EE.UU. o Canadá con código postal.",
+        "Fotos de ruedas, orugas, tolvas, cabezal, plataforma, interior, tren de rodaje y zonas con posible acumulación de suelo.",
+        "Destino en Chile: Santiago, O'Higgins, Maule, Ñuble, Biobío, La Araucanía, Los Lagos u otro punto.",
+        "Si ya tiene despachante chileno y puerto preferido (San Antonio o Valparaíso).",
+        "Lista de accesorios, cabezales, repuestos o componentes que viajan junto con la unidad.",
+      ],
+    },
+    processSteps: {
+      eyebrow: "Cuatro decisiones antes de mover la unidad",
+      title: "Cómo ordenamos una compra hacia Chile",
+      intro:
+        "La secuencia correcta reduce riesgo: primero unidad y limpieza, después puerto, documentación y alcance local.",
+      steps: [
+        {
+          title: "Validar unidad y limpieza posible",
+          description:
+            "Revisamos condición, dimensiones, accesorios y zonas de acumulación de suelo. Si la unidad no puede limpiarse bien en origen, lo marcamos antes de reservar flete.",
+        },
+        {
+          title: "Definir puerto y contenedor",
+          description:
+            "Comparamos San Antonio, Valparaíso, 40HC, flat rack o consolidado según medidas, peso, calendario y destino interior.",
+        },
+        {
+          title: "Separar responsabilidades",
+          description:
+            "Meridian toma el tramo de origen y exportación; su despachante confirma Aduana, SAG, tributos, vistos buenos y retiro local.",
+        },
+        {
+          title: "Cotizar con alcance cerrado",
+          description:
+            "El presupuesto separa compra asistida, retiro, desmontaje, embalaje, documentación y flete internacional de los costos que se pagan en Chile.",
+        },
+      ],
+    },
+    credibility: {
+      eyebrow: "Operación verificable",
+      title: "Chile necesita preparación, no una promesa de precio",
+      intro:
+        "Antes de transferir fondos, conviene tener un mapa simple: estado de la máquina, limpieza posible, dimensiones, costo de retiro y embalaje, puerto confirmado y responsabilidades del despachante chileno.",
+      pillars: [
+        {
+          title: "Experiencia real hacia Chile",
+          description:
+            "Meridian preparó y movió un cabezal John Deere HydraFlex hacia Santiago en flat rack, con cunas de madera y bloqueo de componentes.",
+        },
+        {
+          title: "Disciplina sobre SAG",
+          description:
+            "La limpieza se trata como parte central de la compra. Suelo o restos vegetales no son un detalle operativo: pueden cambiar el resultado al ingreso.",
+        },
+        {
+          title: "Cotización por alcance, no por suposición",
+          description:
+            "El flete internacional se separa de Aduana, SAG, puerto, despachante y retiro interior definidos en Chile.",
+        },
+      ],
+      noteTitle: "Experiencia aplicada al caso",
+      note:
+        "Meridian ha coordinado más de 1.000 exportaciones a más de 40 países. Para Chile, la propuesta se arma con datos de la unidad, ruta San Antonio o Valparaíso y revisión SAG, no con una tarifa genérica.",
+      projectGalleryLabel: "Ver proyectos y capacidades",
+      projectGalleryDescription:
+        "Incluye el caso del cabezal HydraFlex enviado a Santiago y otros ejemplos de embalaje, flat rack, contenedores y repuestos.",
+      projectGalleryHref: "/projects",
+    },
+    faq: {
+      eyebrow: "Preguntas reales antes del embarque",
+      title: "Cuestiones que conviene cerrar antes de comprar",
+      intro:
+        "Estas respuestas ordenan la conversación con Meridian y con su despachante en Chile.",
+      entries: [
+        {
+          question: "¿Qué exige SAG para maquinaria usada que entra a Chile?",
+          answer:
+            "SAG exige que la maquinaria usada llegue limpia, libre de suelo, restos vegetales y plagas reglamentadas. La limpieza debe hacerse en origen con hidrolavado, vapor, aire forzado, aspirado u otro método adecuado, desmontando partes si es necesario. La unidad queda sujeta a inspección en el punto de ingreso.",
+          category: "Chile",
+        },
+        {
+          question: "¿Qué pasa si SAG encuentra suelo, restos vegetales o plagas?",
+          answer:
+            "SAG puede aplicar medidas fitosanitarias según el riesgo detectado. La normativa indica que el importador asume los costos por medidas exigidas y el reembarque si la maquinaria usada es rechazada. Por eso se revisan fotos, limpieza y puntos de acumulación antes de embarcar.",
+          category: "Chile",
+        },
+        {
+          question: "¿La cotización incluye nacionalización en Chile?",
+          answer:
+            "No como alcance estándar. Meridian coordina compra asistida, retiro, desmontaje, embalaje, documentación de exportación y flete internacional. Su despachante chileno confirma declaración de ingreso, clasificación, derechos, IVA, SAG, costos portuarios y retiro local.",
+          category: "Chile",
+        },
+        {
+          question: "¿San Antonio es siempre el puerto correcto?",
+          answer:
+            "No siempre. San Antonio es el puerto principal para mucha carga de la macrozona central, pero Valparaíso puede ser mejor según naviera, terminal, tipo de contenedor, medidas, calendario y destino interior. La ruta se define después de revisar la unidad.",
+          category: "Chile",
+        },
+        {
+          question: "¿Cuánto demora un envío a San Antonio?",
+          answer:
+            "Depende del origen, puerto de salida, tipo de carga y naviera. Como referencia interna, Meridian envió un cabezal John Deere HydraFlex a Santiago en flat rack en 32 días por la ruta del Canal de Panamá. Para una unidad nueva se confirma el tránsito con la naviera antes de cotizar.",
+          category: "Chile",
+        },
+        {
+          question: "¿Qué debe confirmar mi despachante antes de comprar?",
+          answer:
+            "Debe confirmar clasificación arancelaria, documentos requeridos, derechos, IVA, posibles beneficios de origen, recargos o restricciones para maquinaria usada, coordinación SAG, costos portuarios y retiro desde San Antonio o Valparaíso. También debe revisar si hacen falta vistos buenos sectoriales adicionales.",
+          category: "Chile",
+        },
+        {
+          question: "¿El TLC EE.UU.-Chile elimina todos los costos?",
+          answer:
+            "No conviene asumirlo. Un acuerdo comercial puede afectar derechos para una partida y origen concretos, pero no elimina por sí solo IVA, costos portuarios, honorarios del despachante, inspección SAG, transporte interior ni eventuales medidas fitosanitarias. Eso se confirma por unidad.",
+          category: "Chile",
+        },
+        {
+          question: "¿Conviene comprar en EE.UU. frente a proveedores europeos o chinos?",
+          answer:
+            "Depende de la unidad. Trade.gov describe un mercado chileno competitivo donde EE.UU. no es el proveedor dominante por volumen, pero sí puede competir por tecnología, calidad, confiabilidad, precisión y configuración específica. La comparación real se hace contra una máquina concreta y su costo puesto en puerto.",
+          category: "Chile",
+        },
+        {
+          question: "¿También manejan repuestos John Deere?",
+          answer:
+            "Sí. Para repuestos John Deere, envíe número de parte, cantidad, fotos, urgencia, ubicación de origen y destino final. Meridian puede separar la cotización de repuestos de la maquinaria principal y comparar envío aéreo, consolidado o marítimo según peso, volumen y calendario.",
+          category: "Chile",
+        },
+        {
+          question: "¿Qué datos necesitan para revisar una unidad?",
+          answer:
+            "Envíe link del anuncio, marca, modelo, año, horas, número de serie si está disponible, ubicación en EE.UU. o Canadá, fotos de limpieza y tren de rodaje, accesorios incluidos, destino en Chile, puerto preferido y datos del despachante si ya está definido.",
+          category: "Chile",
+        },
+      ],
+    },
+    officialSources: [
+      {
+        label: "SAG — Resolución 3.103/2016",
+        href: "https://normativa.sag.gob.cl/Publico/Normas/DetalleNorma.aspx?id=1091725",
+        description:
+          "Requisitos fitosanitarios para importación, admisión temporal y tránsito de maquinaria usada.",
+      },
+      {
+        label: "Servicio Nacional de Aduanas — importación e impuestos",
+        href: "https://www.aduana.cl/viajeros-internacionales/aduana/2007-02-28/143620.html",
+        description:
+          "Referencia oficial sobre derechos, IVA, límites de declaración simplificada y uso de despachador de aduanas.",
+      },
+      {
+        label: "Puerto San Antonio — operación portuaria",
+        href: "https://www.puertosanantonio.com/operacion-portuaria",
+        description:
+          "Sistema portuario, terminales concesionados y participación en contenedores de la macrozona central.",
+      },
+      {
+        label: "Chile Agricultural Equipment — Trade.gov",
+        href: "https://www.trade.gov/country-commercial-guides/chile-agricultural-equipment",
+        description:
+          "Guía comercial sobre mercado chileno de maquinaria agrícola, proveedores y oportunidades de tecnología.",
+      },
+      {
+        label: "SAG",
+        href: "https://www.sag.gob.cl/",
+        description:
+          "Servicio Agrícola y Ganadero: autoridad fitosanitaria que inspecciona maquinaria usada al ingreso.",
+      },
+    ],
+    resourceLinks: [
+      {
+        label: "Compra asistida",
+        href: "/services/equipment-sales",
+        description:
+          "Para validar vendedor, máquina y documentación antes de comprometer fondos.",
+      },
+      {
+        label: "Maquinaria agrícola",
+        href: "/services/agricultural",
+        description:
+          "Alcance de preparación y exportación de equipos agrícolas desde EE.UU. y Canadá.",
+      },
+      {
+        label: "Calculadora de flete",
+        href: "/pricing/calculator",
+        description:
+          "Referencia para el tramo internacional cuando la ruta está soportada.",
+      },
+      {
+        label: "Proyectos",
+        href: "/projects",
+        description:
+          "Ejemplos de capacidad operativa, embalaje, flat rack, contenedores y repuestos.",
+      },
+    ],
+    cta: {
+      heading: "¿Tiene una máquina vista en EE.UU. para Chile?",
+      description:
+        "Envíenos el link, año, horas, ubicación, fotos de limpieza y destino. Revisamos ruta, SAG, embalaje y alcance antes de que comprometa fondos.",
+      whatsappLabel: "Cotizar por WhatsApp",
+      calculatorLabel: "Calcular flete",
+    },
+    tracking: {
+      heroWhatsapp: "chile_hero_whatsapp",
+      heroCalculator: "chile_hero_calculator",
+      finalWhatsapp: "chile_final_whatsapp",
+      finalCalculator: "chile_final_calculator",
+      equipmentLink: "chile_equipment_link",
+      resourceLink: "chile_resource_link",
+    },
+    schema: {
+      serviceType: "Exportación de maquinaria agrícola usada de EE.UU. a Chile",
+      areaServed: "Chile",
+      mentions: [
+        "San Antonio",
+        "Valparaíso",
+        "Santiago",
+        "O'Higgins",
+        "Maule",
+        "Ñuble",
+        "Biobío",
+        "La Araucanía",
+        "SAG",
+        "Resolución 3.103/2016",
+        "Servicio Nacional de Aduanas",
+      ],
+      datePublished: "2026-05-12",
+      dateModified: "2026-05-12",
     },
   },
 ];
