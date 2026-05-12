@@ -187,10 +187,19 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
     dateModified: content.schema.dateModified,
     image: `${SITE.url}${content.hero.image.src}`,
     about: content.schema.mentions,
+    mentions: content.schema.mentions.map((name) => ({
+      "@type": "Thing",
+      name,
+    })),
     publisher: {
       "@type": "Organization",
       name: COMPANY.name,
       url: SITE.url,
+    },
+    potentialAction: {
+      "@type": "ContactAction",
+      name: content.hero.primaryCtaLabel,
+      target: whatsappHref,
     },
   };
 
@@ -213,10 +222,23 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
       "@type": "Country",
       name: content.schema.areaServed,
     },
+    availableLanguage: {
+      "@type": "Language",
+      name: "Spanish",
+      alternateName: content.locale,
+    },
     availableChannel: {
       "@type": "ServiceChannel",
       serviceUrl: pageUrl,
       servicePhone: CONTACT.phone,
+    },
+    offers: {
+      "@type": "Offer",
+      url: pageUrl,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      description:
+        "Quote provided after equipment, origin, route, and destination review.",
     },
   };
 

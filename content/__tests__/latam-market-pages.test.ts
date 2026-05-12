@@ -17,8 +17,8 @@ function flattenText(value: unknown): string {
 }
 
 describe("LATAM market buyer hub content", () => {
-  it("defines exactly the three approved Spanish country hubs", () => {
-    expect(latamMarketSlugs).toEqual(["paraguay", "uruguay", "bolivia"]);
+  it("defines exactly the approved Spanish country hubs", () => {
+    expect(latamMarketSlugs).toEqual(["paraguay", "uruguay", "bolivia", "chile"]);
     expect(latamMarketPages.map((page) => page.slug)).toEqual(latamMarketSlugs);
 
     for (const page of latamMarketPages) {
@@ -182,6 +182,14 @@ describe("LATAM market buyer hub content", () => {
     expect(bolivia).not.toContain("Bolivia exige máximo diez años");
     expect(bolivia).not.toContain("Bolivia limita la importación de bienes de capital usados");
     expect(bolivia).not.toContain("tasa cero IVA");
+
+    const chile = flattenText(getLatamMarketPage("chile"));
+    expect(chile).toContain("SAG");
+    expect(chile).toContain("Resolución 3.103/2016");
+    expect(chile).toContain("libre de suelo, restos vegetales y plagas reglamentadas");
+    expect(chile).toContain("Su despachador de aduanas confirma en Chile");
+    expect(chile).not.toContain("libre de aranceles");
+    expect(chile).not.toContain("costo final nacionalizado");
   });
 
   it("includes the requested FAQ depth questions by country", () => {
@@ -221,6 +229,17 @@ describe("LATAM market buyer hub content", () => {
         "¿También manejan repuestos John Deere?",
         "¿Cuánto tarda una operación?",
       ],
+      chile: [
+        "¿Qué exige SAG para maquinaria usada que entra a Chile?",
+        "¿Qué pasa si SAG encuentra suelo, restos vegetales o plagas?",
+        "¿La cotización incluye nacionalización en Chile?",
+        "¿San Antonio es siempre el puerto correcto?",
+        "¿Qué debe confirmar mi despachador de aduanas antes de comprar?",
+        "¿El TLC EE.UU.-Chile elimina todos los costos?",
+        "¿Conviene comprar en EE.UU. frente a proveedores europeos o chinos?",
+        "¿También manejan repuestos John Deere?",
+        "¿Qué datos necesitan para revisar una unidad?",
+      ],
     };
 
     for (const [slug, questions] of Object.entries(expectedQuestions)) {
@@ -237,6 +256,7 @@ describe("LATAM market buyer hub content", () => {
       /trusted by Paraguay/i,
       /trusted by Uruguay/i,
       /trusted by Bolivia/i,
+      /trusted by Chile/i,
       /best price/i,
       /cheapest/i,
       /guaranteed/i,
@@ -267,6 +287,7 @@ describe("LATAM market buyer hub content", () => {
       /sin inventar/i,
       /historial no probado/i,
       /prueba interna/i,
+      /referencia interna/i,
       /prueba especifica/i,
       /evidencia publicada/i,
       /no debe leerse/i,
