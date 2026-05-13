@@ -5,11 +5,13 @@ import {
   ArrowLeft,
   ArrowRight,
   CalendarDays,
+  CheckCircle2,
   Clock,
+  ClipboardCheck,
   FileText,
+  MapPinned,
   Route,
   ShieldCheck,
-  Ship,
   Tag,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -100,6 +102,54 @@ export default async function BlogPostPage({
       description: tb("routeMontevideoDescription"),
     },
   ];
+  const routeComparisonRows = [
+    {
+      route: tb("routeAsuncion"),
+      bestFor: tb("routeAsuncionBestFor"),
+      buyerConfirms: tb("routeAsuncionBuyerConfirms"),
+    },
+    {
+      route: tb("routeParanagua"),
+      bestFor: tb("routeParanaguaBestFor"),
+      buyerConfirms: tb("routeParanaguaBuyerConfirms"),
+    },
+    {
+      route: tb("routeMontevideo"),
+      bestFor: tb("routeMontevideoBestFor"),
+      buyerConfirms: tb("routeMontevideoBuyerConfirms"),
+    },
+  ];
+  const quickAnswerSteps = [
+    {
+      title: tb("quickAnswerStepOneTitle"),
+      description: tb("quickAnswerStepOneDescription"),
+    },
+    {
+      title: tb("quickAnswerStepTwoTitle"),
+      description: tb("quickAnswerStepTwoDescription"),
+    },
+    {
+      title: tb("quickAnswerStepThreeTitle"),
+      description: tb("quickAnswerStepThreeDescription"),
+    },
+    {
+      title: tb("quickAnswerStepFourTitle"),
+      description: tb("quickAnswerStepFourDescription"),
+    },
+    {
+      title: tb("quickAnswerStepFiveTitle"),
+      description: tb("quickAnswerStepFiveDescription"),
+    },
+  ];
+  const ctaHeading = isParaguayImportGuide
+    ? tb("screeningCtaHeading")
+    : tb("ctaHeading");
+  const ctaDescription = isParaguayImportGuide
+    ? tb("screeningCtaDescription")
+    : tb("ctaDescription");
+  const ctaButton = isParaguayImportGuide
+    ? tb("screeningCtaButton")
+    : tb("getAQuote");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -184,6 +234,94 @@ export default async function BlogPostPage({
                     {post.excerpt}
                   </p>
                 </div>
+                {isParaguayImportGuide && (
+                  <>
+                    <div className="border-b bg-sky-50/70 px-6 py-6 sm:px-8 lg:px-10">
+                      <div className="flex items-start gap-4">
+                        <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-primary ring-1 ring-primary/15">
+                          <ClipboardCheck className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+                            {tb("quickAnswerEyebrow")}
+                          </p>
+                          <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground">
+                            {tb("quickAnswerHeading")}
+                          </h2>
+                          <p className="mt-2 max-w-3xl text-base leading-relaxed text-muted-foreground">
+                            {tb("quickAnswerDescription")}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-6 grid gap-0 divide-y divide-border border-y border-border sm:grid-cols-5 sm:divide-x sm:divide-y-0">
+                        {quickAnswerSteps.map((step, index) => (
+                          <div key={step.title} className="py-4 sm:px-4">
+                            <div className="flex items-center gap-2 text-sm font-bold text-foreground">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-white">
+                                {index + 1}
+                              </span>
+                              {step.title}
+                            </div>
+                            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                              {step.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="border-b px-6 py-6 sm:px-8 lg:px-10">
+                      <div className="flex items-start gap-4">
+                        <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                          <MapPinned className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                            {tb("routeComparisonHeading")}
+                          </h2>
+                          <p className="mt-2 max-w-3xl text-base leading-relaxed text-muted-foreground">
+                            {tb("routeComparisonDescription")}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 overflow-hidden rounded-lg border border-border">
+                        <div className="hidden grid-cols-[0.9fr_1.1fr_1.2fr] bg-muted px-4 py-3 text-xs font-bold uppercase tracking-wider text-muted-foreground md:grid">
+                          <div>{tb("routeTableRoute")}</div>
+                          <div>{tb("routeTableBestFor")}</div>
+                          <div>{tb("routeTableBuyerConfirms")}</div>
+                        </div>
+                        <div className="divide-y divide-border">
+                          {routeComparisonRows.map((row) => (
+                            <div
+                              key={row.route}
+                              className="grid gap-3 px-4 py-4 text-sm md:grid-cols-[0.9fr_1.1fr_1.2fr] md:gap-5"
+                            >
+                              <div className="font-bold text-foreground">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
+                                  {tb("routeTableRoute")}
+                                </span>
+                                {row.route}
+                              </div>
+                              <div className="leading-relaxed text-muted-foreground">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
+                                  {tb("routeTableBestFor")}
+                                </span>
+                                {row.bestFor}
+                              </div>
+                              <div className="leading-relaxed text-muted-foreground">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
+                                  {tb("routeTableBuyerConfirms")}
+                                </span>
+                                {row.buyerConfirms}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
                 <div
                   className="px-6 py-8 text-base leading-7 text-slate-700 sm:px-8 lg:px-10 lg:py-10 [&>*:first-child]:mt-0 [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary/80 [&_h2]:mt-12 [&_h2]:border-t [&_h2]:border-border [&_h2]:pt-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-foreground sm:[&_h2]:text-3xl [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:tracking-tight [&_h3]:text-foreground [&_li]:pl-1 [&_li]:text-muted-foreground [&_p]:mt-4 [&_p]:text-muted-foreground [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6"
                   dangerouslySetInnerHTML={{ __html: contentHtml }}
@@ -255,7 +393,7 @@ export default async function BlogPostPage({
                       render={<Link href="/contact" />}
                       className="mt-5 h-10 w-full rounded-lg bg-white text-foreground hover:bg-slate-100"
                     >
-                      {tb("getAQuote")} <Ship className="ml-2 h-4 w-4" />
+                      {ctaButton} <CheckCircle2 className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -274,13 +412,13 @@ export default async function BlogPostPage({
 
         {/* CTA */}
         <ScrollReveal variant="fade">
-          <DarkCta heading={tb("ctaHeading")} description={tb("ctaDescription")}>
+          <DarkCta heading={ctaHeading} description={ctaDescription}>
             <Button
               render={<Link href="/contact" />}
               size="lg"
               className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
             >
-              {tb("getAQuote")} <ArrowRight className="ml-2 h-4 w-4" />
+              {ctaButton} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </DarkCta>
         </ScrollReveal>

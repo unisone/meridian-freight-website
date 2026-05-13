@@ -44,7 +44,7 @@ That hesitation is reasonable. A tractor, combine, sprayer, planter, or header s
 
 This guide is written for Paraguayan farmers, cooperatives, dealers, and importers comparing U.S. equipment. It is not a substitute for a Paraguayan customs broker. It is a pre-purchase map for knowing what to check, who confirms each part, and where Meridian Freight can help.
 
-## Why U.S. Machinery Is Worth Comparing
+## Can Used Farm Machinery Be Imported Into Paraguay?
 
 Paraguay's agricultural economy depends on reliable equipment for soybeans, corn, wheat, rice, and livestock operations. Trade.gov notes that tractors, harvesting machinery, bulldozers, backhoes, and excavators are usually in high demand in Paraguay, and that Paraguay is one of the few Latin American markets that permits imports of used machinery.
 
@@ -78,7 +78,7 @@ Before bidding on a machine, confirm:
 
 Meridian can help organize the U.S. export-side documents and preparation, but the Paraguay importer and broker must confirm how the law applies to the specific machine.
 
-## Route Choice Is the Main Planning Decision
+## Which Route Is Best for Shipping Machinery to Paraguay?
 
 Paraguay has no ocean port, so the route is not a minor detail. Trade.gov describes the Paraguay-Paraná waterway as a central corridor for Paraguayan trade, carrying nearly 80 percent of the country's trade. For machinery buyers, the route question is really a handoff question: where does Meridian's export scope end, and where does the buyer's local scope begin?
 
@@ -131,7 +131,7 @@ Your Paraguay importer, customs broker, or local team handles the Paraguay-side 
 
 That split is what makes the process easier to understand. The buyer does not need to guess everything alone, but each party should own the part they are qualified to confirm.
 
-## What to Send Before You Bid
+## Pre-Purchase Checklist: What to Send Before You Bid
 
 Before asking for a serious route check, send:
 
@@ -156,7 +156,7 @@ With that information, Meridian can screen the export side and route options bef
 - Treating an ocean quote as a full landed-cost estimate.
 - Waiting until the machine reaches port before involving the Paraguay broker.
 
-## How Meridian Freight Fits Into the Process
+## How Meridian Freight Helps Before You Buy
 
 The best time to contact Meridian is before you buy. Send the listing, year, hours, pickup ZIP code, photos, attachments, and intended destination in Paraguay. We can help identify the export-side questions, compare the route options, and separate Meridian's scope from what your Paraguay broker or local carrier must confirm.
 

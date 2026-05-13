@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 import { blogPosts, getBlogPostBySlug } from "@/content/blog";
 import { blogPostsEs } from "@/content/blog-es";
 import { blogPostsRu } from "@/content/blog-ru";
+import enMessages from "@/messages/en.json";
+import esMessages from "@/messages/es.json";
+import ruMessages from "@/messages/ru.json";
 
 const PARAGUAY_IMPORT_SLUG = "import-farm-machinery-united-states-paraguay";
 
@@ -87,5 +90,19 @@ describe("blog content", () => {
     for (const href of requiredInternalLinks) {
       expect(post.content).toContain(href);
     }
+  });
+
+  it("keeps the Paraguay blog page optimized for skimming and pre-purchase screening", () => {
+    expect(enMessages.BlogPostPage.quickAnswerHeading).toContain("before you buy");
+    expect(enMessages.BlogPostPage.routeComparisonHeading).toContain("Route");
+    expect(enMessages.BlogPostPage.screeningCtaButton).toContain("before buying");
+
+    expect(esMessages.BlogPostPage.quickAnswerHeading).toContain("antes de comprar");
+    expect(esMessages.BlogPostPage.routeParanaguaBuyerConfirms).toContain("despachante");
+    expect(esMessages.BlogPostPage.screeningCtaButton).toContain("Revisar");
+
+    expect(ruMessages.BlogPostPage.quickAnswerHeading).toContain("до покупки");
+    expect(ruMessages.BlogPostPage.routeComparisonHeading).toContain("маршрут");
+    expect(ruMessages.BlogPostPage.screeningCtaButton).toContain("покупки");
   });
 });

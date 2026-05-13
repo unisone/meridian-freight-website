@@ -31,7 +31,7 @@ Esa duda es lógica. Un tractor, cosechadora, pulverizadora, sembradora o cabeza
 
 Esta guía está escrita para agricultores, cooperativas, concesionarios e importadores paraguayos que comparan equipos en Estados Unidos. No reemplaza al despachante paraguayo. Funciona como mapa previo a la compra para saber qué revisar, quién confirma cada parte y dónde Meridian Freight puede ayudar.
 
-## Por qué vale la pena comparar maquinaria de Estados Unidos
+## ¿Se puede importar maquinaria agrícola usada a Paraguay?
 
 La agricultura paraguaya necesita maquinaria confiable para soja, maíz, trigo, arroz y operaciones ganaderas. Trade.gov indica que tractores, maquinaria de cosecha, bulldozers, retroexcavadoras y excavadoras suelen tener alta demanda en Paraguay, y que Paraguay está entre los pocos mercados latinoamericanos que permiten importar maquinaria usada.
 
@@ -65,7 +65,7 @@ Antes de ofertar, confirme:
 
 Meridian puede ayudar con la preparación documental y logística del lado de Estados Unidos, pero el importador y el despachante en Paraguay deben confirmar cómo aplica la ley a la unidad concreta.
 
-## La ruta es la decisión principal
+## ¿Qué ruta conviene para traer maquinaria a Paraguay?
 
 Paraguay no tiene puerto oceánico, por eso la ruta no es un detalle. Trade.gov describe la Hidrovía Paraguay-Paraná como un corredor central para el comercio paraguayo, con casi 80 por ciento del comercio del país. Para maquinaria, la pregunta de ruta es una pregunta de punto de entrega: dónde termina el alcance de exportación de Meridian y dónde empieza el alcance local del comprador.
 
@@ -118,7 +118,7 @@ Su importador, despachante o equipo local en Paraguay maneja el tramo paraguayo:
 
 Esa separación es lo que hace el proceso más fácil de entender. El comprador no tiene que adivinar todo solo, pero cada parte debe confirmar lo que realmente controla.
 
-## Qué enviar antes de ofertar
+## Checklist previo a la compra: qué enviar antes de ofertar
 
 Antes de pedir una revisión seria de ruta, envíe:
 
@@ -143,7 +143,7 @@ Con esa información, Meridian puede revisar el lado de exportación y las rutas
 - Tratar una cotización marítima como costo final nacionalizado.
 - Involucrar al despachante recién cuando la máquina ya llegó a puerto.
 
-## Cómo ayuda Meridian Freight
+## Cómo ayuda Meridian Freight antes de comprar
 
 El mejor momento para contactar a Meridian es antes de comprar. Envíe el link, año, horas, ZIP de retiro, fotos, accesorios y destino previsto en Paraguay. Podemos ayudar a identificar las preguntas del lado de exportación, comparar rutas y separar el alcance de Meridian de lo que deben confirmar su despachante o transportista local.
 
