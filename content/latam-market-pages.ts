@@ -509,6 +509,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           "Referencia para el tramo internacional cuando la ruta está soportada.",
       },
       {
+        label: "Guía paso a paso",
+        href: "/blog/import-farm-machinery-united-states-paraguay",
+        description:
+          "Proceso previo a la compra: unidad, documentos, rutas y responsabilidades.",
+      },
+      {
         label: "Proyectos",
         href: "/projects",
         description:
