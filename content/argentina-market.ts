@@ -388,6 +388,12 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
         "Úsela para una referencia del tramo logístico y complete la parte argentina con su despachante.",
     },
     {
+      href: "/blog/import-farm-machinery-united-states-argentina",
+      label: "Guía paso a paso",
+      description:
+        "Revise AFIDI, Malvina, despachante, alcance y documentos antes de comprar en EE.UU.",
+    },
+    {
       href: "/projects",
       label: "Galería de proyectos",
       description:
