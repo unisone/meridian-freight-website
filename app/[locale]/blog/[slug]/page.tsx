@@ -10,7 +10,9 @@ import {
   ClipboardCheck,
   FileText,
   MapPinned,
+  MessageCircle,
   Route,
+  ScrollText,
   ShieldCheck,
   Tag,
 } from "lucide-react";
@@ -21,7 +23,13 @@ import { PageHero } from "@/components/page-hero";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
 import { TrackedCtaLink } from "@/components/tracked-cta-link";
+import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/content/blog";
+import {
+  buildWhatsappUrl,
+  getImportGuideEnhancement,
+} from "@/content/import-guide-enhancements";
+import { getBlogLocalePolicy } from "@/lib/blog-locale-policy";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { renderMarkdown } from "@/lib/markdown";
@@ -39,20 +47,29 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const post = getBlogPostBySlug(slug, locale);
   if (!post) return {};
+
+  const policy = getBlogLocalePolicy(slug);
   const localePath = locale === "en" ? "" : `/${locale}`;
+  const xDefaultPath =
+    policy.xDefaultLocale === "en" ? "" : `/${policy.xDefaultLocale}`;
+
+  const languages: Record<string, string> = {};
+  for (const alt of policy.alternateLocales) {
+    const altPath = alt === "en" ? "" : `/${alt}`;
+    languages[alt] = `${SITE.url}${altPath}/blog/${slug}`;
+  }
+  languages["x-default"] = `${SITE.url}${xDefaultPath}/blog/${slug}`;
+
+  const isIndexable = (policy.indexableLocales as readonly string[]).includes(locale);
 
   return {
     title: post.metaTitle,
     description: post.metaDescription,
     keywords: post.keywords,
+    ...(isIndexable ? {} : { robots: { index: false, follow: true } }),
     alternates: {
       canonical: `${SITE.url}${localePath}/blog/${slug}`,
-      languages: {
-        en: `${SITE.url}/blog/${slug}`,
-        es: `${SITE.url}/es/blog/${slug}`,
-        ru: `${SITE.url}/ru/blog/${slug}`,
-        "x-default": `${SITE.url}/blog/${slug}`,
-      },
+      languages,
     },
     openGraph: {
       locale: getOgLocale(locale),
@@ -88,72 +105,35 @@ export default async function BlogPostPage({
 
   const localePath = locale === "en" ? "" : `/${locale}`;
   const pageUrl = `${SITE.url}${localePath}/blog/${slug}`;
-  const contentHtml = renderMarkdown(post.content);
-  const isParaguayImportGuide =
-    slug === "import-farm-machinery-united-states-paraguay";
+  const contentHtml = renderMarkdown(post.content, locale);
+  const importGuide = getImportGuideEnhancement(slug, locale);
+  const isImportGuide = Boolean(importGuide);
 
-  const routeOptions = [
-    {
-      label: tb("routeAsuncion"),
-      description: tb("routeAsuncionDescription"),
-    },
-    {
-      label: tb("routeParanagua"),
-      description: tb("routeParanaguaDescription"),
-    },
-    {
-      label: tb("routeMontevideo"),
-      description: tb("routeMontevideoDescription"),
-    },
-  ];
-  const routeComparisonRows = [
-    {
-      route: tb("routeAsuncion"),
-      bestFor: tb("routeAsuncionBestFor"),
-      buyerConfirms: tb("routeAsuncionBuyerConfirms"),
-    },
-    {
-      route: tb("routeParanagua"),
-      bestFor: tb("routeParanaguaBestFor"),
-      buyerConfirms: tb("routeParanaguaBuyerConfirms"),
-    },
-    {
-      route: tb("routeMontevideo"),
-      bestFor: tb("routeMontevideoBestFor"),
-      buyerConfirms: tb("routeMontevideoBuyerConfirms"),
-    },
-  ];
-  const quickAnswerSteps = [
-    {
-      title: tb("quickAnswerStepOneTitle"),
-      description: tb("quickAnswerStepOneDescription"),
-    },
-    {
-      title: tb("quickAnswerStepTwoTitle"),
-      description: tb("quickAnswerStepTwoDescription"),
-    },
-    {
-      title: tb("quickAnswerStepThreeTitle"),
-      description: tb("quickAnswerStepThreeDescription"),
-    },
-    {
-      title: tb("quickAnswerStepFourTitle"),
-      description: tb("quickAnswerStepFourDescription"),
-    },
-    {
-      title: tb("quickAnswerStepFiveTitle"),
-      description: tb("quickAnswerStepFiveDescription"),
-    },
-  ];
-  const ctaHeading = isParaguayImportGuide
-    ? tb("screeningCtaHeading")
-    : tb("ctaHeading");
-  const ctaDescription = isParaguayImportGuide
-    ? tb("screeningCtaDescription")
-    : tb("ctaDescription");
-  const ctaButton = isParaguayImportGuide
-    ? tb("screeningCtaButton")
-    : tb("getAQuote");
+  const ctaHeading = importGuide?.cta.heading ?? tb("ctaHeading");
+  const ctaDescription = importGuide?.cta.description ?? tb("ctaDescription");
+  const ctaButton = importGuide?.cta.primaryLabel ?? tb("getAQuote");
+  const whatsappUrl = importGuide
+    ? buildWhatsappUrl(importGuide.cta.whatsappMessage)
+    : null;
+
+  const breadcrumbList = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: tb("blogBreadcrumb"),
+        item: `${SITE.url}${localePath}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: post.title,
+        item: pageUrl,
+      },
+    ],
+  };
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -183,6 +163,16 @@ export default async function BlogPostPage({
     },
     image: `${SITE.url}${SITE.ogImage}`,
     url: pageUrl,
+    ...(importGuide
+      ? {
+          about: [
+            {
+              "@type": "Country",
+              name: importGuide.countryLabel,
+            },
+          ],
+        }
+      : {}),
   };
 
   return (
@@ -190,6 +180,10 @@ export default async function BlogPostPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbList) }}
       />
 
       <div>
@@ -237,8 +231,14 @@ export default async function BlogPostPage({
                   <p className="mt-3 max-w-3xl text-base leading-relaxed text-muted-foreground">
                     {post.excerpt}
                   </p>
+                  {importGuide && (
+                    <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/80">
+                      {importGuide.scopeIntro}
+                    </p>
+                  )}
                 </div>
-                {isParaguayImportGuide && (
+
+                {importGuide && (
                   <>
                     <div className="border-b bg-sky-50/70 px-6 py-6 sm:px-8 lg:px-10">
                       <div className="flex items-start gap-4">
@@ -247,18 +247,18 @@ export default async function BlogPostPage({
                         </div>
                         <div>
                           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                            {tb("quickAnswerEyebrow")}
+                            {importGuide.quickAnswer.eyebrow}
                           </p>
                           <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground">
-                            {tb("quickAnswerHeading")}
+                            {importGuide.quickAnswer.heading}
                           </h2>
                           <p className="mt-2 max-w-3xl text-base leading-relaxed text-muted-foreground">
-                            {tb("quickAnswerDescription")}
+                            {importGuide.quickAnswer.description}
                           </p>
                         </div>
                       </div>
                       <div className="mt-6 grid gap-0 divide-y divide-border border-y border-border sm:grid-cols-5 sm:divide-x sm:divide-y-0">
-                        {quickAnswerSteps.map((step, index) => (
+                        {importGuide.quickAnswer.steps.map((step, index) => (
                           <div key={step.title} className="py-4 sm:px-4">
                             <div className="flex items-center gap-2 text-sm font-bold text-foreground">
                               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-white">
@@ -277,45 +277,95 @@ export default async function BlogPostPage({
                     <div className="border-b px-6 py-6 sm:px-8 lg:px-10">
                       <div className="flex items-start gap-4">
                         <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                          <ShieldCheck className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                            {importGuide.scopeSplit.heading}
+                          </h2>
+                          <p className="mt-2 max-w-3xl text-base leading-relaxed text-muted-foreground">
+                            {importGuide.scopeSplit.description}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-6 overflow-hidden rounded-lg border border-border">
+                        <div className="hidden grid-cols-[0.9fr_1.1fr_1.1fr] bg-muted px-4 py-3 text-xs font-bold uppercase tracking-wider text-muted-foreground md:grid">
+                          <div>{tb("scopeTableCheckpoint")}</div>
+                          <div>{importGuide.scopeSplit.meridianHeading}</div>
+                          <div>{importGuide.scopeSplit.brokerHeading}</div>
+                        </div>
+                        <div className="divide-y divide-border">
+                          {importGuide.scopeSplit.rows.map((row) => (
+                            <div
+                              key={row.checkpoint}
+                              className="grid gap-3 px-4 py-4 text-sm md:grid-cols-[0.9fr_1.1fr_1.1fr] md:gap-5"
+                            >
+                              <div className="font-bold text-foreground">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
+                                  {tb("scopeTableCheckpoint")}
+                                </span>
+                                {row.checkpoint}
+                              </div>
+                              <div className="leading-relaxed text-muted-foreground">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
+                                  {importGuide.scopeSplit.meridianHeading}
+                                </span>
+                                {row.meridianNote}
+                              </div>
+                              <div className="leading-relaxed text-muted-foreground">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
+                                  {importGuide.scopeSplit.brokerHeading}
+                                </span>
+                                {row.brokerNote}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-b px-6 py-6 sm:px-8 lg:px-10">
+                      <div className="flex items-start gap-4">
+                        <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                           <MapPinned className="h-5 w-5" />
                         </div>
                         <div>
                           <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                            {tb("routeComparisonHeading")}
+                            {importGuide.routeTable.heading}
                           </h2>
                           <p className="mt-2 max-w-3xl text-base leading-relaxed text-muted-foreground">
-                            {tb("routeComparisonDescription")}
+                            {importGuide.routeTable.description}
                           </p>
                         </div>
                       </div>
 
                       <div className="mt-6 overflow-hidden rounded-lg border border-border">
                         <div className="hidden grid-cols-[0.9fr_1.1fr_1.2fr] bg-muted px-4 py-3 text-xs font-bold uppercase tracking-wider text-muted-foreground md:grid">
-                          <div>{tb("routeTableRoute")}</div>
-                          <div>{tb("routeTableBestFor")}</div>
-                          <div>{tb("routeTableBuyerConfirms")}</div>
+                          <div>{importGuide.routeTable.columnRoute}</div>
+                          <div>{importGuide.routeTable.columnBestFor}</div>
+                          <div>{importGuide.routeTable.columnBuyerConfirms}</div>
                         </div>
                         <div className="divide-y divide-border">
-                          {routeComparisonRows.map((row) => (
+                          {importGuide.routeTable.rows.map((row) => (
                             <div
                               key={row.route}
                               className="grid gap-3 px-4 py-4 text-sm md:grid-cols-[0.9fr_1.1fr_1.2fr] md:gap-5"
                             >
                               <div className="font-bold text-foreground">
                                 <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
-                                  {tb("routeTableRoute")}
+                                  {importGuide.routeTable.columnRoute}
                                 </span>
                                 {row.route}
                               </div>
                               <div className="leading-relaxed text-muted-foreground">
                                 <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
-                                  {tb("routeTableBestFor")}
+                                  {importGuide.routeTable.columnBestFor}
                                 </span>
                                 {row.bestFor}
                               </div>
                               <div className="leading-relaxed text-muted-foreground">
                                 <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-muted-foreground md:hidden">
-                                  {tb("routeTableBuyerConfirms")}
+                                  {importGuide.routeTable.columnBuyerConfirms}
                                 </span>
                                 {row.buyerConfirms}
                               </div>
@@ -326,6 +376,7 @@ export default async function BlogPostPage({
                     </div>
                   </>
                 )}
+
                 <div
                   className="px-6 py-8 text-base leading-7 text-slate-700 sm:px-8 lg:px-10 lg:py-10 [&>*:first-child]:mt-0 [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary/80 [&_h2]:mt-12 [&_h2]:border-t [&_h2]:border-border [&_h2]:pt-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-foreground sm:[&_h2]:text-3xl [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:tracking-tight [&_h3]:text-foreground [&_li]:pl-1 [&_li]:text-muted-foreground [&_p]:mt-4 [&_p]:text-muted-foreground [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6"
                   dangerouslySetInnerHTML={{ __html: contentHtml }}
@@ -358,7 +409,44 @@ export default async function BlogPostPage({
                   </CardContent>
                 </Card>
 
-                {isParaguayImportGuide && (
+                {importGuide && (
+                  <Card className="shadow-sm">
+                    <CardContent className="p-5">
+                      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <ScrollText className="h-5 w-5" />
+                      </div>
+                      <h2 className="text-lg font-bold text-foreground">
+                        {importGuide.buyerPacket.heading}
+                      </h2>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        {importGuide.buyerPacket.description}
+                      </p>
+                      <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
+                        {importGuide.buyerPacket.items.map((item) => (
+                          <li key={item} className="flex items-start gap-2">
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      {whatsappUrl && (
+                        <TrackedContactLink
+                          href={whatsappUrl}
+                          type="whatsapp"
+                          location={`blog_sidebar_${slug}_whatsapp`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-input bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          {importGuide.buyerPacket.secondaryLabel}
+                        </TrackedContactLink>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
+
+                {importGuide && (
                   <Card className="shadow-sm">
                     <CardContent className="p-5">
                       <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -371,11 +459,11 @@ export default async function BlogPostPage({
                         {tb("routePlanningDescription")}
                       </p>
                       <div className="mt-5 space-y-3">
-                        {routeOptions.map((option) => (
-                          <div key={option.label} className="rounded-lg bg-muted p-3">
-                            <p className="font-semibold text-foreground">{option.label}</p>
+                        {importGuide.routeTable.rows.map((row) => (
+                          <div key={row.route} className="rounded-lg bg-muted p-3">
+                            <p className="font-semibold text-foreground">{row.route}</p>
                             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                              {option.description}
+                              {row.bestFor}
                             </p>
                           </div>
                         ))}
@@ -436,6 +524,19 @@ export default async function BlogPostPage({
             >
               {ctaButton} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
+            {isImportGuide && whatsappUrl && importGuide && (
+              <TrackedContactLink
+                href={whatsappUrl}
+                type="whatsapp"
+                location={`blog_footer_${slug}_whatsapp`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/30 bg-transparent px-8 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              >
+                <MessageCircle className="h-4 w-4" />
+                {importGuide.buyerPacket.secondaryLabel}
+              </TrackedContactLink>
+            )}
           </DarkCta>
         </ScrollReveal>
       </div>

@@ -105,7 +105,11 @@ describe("LATAM market buyer hub content", () => {
       "/pricing/calculator",
       "/projects",
       "/contact",
+      "/blog/import-farm-machinery-united-states-argentina",
       "/blog/import-farm-machinery-united-states-paraguay",
+      "/blog/import-farm-machinery-united-states-uruguay",
+      "/blog/import-farm-machinery-united-states-bolivia",
+      "/blog/import-farm-machinery-united-states-chile",
     ]);
 
     for (const page of latamMarketPages) {

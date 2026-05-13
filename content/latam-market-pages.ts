@@ -915,6 +915,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           "Referencia para el tramo internacional cuando la ruta está soportada.",
       },
       {
+        label: "Guía paso a paso",
+        href: "/blog/import-farm-machinery-united-states-uruguay",
+        description:
+          "Montevideo, DGSA, limpieza, documentos y responsabilidades antes de comprar.",
+      },
+      {
         label: "Proyectos",
         href: "/projects",
         description:
@@ -1318,6 +1324,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
           "Referencia para el tramo internacional cuando la ruta está soportada.",
       },
       {
+        label: "Guía paso a paso",
+        href: "/blog/import-farm-machinery-united-states-bolivia",
+        description:
+          "Arica, ASPB, SENASAG, broker/importador y tramo interior antes de comprar.",
+      },
+      {
         label: "Proyectos",
         href: "/projects",
         description:
@@ -1714,6 +1726,12 @@ export const latamMarketPages: LatamMarketPageContent[] = [
         href: "/pricing/calculator",
         description:
           "Referencia para el tramo internacional cuando la ruta está soportada.",
+      },
+      {
+        label: "Guía paso a paso",
+        href: "/blog/import-farm-machinery-united-states-chile",
+        description:
+          "San Antonio, Valparaíso, SAG, limpieza, puerto y alcance antes de comprar.",
       },
       {
         label: "Proyectos",

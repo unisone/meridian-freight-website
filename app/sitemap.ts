@@ -5,6 +5,7 @@ import { getAllEquipmentTypes } from "@/content/equipment";
 import { getAllDestinations } from "@/content/destinations";
 import { blogPosts } from "@/content/blog";
 import { isLatamMarketSlug, latamMarketPages } from "@/content/latam-market-pages";
+import { getBlogLocalePolicy } from "@/lib/blog-locale-policy";
 
 type LocaleAlternate = "en" | "es" | "ru";
 
@@ -92,13 +93,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }));
 
-  const blogPages: MetadataRoute.Sitemap = blogPosts.map((p) => ({
-    url: `${SITE.url}/blog/${p.slug}`,
-    lastModified: new Date(p.updatedAt ?? p.publishedAt),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-    alternates: withAlternates(`/blog/${p.slug}`),
-  }));
+  const blogPages: MetadataRoute.Sitemap = blogPosts.flatMap((p) => {
+    const policy = getBlogLocalePolicy(p.slug);
+    const indexable = policy.indexableLocales;
+    const alternateLocales = policy.alternateLocales as LocaleAlternate[];
+    const lastModified = new Date(p.updatedAt ?? p.publishedAt);
+    return indexable.map((locale) => {
+      const localePath = locale === "en" ? "" : `/${locale}`;
+      return {
+        url: `${SITE.url}${localePath}/blog/${p.slug}`,
+        lastModified,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+        alternates: withAlternates(`/blog/${p.slug}`, alternateLocales),
+      };
+    });
+  });
 
   return [
     ...staticPages,

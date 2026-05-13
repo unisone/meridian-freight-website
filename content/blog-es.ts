@@ -1,4 +1,5 @@
 import type { BlogPost } from "./blog";
+import { latamImportGuidesEs } from "./latam-import-guides";
 
 export const blogPostsEs: BlogPost[] = [
   {
@@ -151,7 +152,7 @@ Si la unidad parece viable, el siguiente paso es una cotización armada sobre es
 
 También puede revisar nuestra [guía para compradores de Paraguay](/es/destinations/paraguay), el servicio de [exportación de maquinaria agrícola](/services/agricultural), la [compra asistida de equipos](/services/equipment-sales) y la [calculadora de flete](/pricing/calculator).
 
-## Fuentes
+## Fuentes oficiales para revisar con su despachante
 
 - [Trade.gov: sectores agrícolas de Paraguay](https://www.trade.gov/country-commercial-guides/paraguay-agricultural-sectors)
 - [Trade.gov: sistema de la Hidrovía Paraguay-Paraná](https://www.trade.gov/country-commercial-guides/paraguay-paraguay-parana-waterway-system)
@@ -160,6 +161,7 @@ También puede revisar nuestra [guía para compradores de Paraguay](/es/destinat
 - [BACN: Ley Nº 7565/2025](https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados)
 - [ABC Rural: importación de maquinarias usadas en alza](https://www.abc.com.py/negocios/abc-campo/2026/01/24/importacion-de-maquinarias-usadas-en-alza/)`,
   },
+  ...latamImportGuidesEs,
   {
     slug: "complete-guide-shipping-farm-equipment-usa",
     title:

@@ -1,3 +1,5 @@
+import { latamImportGuidesEn } from "./latam-import-guides";
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -164,7 +166,7 @@ If the machine looks workable, the next step is a quote built around the actual 
 
 You can also review our [Paraguay buyer hub](/es/destinations/paraguay), [agricultural machinery export service](/services/agricultural), [assisted equipment purchase service](/services/equipment-sales), and [freight calculator](/pricing/calculator).
 
-## Sources
+## Official sources to review with your broker
 
 - [Trade.gov: Paraguay agricultural sectors](https://www.trade.gov/country-commercial-guides/paraguay-agricultural-sectors)
 - [Trade.gov: Paraguay-Paraná waterway system](https://www.trade.gov/country-commercial-guides/paraguay-paraguay-parana-waterway-system)
@@ -173,6 +175,7 @@ You can also review our [Paraguay buyer hub](/es/destinations/paraguay), [agricu
 - [BACN: Ley Nº 7565/2025](https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados)
 - [ABC Rural: Importación de maquinarias usadas en alza](https://www.abc.com.py/negocios/abc-campo/2026/01/24/importacion-de-maquinarias-usadas-en-alza/)`,
   },
+  ...latamImportGuidesEn,
   {
     slug: "complete-guide-shipping-farm-equipment-usa",
     title: "Complete Guide to Shipping Farm Equipment from the USA",

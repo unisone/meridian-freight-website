@@ -602,10 +602,11 @@
     "routeMontevideoBestFor": "Compradores con camiones propios, despachante o socios logísticos regionales.",
     "routeMontevideoBuyerConfirms": "Retiro en Montevideo, movimiento posterior, importación, impuestos y entrega final.",
     "supportCardTitle": "¿Necesita revisar la ruta?",
-    "supportCardDescription": "Envíe el enlace, ZIP de retiro en EE.UU., año, dimensiones y destino final en Paraguay para revisar la ruta antes de ofertar.",
+    "supportCardDescription": "Envíe el enlace, ZIP de retiro en EE.UU., año, dimensiones y destino final previsto para revisar la ruta antes de ofertar.",
     "screeningCtaHeading": "Revise la ruta antes de comprar",
     "screeningCtaDescription": "Envíe el enlace de la máquina, ZIP de retiro, año, fotos, accesorios y destino en Paraguay. Meridian puede revisar el alcance de exportación desde EE.UU. y la ruta antes de que se comprometa.",
-    "screeningCtaButton": "Revisar ruta antes de comprar"
+    "screeningCtaButton": "Revisar ruta antes de comprar",
+    "scopeTableCheckpoint": "Etapa"
   },
   "ServiceDetailPage": {
     "eyebrow": "Nuestros Servicios",
