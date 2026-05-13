@@ -8,6 +8,7 @@ import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
 import { getAllBlogPosts } from "@/content/blog";
+import { getBlogLocalePolicy } from "@/lib/blog-locale-policy";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -60,6 +61,11 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
   const tb = await getTranslations({ locale: locale as Locale, namespace: "BlogPage" });
   const posts = getAllBlogPosts(locale);
+  const localePath = locale === "en" ? "" : `/${locale}`;
+
+  const indexablePosts = posts.filter((post) =>
+    getBlogLocalePolicy(post.slug).indexableLocales.includes(locale as "en" | "es" | "ru"),
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -67,12 +73,12 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
     inLanguage: toBCP47(locale),
     name: tb("heroHeading"),
     description: tb("heroDescription", { company: COMPANY.name }),
-    numberOfItems: posts.length,
-    itemListElement: posts.map((post, idx) => ({
+    numberOfItems: indexablePosts.length,
+    itemListElement: indexablePosts.map((post, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
       name: post.title,
-      url: `${SITE.url}/blog/${post.slug}`,
+      url: `${SITE.url}${localePath}/blog/${post.slug}`,
     })),
   };
 

@@ -600,7 +600,8 @@
     "supportCardDescription": "Send the listing, U.S. pickup ZIP, machine year, dimensions, and intended final destination so the route can be screened before you bid.",
     "screeningCtaHeading": "Check the route before you buy",
     "screeningCtaDescription": "Send the machine link, pickup ZIP, year, photos, attachments, and Paraguay destination. Meridian can screen the U.S. export scope and route before you commit.",
-    "screeningCtaButton": "Check route before buying"
+    "screeningCtaButton": "Check route before buying",
+    "scopeTableCheckpoint": "Checkpoint"
   },
   "ServiceDetailPage": {
     "eyebrow": "Our Services",

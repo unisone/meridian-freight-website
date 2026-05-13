@@ -21,9 +21,9 @@ export const latamImportGuidesEs: BlogPost[] = [
       "Una guía previa a la compra para separar la parte de exportación desde EE.UU. de lo que su despachante argentino debe confirmar antes de importar.",
     category: "Destinos",
     readingTimeMinutes: 7,
-    content: `## Empiece antes de ofertar
+    content: `## Antes de ofertar: revise la unidad, no solo el flete
 
-Comprar una cosechadora, tractor, pulverizadora, sembradora o cabezal en Estados Unidos puede tener sentido para un comprador argentino cuando la configuración, las horas, los accesorios o el historial de mantenimiento no aparecen igual en el mercado local. El problema no es sólo encontrar la unidad. El riesgo está en comprar sin saber qué controla Meridian, qué confirma el despachante argentino y qué documentos debe preparar el importador antes de comprar.
+Antes de comprar maquinaria agrícola usada en EE.UU. para Argentina, no empiece por el precio del flete. Empiece por la unidad: marca, modelo, año, número de serie, horas, limpieza, documentación y si su despachante confirma AFIDI/SENASA y el encuadre en el Sistema Informático Malvina. Meridian coordina el tramo de exportación desde EE.UU./Canadá; el despachante argentino confirma la importación local antes de comprar.
 
 Esta guía no reemplaza al despachante argentino ni a SENASA. Sirve como mapa previo a la compra para que usted sepa qué revisar antes de transferir fondos, cómo separar el tramo de exportación del tramo local y qué información debe pedir al vendedor.
 
@@ -61,7 +61,7 @@ Antes de comprar, envíe link del anuncio o subasta, marca, modelo, año, númer
 
 También puede revisar la [guía para compradores de Argentina](/es/destinations/argentina), el servicio de [exportación de maquinaria agrícola](/services/agricultural), la [compra asistida de equipos](/services/equipment-sales) y la [calculadora de flete](/pricing/calculator).
 
-## Fuentes
+## Fuentes oficiales para revisar con su despachante
 
 - [Decreto 273/2025](https://www.argentina.gob.ar/normativa/nacional/decreto-273-2025-411791)
 - [AFIDI ante SENASA](https://www.argentina.gob.ar/servicio/gestionar-la-autorizacion-fitosanitaria-de-importacion-afidi-y-la-evaluacion-de)
@@ -87,9 +87,9 @@ También puede revisar la [guía para compradores de Argentina](/es/destinations
       "Una guía para compradores uruguayos que quieren comparar maquinaria de EE.UU. sin confundir flete a Montevideo con nacionalización y entrega local.",
     category: "Destinos",
     readingTimeMinutes: 7,
-    content: `## La ruta parece simple, pero el alcance importa
+    content: `## Antes de ofertar: revise la unidad, no solo el flete
 
-Uruguay puede ser más directo que otros mercados de la región porque Montevideo concentra gran parte de la conversación logística. Aun así, importar una cosechadora, tractor, sembradora, pulverizadora o cabezal desde Estados Unidos no debería resolverse con una sola tarifa marítima. Usted necesita saber qué se incluye antes de comprar y qué debe confirmar su despachante uruguayo.
+Uruguay puede parecer una ruta simple porque Montevideo concentra gran parte del movimiento, pero una cotización a Montevideo no equivale a nacionalización ni a entrega final. Antes de comprar una máquina usada en EE.UU., usted debe confirmar limpieza, certificado fitosanitario, Resolución DGSA 98/016, DUA, NCM, tributos y retiro local con su despachante uruguayo. Meridian coordina el tramo de exportación desde EE.UU./Canadá; el despachante uruguayo confirma el tramo local.
 
 Esta guía no reemplaza al despachante uruguayo ni a la DGSA. Ayuda a separar el tramo de exportación del tramo local: compra o coordinación en EE.UU., retiro, preparación, embalaje y flete por un lado; DUA, NCM, tributos, inspección, puerto y entrega interior por el otro.
 
@@ -123,7 +123,7 @@ Envíe link del anuncio, marca, modelo, año, horas, número de serie, ubicació
 
 También puede revisar la [guía para compradores de Uruguay](/es/destinations/uruguay), el servicio de [exportación de maquinaria agrícola](/services/agricultural), la [compra asistida de equipos](/services/equipment-sales) y la [calculadora de flete](/pricing/calculator).
 
-## Fuentes
+## Fuentes oficiales para revisar con su despachante
 
 - [DGSA: Resolución 98/016](https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-98016-dgsa-requisitos-fitosanitarios-para-introduccion-pais)
 - [Trade.gov: Uruguay Agricultural Equipment](https://www.trade.gov/country-commercial-guides/uruguay-agricultural-equipment)`,
@@ -148,11 +148,11 @@ También puede revisar la [guía para compradores de Uruguay](/es/destinations/u
       "Una guía para compradores bolivianos que necesitan entender la ruta marítima, el tránsito por puerto chileno y el tramo interior antes de comprar en EE.UU.",
     category: "Destinos",
     readingTimeMinutes: 8,
-    content: `## El riesgo principal es la ruta completa
+    content: `## Antes de ofertar: revise la unidad, no solo el flete
 
-Bolivia no tiene puerto oceánico. Por eso importar una cosechadora, tractor, pulverizadora, sembradora o cabezal desde Estados Unidos exige mirar más allá del flete marítimo. Usted puede recibir la máquina por un puerto de tránsito como Arica, Iquique o Antofagasta, y después continuar por tramo terrestre hacia Santa Cruz, Cochabamba, La Paz u otro destino.
+Para Bolivia, el riesgo principal no es solo el flete marítimo. La máquina puede llegar por Arica, Iquique o Antofagasta y después moverse por tránsito e interior hacia Santa Cruz, Cochabamba, La Paz u otro destino. Meridian coordina el tramo de exportación desde EE.UU./Canadá; el importador, broker o importador boliviano y el agente de tránsito confirman ASPB, SENASAG cuando corresponda, nacionalización y transporte interior antes de comprar.
 
-Esta guía no reemplaza al broker o importador boliviano. Sirve para que usted sepa qué puede coordinar Meridian, qué debe confirmar el tramo local y qué información revisar antes de comprar.
+Esta guía no reemplaza al broker o importador boliviano. Sirve para que usted sepa qué puede coordinar Meridian en el tramo de exportación, qué debe confirmar el tramo local y qué información revisar antes de comprar.
 
 ## Por qué Estados Unidos puede competir
 
@@ -187,7 +187,7 @@ Envíe link del anuncio, marca, modelo, año, número de serie, horas, ZIP de re
 
 También puede revisar la [guía para compradores de Bolivia](/es/destinations/bolivia), el servicio de [exportación de maquinaria agrícola](/services/agricultural), la [compra asistida de equipos](/services/equipment-sales) y la [calculadora de flete](/pricing/calculator).
 
-## Fuentes
+## Fuentes oficiales para revisar con su despachante
 
 - [Trade.gov: Bolivia Agricultural Sectors](https://www.trade.gov/country-commercial-guides/bolivia-agricultural-sectors)
 - [ASPB: Puerto de Arica](https://www.aspb.gob.bo/arica-chile/)
@@ -214,11 +214,11 @@ También puede revisar la [guía para compradores de Bolivia](/es/destinations/b
       "Una guía para compradores chilenos que quieren revisar SAG, limpieza, puerto, embalaje y responsabilidades antes de comprar maquinaria en EE.UU.",
     category: "Destinos",
     readingTimeMinutes: 7,
-    content: `## Chile exige revisar la máquina, no sólo la ruta
+    content: `## Antes de ofertar: revise la unidad, no solo el flete
 
-Chile tiene puertos eficientes y acceso frecuente a servicios marítimos, pero eso no significa que cualquier maquinaria usada de Estados Unidos sea una compra simple. Para un tractor, cosechadora, pulverizadora, sembradora o cabezal, usted debe revisar condición, limpieza, documentación, puerto de entrada, despachador de aduanas y alcance antes de comprar.
+Chile tiene puertos eficientes, pero maquinaria usada no entra solo porque el flete sea posible. Antes de comprar en EE.UU., usted debe revisar limpieza interna y externa, fotos del tren de rodaje, accesorios, dimensiones, puerto de entrada, despachador de aduanas y cumplimiento SAG Resolución 3.103/2016. Meridian coordina el tramo de exportación desde EE.UU./Canadá; el importador y despachador de aduanas chileno confirman SAG, clasificación, tributos y retiro local antes de comprar.
 
-Esta guía no reemplaza al despachador de aduanas ni al SAG. Ayuda a separar el tramo de exportación que Meridian puede coordinar del tramo local chileno que debe confirmar el importador.
+Esta guía no reemplaza al despachador de aduanas ni al SAG. Ayuda a separar el tramo de exportación que Meridian puede coordinar del tramo local chileno que debe confirmar el importador. Si SAG detecta suelo, restos vegetales o plagas al arribo, el importador puede enfrentar tratamientos fitosanitarios, costos adicionales, demoras o reembarque según el caso, por eso la preparación en origen no es opcional.
 
 ## Cuándo tiene sentido mirar EE.UU.
 
@@ -244,7 +244,7 @@ Envíe link del anuncio, marca, modelo, año, horas, número de serie, ZIP de re
 
 También puede revisar la [guía para compradores de Chile](/es/destinations/chile), el servicio de [exportación de maquinaria agrícola](/services/agricultural), la [compra asistida de equipos](/services/equipment-sales) y la [calculadora de flete](/pricing/calculator).
 
-## Fuentes
+## Fuentes oficiales para revisar con su despachante
 
 - [SAG: Resolución 3.103/2016](https://normativa.sag.gob.cl/Publico/Normas/DetalleNorma.aspx?id=1091725)
 - [SAG: requisitos para maquinaria usada](https://www.sag.cl/content/establece-requisitos-fitosanitarios-para-la-importacion-admision-temporal-y-transito-de-maquinaria-usada-que-indica-y-deroga-resolucion-ndeg-2979-de-2001)
@@ -272,9 +272,9 @@ export const latamImportGuidesEn: BlogPost[] = [
       "A practical guide for separating U.S. export logistics from the Argentina-side work your broker must confirm before you buy.",
     category: "Destinations",
     readingTimeMinutes: 7,
-    content: `## Start Before You Bid
+    content: `## Before You Bid: Check the Unit, Not Just the Freight
 
-U.S. farm machinery can make sense for Argentine buyers when the exact machine, hours, technology, or attachments are hard to find locally. The risk is buying before the scope is clear.
+Before buying used farm machinery in the U.S. for Argentina, do not start with the freight price. Start with the unit: make, model, year, serial number, hours, cleaning, documentation, and whether your broker confirms AFIDI/SENASA and the Sistema Informático Malvina filing. Meridian coordinates the U.S./Canada export scope; the Argentine broker confirms local import before you buy.
 
 This guide is not a substitute for an Argentine customs broker. It explains how to separate Meridian's export scope from Argentina-side import work before funds move.
 
@@ -290,7 +290,7 @@ Meridian coordinates the U.S. side: seller contact, pickup, inland transport, di
 
 Review the [Argentina buyer hub](/es/destinations/argentina), [agricultural machinery export service](/services/agricultural), [assisted equipment purchase](/services/equipment-sales), and [freight calculator](/pricing/calculator).
 
-## Sources
+## Official sources to review with your broker
 
 - [Decreto 273/2025](https://www.argentina.gob.ar/normativa/nacional/decreto-273-2025-411791)
 - [AFIDI through SENASA](https://www.argentina.gob.ar/servicio/gestionar-la-autorizacion-fitosanitaria-de-importacion-afidi-y-la-evaluacion-de)
@@ -315,9 +315,9 @@ Review the [Argentina buyer hub](/es/destinations/argentina), [agricultural mach
       "A pre-purchase guide for comparing U.S. machinery without confusing a Montevideo freight quote with full Uruguay landed scope.",
     category: "Destinations",
     readingTimeMinutes: 7,
-    content: `## Montevideo Is Not the Whole Plan
+    content: `## Before You Bid: Check the Unit, Not Just the Freight
 
-Uruguay can look straightforward because Montevideo is often the main logistics handoff. Still, a tractor, combine, sprayer, planter, or header needs a clear export plan and a separate Uruguay-side import plan.
+Uruguay can look straightforward because Montevideo concentrates most of the logistics, but a Montevideo freight quote is not nationalization or final delivery. Before buying a used machine in the U.S., confirm cleaning, phytosanitary certificate, DGSA Resolution 98/016, DUA, NCM, taxes, and inland pickup with your Uruguayan broker. Meridian coordinates the U.S./Canada export scope; the Uruguayan broker confirms the local side.
 
 This guide is not a substitute for a Uruguayan broker or DGSA. It helps buyers separate U.S. pickup, cleaning, packing, documents, and ocean freight from DUA, NCM, taxes, inspection, port costs, and inland delivery.
 
@@ -329,7 +329,7 @@ Before buying, check cleaning, phytosanitary certification, attachments, serial 
 
 Review the [Uruguay buyer hub](/es/destinations/uruguay), [agricultural machinery export service](/services/agricultural), [assisted equipment purchase](/services/equipment-sales), and [freight calculator](/pricing/calculator).
 
-## Sources
+## Official sources to review with your broker
 
 - [DGSA Resolution 98/016](https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-98016-dgsa-requisitos-fitosanitarios-para-introduccion-pais)
 - [Trade.gov: Uruguay Agricultural Equipment](https://www.trade.gov/country-commercial-guides/uruguay-agricultural-equipment)`,
@@ -353,9 +353,9 @@ Review the [Uruguay buyer hub](/es/destinations/uruguay), [agricultural machiner
       "A guide for understanding the ocean leg, Chilean transit port, Bolivian broker responsibilities, and inland delivery before buying in the U.S.",
     category: "Destinations",
     readingTimeMinutes: 8,
-    content: `## Bolivia Requires a Full Route View
+    content: `## Before You Bid: Check the Unit, Not Just the Freight
 
-Bolivia is landlocked, so importing U.S. farm machinery is not just an ocean quote. A machine may arrive through Arica, Iquique, or Antofagasta and then move inland to Santa Cruz, Cochabamba, La Paz, or another destination.
+For Bolivia, the main risk is not just ocean freight. A machine can arrive via Arica, Iquique, or Antofagasta and then move inland to Santa Cruz, Cochabamba, La Paz, or another destination. Meridian coordinates the U.S./Canada export scope; the importer, broker, and transit agent confirm ASPB, SENASAG when applicable, clearance, and inland transport before you buy.
 
 This guide is not a substitute for a Bolivian broker or importer. It explains which export-side steps Meridian can coordinate and which Bolivia-side steps must be confirmed locally.
 
@@ -367,7 +367,7 @@ Before buying, confirm machine dimensions, attachments, routing, ASPB or transit
 
 Review the [Bolivia buyer hub](/es/destinations/bolivia), [agricultural machinery export service](/services/agricultural), [assisted equipment purchase](/services/equipment-sales), and [freight calculator](/pricing/calculator).
 
-## Sources
+## Official sources to review with your broker
 
 - [Trade.gov: Bolivia Agricultural Sectors](https://www.trade.gov/country-commercial-guides/bolivia-agricultural-sectors)
 - [ASPB: Port of Arica](https://www.aspb.gob.bo/arica-chile/)
@@ -393,11 +393,11 @@ Review the [Bolivia buyer hub](/es/destinations/bolivia), [agricultural machiner
       "A pre-purchase guide for reviewing SAG, cleaning, port selection, packing, and buyer responsibilities before buying U.S. machinery.",
     category: "Destinations",
     readingTimeMinutes: 7,
-    content: `## Check the Machine Before the Route
+    content: `## Before You Bid: Check the Unit, Not Just the Freight
 
-Chile has efficient port options, but used agricultural machinery still needs careful review. The buyer should check condition, cleaning, documentation, port, customs broker scope, and final delivery before buying.
+Chile has efficient ports, but used machinery does not enter just because the freight works. Before buying in the U.S., review internal and external cleaning, photos of the undercarriage, attachments, dimensions, entry port, customs broker, and SAG Resolution 3.103/2016 compliance. Meridian coordinates the U.S./Canada export scope; the Chilean importer and customs broker confirm SAG, classification, taxes, and local pickup before you buy.
 
-This guide is not a substitute for a Chilean customs broker or SAG. It separates Meridian's U.S. export scope from Chile-side import and delivery work.
+This guide is not a substitute for a Chilean customs broker or SAG. It separates Meridian's U.S. export scope from Chile-side import and delivery work. If SAG finds soil, plant residue, or pests on arrival, the importer can face phytosanitary measures, additional costs, delays, or re-export depending on the case, which is why origin preparation is not optional.
 
 ## What to Confirm
 
@@ -407,7 +407,7 @@ Meridian coordinates pickup, inland transport, dismantling, packing, export docu
 
 Review the [Chile buyer hub](/es/destinations/chile), [agricultural machinery export service](/services/agricultural), [assisted equipment purchase](/services/equipment-sales), and [freight calculator](/pricing/calculator).
 
-## Sources
+## Official sources to review with your broker
 
 - [SAG Resolution 3.103/2016](https://normativa.sag.gob.cl/Publico/Normas/DetalleNorma.aspx?id=1091725)
 - [SAG used machinery requirements](https://www.sag.cl/content/establece-requisitos-fitosanitarios-para-la-importacion-admision-temporal-y-transito-de-maquinaria-usada-que-indica-y-deroga-resolucion-ndeg-2979-de-2001)

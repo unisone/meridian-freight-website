@@ -166,7 +166,7 @@ If the machine looks workable, the next step is a quote built around the actual 
 
 You can also review our [Paraguay buyer hub](/es/destinations/paraguay), [agricultural machinery export service](/services/agricultural), [assisted equipment purchase service](/services/equipment-sales), and [freight calculator](/pricing/calculator).
 
-## Sources
+## Official sources to review with your broker
 
 - [Trade.gov: Paraguay agricultural sectors](https://www.trade.gov/country-commercial-guides/paraguay-agricultural-sectors)
 - [Trade.gov: Paraguay-Paraná waterway system](https://www.trade.gov/country-commercial-guides/paraguay-paraguay-parana-waterway-system)

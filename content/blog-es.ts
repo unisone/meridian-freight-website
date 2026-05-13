@@ -152,7 +152,7 @@ Si la unidad parece viable, el siguiente paso es una cotización armada sobre es
 
 También puede revisar nuestra [guía para compradores de Paraguay](/es/destinations/paraguay), el servicio de [exportación de maquinaria agrícola](/services/agricultural), la [compra asistida de equipos](/services/equipment-sales) y la [calculadora de flete](/pricing/calculator).
 
-## Fuentes
+## Fuentes oficiales para revisar con su despachante
 
 - [Trade.gov: sectores agrícolas de Paraguay](https://www.trade.gov/country-commercial-guides/paraguay-agricultural-sectors)
 - [Trade.gov: sistema de la Hidrovía Paraguay-Paraná](https://www.trade.gov/country-commercial-guides/paraguay-paraguay-parana-waterway-system)
