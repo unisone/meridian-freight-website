@@ -556,10 +556,24 @@
     "getAQuote": "Get a Quote"
   },
   "BlogPostPage": {
+    "blogBreadcrumb": "Blog",
     "backToAllArticles": "Back to all articles",
     "ctaHeading": "Get a Quote",
     "ctaDescription": "Ready to ship your equipment? Tell us what you need to export and where it is going — we will send you a detailed quote within 24 hours.",
-    "getAQuote": "Get a Quote"
+    "getAQuote": "Get a Quote",
+    "minRead": "{minutes} min read",
+    "guideLabel": "Buyer guide",
+    "articleDetails": "Article details",
+    "routePlanning": "Route planning",
+    "routePlanningDescription": "Compare the inland handoff before committing to a machine in the United States.",
+    "routeAsuncion": "Asunción / Villeta",
+    "routeAsuncionDescription": "River-port handoff for cargo that fits the lane and broker plan.",
+    "routeParanagua": "Paranaguá, Brazil",
+    "routeParanaguaDescription": "Practical option for oversized flatrack machinery when Paraguay-side trucking is confirmed separately.",
+    "routeMontevideo": "Montevideo",
+    "routeMontevideoDescription": "Useful when the buyer wants to control pickup and inland movement after arrival.",
+    "supportCardTitle": "Need a route check?",
+    "supportCardDescription": "Send the listing, U.S. pickup ZIP, machine year, dimensions, and final Paraguay destination so the route can be screened before you bid."
   },
   "ServiceDetailPage": {
     "eyebrow": "Our Services",

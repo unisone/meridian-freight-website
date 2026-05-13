@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { ArrowRight, Clock, Tag, ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Clock,
+  FileText,
+  Route,
+  ShieldCheck,
+  Ship,
+  Tag,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Card, CardContent } from "@/components/ui/card";
+import { PageHero } from "@/components/page-hero";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/content/blog";
@@ -72,6 +83,23 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const contentHtml = renderMarkdown(post.content);
+  const isParaguayImportGuide =
+    slug === "import-farm-machinery-united-states-paraguay";
+
+  const routeOptions = [
+    {
+      label: tb("routeAsuncion"),
+      description: tb("routeAsuncionDescription"),
+    },
+    {
+      label: tb("routeParanagua"),
+      description: tb("routeParanaguaDescription"),
+    },
+    {
+      label: tb("routeMontevideo"),
+      description: tb("routeMontevideoDescription"),
+    },
+  ];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -110,69 +138,139 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="pt-20">
-        {/* Breadcrumbs */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { label: "Blog", href: "/blog" },
-              { label: post.title },
-            ]}
-            locale={locale}
-            currentPath={`/blog/${slug}`}
-          />
-        </div>
-
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 sm:py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
-            <div className="mb-4 flex flex-wrap items-center gap-3">
-              <Badge
-                variant="secondary"
-                className="px-3 py-1 text-xs font-medium"
-              >
-                {post.category}
-              </Badge>
-              <span className="flex items-center gap-1.5 text-sm text-sky-300">
-                <Tag className="h-3.5 w-3.5" />
-                {post.publishedAt}
-              </span>
-              <span className="flex items-center gap-1.5 text-sm text-sky-300">
-                <Clock className="h-3.5 w-3.5" />
-                {post.readingTimeMinutes} min read
-              </span>
-            </div>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              {post.title}
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-sky-300 leading-relaxed">
-              {post.excerpt}
-            </p>
+      <div>
+        <PageHero
+          variant="dark"
+          locale={locale}
+          currentPath={`/blog/${slug}`}
+          breadcrumbs={[
+            { label: tb("blogBreadcrumb"), href: "/blog" },
+            { label: post.title },
+          ]}
+          eyebrow={post.category}
+          heading={post.title}
+          description={post.excerpt}
+          icon={FileText}
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <Badge
+              variant="secondary"
+              className="h-8 rounded-lg bg-white/10 px-3 text-xs font-semibold text-white ring-1 ring-white/15 hover:bg-white/15"
+            >
+              <Tag className="mr-1.5 h-3.5 w-3.5 text-sky-300" />
+              {post.category}
+            </Badge>
+            <span className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-white/10 px-3 text-xs font-semibold text-sky-100 ring-1 ring-white/15">
+              <CalendarDays className="h-3.5 w-3.5 text-sky-300" />
+              {post.publishedAt}
+            </span>
+            <span className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-white/10 px-3 text-xs font-semibold text-sky-100 ring-1 ring-white/15">
+              <Clock className="h-3.5 w-3.5 text-sky-300" />
+              {tb("minRead", { minutes: post.readingTimeMinutes })}
+            </span>
           </div>
-        </section>
+        </PageHero>
 
         {/* Article Content */}
         <ScrollReveal variant="fade">
-          <article className="py-16 md:py-20">
-            <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-              <div
-                className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:leading-relaxed prose-p:text-muted-foreground prose-li:text-muted-foreground prose-a:text-primary prose-a:underline hover:prose-a:text-primary/80 prose-strong:text-foreground prose-ul:my-4 prose-li:my-1"
-                dangerouslySetInnerHTML={{ __html: contentHtml }}
-              />
-            </div>
-          </article>
-        </ScrollReveal>
+          <section className="bg-muted/40 py-12 md:py-16">
+            <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-8">
+              <article className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-foreground/10">
+                <div className="border-b bg-gradient-to-r from-primary/10 via-white to-white px-6 py-6 sm:px-8 lg:px-10">
+                  <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+                    {tb("guideLabel")}
+                  </p>
+                  <p className="mt-3 max-w-3xl text-base leading-relaxed text-muted-foreground">
+                    {post.excerpt}
+                  </p>
+                </div>
+                <div
+                  className="px-6 py-8 text-base leading-7 text-slate-700 sm:px-8 lg:px-10 lg:py-10 [&>*:first-child]:mt-0 [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary/80 [&_h2]:mt-12 [&_h2]:border-t [&_h2]:border-border [&_h2]:pt-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-foreground sm:[&_h2]:text-3xl [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:tracking-tight [&_h3]:text-foreground [&_li]:pl-1 [&_li]:text-muted-foreground [&_p]:mt-4 [&_p]:text-muted-foreground [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6"
+                  dangerouslySetInnerHTML={{ __html: contentHtml }}
+                />
+              </article>
 
-        {/* Back to Blog */}
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-8">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            {tb("backToAllArticles")}
-          </Link>
-        </div>
+              <aside className="space-y-4 lg:sticky lg:top-24">
+                <Card className="shadow-sm">
+                  <CardContent className="space-y-4 p-5">
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+                        {tb("articleDetails")}
+                      </p>
+                      <h2 className="mt-2 text-lg font-bold text-foreground">
+                        {post.category}
+                      </h2>
+                    </div>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-center gap-3">
+                        <CalendarDays className="h-4 w-4 text-primary" />
+                        <span className="text-muted-foreground">{post.publishedAt}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Clock className="h-4 w-4 text-primary" />
+                        <span className="text-muted-foreground">
+                          {tb("minRead", { minutes: post.readingTimeMinutes })}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {isParaguayImportGuide && (
+                  <Card className="shadow-sm">
+                    <CardContent className="p-5">
+                      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <Route className="h-5 w-5" />
+                      </div>
+                      <h2 className="text-lg font-bold text-foreground">
+                        {tb("routePlanning")}
+                      </h2>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        {tb("routePlanningDescription")}
+                      </p>
+                      <div className="mt-5 space-y-3">
+                        {routeOptions.map((option) => (
+                          <div key={option.label} className="rounded-lg bg-muted p-3">
+                            <p className="font-semibold text-foreground">{option.label}</p>
+                            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                              {option.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                <Card className="bg-slate-900 text-white shadow-lg">
+                  <CardContent className="p-5">
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-sky-300">
+                      <ShieldCheck className="h-5 w-5" />
+                    </div>
+                    <h2 className="text-lg font-bold">{tb("supportCardTitle")}</h2>
+                    <p className="mt-2 text-sm leading-relaxed text-sky-100">
+                      {tb("supportCardDescription")}
+                    </p>
+                    <Button
+                      render={<Link href="/contact" />}
+                      className="mt-5 h-10 w-full rounded-lg bg-white text-foreground hover:bg-slate-100"
+                    >
+                      {tb("getAQuote")} <Ship className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                  {tb("backToAllArticles")}
+                </Link>
+              </aside>
+            </div>
+          </section>
+        </ScrollReveal>
 
         {/* CTA */}
         <ScrollReveal variant="fade">

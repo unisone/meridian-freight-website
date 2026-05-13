@@ -42,7 +42,6 @@ describe("blog content", () => {
       "https://www.trade.gov/country-commercial-guides/paraguay-customs-regulations",
       "https://www.trade.gov/country-commercial-guides/paraguay-import-requirements-documentation",
       "https://www.bacn.gov.py/leyes-paraguayas/12918/ley-n-7565-2025-que-establece-medidas-fitosanitarias-y-dispone-otras-medidas-de-mitigaci-n-de-riesgo-en-la-introducci-n-al-pa-s-de-maquinaria-equipos-e-implementos-agr-colas-usados",
-      "https://www.abc.com.py/negocios/abc-campo/2026/01/24/importacion-de-maquinarias-usadas-en-alza/",
     ];
 
     for (const url of requiredSourceUrls) {
@@ -56,16 +55,21 @@ describe("blog content", () => {
     if (!post) throw new Error("Paraguay import guide is missing");
 
     expect(post.content).toContain("Asunción or Villeta");
-    expect(post.content).toContain("Paranagua, Brazil");
+    expect(post.content).toContain("Paranaguá, Brazil");
     expect(post.content).toContain("Montevideo");
     expect(post.content).toContain("five-year age limit");
-    expect(post.content).toContain("must be confirmed separately");
-    expect(post.content).toContain("not the same as a delivered-to-farm Paraguay quote");
+    expect(post.content).toContain("before you buy");
+    expect(post.content).toContain("pre-purchase");
+    expect(post.content).toContain("local leg is confirmed separately");
+    expect(post.content).toContain("not the same as delivery to a farm in Paraguay");
+    expect(post.content).toContain("Meridian handles");
+    expect(post.content).toContain("Your Paraguay importer, customs broker, or local team handles");
 
     expect(post.content).not.toContain("MANU");
     expect(post.content).not.toContain("$10,000");
     expect(post.content).not.toContain("guaranteed");
     expect(post.content).not.toContain("best price");
+    expect(post.content).not.toContain("overpay dealers");
   });
 
   it("keeps the guide connected to relevant internal buyer paths", () => {

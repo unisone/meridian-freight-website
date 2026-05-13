@@ -561,10 +561,24 @@
     "getAQuote": "Solicitar Cotización"
   },
   "BlogPostPage": {
+    "blogBreadcrumb": "Blog",
     "backToAllArticles": "Volver a todos los articulos",
     "ctaHeading": "Solicitar Cotización",
     "ctaDescription": "¿Listo para enviar su equipo? Díganos que necesita exportar y hacia donde va — le enviaremos una cotización detallada en 24 horas.",
-    "getAQuote": "Solicitar Cotización"
+    "getAQuote": "Solicitar Cotización",
+    "minRead": "{minutes} min de lectura",
+    "guideLabel": "Guía para compradores",
+    "articleDetails": "Detalles del artículo",
+    "routePlanning": "Planificación de ruta",
+    "routePlanningDescription": "Compare el punto de entrega interior antes de comprometerse con una máquina en Estados Unidos.",
+    "routeAsuncion": "Asunción / Villeta",
+    "routeAsuncionDescription": "Entrega en puerto fluvial cuando la carga encaja con la ruta y el plan del despachante.",
+    "routeParanagua": "Paranaguá, Brasil",
+    "routeParanaguaDescription": "Opción práctica para maquinaria sobredimensionada en flat rack cuando el flete local hacia Paraguay se confirma por separado.",
+    "routeMontevideo": "Montevideo",
+    "routeMontevideoDescription": "Útil cuando el comprador quiere controlar el retiro y el movimiento terrestre después de la llegada.",
+    "supportCardTitle": "¿Necesita revisar la ruta?",
+    "supportCardDescription": "Envíe el enlace, ZIP de retiro en EE.UU., año, dimensiones y destino final en Paraguay para revisar la ruta antes de ofertar."
   },
   "ServiceDetailPage": {
     "eyebrow": "Nuestros Servicios",
