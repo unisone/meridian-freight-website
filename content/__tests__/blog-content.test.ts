@@ -27,6 +27,15 @@ describe("blog content", () => {
     expect(post.title).toBe(
       "How to Import Farm Machinery from the United States to Paraguay",
     );
+    for (const localePost of [
+      post,
+      blogPostsEs[0]!,
+      blogPostsRu[0]!,
+    ]) {
+      expect(`${localePost.metaTitle} | Meridian Export`.length).toBeLessThanOrEqual(
+        60,
+      );
+    }
     expect(post.metaDescription.length).toBeGreaterThanOrEqual(120);
     expect(post.metaDescription.length).toBeLessThanOrEqual(160);
     expect(post.keywords).toContain("how to import farm machinery from USA to Paraguay");

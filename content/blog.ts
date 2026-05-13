@@ -17,7 +17,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "import-farm-machinery-united-states-paraguay",
     title: "How to Import Farm Machinery from the United States to Paraguay",
-    metaTitle: "How to Import Farm Machinery from the USA to Paraguay",
+    metaTitle: "Import U.S. Farm Machinery to Paraguay",
     metaDescription:
       "Learn how Paraguayan buyers can import U.S. farm machinery with less confusion: machine checks, Ley 7565/2025, routes, documents, and scope.",
     keywords: [

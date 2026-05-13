@@ -20,6 +20,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
+import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/content/blog";
 import { SITE, COMPANY } from "@/lib/constants";
 import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
@@ -50,6 +51,7 @@ export async function generateMetadata({
         en: `${SITE.url}/blog/${slug}`,
         es: `${SITE.url}/es/blog/${slug}`,
         ru: `${SITE.url}/ru/blog/${slug}`,
+        "x-default": `${SITE.url}/blog/${slug}`,
       },
     },
     openGraph: {
@@ -84,6 +86,8 @@ export default async function BlogPostPage({
   const post = getBlogPostBySlug(slug, locale);
   if (!post) notFound();
 
+  const localePath = locale === "en" ? "" : `/${locale}`;
+  const pageUrl = `${SITE.url}${localePath}/blog/${slug}`;
   const contentHtml = renderMarkdown(post.content);
   const isParaguayImportGuide =
     slug === "import-farm-machinery-united-states-paraguay";
@@ -175,10 +179,10 @@ export default async function BlogPostPage({
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE.url}/blog/${slug}`,
+      "@id": pageUrl,
     },
     image: `${SITE.url}${SITE.ogImage}`,
-    url: `${SITE.url}/blog/${slug}`,
+    url: pageUrl,
   };
 
   return (
@@ -390,7 +394,13 @@ export default async function BlogPostPage({
                       {tb("supportCardDescription")}
                     </p>
                     <Button
-                      render={<Link href="/contact" />}
+                      render={
+                        <TrackedCtaLink
+                          href="/contact"
+                          location={`blog_sidebar_${slug}`}
+                          text={ctaButton}
+                        />
+                      }
                       className="mt-5 h-10 w-full rounded-lg bg-white text-foreground hover:bg-slate-100"
                     >
                       {ctaButton} <CheckCircle2 className="ml-2 h-4 w-4" />
@@ -414,7 +424,13 @@ export default async function BlogPostPage({
         <ScrollReveal variant="fade">
           <DarkCta heading={ctaHeading} description={ctaDescription}>
             <Button
-              render={<Link href="/contact" />}
+              render={
+                <TrackedCtaLink
+                  href="/contact"
+                  location={`blog_footer_${slug}`}
+                  text={ctaButton}
+                />
+              }
               size="lg"
               className="h-12 px-8 rounded-xl bg-white text-foreground hover:bg-muted font-semibold shadow-lg"
             >

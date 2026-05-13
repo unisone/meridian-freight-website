@@ -101,7 +101,12 @@ describe("LATAM market buyer hub content", () => {
     const supportedEquipmentPaths = new Set(
       getAllEquipmentSlugs().map((slug) => `/equipment/${slug}`),
     );
-    const supportedStaticPaths = new Set(["/pricing/calculator", "/projects", "/contact"]);
+    const supportedStaticPaths = new Set([
+      "/pricing/calculator",
+      "/projects",
+      "/contact",
+      "/blog/import-farm-machinery-united-states-paraguay",
+    ]);
 
     for (const page of latamMarketPages) {
       const hrefs = [
@@ -123,6 +128,13 @@ describe("LATAM market buyer hub content", () => {
         expect(isSupported, `${page.slug} has unsupported internal link ${href}`).toBe(true);
       }
     }
+  });
+
+  it("connects the Paraguay buyer hub to the import guide article", () => {
+    const paraguay = getLatamMarketPage("paraguay");
+    expect(paraguay?.resourceLinks.map((item) => item.href)).toContain(
+      "/blog/import-farm-machinery-united-states-paraguay",
+    );
   });
 
   it("keeps the Paraguay Hidrovía and terminal copy durable", () => {

@@ -4,7 +4,7 @@ export const blogPostsEs: BlogPost[] = [
   {
     slug: "import-farm-machinery-united-states-paraguay",
     title: "Cómo importar maquinaria agrícola de Estados Unidos a Paraguay",
-    metaTitle: "Cómo importar maquinaria agrícola de EE.UU. a Paraguay",
+    metaTitle: "Importar maquinaria agrícola a Paraguay",
     metaDescription:
       "Guía para importar maquinaria agrícola de EE.UU. a Paraguay con menos dudas: revisión de unidad, Ley 7565/2025, rutas, documentos y responsabilidades.",
     keywords: [
