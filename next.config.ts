@@ -85,15 +85,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  // Defense in depth: ensure @swc/helpers files are in every page lambda's
-  // filePathMap so NFT can't drop them. Primary fix is forcing webpack (see
-  // build script) — Turbopack's middleware bundle externalises @swc/helpers
-  // via runtime require('/var/task/node_modules/@swc/helpers/esm/...js'), and
-  // Vercel's NFT does not trace those paths, producing MIDDLEWARE_INVOCATION_FAILED.
-  outputFileTracingIncludes: {
-    "/*": ["node_modules/@swc/helpers/**/*"],
-    "/**/*": ["node_modules/@swc/helpers/**/*"],
-  },
   async headers() {
     return [
       {
