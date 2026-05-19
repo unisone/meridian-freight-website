@@ -72,6 +72,32 @@ jobs:
             fi
           done
 
+          # Locale + dynamic blog routes — these were the canary for the
+          # 2026-05-19 @swc/helpers ESM tracing SEV (the static homepage stayed
+          # 200 via edge cache while dynamic locale + blog lambdas 500'd).
+          for path in "/es" "/ru" "/es/destinations/argentina" "/blog/paraguay-import-guide" "/es/blog/paraguay-import-guide"; do
+            check_page "$path"
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${SITE}${path}")
+            if [ "$STATUS" -eq 200 ]; then
+              echo "| \`${path}\` | ✅ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| \`${path}\` | ❌ ${STATUS} |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+          # API route handler — was the second canary for the SEV (Node-runtime
+          # lambda crashed at startup with @swc/helpers missing). 405 is correct
+          # for HEAD/GET (endpoint is POST-only); a 500 here is the regression.
+          API_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${SITE}/api/track/wa-click")
+          if [ "$API_STATUS" -eq 405 ] || [ "$API_STATUS" -eq 200 ]; then
+            echo "✅ /api/track/wa-click → ${API_STATUS}"
+            echo "| \`/api/track/wa-click\` | ✅ ${API_STATUS} |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ /api/track/wa-click → ${API_STATUS} (expected 200 or 405; 500 indicates @swc/helpers SEV regression)"
+            echo "| \`/api/track/wa-click\` | ❌ ${API_STATUS} |" >> $GITHUB_STEP_SUMMARY
+            FAILED=1
+          fi
+
           # SEO critical files
           check_page "/sitemap.xml"
           check_page "/robots.txt"
