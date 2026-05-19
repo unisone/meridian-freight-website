@@ -85,6 +85,12 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Defensive: ensure @swc/helpers (ESM + CJS) ships in every lambda. Vercel NFT
+  // intermittently drops these on rebuilds, producing runtime MIDDLEWARE_INVOCATION_FAILED
+  // with "Cannot find module '@swc/helpers/esm/_interop_require_default.js'".
+  outputFileTracingIncludes: {
+    "**/*": ["./node_modules/@swc/helpers/**/*"],
+  },
   async headers() {
     return [
       {
