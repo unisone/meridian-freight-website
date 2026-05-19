@@ -85,6 +85,18 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Page + API lambdas need @swc/helpers ESM on the Vercel filesystem. Vercel's
+  // NFT does not consistently trace these files (manifests as
+  // "Cannot find module '/var/task/node_modules/@swc/helpers/esm/_interop_require_default.js'"
+  // at runtime, paired with MIDDLEWARE_INVOCATION_FAILED-style 500s on dynamic routes
+  // and API handlers). Force-include all of @swc/helpers in every lambda.
+  // The middleware lambda is bypassed entirely by routing through middleware.ts
+  // (Edge runtime) — see ./middleware.ts.
+  outputFileTracingIncludes: {
+    "/*": ["node_modules/@swc/helpers/**/*"],
+    "/**/*": ["node_modules/@swc/helpers/**/*"],
+    "/api/**/*": ["node_modules/@swc/helpers/**/*"],
+  },
   async headers() {
     return [
       {
