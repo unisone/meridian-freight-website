@@ -5,11 +5,49 @@
 - Slack channel: `#mfexport-site-alerts`
 - Slack channel ID: `C0B4X51JH9R`
 - Email recipient: `alex.z@meridianexport.com`
-- Email sender: `Meridian Freight <contact@meridianexport.com>` via Resend
 
-## What The Monitor Checks
+## Current Repo-Owned Canary
 
-The production monitor checks routes that exercise static, dynamic, localized, calculator, schedule, and Node route-handler behavior:
+The website exposes a lightweight production canary at:
+
+- `https://meridianexport.com/api/health`
+
+Expected response:
+
+- HTTP `200`
+- `Cache-Control: no-store`
+- JSON with `ok: true` and `service: "meridian-freight-website"`
+
+This route intentionally uses the Next.js Node runtime and dynamic rendering so it tests more than a cached static homepage. It is a target for Vercel alerts, webhooks, or an outside-in uptime provider.
+
+## Vercel-Native Alerting
+
+Vercel Alerts can notify by email, Slack, or webhook for platform-observed anomalies. As of the current Vercel docs, the native alert types are:
+
+- Error anomaly: a spike in `5xx` function invocation rate.
+- Usage anomaly: an abnormal usage spike.
+
+Configure this in Vercel:
+
+1. Open the project in the Vercel dashboard.
+2. Go to `Observability` -> `Alerts`.
+3. Click `Subscribe to Alerts`.
+4. Enable email for `alex.z@meridianexport.com` if that account is a Vercel user or team owner.
+5. Install the Vercel Slack integration if needed.
+6. In `#mfexport-site-alerts`, invite the Vercel app and subscribe the project alerts with the command shown by Vercel, in the form:
+
+```text
+/invite @Vercel
+/vercel subscribe [team/project] alerts
+```
+
+Important limitation: Vercel anomaly alerts are not the same as outside-in uptime checks. They catch Vercel-observed error and usage anomalies, but they are not a multi-region synthetic monitor that repeatedly requests `https://meridianexport.com/api/health` from outside Vercel.
+
+## Outside-In Uptime Monitor
+
+Use a dedicated uptime provider for true "the public website is unreachable" detection. This runs outside Vercel and outside the app, so it can still notify when the app cannot execute code.
+
+Recommended monitor targets:
 
 - `https://meridianexport.com/api/health`
 - `https://meridianexport.com/es/blog/paraguay-import-guide`
@@ -18,83 +56,41 @@ The production monitor checks routes that exercise static, dynamic, localized, c
 - `https://meridianexport.com/schedule`
 - `https://meridianexport.com/`
 
-The homepage is a control route only. Dynamic routes and `/api/health` carry the stronger signal because the May 19, 2026 outage showed cached root-page checks can miss runtime failures.
+Recommended settings:
 
-## GitHub Fallback Monitor
+- Check interval: 1-3 minutes.
+- Failure threshold: 2-3 consecutive failures.
+- Timeout: 10-15 seconds.
+- Alert channels: Slack `#mfexport-site-alerts` and email `alex.z@meridianexport.com`.
+- Send recovery notifications.
+- Treat `5xx`, unexpected `4xx`, DNS errors, TLS errors, timeouts, empty responses, or missing expected body text as failures.
 
-Workflow: `.github/workflows/site-alert-monitor.yml`
+## No GitHub Scheduled Monitor
 
-Schedule: every 10 minutes, plus manual `workflow_dispatch`.
-
-Required GitHub Secrets:
-
-- `SITE_ALERT_SLACK_BOT_TOKEN`: Slack bot token allowed to post to `#mfexport-site-alerts`.
-- `SITE_ALERT_SLACK_CHANNEL_ID`: `C0B4X51JH9R`.
-- `SITE_ALERT_RESEND_API_KEY`: Resend API key.
-- `SITE_ALERT_EMAIL_TO`: `alex.z@meridianexport.com`.
-
-Workflow state:
-
-- The workflow stores the last `healthy` or `failed` state in GitHub Actions cache under `.site-alert-state/status`.
-- This state lets recovery emails only send after a prior failed run and prevents repeated outage alerts every 10 minutes while the site remains down.
-
-Noise control:
-
-- The first failed run sends a Slack/email outage alert and marks the monitor as `failed`.
-- Continued failed runs do not repeat Slack/email alerts every 10 minutes.
-- The first healthy run after a failed state sends one recovery alert and marks the monitor as `healthy`.
-- If Slack or Resend delivery fails, the workflow keeps the previous state so the next run retries the missed outage or recovery notification.
-
-## Primary External Monitor Setup
-
-The GitHub workflow is a backup. The primary monitor should be an external uptime provider such as Better Stack or Checkly because it runs outside Vercel and outside this application.
-
-Configure:
-
-1. Create one monitor per route listed above, or one multi-step/API check covering all routes.
-2. Check interval: 1-3 minutes.
-3. Failure threshold: 2-3 consecutive failures.
-4. Timeout: 10-15 seconds.
-5. Alert channels: Slack `#mfexport-site-alerts` and email `alex.z@meridianexport.com`.
-6. Send recovery notifications.
-7. Treat `/api/health`, localized blog/destination pages, `/pricing/calculator`, and `/schedule` as the primary signals.
+Do not use GitHub Actions as the production uptime monitor for this site. GitHub scheduled workflows were removed because this alerting path should not depend on GitHub scheduler reliability.
 
 ## When An Alert Fires
 
-1. Open the alert details and identify which routes failed.
-2. Check whether failures are broad:
-   - `/api/health` plus dynamic pages failing usually means application/runtime/deployment issue.
-   - Only one content page failing usually means route/content regression.
-   - DNS/SSL failures point to domain/certificate/provider status.
-3. Probe production directly:
+1. Identify which route failed and whether the failure is broad or isolated.
+2. Probe production directly:
 
 ```bash
-curl -I https://meridianexport.com/api/health
+curl -i https://meridianexport.com/api/health
 curl -I https://meridianexport.com/es/blog/paraguay-import-guide
 curl -I https://meridianexport.com/pricing/calculator
 ```
 
-4. Check current Vercel production deployment and logs.
-5. For site-wide `5xx` after a deployment, rollback first, then investigate:
+3. Check the current Vercel production deployment and runtime logs.
+4. For site-wide `5xx` after a deployment, rollback first, then investigate:
 
 ```bash
 vercel rollback
 ```
 
-6. After rollback or fix, confirm critical routes return expected statuses and wait for the recovery alert.
+5. After rollback or fix, confirm the canary and affected routes return expected statuses and wait for the recovery alert.
 
-## Manual Monitor Test
-
-Dry-run without notifications:
+## Manual Canary Check
 
 ```bash
-SITE_ALERT_ATTEMPTS=1 SITE_ALERT_RETRY_DELAY_MS=1 npx tsx scripts/site-alert-monitor.ts --dry-run --skip-notify
+curl -i https://meridianexport.com/api/health
 ```
-
-Forced failure test with notifications:
-
-```bash
-SITE_ALERT_ATTEMPTS=1 SITE_ALERT_RETRY_DELAY_MS=1 npx tsx scripts/site-alert-monitor.ts --force-failure
-```
-
-Only run the forced failure command when Slack/email test notifications are expected.
