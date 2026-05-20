@@ -1,0 +1,83 @@
+name: Production Site Alert Monitor
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: production-site-alert-monitor
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  monitor:
+    name: Production Site Alert Monitor
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Read previous monitor status
+        id: previous
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          previous="$(gh variable get SITE_ALERT_LAST_STATUS --repo "$GITHUB_REPOSITORY" 2>/dev/null || true)"
+          if [ "$previous" != "healthy" ] && [ "$previous" != "failed" ]; then
+            previous="unknown"
+          fi
+          echo "status=$previous" >> "$GITHUB_OUTPUT"
+
+      - name: Run production monitor
+        id: monitor
+        continue-on-error: true
+        env:
+          SITE_ALERT_BASE_URL: https://meridianexport.com
+          SITE_ALERT_ATTEMPTS: "3"
+          SITE_ALERT_RETRY_DELAY_MS: "30000"
+          SITE_ALERT_TIMEOUT_MS: "15000"
+          SITE_ALERT_PREVIOUS_STATUS: ${{ steps.previous.outputs.status }}
+          SITE_ALERT_SLACK_BOT_TOKEN: ${{ secrets.SITE_ALERT_SLACK_BOT_TOKEN }}
+          SITE_ALERT_SLACK_CHANNEL_ID: ${{ secrets.SITE_ALERT_SLACK_CHANNEL_ID }}
+          SITE_ALERT_RESEND_API_KEY: ${{ secrets.SITE_ALERT_RESEND_API_KEY }}
+          SITE_ALERT_EMAIL_TO: ${{ secrets.SITE_ALERT_EMAIL_TO }}
+        run: npx tsx scripts/site-alert-monitor.ts
+
+      - name: Persist monitor status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MONITOR_OUTCOME: ${{ steps.monitor.outcome }}
+          MONITOR_PERSISTED_STATUS: ${{ steps.monitor.outputs.persisted_status }}
+        run: |
+          set -euo pipefail
+          status="$MONITOR_PERSISTED_STATUS"
+          if [ "$status" != "healthy" ] && [ "$status" != "failed" ]; then
+            if [ "$MONITOR_OUTCOME" = "success" ]; then
+              status="healthy"
+            else
+              status="failed"
+            fi
+          fi
+          gh variable set SITE_ALERT_LAST_STATUS --repo "$GITHUB_REPOSITORY" --body "$status"
+          echo "Persisted SITE_ALERT_LAST_STATUS=$status"
+
+      - name: Fail workflow if production is unhealthy
+        if: steps.monitor.outcome != 'success'
+        run: |
+          echo "::error::Production monitor detected unhealthy routes."
+          exit 1
