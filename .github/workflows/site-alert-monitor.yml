@@ -11,7 +11,6 @@ concurrency:
 
 permissions:
   contents: read
-  actions: write
 
 jobs:
   monitor:
@@ -30,13 +29,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Restore monitor state
+        id: restore-state
+        uses: actions/cache/restore@v4
+        with:
+          path: .site-alert-state
+          key: site-alert-state-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            site-alert-state-
+
       - name: Read previous monitor status
         id: previous
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          previous="$(gh variable get SITE_ALERT_LAST_STATUS --repo "$GITHUB_REPOSITORY" 2>/dev/null || true)"
+          previous="unknown"
+          if [ -f .site-alert-state/status ]; then
+            previous="$(cat .site-alert-state/status)"
+          fi
           if [ "$previous" != "healthy" ] && [ "$previous" != "failed" ]; then
             previous="unknown"
           fi
@@ -58,9 +67,9 @@ jobs:
         run: npx tsx scripts/site-alert-monitor.ts
 
       - name: Persist monitor status
+        id: persist-state
         if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
           MONITOR_OUTCOME: ${{ steps.monitor.outcome }}
           MONITOR_PERSISTED_STATUS: ${{ steps.monitor.outputs.persisted_status }}
         run: |
@@ -73,8 +82,17 @@ jobs:
               status="failed"
             fi
           fi
-          gh variable set SITE_ALERT_LAST_STATUS --repo "$GITHUB_REPOSITORY" --body "$status"
-          echo "Persisted SITE_ALERT_LAST_STATUS=$status"
+          mkdir -p .site-alert-state
+          printf '%s' "$status" > .site-alert-state/status
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "Persisted monitor status=$status"
+
+      - name: Save monitor state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .site-alert-state
+          key: site-alert-state-${{ github.run_id }}-${{ github.run_attempt }}-${{ steps.persist-state.outputs.status || 'unknown' }}
 
       - name: Fail workflow if production is unhealthy
         if: steps.monitor.outcome != 'success'

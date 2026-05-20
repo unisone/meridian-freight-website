@@ -33,9 +33,10 @@ Required GitHub Secrets:
 - `SITE_ALERT_RESEND_API_KEY`: Resend API key.
 - `SITE_ALERT_EMAIL_TO`: `alex.z@meridianexport.com`.
 
-Repository variable used for state:
+Workflow state:
 
-- `SITE_ALERT_LAST_STATUS`: `healthy` or `failed`. The workflow updates this after every run so recovery emails only send after a prior failed run.
+- The workflow stores the last `healthy` or `failed` state in GitHub Actions cache under `.site-alert-state/status`.
+- This state lets recovery emails only send after a prior failed run and prevents repeated outage alerts every 10 minutes while the site remains down.
 
 Noise control:
 
