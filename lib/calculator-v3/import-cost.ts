@@ -12,6 +12,7 @@ import {
   type LandedEquipmentClass,
   type LandedShippingMode,
 } from "@/lib/calculator-v3/contracts";
+import { computeMarineInsuranceUsd } from "@/lib/freight-policy";
 
 interface LandedCostProfileRowV3 {
   id: string;
@@ -46,6 +47,7 @@ interface LandedCostInputV3 {
     localTransportUsd: number | null;
     packingAndLoadingUsd: number;
     oceanFreightUsd: number;
+    marineInsuranceUsd?: number | null;
   };
 }
 
@@ -177,6 +179,8 @@ function getInputAmount(
       return input.freightBreakdown.packingAndLoadingUsd;
     case "ocean_freight":
       return input.freightBreakdown.oceanFreightUsd;
+    case "marine_insurance":
+      return input.freightBreakdown.marineInsuranceUsd ?? null;
     default:
       return null;
   }
@@ -328,7 +332,12 @@ export function calculateImportCostEstimateV3(input: {
     landedEquipmentClass,
     shippingMode: input.shippingMode,
     equipmentValueUsd: input.equipmentValueUsd,
-    freightBreakdown: input.freightBreakdown,
+    freightBreakdown: {
+      ...input.freightBreakdown,
+      marineInsuranceUsd:
+        input.freightBreakdown.marineInsuranceUsd ??
+        computeMarineInsuranceUsd(input.equipmentValueUsd),
+    },
   };
 
   for (const rule of rules) {

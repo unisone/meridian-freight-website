@@ -157,15 +157,27 @@ export function resolveQuoteContainerType(input: {
 export function getFlatrackInsuranceUsd(
   equipmentValueUsd: number | null | undefined = null,
 ): number {
+  return getMarineInsuranceUsd(equipmentValueUsd);
+}
+
+export function computeMarineInsuranceUsd(
+  equipmentValueUsd: number | null | undefined,
+): number | null {
   if (
     equipmentValueUsd == null ||
     !Number.isFinite(equipmentValueUsd) ||
     equipmentValueUsd <= 0
   ) {
-    return FLATRACK_INSURANCE_MIN_USD;
+    return null;
   }
 
   return Math.round(
     Math.max(FLATRACK_INSURANCE_MIN_USD, equipmentValueUsd * FLATRACK_INSURANCE_RATE) * 100,
   ) / 100;
+}
+
+export function getMarineInsuranceUsd(
+  equipmentValueUsd: number | null | undefined = null,
+): number {
+  return computeMarineInsuranceUsd(equipmentValueUsd) ?? FLATRACK_INSURANCE_MIN_USD;
 }
