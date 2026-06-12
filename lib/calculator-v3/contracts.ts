@@ -135,6 +135,7 @@ export const landedCostInputKeySchema = z.enum([
   "local_transport",
   "packing_and_loading",
   "ocean_freight",
+  "marine_insurance",
 ]);
 export type LandedCostInputKey = z.infer<typeof landedCostInputKeySchema>;
 
