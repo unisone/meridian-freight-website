@@ -213,7 +213,7 @@ Shipping a combine harvester or tractor overseas is not the same as shipping a p
 
 Once you have purchased your equipment — whether from a dealer, auction, or private seller — it needs to get from its current location to the correct export handoff point. For container-fit machinery that is usually a packing facility; for oversize flatrack machinery it is the departure port. In either case, that leg usually means trucking it on a lowboy trailer or driving it onto a step-deck.
 
-**Typical costs:** Current customer quotes use a standard planning rate of **$7 per road mile** for U.S. inland transport. Container-fit machinery usually routes to our Albion, IA packing workflow and then Chicago for ocean loading, while oversize flatrack machinery moves directly to the departure port with port-side preparation bundled into the sea freight line. A tractor sitting on a farm in Iowa might still cost $1,500-$3,000 in inland transport depending on distance; a combine in North Dakota can run materially higher because it moves as oversize freight to port.
+**Typical costs:** Current customer quotes use a standard planning rate of **$8 per road mile** for U.S. inland transport. Container-fit machinery usually routes to our Albion, IA packing workflow and then Chicago for ocean loading, while oversize flatrack machinery moves directly to the departure port with port-side preparation bundled into the sea freight line. A tractor sitting on a farm in Iowa might still cost $1,500-$3,000 in inland transport depending on distance; a combine in North Dakota can run materially higher because it moves as oversize freight to port.
 
 ### Step 2: Dismantling and Preparation
 
@@ -330,7 +330,7 @@ Exporting a combine harvester from the USA typically costs between **$10,000 and
 
 Your combine needs to get from its current location to the departure port. Most combines ship on lowboy trailers and follow the flatrack workflow rather than the Albion, IA 40HC packing path.
 
-- **Rate:** Current customer quotes use **$7 per road mile** for U.S. inland transport
+- **Rate:** Current customer quotes use **$8 per road mile** for U.S. inland transport
 - **Port-side prep:** For flatrack combines, dismantling, loading, bracing, NCB, and marine insurance are typically bundled into one customer-facing **Sea Freight & Loading** line instead of broken out separately
 - **Typical inland range:** $1,500-$4,500 depending on distance
 

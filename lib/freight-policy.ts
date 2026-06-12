@@ -1,4 +1,4 @@
-export const STANDARD_INLAND_DELIVERY_RATE = 7;
+export const STANDARD_INLAND_DELIVERY_RATE = 8;
 export const FORTYHC_PACKING_ORIGIN = "Albion, IA";
 export const FORTYHC_ORIGIN_PORT = "Chicago, IL";
 

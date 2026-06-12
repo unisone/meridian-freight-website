@@ -580,6 +580,28 @@ describe("calculateFreightV3", () => {
     );
   });
 
+  it("applies the standard $8/mile inland rate for ZIP-based 40HC estimates", () => {
+    const catalog = buildRouteCatalog(oceanRates);
+    const estimate = calculateFreightV3({
+      equipmentRates,
+      routes: catalog.routes,
+      equipmentProfileId: "headers",
+      modeId: "container",
+      quantity: 2,
+      equipmentValueUsd: 15000,
+      destinationCountry: "UY",
+      destinationPortKey: "montevideo",
+      routeId: null,
+      routePreference: "cheapest",
+      zipCode: "77001",
+    });
+
+    expect(estimate).not.toBeNull();
+    expect(estimate?.deliveryRatePerMile).toBe(8);
+    expect(estimate?.distanceMiles).toBeGreaterThan(0);
+    expect(estimate?.usInlandTransport).toBe((estimate?.distanceMiles ?? 0) * 8 * 2);
+  });
+
   it("does not return an automatic quote when route transit data is missing", () => {
     const ratesWithoutTransit: OceanFreightRate[] = [
       {

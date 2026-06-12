@@ -177,7 +177,7 @@ function makeFreightEstimate(): FreightEstimateV3 {
     dedicatedContainerFreightTotal: null,
     totalExcludesInland: true,
     distanceMiles: null,
-    deliveryRatePerMile: 7,
+    deliveryRatePerMile: 8,
     compliancePolicy: null,
     importCost: {
       status: "unsupported",

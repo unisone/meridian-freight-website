@@ -135,7 +135,7 @@ Total = US Inland Transport + Packing & Loading + Ocean Freight
 
 Inland (with ZIP):
   roadMiles = round(haversine(ZIP coords → Albion, IA) × 1.3)
-  usInlandTransport = roadMiles × $7/mile
+  usInlandTransport = roadMiles × $8/mile
 
 Inland (no ZIP):
   usInlandTransport = null
@@ -161,7 +161,7 @@ Total = US Inland Transport + $0 Packing + Sea Freight & Loading
 Inland (with ZIP):
   Evaluate Houston, Savannah, Baltimore, Charleston
   roadMiles = round(haversine(ZIP coords → port) × 1.3)
-  localCost = roadMiles × $7/mile
+  localCost = roadMiles × $8/mile
   total = localCost + Sea Freight & Loading
   Pick the cheapest total; carrier preference breaks ties
 
@@ -189,7 +189,7 @@ Marine insurance:
 #### Key Constants
 | Constant | Value | Used For |
 |----------|-------|----------|
-| `STANDARD_INLAND_DELIVERY_RATE` | $7 | Canonical inland rate across website surfaces |
+| `STANDARD_INLAND_DELIVERY_RATE` | $8 | Canonical inland rate across website surfaces |
 | `ROAD_FACTOR` | 1.3 | Haversine → estimated road miles multiplier |
 | `ALBION_IA` | 42.1172, -92.9835 | 40HC packing origin |
 | `FORTYHC_ORIGIN_PORT` | Chicago, IL | 40HC quoted ocean origin |
@@ -274,12 +274,12 @@ The website V2 engine was ported from `mf-chatbot-ui/lib/kz-calculator/calculate
 - Road factor: `1.3` (haversine → estimated road miles)
 - Albion, IA coordinates: `42.1172, -92.9835`
 - Flatrack ports: Houston, Savannah, Baltimore, Charleston (same coordinates)
-- Standard inland delivery rate: `$7/mile`
+- Standard inland delivery rate: `$8/mile`
 
 **Intentional divergences:**
 | Component | Website V2 | Chatbot KZ | Reason |
 |-----------|-----------|------------|--------|
-| Delivery rate | Flat `$7/mi` canonical inland rule | Flat `$6.50/mi` all equipment | Website follows the shared freight contract |
+| Delivery rate | Flat `$8/mi` canonical inland rule | Flat `$6.50/mi` all equipment | Website follows the shared freight contract |
 | Ocean rates | Dynamic from `ocean_freight_rates` table | Hardcoded `$12K`/`$18K` for KZ only | Chatbot is KZ-specific; website serves all destinations |
 | Packing (40HC) | `packing_cost × size` from DB | Hardcoded `$3,500` | Same reason — dynamic vs fixed |
 | Packing (flatrack) | `$0` customer-facing line; bundled into `Sea Freight & Loading` | `$2,500` as separate line | Different categorization, same net cost |

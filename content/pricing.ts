@@ -1,7 +1,7 @@
 export interface EquipmentPricing {
   type: string;
   model: string;
-  /** Historical reference field. Customer-facing pricing renders the canonical $7/mile rule. */
+  /** Historical reference field. Customer-facing pricing renders the canonical $8/mile rule. */
   delivery: string;
   containerized: string;
   container: string;
