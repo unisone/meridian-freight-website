@@ -136,10 +136,27 @@ export async function fetchLandedCostProfilesV3(): Promise<LandedCostProfileRunt
       return [];
     }
 
-    return rows.flatMap((row) => {
-      const parsed = mapLandedCostProfileRowV3(row as Parameters<typeof mapLandedCostProfileRowV3>[0]);
-      return parsed ? [parsed] : [];
-    });
+    const profiles: LandedCostProfileRuntime[] = [];
+    for (const row of rows) {
+      try {
+        profiles.push(
+          mapLandedCostProfileRowV3(
+            row as Parameters<typeof mapLandedCostProfileRowV3>[0],
+          ),
+        );
+      } catch (e) {
+        const candidate = row as Partial<Parameters<typeof mapLandedCostProfileRowV3>[0]>;
+        console.error("Skipping invalid landed cost profile:", {
+          id: candidate.id,
+          country_code: candidate.country_code,
+          landed_equipment_class: candidate.landed_equipment_class,
+          shipping_mode: candidate.shipping_mode,
+          error: e instanceof Error ? e.message : String(e),
+        });
+      }
+    }
+
+    return profiles;
   } catch (e) {
     console.error("Landed cost profiles fetch error:", e);
     return [];
