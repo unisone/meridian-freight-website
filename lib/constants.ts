@@ -46,8 +46,8 @@ export const CONTACT = {
 
 export const SOCIAL = {
   facebook: "https://www.facebook.com/meridianfreight",
-  instagram: "https://www.instagram.com/meridian_logistics_usa/",
-  youtube: "https://youtube.com/@merifreight_eng",
+  instagram: "https://www.instagram.com/m_farm_meridian_freight/",
+  youtube: "https://www.youtube.com/@M-Farm-USA",
 } as const;
 
 export const SITE = {
