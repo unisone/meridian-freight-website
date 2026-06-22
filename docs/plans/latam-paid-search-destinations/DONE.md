@@ -23,7 +23,7 @@ Per-country Spanish + EN-internal copy with verified §7 caveats; JSON-LD (Servi
 ## Phase 3 — Attribution + lead pipeline (DONE — verified)
 tracking.ts extension + opaque-`attribution_id` cookie/consent fix; `lib/lead-attribution.ts`; additive migration (+ degradation if UNIQUE absent); `submitPaidSearchLead` + `createWhatsAppRef` Server Actions; quote form (extend `contact-form.tsx`); Google Ads tag guard; **attribution actively wired into payload**; **dedupe truly no-ops** (on_conflict + gated side-effects). Tests: persistence/trust-boundary/dedupe/ref/no-side-effect (mocked emitters).
 
-## Phase 4 — QA + evidence
+## Phase 4 — QA + evidence (DONE — 4-lens QA panel; blocker + majors fixed)
 a11y, AdsBot, message-match (incl. customs caveat adjacent to CTA), mobile, preview 200s; workbook Gate B evidence update. Present preview to user.
 
 ## Boundaries (all phases)

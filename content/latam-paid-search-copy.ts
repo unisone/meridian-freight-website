@@ -236,7 +236,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Datos de su despachante o importador, si ya lo tiene"
     ],
     "complianceHeading": "Qué confirmar en Bolivia antes de comprar o embarcar",
-    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición de la unidad. SENASAG puede aplicar una inspección o autorización fitosanitaria —para maquinaria usada suele ser una verificación de limpieza, no necesariamente un permiso de productos vegetales—; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No asuma franquicias de IVA ni límites de antigüedad: los incentivos de la Ley 1613/2025 y el tope de 10 años vencieron el 31 de diciembre de 2025, así que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, almacenaje gratuito ni una ruta interior fija: esos puntos los define su despachante con la naviera y el agente de tránsito.",
+    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición de la unidad. SENASAG puede aplicar una inspección o autorización fitosanitaria —para maquinaria usada suele ser una verificación de limpieza, no necesariamente un permiso de productos vegetales—; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No dé por sentadas franquicias de IVA ni límites de antigüedad: los incentivos de la Ley 1613/2025 y el tope de 10 años vencieron el 31 de diciembre de 2025, así que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, almacenaje gratuito ni una ruta interior fija: esos puntos los define su despachante con la naviera y el agente de tránsito.",
     "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU./Canadá; la admisibilidad y la nacionalización en Bolivia quedan bajo responsabilidad del importador y su despachante.",
     "faq": [
       {
@@ -318,7 +318,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Datos de su despachante o importador, si ya lo tiene"
     ],
     "complianceHeading": "Qué confirmar en Bolivia antes de embarcar equipo pesado",
-    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición del equipo. SENASAG puede aplicar una inspección o autorización —para equipo pesado usado suele ser una verificación de limpieza, no necesariamente un permiso de productos vegetales—; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No asuma franquicias de IVA ni límites de antigüedad: los incentivos de la Ley 1613/2025 y el tope de 10 años vencieron el 31 de diciembre de 2025, por lo que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, período de almacenaje gratuito ni una ruta interior fija: la carga sobredimensionada exige que su despachante coordine puerto, agente de tránsito y transporte pesado interior caso por caso.",
+    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición del equipo. SENASAG puede aplicar una inspección o autorización —para equipo pesado usado suele ser una verificación de limpieza, no necesariamente un permiso de productos vegetales—; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No dé por sentadas franquicias de IVA ni límites de antigüedad: los incentivos de la Ley 1613/2025 y el tope de 10 años vencieron el 31 de diciembre de 2025, por lo que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, período de almacenaje gratuito ni una ruta interior fija: la carga sobredimensionada exige que su despachante coordine puerto, agente de tránsito y transporte pesado interior caso por caso.",
     "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU./Canadá; la admisibilidad y la nacionalización del equipo pesado en Bolivia quedan bajo responsabilidad del importador y su despachante.",
     "faq": [
       {
@@ -347,7 +347,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "seoDescription": "Coordinamos compra, retiro, embalaje, certificado fitosanitario de origen y flete de maquinaria usada de EE. UU. a Paraguay. La nacionalización la confirma su despachante.",
     "eyebrow": "Importación de maquinaria EE. UU. → Paraguay",
     "h1": "Importación de maquinaria agrícola usada de EE. UU. a Paraguay",
-    "heroBody": "Meridian coordina el tramo en origen para importar su maquinaria desde EE. UU. y Canadá hacia Paraguay: compra asistida, retiro, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA o CFIA) y reserva de flete marítimo. La nacionalización, los tributos y la admisibilidad final en Paraguay las confirma su despachante en destino. La Ley 7565/2025 introduce medidas fitosanitarias y de mitigación de riesgo para maquinaria usada; una de sus disposiciones fija una antigüedad máxima de 5 años, pero la admisibilidad final la determinan SENAVE/MIC/DNIT vía su despachante, no la edad.",
+    "heroBody": "Meridian coordina el tramo en origen para importar su maquinaria desde EE. UU. y Canadá hacia Paraguay: compra asistida, retiro, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo. La nacionalización, los tributos y la admisibilidad final en Paraguay las confirma su despachante en destino. La Ley 7565/2025 introduce medidas fitosanitarias y de mitigación de riesgo para maquinaria usada; una de sus disposiciones fija una antigüedad máxima de 5 años, pero la admisibilidad final la determinan SENAVE/MIC/DNIT vía su despachante, no la edad.",
     "heroBullets": [
       "Tramo en origen completo: compra asistida, retiro en EE. UU./Canadá, embalaje y reserva de flete marítimo.",
       "Certificado fitosanitario de origen (USDA APHIS o CFIA) emitido antes del embarque.",
@@ -378,7 +378,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         "title": "3. Coordinación del tramo en origen",
-        "body": "Compra asistida, retiro, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA o CFIA) y reserva de flete marítimo."
+        "body": "Compra asistida, retiro, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo."
       },
       {
         "title": "4. Cotización con alcance separado",
@@ -405,7 +405,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         "question": "¿Qué cubre Meridian y qué queda para mi despachante?",
-        "answer": "Meridian coordina el tramo en origen: compra asistida, retiro en EE. UU. o Canadá, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA o CFIA) y reserva de flete marítimo. Su despachante en Paraguay maneja el registro de importadores y la licencia previa ante el MIC, la inspección fitosanitaria final de SENAVE, los tributos y el despacho ante DNIT, la tasa de conservación de la biodiversidad y la entrega interior."
+        "answer": "Meridian coordina el tramo en origen: compra asistida, retiro en EE. UU. o Canadá, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo. Su despachante en Paraguay maneja el registro de importadores y la licencia previa ante el MIC, la inspección fitosanitaria final de SENAVE, los tributos y el despacho ante DNIT, la tasa de conservación de la biodiversidad y la entrega interior."
       },
       {
         "question": "¿La calculadora me da el costo final puesto en Paraguay?",
@@ -425,7 +425,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "seoDescription": "Coordinamos retiro, desmontaje, embalaje, certificado fitosanitario de origen y flete de cosechadoras usadas de EE. UU. a Paraguay. La nacionalización la confirma su despachante.",
     "eyebrow": "Flete de cosechadoras EE. UU. → Paraguay",
     "h1": "Flete de cosechadoras usadas de EE. UU. a Paraguay",
-    "heroBody": "Meridian coordina el tramo en origen para mover su cosechadora desde EE. UU. y Canadá hacia Paraguay: compra asistida, retiro, medición, desmontaje del cabezal y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA o CFIA) y reserva de flete marítimo. La nacionalización, los tributos y la admisibilidad final en Paraguay las confirma su despachante en destino. La Ley 7565/2025 introduce medidas fitosanitarias y de mitigación de riesgo para maquinaria usada; una de sus disposiciones fija una antigüedad máxima de 5 años, pero la admisibilidad final la determinan SENAVE/MIC/DNIT vía su despachante, no la edad.",
+    "heroBody": "Meridian coordina el tramo en origen para mover su cosechadora desde EE. UU. y Canadá hacia Paraguay: compra asistida, retiro, medición, desmontaje del cabezal y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo. La nacionalización, los tributos y la admisibilidad final en Paraguay las confirma su despachante en destino. La Ley 7565/2025 introduce medidas fitosanitarias y de mitigación de riesgo para maquinaria usada; una de sus disposiciones fija una antigüedad máxima de 5 años, pero la admisibilidad final la determinan SENAVE/MIC/DNIT vía su despachante, no la edad.",
     "heroBullets": [
       "Tramo en origen completo para cosechadoras: retiro, desmontaje de cabezal, embalaje y reserva de flete marítimo.",
       "Certificado fitosanitario de origen (USDA APHIS o CFIA) emitido antes del embarque, con limpieza libre de suelo y restos vegetales.",
@@ -456,7 +456,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         "title": "3. Coordinación del tramo en origen",
-        "body": "Compra asistida, retiro, medición, desmontaje del cabezal y embalaje cuando corresponde, limpieza libre de suelo y restos vegetales, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA o CFIA) y reserva de flete marítimo."
+        "body": "Compra asistida, retiro, medición, desmontaje del cabezal y embalaje cuando corresponde, limpieza libre de suelo y restos vegetales, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo."
       },
       {
         "title": "4. Cotización con alcance separado",
@@ -483,7 +483,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         "question": "¿Cómo manejan la limpieza y el cabezal de la cosechadora?",
-        "answer": "El marco fitosanitario de la Ley 7565/2025 exige que la unidad llegue libre de suelo, plagas y restos vegetales, algo especialmente sensible en cosechadoras por el cabezal, la tolva y el sinfín. Coordinamos limpieza, desmontaje del cabezal cuando corresponde, medición y embalaje, y emitimos el certificado fitosanitario de origen (USDA APHIS o CFIA o CFIA). La inspección fitosanitaria final en destino la realiza SENAVE vía su despachante."
+        "answer": "El marco fitosanitario de la Ley 7565/2025 exige que la unidad llegue libre de suelo, plagas y restos vegetales, algo especialmente sensible en cosechadoras por el cabezal, la tolva y el sinfín. Coordinamos limpieza, desmontaje del cabezal cuando corresponde, medición y embalaje, y emitimos el certificado fitosanitario de origen (USDA APHIS o CFIA). La inspección fitosanitaria final en destino la realiza SENAVE vía su despachante."
       },
       {
         "question": "¿Qué cubre Meridian y qué queda para mi despachante?",

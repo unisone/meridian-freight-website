@@ -3,6 +3,7 @@ import { SITE } from "@/lib/constants";
 import { getAllServices } from "@/content/services";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { getAllDestinations } from "@/content/destinations";
+import { LATAM_PAID_SEARCH_DESTINATIONS } from "@/content/latam-paid-search-destinations";
 import { blogPosts } from "@/content/blog";
 import { isLatamMarketSlug, latamMarketPages } from "@/content/latam-market-pages";
 import { getBlogLocalePolicy } from "@/lib/blog-locale-policy";
@@ -93,6 +94,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }));
 
+  // es-only paid-search destination LPs (canonical to production, indexable).
+  const paidSearchSitemapPages: MetadataRoute.Sitemap = LATAM_PAID_SEARCH_DESTINATIONS.map((d) => ({
+    url: `${SITE.url}${d.seo.canonicalPath}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+    alternates: { languages: { es: `${SITE.url}${d.seo.canonicalPath}` } },
+  }));
+
   const blogPages: MetadataRoute.Sitemap = blogPosts.flatMap((p) => {
     const policy = getBlogLocalePolicy(p.slug);
     const indexable = policy.indexableLocales;
@@ -116,6 +126,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...equipmentPages,
     ...destinationPages,
     ...latamMarketSitemapPages,
+    ...paidSearchSitemapPages,
     ...blogPages,
   ];
 }

@@ -75,6 +75,11 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
       setIsSubmitting(false);
       return;
     }
+    if (!fd.get("consent")) {
+      setError("Debe aceptar las condiciones para continuar.");
+      setIsSubmitting(false);
+      return;
+    }
     const attr = attrRef.current;
     try {
       const result = await submitPaidSearchLead({
@@ -143,10 +148,17 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         </label>
       </div>
 
+      <p className="text-xs text-muted-foreground">
+        Los campos marcados con <span aria-hidden="true">*</span>
+        <span className="sr-only"> asterisco</span> son obligatorios.
+      </p>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="contact_name">Nombre</Label>
-          <Input id="contact_name" name="contact_name" required autoComplete="name" className="mt-1.5" />
+          <Label htmlFor="contact_name">
+            Nombre <span aria-hidden="true" className="text-red-500">*</span>
+          </Label>
+          <Input id="contact_name" name="contact_name" required aria-required="true" autoComplete="name" className="mt-1.5" />
         </div>
         <div>
           <Label htmlFor="contact_phone">WhatsApp o teléfono</Label>
@@ -160,8 +172,10 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
           <Input id="contact_email" name="contact_email" type="email" autoComplete="email" spellCheck={false} className="mt-1.5" />
         </div>
         <div>
-          <Label htmlFor="equipment_type">Equipo</Label>
-          <Input id="equipment_type" name="equipment_type" required placeholder="Ej.: cosechadora, tractor, excavadora" className="mt-1.5" />
+          <Label htmlFor="equipment_type">
+            Equipo <span aria-hidden="true" className="text-red-500">*</span>
+          </Label>
+          <Input id="equipment_type" name="equipment_type" required aria-required="true" placeholder="Ej.: cosechadora, tractor, excavadora" className="mt-1.5" />
         </div>
       </div>
 
@@ -176,7 +190,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
             id="purchase_status"
             name="purchase_status"
             defaultValue=""
-            className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
+            className="mt-1.5 flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
           >
             <option value="">Seleccione…</option>
             <option value="evaluando">Evaluando opciones</option>
@@ -207,8 +221,15 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         <Textarea id="message" name="message" rows={4} className="mt-1.5 resize-y" />
       </div>
 
-      <label className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
-        <input type="checkbox" name="consent" className="mt-1 h-4 w-4 rounded border-input" />
+      <label htmlFor="consent" className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+        <input
+          type="checkbox"
+          id="consent"
+          name="consent"
+          required
+          aria-describedby="ps-form-error"
+          className="mt-1 h-4 w-4 rounded border-input"
+        />
         <span>{caveat}</span>
       </label>
 
@@ -232,7 +253,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
       </Button>
 
       {error && (
-        <p role="alert" className="mt-2 text-center text-sm text-red-600">
+        <p id="ps-form-error" role="alert" className="mt-2 text-center text-sm text-red-600">
           {error}
         </p>
       )}

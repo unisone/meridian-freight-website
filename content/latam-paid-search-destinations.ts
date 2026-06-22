@@ -6,9 +6,9 @@
  *
  * Spec: docs/superpowers/specs/2026-06-22-latam-paid-search-destinations-design.md
  *
- * P1 SCOPE: structure + routing + render. Customer-facing copy below is
- * PLACEHOLDER pending P2 (verified per-country Spanish) + client native review.
- * Official-source URLs ARE the verified real ones (see spec §7). Compliance
+ * Customer-facing copy is sourced from content/latam-paid-search-copy.ts
+ * (verified per-country Spanish; pending client native review before go-live).
+ * Official-source URLs are the verified real ones (see spec §7). Compliance
  * caveats keep Meridian's role freight-only and defer admissibility to the
  * destination despachante.
  */
