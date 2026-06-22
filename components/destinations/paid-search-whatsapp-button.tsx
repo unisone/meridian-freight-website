@@ -43,17 +43,32 @@ export function PaidSearchWhatsAppButton({
   async function handleClick() {
     setBusy(true);
     let ref: string | undefined;
+    const cacheKey = `ps_ref_${routeKey}`;
     try {
-      const attr = readAttr(routeKey);
-      const result = await createWhatsAppRef({
-        routeKey,
-        attribution_id: attr?.attribution_id || "",
-        first_touch: attr?.first_touch,
-        latest_touch: attr?.latest_touch,
-      });
-      if (result.success) ref = result.whatsapp_ref;
+      ref = sessionStorage.getItem(cacheKey) || undefined;
     } catch {
-      /* fall back to a ref-less prefill — never block the WhatsApp open */
+      /* sessionStorage blocked */
+    }
+    if (!ref) {
+      try {
+        const attr = readAttr(routeKey);
+        const result = await createWhatsAppRef({
+          routeKey,
+          attribution_id: attr?.attribution_id || "",
+          first_touch: attr?.first_touch,
+          latest_touch: attr?.latest_touch,
+        });
+        if (result.success && result.whatsapp_ref) {
+          ref = result.whatsapp_ref;
+          try {
+            sessionStorage.setItem(cacheKey, ref);
+          } catch {
+            /* cache best-effort */
+          }
+        }
+      } catch {
+        /* fall back to a ref-less prefill — never block the WhatsApp open */
+      }
     }
     const text = interpolateWhatsAppRef(prefillTemplate, ref);
     try {

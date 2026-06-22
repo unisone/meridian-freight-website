@@ -91,32 +91,35 @@ describe("submitPaidSearchLead", () => {
     expect(res.success).toBe(true);
     const body = leadInsertBody()!;
     expect(body).toBeTruthy();
-    for (const k of [
-      "gclid", "gbraid", "wbraid", "fbclid",
-      "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
-      "utm_matchtype", "utm_network", "utm_device",
-    ]) {
-      expect(body[k], k).toBeTruthy();
+    const meta = body.paid_search_metadata as Record<string, unknown>;
+    // flat columns (queryable on the shared leads table)
+    for (const k of ["gclid", "gbraid", "wbraid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]) {
+      expect(body[k], `flat ${k}`).toBeTruthy();
     }
-    expect(body.schema_version).toBe("paid-search-lead-v1");
+    // full contract carried in the jsonb
+    for (const k of ["fbclid", "utm_matchtype", "utm_network", "utm_device"]) {
+      expect(meta[k], `meta ${k}`).toBeTruthy();
+    }
+    expect(meta.schema_version).toBe("paid-search-lead-v1");
+    expect(meta.source_account_id).toBe("3783002123");
+    expect(meta.first_touch).toBeTruthy();
+    expect(meta.latest_touch).toBeTruthy();
     expect(body.source_platform).toBe("google_ads");
-    expect(body.source_account_id).toBe("3783002123");
     expect(body.idempotency_key).toBe(body.lead_id);
     expect(body.lead_id).toBe("lead-123");
-    expect(body.first_touch).toBeTruthy();
-    expect(body.latest_touch).toBeTruthy();
   });
 
   it("rederives route context from routeKey (trust boundary — incl cargo_class + page_route)", async () => {
     await submitPaidSearchLead(baseLead());
     const body = leadInsertBody()!;
+    const meta = body.paid_search_metadata as Record<string, unknown>;
     expect(body.country).toBe("AR");
     expect(body.segment).toBe("machinery_import");
     expect(body.cargo_class).toBe("general_machinery");
-    expect(body.request_type).toBe("import_coordination_quote");
-    expect(body.landing_route).toBe("/es/destinations/argentina/importacion-maquinaria-usa");
-    expect(body.page_route).toBe(body.landing_route);
-    expect(body.router_tag).toBe("#FRT_ES");
+    expect(meta.request_type).toBe("import_coordination_quote");
+    expect(meta.landing_route).toBe("/es/destinations/argentina/importacion-maquinaria-usa");
+    expect(meta.page_route).toBe(meta.landing_route);
+    expect(meta.router_tag).toBe("#FRT_ES");
   });
 
   it("rejects an unsupported route combination", async () => {

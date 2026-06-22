@@ -112,62 +112,74 @@ export async function submitPaidSearchLead(
   const lt: Record<string, string | undefined> = data.latest_touch ?? data.first_touch ?? {};
   const nowIso = new Date().toISOString();
 
-  // 6. Contract-compliant payload — route context REDERIVED, never from client.
-  const payload = {
+  // 6. Contract-compliant payload — route context REDERIVED from the registry,
+  // never from the client. To stay light on the SHARED leads table, only the
+  // queryable/dedupe/correlation fields are real columns; the full contract
+  // (extended UTMs, click IDs, route context, touches) rides in one jsonb.
+  const gclid = lt.gclid || ft.gclid || null;
+  const gbraid = lt.gbraid || ft.gbraid || null;
+  const wbraid = lt.wbraid || ft.wbraid || null;
+
+  const paid_search_metadata = {
     schema_version: "paid-search-lead-v1",
-    lead_id,
-    idempotency_key: lead_id,
     attribution_id: data.attribution_id || null,
     whatsapp_ref: data.whatsapp_ref || null,
-    source_platform: "google_ads",
     source_account_id: SOURCE_ACCOUNT_ID,
     google_ads_tag: tagCheck.ok ? tagCheck.runtime : null,
-    // route-derived (trust boundary)
-    country: record.country.code,
-    segment: record.segment.key,
-    cargo_class: record.segment.cargoClass,
     landing_route: record.seo.canonicalPath,
     page_route: record.seo.canonicalPath,
     request_type: record.segment.requestType,
     router_tag: ROUTER_TAG,
-    // click ids + utms (flattened from latest touch, then first as fallback)
-    gclid: lt.gclid || ft.gclid || null,
-    gbraid: lt.gbraid || ft.gbraid || null,
-    wbraid: lt.wbraid || ft.wbraid || null,
     fbclid: lt.fbclid || ft.fbclid || null,
-    utm_source: lt.utm_source || ft.utm_source || null,
-    utm_medium: lt.utm_medium || ft.utm_medium || null,
-    utm_campaign: lt.utm_campaign || ft.utm_campaign || null,
-    utm_term: lt.utm_term || ft.utm_term || null,
-    utm_content: lt.utm_content || ft.utm_content || null,
     utm_matchtype: lt.utm_matchtype || ft.utm_matchtype || null,
     utm_network: lt.utm_network || ft.utm_network || null,
     utm_device: lt.utm_device || ft.utm_device || null,
     first_touch: data.first_touch ?? null,
     latest_touch: data.latest_touch ?? null,
-    // lead fields
-    name: data.contact_name,
-    email: data.contact_email || null,
-    phone: data.contact_phone || null,
     preferred_contact_method: data.preferred_contact_method,
     equipment_type: data.equipment_type,
     make_model: data.make_model || null,
     purchase_status: data.purchase_status || null,
     origin_location: data.origin_location || null,
     destination_location: data.destination_location || null,
-    message: data.message || null,
     consent_version: data.consent ? CONSENT_VERSION : null,
+    submitted_at: nowIso,
+    year: data.year || null,
+    listing_url: data.listing_url || null,
+    dimensions: data.dimensions || null,
+    weight: data.weight || null,
+    requested_timing: data.requested_timing || null,
+    buyer_role: data.buyer_role || null,
+  };
+
+  const payload = {
+    // existing leads columns
+    name: data.contact_name,
+    email: data.contact_email || null,
+    phone: data.contact_phone || null,
+    // leads.message is NOT NULL — synthesize a summary when the user leaves it blank.
+    message:
+      data.message?.trim() ||
+      `Solicitud de cotización (paid-search): ${data.equipment_type} → ${record.country.name}`,
     source_page: `paid-search: ${record.seo.canonicalPath}`,
     status: "new",
-    submitted_at: nowIso,
-    paid_search_metadata: {
-      year: data.year || null,
-      listing_url: data.listing_url || null,
-      dimensions: data.dimensions || null,
-      weight: data.weight || null,
-      requested_timing: data.requested_timing || null,
-      buyer_role: data.buyer_role || null,
-    },
+    utm_source: lt.utm_source || ft.utm_source || null,
+    utm_medium: lt.utm_medium || ft.utm_medium || null,
+    utm_campaign: lt.utm_campaign || ft.utm_campaign || null,
+    utm_term: lt.utm_term || ft.utm_term || null,
+    utm_content: lt.utm_content || ft.utm_content || null,
+    // new flat columns (queryable / dedupe / correlation)
+    lead_id,
+    idempotency_key: lead_id,
+    source_platform: "google_ads",
+    country: record.country.code,
+    segment: record.segment.key,
+    cargo_class: record.segment.cargoClass,
+    gclid,
+    gbraid,
+    wbraid,
+    // full contract (extended UTMs, click IDs, route context, touches, equipment)
+    paid_search_metadata,
   };
 
   // 7. Insert (best-effort) with dedupe.
@@ -202,8 +214,8 @@ export async function submitPaidSearchLead(
             <hr style="border:none;border-top:1px dashed #e5e7eb;margin:16px 0"/>
             <p style="font-size:12px;color:#6b7280">
               lead_id: ${safe(lead_id)}<br/>
-              click IDs: ${safe([payload.gclid, payload.gbraid, payload.wbraid, payload.fbclid].filter(Boolean).join(" / ") || "none")}<br/>
-              UTM: ${safe([payload.utm_source, payload.utm_medium, payload.utm_campaign, payload.utm_matchtype, payload.utm_network, payload.utm_device].filter(Boolean).join(" / ") || "none")}
+              click IDs: ${safe([payload.gclid, payload.gbraid, payload.wbraid, paid_search_metadata.fbclid].filter(Boolean).join(" / ") || "none")}<br/>
+              UTM: ${safe([payload.utm_source, payload.utm_medium, payload.utm_campaign, paid_search_metadata.utm_matchtype, paid_search_metadata.utm_network, paid_search_metadata.utm_device].filter(Boolean).join(" / ") || "none")}
             </p>
           </div>
         </div>

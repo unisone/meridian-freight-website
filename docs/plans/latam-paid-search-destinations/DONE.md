@@ -27,4 +27,10 @@ tracking.ts extension + opaque-`attribution_id` cookie/consent fix; `lib/lead-at
 a11y, AdsBot, message-match (incl. customs caveat adjacent to CTA), mobile, preview 200s; workbook Gate B evidence update. Present preview to user.
 
 ## Boundaries (all phases)
-Branch/preview only. No production deploy, no Google Ads/Meta/WABA/router/CRM mutation, no conversion upload, no customer messaging. FMC/IATA: owner confirmed KEEP (genuine/current).
+Branch/preview only for the website deploy. No production website deploy, no Google Ads/Meta/WABA/router/CRM mutation, no conversion upload, no customer messaging. FMC/IATA: owner confirmed KEEP (genuine/current).
+
+## Ops status (2026-06-22)
+- **Supabase migration APPLIED** to the shared MF DB (`ybybrustbnaczukxfeqy`): 10 additive `leads` columns + `idempotency_key` unique index. Verified with a synthetic insert/cleanup against the real schema. Fixed a real bug: `leads.message` is NOT NULL → the action now always populates `message`.
+- **No `paid_search_refs` table** — `wa_attribution.ref_code` (chatbot) already owns ref→attribution; the website ref is stateless + persisted on the lead row (avoids duplicating `mf-chatbot-ui`).
+- **Native Spanish review: WAIVED** (no reviewer available) — copy ships as authored + claim-safety-reviewed.
+- Remaining = Gate-B business approval + the merge to `main` (prod deploy).
