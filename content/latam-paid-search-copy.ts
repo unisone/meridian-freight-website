@@ -27,8 +27,8 @@ export interface PaidSearchCopy {
 
 export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
   "argentina/importacion-maquinaria-usa": {
-    "seoTitle": "Importar maquinaria de EE. UU. a Argentina | Meridian",
-    "seoDescription": "Coordinamos retiro, embalaje, documentación y flete de maquinaria usada desde EE. UU. a Argentina. La nacionalización y los tributos los gestiona tu despachante.",
+    "seoTitle": "Importar maquinaria de EE. UU. a Argentina",
+    "seoDescription": "Coordinamos retiro, embalaje, documentación y flete de maquinaria usada desde EE. UU. a Argentina. La nacionalización la gestiona tu despachante.",
     "eyebrow": "Maquinaria usada desde EE. UU. · Argentina",
     "h1": "Importación de maquinaria desde EE. UU. a Argentina",
     "heroBody": "Meridian coordina el lado estadounidense de tu importación: contacto con el vendedor, retiro, medición, desmontaje o embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo hasta el puerto acordado. La nacionalización, los aranceles, el IVA y la entrega interior en Argentina los confirma y gestiona tu despachante. Coordiná con nosotros el tramo de EE. UU. a Argentina y revisá con tu despachante la admisibilidad de cada unidad antes de comprar o embarcar.",
@@ -105,7 +105,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "whatsappPrefill": "#FRT_ES Hola, quiero cotizar la importación de maquinaria desde EE. UU. a Argentina. Equipo: [marca/modelo/año]. Ubicación en EE. UU.: [ciudad/estado]. Destino: [ciudad de Argentina]. Ref: {{whatsapp_ref}}"
   },
   "argentina/flete-cosechadoras-usa": {
-    "seoTitle": "Flete de cosechadoras de EE. UU. a Argentina | Meridian",
+    "seoTitle": "Flete de cosechadoras EE. UU. a Argentina",
     "seoDescription": "Coordinamos retiro, desarme, embalaje, documentación y flete de cosechadoras usadas desde EE. UU. a Argentina. La nacionalización la gestiona tu despachante.",
     "eyebrow": "Cosechadoras desde EE. UU. · Argentina",
     "h1": "Flete de cosechadoras desde EE. UU. a Argentina",
@@ -183,7 +183,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "whatsappPrefill": "#FRT_ES Hola, quiero cotizar el flete de una cosechadora desde EE. UU. a Argentina. Equipo: [marca/modelo/año]. Ubicación en EE. UU.: [ciudad/estado]. Destino: [ciudad de Argentina]. Ref: {{whatsapp_ref}}"
   },
   "bolivia/importacion-maquinaria-usa": {
-    "seoTitle": "Importar maquinaria de EE. UU. a Bolivia | Meridian",
+    "seoTitle": "Importar maquinaria de EE. UU. a Bolivia",
     "seoDescription": "Coordinamos el tramo de EE. UU.: retiro, embalaje, documentos de exportación y flete de maquinaria usada a Bolivia. La nacionalización la maneja su despachante.",
     "eyebrow": "Maquinaria usada desde EE. UU. · Bolivia",
     "h1": "Importación de maquinaria desde EE. UU. a Bolivia",
@@ -265,8 +265,8 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "whatsappPrefill": "#FRT_ES Hola, quiero importar maquinaria usada desde EE. UU. a Bolivia. Equipo: [marca/modelo/año]. Ubicación en EE. UU.: [ciudad/estado]. Destino: [ciudad de Bolivia]. Ref: {{whatsapp_ref}}"
   },
   "bolivia/flete-equipo-pesado-usa": {
-    "seoTitle": "Flete de equipo pesado de EE. UU. a Bolivia | Meridian",
-    "seoDescription": "Coordinamos el flete de equipo pesado desde EE. UU.: retiro, medición, flat rack o carga de proyecto, documentos y reserva marítima a Bolivia. Aduana, su despachante.",
+    "seoTitle": "Flete de equipo pesado EE. UU. a Bolivia",
+    "seoDescription": "Coordinamos el flete de equipo pesado desde EE. UU.: retiro, flat rack o proyecto, documentos y reserva marítima a Bolivia. Aduana, su despachante.",
     "eyebrow": "Equipo pesado desde EE. UU. · Bolivia",
     "h1": "Flete de equipo pesado desde EE. UU. a Bolivia",
     "heroBody": "Meridian coordina el flete de equipo pesado desde EE. UU. y Canadá hacia Bolivia: retiro en sitio, medición, desmontaje y embalaje cuando corresponde, documentación de exportación y reserva del flete marítimo en flat rack, RoRo o carga de proyecto según las dimensiones. La nacionalización, los aranceles, el IVA y el despacho aduanero en Bolivia los gestiona por separado su despachante e importador. Trabajamos el tramo internacional; el ingreso a destino lo confirma su profesional local.",
@@ -343,8 +343,8 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "whatsappPrefill": "#FRT_ES Hola, quiero cotizar el flete de equipo pesado desde EE. UU. a Bolivia. Equipo: [marca/modelo/año]. Peso/medidas: [peso/dimensiones]. Ubicación en EE. UU.: [ciudad/estado]. Destino: [ciudad de Bolivia]. Ref: {{whatsapp_ref}}"
   },
   "paraguay/importacion-maquinaria-usa": {
-    "seoTitle": "Importar maquinaria de EE. UU. a Paraguay | Meridian",
-    "seoDescription": "Coordinamos compra, retiro, embalaje, certificado fitosanitario de origen y flete de maquinaria usada de EE. UU. a Paraguay. La nacionalización la confirma su despachante.",
+    "seoTitle": "Importar maquinaria de EE. UU. a Paraguay",
+    "seoDescription": "Coordinamos compra, retiro, embalaje, certificado fitosanitario y flete de maquinaria de EE. UU. a Paraguay. La nacionalización la confirma su despachante.",
     "eyebrow": "Importación de maquinaria EE. UU. → Paraguay",
     "h1": "Importación de maquinaria agrícola usada de EE. UU. a Paraguay",
     "heroBody": "Meridian coordina el tramo en origen para importar su maquinaria desde EE. UU. y Canadá hacia Paraguay: compra asistida, retiro, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo. La nacionalización, los tributos y la admisibilidad final en Paraguay las confirma su despachante en destino. La Ley 7565/2025 introduce medidas fitosanitarias y de mitigación de riesgo para maquinaria usada; una de sus disposiciones fija una antigüedad máxima de 5 años, pero la admisibilidad final la determinan SENAVE/MIC/DNIT vía su despachante, no la edad.",
@@ -369,19 +369,19 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "processIntro": "El orden importa: primero filtramos la unidad por la ley y por su estado, después armamos ruta, alcance y documentación. Así separamos desde el inicio el tramo que Meridian coordina del costo que confirma su despachante en Paraguay.",
     "processSteps": [
       {
-        "title": "1. Filtro inicial de la unidad",
+        "title": "Filtro inicial de la unidad",
         "body": "Revisamos año de fabricación, horas, condición visible, vendedor y ubicación frente a la Ley 7565/2025. Si la unidad supera los 5 años o presenta señales que comprometen su ingreso, lo decimos antes de avanzar. La admisibilidad final la determina SENAVE/MIC/DNIT vía su despachante, no la edad."
       },
       {
-        "title": "2. Mapa de responsabilidades",
+        "title": "Mapa de responsabilidades",
         "body": "Listamos qué confirma su despachante en destino: DNIT (aduana y tributos), SENAVE (fitosanitario en destino), MIC (registro de importadores y licencia previa) y la tasa de conservación de la biodiversidad prevista en la ley."
       },
       {
-        "title": "3. Coordinación del tramo en origen",
+        "title": "Coordinación del tramo en origen",
         "body": "Compra asistida, retiro, medición, desmontaje y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo."
       },
       {
-        "title": "4. Cotización con alcance separado",
+        "title": "Cotización con alcance separado",
         "body": "Entregamos un presupuesto que separa el tramo de Meridian del despacho local. La calculadora es referencia del tramo logístico, no el costo nacionalizado final. Sin esa separación no hay comparación honesta."
       }
     ],
@@ -418,11 +418,11 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     ],
     "ctaHeading": "¿Vio una máquina en EE. UU. para Paraguay?",
     "ctaDescription": "Envíenos el link, el año de fabricación, las horas, la ubicación de retiro y el destino. Confirmamos si pasa el filtro inicial de la Ley 7565/2025 y separamos el tramo que coordina Meridian del costo que confirma su despachante en Paraguay.",
-    "whatsappPrefill": "#FRT_ES Importación de maquinaria de EE. UU. a Paraguay. Equipo: {{equipment}}. Retiro en: {{pickup_location}}. Destino: {{destination}}. Quiero cotizar el tramo de origen. Ref: {{whatsapp_ref}}"
+    "whatsappPrefill": "#FRT_ES Importación de maquinaria de EE. UU. a Paraguay. Equipo: [marca/modelo/año]. Retiro en: [ciudad/estado]. Destino: [ciudad de Paraguay]. Quiero cotizar el tramo de origen. Ref: {{whatsapp_ref}}"
   },
   "paraguay/flete-cosechadoras-usa": {
-    "seoTitle": "Flete de cosechadoras de EE. UU. a Paraguay | Meridian",
-    "seoDescription": "Coordinamos retiro, desmontaje, embalaje, certificado fitosanitario de origen y flete de cosechadoras usadas de EE. UU. a Paraguay. La nacionalización la confirma su despachante.",
+    "seoTitle": "Flete de cosechadoras EE. UU. a Paraguay",
+    "seoDescription": "Coordinamos retiro, desarme, embalaje, certificado fitosanitario y flete de cosechadoras de EE. UU. a Paraguay. La nacionalización la confirma su despachante.",
     "eyebrow": "Flete de cosechadoras EE. UU. → Paraguay",
     "h1": "Flete de cosechadoras usadas de EE. UU. a Paraguay",
     "heroBody": "Meridian coordina el tramo en origen para mover su cosechadora desde EE. UU. y Canadá hacia Paraguay: compra asistida, retiro, medición, desmontaje del cabezal y embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo. La nacionalización, los tributos y la admisibilidad final en Paraguay las confirma su despachante en destino. La Ley 7565/2025 introduce medidas fitosanitarias y de mitigación de riesgo para maquinaria usada; una de sus disposiciones fija una antigüedad máxima de 5 años, pero la admisibilidad final la determinan SENAVE/MIC/DNIT vía su despachante, no la edad.",
@@ -447,19 +447,19 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "processIntro": "El orden importa, sobre todo en cosechadoras: primero filtramos la unidad por la ley y por su estado, después resolvemos cabezal, dimensiones, embalaje, ruta y documentación. Así separamos desde el inicio el tramo que Meridian coordina del costo que confirma su despachante en Paraguay.",
     "processSteps": [
       {
-        "title": "1. Filtro inicial de la cosechadora",
+        "title": "Filtro inicial de la cosechadora",
         "body": "Revisamos año de fabricación, horas, estado del cabezal y la plataforma, vendedor y ubicación frente a la Ley 7565/2025. Si la unidad supera los 5 años o presenta señales que comprometen su ingreso, lo decimos antes de avanzar. La admisibilidad final la determina SENAVE/MIC/DNIT vía su despachante, no la edad."
       },
       {
-        "title": "2. Mapa de responsabilidades",
+        "title": "Mapa de responsabilidades",
         "body": "Listamos qué confirma su despachante en destino: DNIT (aduana y tributos), SENAVE (fitosanitario en destino), MIC (registro de importadores y licencia previa) y la tasa de conservación de la biodiversidad prevista en la ley."
       },
       {
-        "title": "3. Coordinación del tramo en origen",
+        "title": "Coordinación del tramo en origen",
         "body": "Compra asistida, retiro, medición, desmontaje del cabezal y embalaje cuando corresponde, limpieza libre de suelo y restos vegetales, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva de flete marítimo."
       },
       {
-        "title": "4. Cotización con alcance separado",
+        "title": "Cotización con alcance separado",
         "body": "Entregamos un presupuesto que separa el tramo de Meridian del despacho local. La calculadora es referencia del tramo logístico, no el costo nacionalizado final. Sin esa separación no hay comparación honesta."
       }
     ],
@@ -496,11 +496,11 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     ],
     "ctaHeading": "¿Vio una cosechadora en EE. UU. para Paraguay?",
     "ctaDescription": "Envíenos el link, el año de fabricación, las horas, el tipo de cabezal, la ubicación de retiro y el destino. Confirmamos si pasa el filtro inicial de la Ley 7565/2025 y separamos el tramo que coordina Meridian del costo que confirma su despachante en Paraguay.",
-    "whatsappPrefill": "#FRT_ES Flete de cosechadora de EE. UU. a Paraguay. Equipo: {{equipment}}. Retiro en: {{pickup_location}}. Destino: {{destination}}. Quiero cotizar el tramo de origen. Ref: {{whatsapp_ref}}"
+    "whatsappPrefill": "#FRT_ES Flete de cosechadora de EE. UU. a Paraguay. Equipo: [marca/modelo/año]. Retiro en: [ciudad/estado]. Destino: [ciudad de Paraguay]. Quiero cotizar el tramo de origen. Ref: {{whatsapp_ref}}"
   },
   "chile/importacion-maquinaria-usa": {
-    "seoTitle": "Importar maquinaria de EE. UU. a Chile | Meridian",
-    "seoDescription": "Coordinamos el tramo de EE. UU. a Chile: retiro, embalaje, documentación de exportación y flete marítimo de maquinaria usada. La nacionalización la gestiona su despachante.",
+    "seoTitle": "Importar maquinaria de EE. UU. a Chile",
+    "seoDescription": "Coordinamos el tramo de EE. UU. a Chile: retiro, embalaje, documentación y flete marítimo de maquinaria usada. La nacionalización la gestiona su despachante.",
     "eyebrow": "Importación de maquinaria desde EE. UU. · Chile",
     "h1": "Importación de maquinaria desde EE. UU. a Chile",
     "heroBody": "Meridian coordina el tramo de origen para su importación de maquinaria desde EE. UU. y Canadá a Chile: contacto con el vendedor, retiro, medición, desmontaje o embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo. La nacionalización, los aranceles, el IVA, el despacho aduanero y la entrega interior en Chile los gestiona por separado su despachante o importador. Le entregamos el alcance del tramo internacional por escrito antes de reservar.",
@@ -576,8 +576,8 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "whatsappPrefill": "#FRT_ES Hola, quiero importar maquinaria desde EE. UU. a Chile. Equipo: [marca/modelo/año]. Ubicación: [ciudad/estado]. Destino: [ciudad en Chile]. Ref: {{whatsapp_ref}}"
   },
   "chile/flete-equipo-pesado-usa": {
-    "seoTitle": "Flete de equipo pesado de EE. UU. a Chile | Meridian",
-    "seoDescription": "Coordinamos el flete de equipo pesado de EE. UU. a Chile: retiro, embalaje, documentación de exportación y reserva marítima. La aduana y los tributos los gestiona su despachante.",
+    "seoTitle": "Flete de equipo pesado EE. UU. a Chile",
+    "seoDescription": "Coordinamos el flete de equipo pesado de EE. UU. a Chile: retiro, embalaje, documentación y reserva marítima. La aduana la gestiona su despachante.",
     "eyebrow": "Flete de equipo pesado desde EE. UU. · Chile",
     "h1": "Flete de equipo pesado desde EE. UU. a Chile",
     "heroBody": "Meridian coordina el flete de su equipo pesado de EE. UU. y Canadá a Chile: retiro en origen, medición, desmontaje o embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo en contenedor, flat rack, RoRo o carga de proyecto según las dimensiones. La nacionalización, los aranceles, el IVA, el despacho aduanero y la entrega interior en Chile los gestiona por separado su despachante. Le confirmamos por escrito el alcance del tramo internacional antes de reservar.",
@@ -653,8 +653,8 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "whatsappPrefill": "#FRT_ES Hola, quiero cotizar flete de equipo pesado desde EE. UU. a Chile. Equipo: [marca/modelo/año]. Medidas: [alto/ancho/largo/peso]. Ubicación: [ciudad/estado]. Destino: [ciudad en Chile]. Ref: {{whatsapp_ref}}"
   },
   "uruguay/importacion-maquinaria-usa": {
-    "seoTitle": "Importar maquinaria de EE. UU. a Uruguay | Meridian",
-    "seoDescription": "Coordinamos retiro, embalaje, documentación de exportación y flete de maquinaria usada desde EE. UU. a Uruguay. La nacionalización la gestiona su despachante (ADAU).",
+    "seoTitle": "Importar maquinaria de EE. UU. a Uruguay",
+    "seoDescription": "Coordinamos retiro, embalaje, documentación y flete de maquinaria usada desde EE. UU. a Uruguay. La nacionalización la gestiona su despachante (ADAU).",
     "eyebrow": "Maquinaria usada desde EE. UU. · Uruguay",
     "h1": "Importación de maquinaria desde EE. UU. a Uruguay",
     "heroBody": "Meridian coordina el tramo del lado de EE. UU.: contacto con el vendedor o compra asistida, retiro, medición, desmontaje y embalaje cuando corresponda, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo, habitualmente vía Montevideo. La nacionalización, los tributos y el despacho aduanero en Uruguay quedan a cargo de su despachante (ADAU). No prometemos costo final nacionalizado ni admisión garantizada: eso depende de la clasificación NCM y de la inspección de la DGSA al ingreso.",
@@ -731,8 +731,8 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "whatsappPrefill": "#FRT_ES Hola, quiero cotizar la importación de maquinaria desde EE. UU. a Uruguay. Equipo: [marca/modelo/año]. Ubicación: [ciudad/estado]. Destino: [ciudad de Uruguay]. Ref: {{whatsapp_ref}}"
   },
   "uruguay/flete-cosechadoras-usa": {
-    "seoTitle": "Flete de cosechadoras de EE. UU. a Uruguay | Meridian",
-    "seoDescription": "Coordinamos retiro, desmontaje, embalaje, documentación de exportación y flete de cosechadoras desde EE. UU. a Uruguay. La nacionalización la gestiona su despachante (ADAU).",
+    "seoTitle": "Flete de cosechadoras EE. UU. a Uruguay",
+    "seoDescription": "Coordinamos retiro, desarme, embalaje, documentación y flete de cosechadoras desde EE. UU. a Uruguay. La nacionalización la gestiona su despachante (ADAU).",
     "eyebrow": "Cosechadoras desde EE. UU. · Uruguay",
     "h1": "Flete de cosechadoras desde EE. UU. a Uruguay",
     "heroBody": "Meridian coordina el tramo del lado de EE. UU. para su cosechadora: contacto con el vendedor o compra asistida, retiro, medición, desmontaje del cabezal y embalaje, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo, habitualmente vía Montevideo. La nacionalización, los tributos y el despacho aduanero en Uruguay quedan a cargo de su despachante (ADAU). No prometemos costo final nacionalizado ni admisión garantizada: eso depende de la clasificación NCM y de la inspección de la DGSA al ingreso.",

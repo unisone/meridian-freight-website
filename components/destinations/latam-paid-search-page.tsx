@@ -28,12 +28,14 @@ interface LatamPaidSearchPageProps {
   record: LatamPaidSearchDestination;
 }
 
-function SectionIntro({ eyebrow, title, intro }: { eyebrow: string; title: string; intro: string }) {
+function SectionIntro({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: string }) {
   return (
     <div className="max-w-3xl">
-      <p className="text-sm font-semibold uppercase tracking-wider text-primary">{eyebrow}</p>
+      <p className="text-sm font-semibold uppercase tracking-wider text-sky-700">{eyebrow}</p>
       <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{title}</h2>
-      <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{intro}</p>
+      {intro ? (
+        <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{intro}</p>
+      ) : null}
     </div>
   );
 }
@@ -69,7 +71,6 @@ function ScopeCards({ record }: LatamPaidSearchPageProps) {
 
 export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
   const pageUrl = `${SITE.url}${record.seo.canonicalPath}`;
-  const trustClaim = `Meridian ha coordinado más de ${formatCount(STATS.projectsCompleted, "es")} exportaciones a más de 40 países.`;
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
@@ -82,15 +83,6 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
     provider: { "@type": "Organization", name: COMPANY.name, url: SITE.url, telephone: CONTACT.phone },
     areaServed: { "@type": "Country", name: record.jsonLd.areaServedCountryName },
     availableLanguage: { "@type": "Language", name: "Spanish", alternateName: record.locale },
-  };
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Destinos", item: `${SITE.url}/es/destinations` },
-      { "@type": "ListItem", position: 2, name: record.country.name, item: `${SITE.url}${record.country.hubPath}` },
-      { "@type": "ListItem", position: 3, name: record.breadcrumbLabel, item: pageUrl },
-    ],
   };
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -106,7 +98,6 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
   return (
     <>
       <JsonLdScript encodedJson={encodeJsonLd(serviceJsonLd)} />
-      <JsonLdScript encodedJson={encodeJsonLd(breadcrumbJsonLd)} />
       <JsonLdScript encodedJson={encodeJsonLd(faqJsonLd)} />
 
       <PageHero
@@ -137,7 +128,14 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
         icon={Ship}
         rightContent={<ScopeCards record={record} />}
       >
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <Button
+            render={<a href="#cotizar" />}
+            size="lg"
+            className="h-12 rounded-xl bg-white px-6 font-semibold text-foreground hover:bg-muted"
+          >
+            Solicitar cotización
+          </Button>
           <PaidSearchWhatsAppButton
             routeKey={record.routeKey}
             prefillTemplate={record.cta.whatsappPrefill}
@@ -173,7 +171,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
             {record.process.steps.map((step, i) => (
               <div key={step.title} className="rounded-xl border bg-white p-5 shadow-sm">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-sm font-bold text-white">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-700 font-mono text-sm font-bold text-white">
                     {i + 1}
                   </div>
                   <div>
@@ -233,7 +231,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
               <ul className="grid gap-3">
                 {record.quoteReadiness.fields.map((f) => (
                   <li key={f} className="flex gap-3 rounded-xl bg-white p-4 text-sm leading-relaxed text-muted-foreground shadow-sm">
-                    <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <FileText className="mt-0.5 h-4 w-4 shrink-0 text-sky-700" />
                     <span>{f}</span>
                   </li>
                 ))}
@@ -253,8 +251,23 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Compliance */}
       <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Cumplimiento local" title={record.compliance.heading} intro={record.compliance.body} />
-          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">{trustClaim}</p>
+          <SectionIntro eyebrow="Cumplimiento local" title={record.compliance.heading} />
+          <div className="mt-8 max-w-3xl rounded-2xl border bg-white p-6 shadow-sm sm:p-8">
+            <div className="flex items-start gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <p className="text-base leading-relaxed text-muted-foreground">{record.compliance.body}</p>
+            </div>
+          </div>
+          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            Meridian ha coordinado más de{" "}
+            <span className="font-mono font-bold tabular-nums text-foreground">
+              {formatCount(STATS.projectsCompleted, "es")}
+            </span>{" "}
+            exportaciones a más de{" "}
+            <span className="font-mono font-bold tabular-nums text-foreground">40</span> países.
+          </p>
         </div>
       </section>
 
@@ -266,7 +279,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
             <Accordion className="space-y-3">
               {record.faq.map((entry, i) => (
                 <AccordionItem key={entry.question} value={`ps-faq-${i}`} className="rounded-xl border-0 bg-white px-6 shadow-sm">
-                  <AccordionTrigger className="py-5 text-left text-base font-semibold text-foreground hover:text-primary">
+                  <AccordionTrigger className="py-5 text-left text-base font-semibold text-foreground hover:text-sky-700">
                     {entry.question}
                   </AccordionTrigger>
                   <AccordionContent className="pb-5 text-muted-foreground">{entry.answer}</AccordionContent>
@@ -296,9 +309,30 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
                     <span className="block text-sm font-semibold text-foreground">{source.label}</span>
                     <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{source.description}</span>
                   </span>
-                  <ExternalLink className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                  <ExternalLink className="mt-1 h-4 w-4 shrink-0 text-sky-700" />
                 </span>
               </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related resources */}
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionIntro eyebrow="Recursos relacionados" title="Siga explorando" />
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            {record.internalLinks.map((link) => (
+              <TrackedCtaLink
+                key={link.href}
+                href={link.href}
+                location={`${record.country.slug}_${record.segment.key}_related`}
+                text={link.label}
+                className="group flex items-center justify-between gap-4 rounded-xl bg-muted p-4 text-sm font-semibold text-foreground shadow-sm transition hover:shadow-md"
+              >
+                <span>{link.label}</span>
+                <ArrowRight className="h-4 w-4 shrink-0 text-sky-700 transition group-hover:translate-x-0.5" />
+              </TrackedCtaLink>
             ))}
           </div>
         </div>

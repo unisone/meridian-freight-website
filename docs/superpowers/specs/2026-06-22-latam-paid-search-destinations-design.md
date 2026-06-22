@@ -199,8 +199,8 @@ Native Spanish review is a hard publish gate. The FMC/IATA registration verify-o
 ## 15. Review Remediation (post 5-lens panel, 2026-06-22)
 The independent review (design-system, architecture, attribution/security, compliance, spec-quality) rated **all 5 lenses approve-with-minor-fixes**; architecture, routing, trust boundary, phasing, and Gate-B boundaries verified **sound** against the repo. These amendments are binding and supersede any conflicting text above.
 
-### Blocker (resolved in-spec; one owner action)
-- **FMC/IATA premise corrected** (§5, §13.3). Owner action before Gate-B traffic: verify the registrations are genuine/current OR remove site-wide. Pre-existing condition; not a preview-build blocker.
+### Blocker (resolved in-spec; owner decision made)
+- **FMC/IATA premise corrected** (§5, §13.3). **Owner decision 2026-06-22: KEEP — confirmed genuine & current registrations.** Keep site-wide with precise verifiable framing; no removal needed. Gate-B prerequisite satisfied.
 
 ### Majors
 - **Quote-form design contract (anti-drift):** prefer **extending `components/contact-form.tsx`**; do NOT author a new form layout. Reuse `components/ui/{input,label,button,textarea}` with contact-form's class vocabulary (`space-y-5`, `grid gap-5 sm:grid-cols-2`, Input `mt-1.5`, submit = `<Button>` default/primary `w-full rounded-xl`). No custom field styling, no hardcoded colors.

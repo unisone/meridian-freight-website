@@ -289,7 +289,8 @@ function buildDestination(
       finalCalculator: `${trackingPrefix}_final_calculator`,
     },
     internalLinks: [
-      { label: `${c.name}: guía de importación`, href: `/es/destinations/${countrySlug}` },
+      // Locale-relative: the renderer uses the i18n <Link>, which adds the /es prefix.
+      { label: `${c.name}: guía de importación`, href: `/destinations/${countrySlug}` },
       { label: "Compra asistida de equipo", href: "/services/equipment-sales" },
       { label: "Calculadora de flete", href: "/pricing/calculator" },
     ],

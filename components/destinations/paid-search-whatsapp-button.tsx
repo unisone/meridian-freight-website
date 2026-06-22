@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createWhatsAppRef } from "@/app/actions/whatsapp-ref";
 import { buildWhatsAppUrl, interpolateWhatsAppRef } from "@/lib/whatsapp-prefill";
@@ -76,14 +76,26 @@ export function PaidSearchWhatsAppButton({
     } catch {
       /* analytics best-effort */
     }
-    window.open(buildWhatsAppUrl(CONTACT.phoneRaw, text), "_blank", "noopener,noreferrer");
+    const url = buildWhatsAppUrl(CONTACT.phoneRaw, text);
+    const win = window.open(url, "_blank", "noopener,noreferrer");
+    // Popup blocked → fall back to a same-tab navigation so the chat still opens.
+    if (!win) window.location.href = url;
     setBusy(false);
   }
 
   return (
-    <Button type="button" onClick={handleClick} disabled={busy} size="lg" className={className} aria-label={label}>
-      <MessageCircle className="mr-2 h-4 w-4" />
-      {label}
+    <Button type="button" onClick={handleClick} disabled={busy} size="lg" className={className}>
+      {busy ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+          Abriendo…
+        </>
+      ) : (
+        <>
+          <MessageCircle className="mr-2 h-4 w-4" aria-hidden="true" />
+          {label}
+        </>
+      )}
     </Button>
   );
 }

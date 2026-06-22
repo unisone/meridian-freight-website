@@ -36,6 +36,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: canonical,
       title: record.seo.title,
       description: record.seo.description,
+      images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: record.seo.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: record.seo.title,
+      description: record.seo.description,
+      images: [SITE.ogImage],
     },
   };
 }

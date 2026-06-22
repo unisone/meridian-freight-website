@@ -15,6 +15,7 @@ import {
 } from "@/lib/lead-attribution";
 import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
 import { track as vercelTrack } from "@vercel/analytics";
+import { CONTACT } from "@/lib/constants";
 
 interface PaidSearchQuoteFormProps {
   routeKey: string;
@@ -35,11 +36,14 @@ function newLeadId(): string {
     : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
   const attrRef = useRef<AttrState | null>(null);
+  const successRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
     const touch = parsePaidTouch(window.location.href, document.referrer);
@@ -64,37 +68,78 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
     attrRef.current = next;
   }, [routeKey]);
 
+  // Move keyboard focus to the confirmation heading once the lead is accepted.
+  useEffect(() => {
+    if (isSubmitted) successRef.current?.focus();
+  }, [isSubmitted]);
+
+  function focusField(form: HTMLFormElement, name: string) {
+    const el = form.elements.namedItem(name);
+    if (el instanceof HTMLElement) el.focus();
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSubmitting(true);
     setError("");
     const form = e.currentTarget;
     const fd = new FormData(form);
+
+    // Honeypot — silently "succeed" for bots.
     if (fd.get("website")) {
       setIsSubmitted(true);
-      setIsSubmitting(false);
+      return;
+    }
+
+    // Spanish client-side validation. The form is `noValidate`, so the browser's
+    // native (English) constraint bubbles never pre-empt these messages.
+    const name = ((fd.get("contact_name") as string) || "").trim();
+    const equipment = ((fd.get("equipment_type") as string) || "").trim();
+    const email = ((fd.get("contact_email") as string) || "").trim();
+    const phone = ((fd.get("contact_phone") as string) || "").trim();
+    if (!name) {
+      setError("Ingrese su nombre.");
+      focusField(form, "contact_name");
+      return;
+    }
+    if (!equipment) {
+      setError("Indique el tipo de equipo.");
+      focusField(form, "equipment_type");
+      return;
+    }
+    if (!email && !phone) {
+      setError("Ingrese un email o un teléfono/WhatsApp para que podamos responderle.");
+      focusField(form, "contact_email");
+      return;
+    }
+    if (email && !EMAIL_RE.test(email)) {
+      setError("Ingrese un email válido.");
+      focusField(form, "contact_email");
       return;
     }
     if (!fd.get("consent")) {
       setError("Debe aceptar las condiciones para continuar.");
-      setIsSubmitting(false);
+      focusField(form, "consent");
       return;
     }
+
+    setIsSubmitting(true);
     const attr = attrRef.current;
     try {
       const result = await submitPaidSearchLead({
         routeKey,
-        contact_name: (fd.get("contact_name") as string) || "",
-        contact_email: (fd.get("contact_email") as string) || "",
-        contact_phone: (fd.get("contact_phone") as string) || "",
+        contact_name: name,
+        contact_email: email,
+        contact_phone: phone,
         preferred_contact_method: "whatsapp",
-        equipment_type: (fd.get("equipment_type") as string) || "",
+        equipment_type: equipment,
         make_model: (fd.get("make_model") as string) || "",
-        year: (fd.get("year") as string) || "",
         listing_url: (fd.get("listing_url") as string) || "",
         origin_location: (fd.get("origin_location") as string) || "",
         destination_location: (fd.get("destination_location") as string) || "",
+        dimensions: (fd.get("dimensions") as string) || "",
+        weight: (fd.get("weight") as string) || "",
         purchase_status: (fd.get("purchase_status") as string) || "",
+        requested_timing: (fd.get("requested_timing") as string) || "",
         message: (fd.get("message") as string) || "",
         consent: fd.get("consent") === "on",
         website: (fd.get("website") as string) || "",
@@ -128,10 +173,20 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
   if (isSubmitted) {
     return (
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
-        <h3 className="text-xl font-bold text-foreground">Solicitud recibida</h3>
+        <h3 ref={successRef} tabIndex={-1} className="text-xl font-bold text-foreground outline-none">
+          Solicitud recibida
+        </h3>
         <p className="mt-2 text-muted-foreground">
           Gracias. Revisaremos los datos del equipo y le responderemos con el alcance del tramo internacional. Le contactaremos dentro de las próximas 24 horas.
         </p>
+        <a
+          href={CONTACT.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-semibold text-emerald-700 underline-offset-4 hover:underline"
+        >
+          ¿Prefiere avanzar ahora? Escríbanos por WhatsApp
+        </a>
       </div>
     );
   }
@@ -139,6 +194,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
   return (
     <form
       onSubmit={handleSubmit}
+      noValidate
       className={`space-y-5 transition-opacity ${isSubmitting ? "pointer-events-none opacity-60" : ""}`}
     >
       <div className="hidden" aria-hidden="true">
@@ -156,9 +212,17 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="contact_name">
-            Nombre <span aria-hidden="true" className="text-red-500">*</span>
+            Nombre <span aria-hidden="true" className="text-destructive">*</span>
           </Label>
-          <Input id="contact_name" name="contact_name" required aria-required="true" autoComplete="name" className="mt-1.5" />
+          <Input
+            id="contact_name"
+            name="contact_name"
+            required
+            aria-required="true"
+            aria-describedby="ps-form-error"
+            autoComplete="name"
+            className="mt-1.5"
+          />
         </div>
         <div>
           <Label htmlFor="contact_phone">WhatsApp o teléfono</Label>
@@ -169,13 +233,29 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="contact_email">Email</Label>
-          <Input id="contact_email" name="contact_email" type="email" autoComplete="email" spellCheck={false} className="mt-1.5" />
+          <Input
+            id="contact_email"
+            name="contact_email"
+            type="email"
+            autoComplete="email"
+            spellCheck={false}
+            aria-describedby="ps-form-error"
+            className="mt-1.5"
+          />
         </div>
         <div>
           <Label htmlFor="equipment_type">
-            Equipo <span aria-hidden="true" className="text-red-500">*</span>
+            Equipo <span aria-hidden="true" className="text-destructive">*</span>
           </Label>
-          <Input id="equipment_type" name="equipment_type" required aria-required="true" placeholder="Ej.: cosechadora, tractor, excavadora" className="mt-1.5" />
+          <Input
+            id="equipment_type"
+            name="equipment_type"
+            required
+            aria-required="true"
+            aria-describedby="ps-form-error"
+            placeholder="Ej.: cosechadora, tractor, excavadora"
+            className="mt-1.5"
+          />
         </div>
       </div>
 
@@ -211,9 +291,26 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         </div>
       </div>
 
-      <div>
-        <Label htmlFor="listing_url">Link del equipo o factura proforma</Label>
-        <Input id="listing_url" name="listing_url" className="mt-1.5" />
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <Label htmlFor="dimensions">Dimensiones (alto × ancho × largo)</Label>
+          <Input id="dimensions" name="dimensions" placeholder="Ej.: 3,5 × 2,5 × 6 m" className="mt-1.5" />
+        </div>
+        <div>
+          <Label htmlFor="weight">Peso aproximado</Label>
+          <Input id="weight" name="weight" placeholder="Ej.: 12.000 kg" className="mt-1.5" />
+        </div>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <Label htmlFor="listing_url">Link del equipo o factura proforma</Label>
+          <Input id="listing_url" name="listing_url" className="mt-1.5" />
+        </div>
+        <div>
+          <Label htmlFor="requested_timing">Fecha estimada de embarque</Label>
+          <Input id="requested_timing" name="requested_timing" placeholder="Ej.: agosto 2026" className="mt-1.5" />
+        </div>
       </div>
 
       <div>
@@ -227,6 +324,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
           id="consent"
           name="consent"
           required
+          aria-required="true"
           aria-describedby="ps-form-error"
           className="mt-1 h-4 w-4 rounded border-input"
         />
@@ -252,11 +350,14 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         )}
       </Button>
 
-      {error && (
-        <p id="ps-form-error" role="alert" className="mt-2 text-center text-sm text-red-600">
-          {error}
-        </p>
-      )}
+      <p
+        id="ps-form-error"
+        role="alert"
+        aria-live="polite"
+        className="min-h-[1.25rem] text-center text-sm text-destructive"
+      >
+        {error}
+      </p>
     </form>
   );
 }

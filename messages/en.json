@@ -1,4 +1,7 @@
 {
+  "Layout": {
+    "skipToContent": "Skip to content"
+  },
   "Common": {
     "getQuote": "Get a Free Quote",
     "getFreeQuote": "Get Free Quote",
