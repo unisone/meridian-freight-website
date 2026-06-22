@@ -13,6 +13,9 @@ interface PageProps {
   params: Promise<{ locale: string; slug: string; segment: string }>;
 }
 
+// Only the curated combos are valid → any other param is a true 404 (not soft-200).
+export const dynamicParams = false;
+
 // es-only; the static argentina/ folder serves AR via its own branch.
 export function generateStaticParams() {
   return getPaidSearchStaticParams().map((p) => ({ locale: "es", ...p }));

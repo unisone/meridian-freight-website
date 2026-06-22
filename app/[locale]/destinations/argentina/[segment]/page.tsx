@@ -15,6 +15,9 @@ interface PageProps {
   params: Promise<{ locale: string; segment: string }>;
 }
 
+// Only the 2 Argentina combos are valid → any other segment is a true 404.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getArgentinaPaidSearchStaticParams().map((p) => ({ locale: "es", ...p }));
 }
