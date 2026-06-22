@@ -19,6 +19,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { TrustBar } from "@/components/trust-bar";
+import { PaidSearchQuoteForm } from "@/components/destinations/paid-search-quote-form";
 import type { LatamPaidSearchDestination } from "@/content/latam-paid-search-destinations";
 import { COMPANY, CONTACT, SITE, STATS } from "@/lib/constants";
 import { formatCount } from "@/lib/i18n-utils";
@@ -237,21 +238,29 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
         </div>
       </section>
 
-      {/* Quote readiness */}
-      <section className="py-16 md:py-20">
+      {/* Quote readiness + form */}
+      <section id="cotizar" className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionIntro eyebrow="Cotización" title={record.quoteReadiness.heading} intro={record.quoteReadiness.intro} />
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2">
-            {record.quoteReadiness.fields.map((f) => (
-              <li key={f} className="flex gap-3 rounded-xl bg-white p-4 text-sm leading-relaxed text-muted-foreground shadow-sm">
-                <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>{f}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 text-sm leading-relaxed text-muted-foreground">
-            {record.compliance.localResponsibility}
-          </p>
+          <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <ul className="grid gap-3">
+                {record.quoteReadiness.fields.map((f) => (
+                  <li key={f} className="flex gap-3 rounded-xl bg-white p-4 text-sm leading-relaxed text-muted-foreground shadow-sm">
+                    <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl border bg-white p-6 shadow-sm sm:p-8">
+              <h3 className="text-lg font-bold text-foreground">Solicitar cotización</h3>
+              <p className="mt-2 mb-6 text-sm leading-relaxed text-muted-foreground">
+                Comparta el equipo y el destino; le devolvemos por escrito el alcance del tramo internacional.
+              </p>
+              <PaidSearchQuoteForm routeKey={record.routeKey} caveat={record.compliance.localResponsibility} />
+            </div>
+          </div>
         </div>
       </section>
 

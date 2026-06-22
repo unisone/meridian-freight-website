@@ -20,7 +20,7 @@ P1 deliberately uses English-internal placeholder copy (real Spanish = P2). No a
 ## Phase 2 — Content + compliance + SEO (DONE — verified)
 Per-country Spanish + EN-internal copy with verified §7 caveats; JSON-LD (Service/Breadcrumb/FAQPage); metadata helper (prod canonical even on preview, es-only); AR hub AFIDI URL fix; cross-surface "importación libre" hedge. Gate: client native review.
 
-## Phase 3 — Attribution + lead pipeline (IN PROGRESS — attribution core done & verified)
+## Phase 3 — Attribution + lead pipeline (DONE — verified)
 tracking.ts extension + opaque-`attribution_id` cookie/consent fix; `lib/lead-attribution.ts`; additive migration (+ degradation if UNIQUE absent); `submitPaidSearchLead` + `createWhatsAppRef` Server Actions; quote form (extend `contact-form.tsx`); Google Ads tag guard; **attribution actively wired into payload**; **dedupe truly no-ops** (on_conflict + gated side-effects). Tests: persistence/trust-boundary/dedupe/ref/no-side-effect (mocked emitters).
 
 ## Phase 4 — QA + evidence
