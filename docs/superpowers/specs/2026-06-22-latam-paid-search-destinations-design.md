@@ -103,7 +103,7 @@ The reuse audit confirms **nearly all UI already exists**; the work is data + a 
 - **Quote form:** net-new behavior (shipped hubs convert via WhatsApp + calculator, no inline form). Build a `paid-search-quote-form` (or extend `contact-form`) wired to the new Server Action + `paidSearchLeadSchema`. Do **not** introduce a second analytics/form system.
 
 ### Trust/credentials — CRITICAL CORRECTION
-The Pro spec's trust block lists `FMC #024914NF` and `IATA/CNS 01108380000`. **These do not exist anywhere in the codebase and the live site makes no such claim (grep-confirmed zero matches). They are fabricated — OMIT them.** Use only verifiable claims, rendered from constants:
+The Pro spec's trust block lists `FMC #024914NF` and `IATA/CNS 01108380000`. **CORRECTION (post-review): these are NOT fabricated.** They exist in `lib/constants.ts:11-12` (`COMPANY.fmcLicense`/`iataCns`) and render **live site-wide** via `messages/{en,es,ru}.json` — footer `trustSignals` and hero `trustEyebrow`, all three locales. Decision: do **not** add them to the new LP *body* (consistent with the shipped LATAM hubs, which don't restate them). But they already appear in the shared footer/hero of every page, **including the new LPs** — a Google Ads Misrepresentation exposure if the registrations are not genuine/current. **Gate-B launch prerequisite (site-wide, owner decision): confirm `024914NF` is a current FMC OTI/NVOCC registration and `01108380000` a current IATA/CNS air-cargo agency code (keep, with precise verifiable framing) OR remove them site-wide from constants + messages.** This is pre-existing (not introduced by this work) and does NOT block preview building. For the LP body, use only verifiable claims, rendered from constants:
 - Verbatim (matches all 4 shipped hubs): **"Meridian ha coordinado más de 1.000 exportaciones a más de 40 países."** (`1.000` with period, `más de 40 países`.)
 - Stats from `STATS` (`projectsCompleted=1000`, `yearsExperience` from `foundedYear=2013`) via `formatCount(n,'es')+'+'` — never hardcoded.
 - `COMPANY.name`, `SITE.name/url`, all `CONTACT` fields imported, never hardcoded.
@@ -186,7 +186,7 @@ Each phase = branch/preview; user reviews preview; nothing to prod.
 ## 13. Explicit divergences from the ChatGPT Pro spec (with reasons)
 1. **Route files:** `[slug]/[segment]` + `argentina/[segment]` (not `[country]/[segment]`) — Next.js dynamic-name + static-shadow rules (verified).
 2. **API routes → Server Actions:** `submitPaidSearchLead` + `createWhatsAppRef` replace `app/api/leads` + `app/api/attribution/whatsapp-ref` — repo/`CLAUDE.md` mandate Server Actions; an API lead endpoint would be a second system.
-3. **FMC/IATA numbers removed** — fabricated, not in repo, no live claim. Use only verifiable `STATS`-backed claims.
+3. **FMC/IATA numbers NOT added to LP body** — but they are real constants rendered site-wide (footer/hero, all locales); the earlier "fabricated" claim was wrong (see §5 correction). LP body uses only `STATS`-backed claims; the site-wide registration **verify-or-remove is a Gate-B launch prerequisite** (owner decision).
 4. **Lean attribution + `whatsapp_ref`** — extend the single tracker + opaque-id cookie; no 5-layer state machine; no lead-per-click.
 5. **`cargo_class` added + `page_route` aliased** — required by the workbook, absent from the Pro spec.
 6. **Google Ads tag is a runtime-compared guard, not a hardcoded literal.**
@@ -194,4 +194,30 @@ Each phase = branch/preview; user reviews preview; nothing to prod.
 8. **Per-country copy corrected** to verified caveats (esp. BO expired-incentive, PY unverified articles/fee, CL SAG/port, UY 2%→Decreto 426/011) + native-review publish gate.
 
 ## 14. Open risks (tracked; mitigations in-spec)
-Cookie/consent migration must not break existing contact/calculator attribution (verify in P3). Native Spanish review is a hard publish gate. Preview env-scoping for the new action must be confirmed equivalent to contact/calculator. Idempotency relies on the new `UNIQUE` column landing via the additive migration.
+Native Spanish review is a hard publish gate. The FMC/IATA registration verify-or-remove is a Gate-B launch prerequisite (§5, §15). Attribution must be actively wired into the new payload and dedupe must truly no-op (§15). The additive migration's `UNIQUE idempotency_key` must land or the action falls back to a pre-insert SELECT (§15).
+
+## 15. Review Remediation (post 5-lens panel, 2026-06-22)
+The independent review (design-system, architecture, attribution/security, compliance, spec-quality) rated **all 5 lenses approve-with-minor-fixes**; architecture, routing, trust boundary, phasing, and Gate-B boundaries verified **sound** against the repo. These amendments are binding and supersede any conflicting text above.
+
+### Blocker (resolved in-spec; one owner action)
+- **FMC/IATA premise corrected** (§5, §13.3). Owner action before Gate-B traffic: verify the registrations are genuine/current OR remove site-wide. Pre-existing condition; not a preview-build blocker.
+
+### Majors
+- **Quote-form design contract (anti-drift):** prefer **extending `components/contact-form.tsx`**; do NOT author a new form layout. Reuse `components/ui/{input,label,button,textarea}` with contact-form's class vocabulary (`space-y-5`, `grid gap-5 sm:grid-cols-2`, Input `mt-1.5`, submit = `<Button>` default/primary `w-full rounded-xl`). No custom field styling, no hardcoded colors.
+- **Attribution must be ACTIVELY wired into the payload:** no existing submit path reads the `mf_attribution` cookie (contact-form + calculator read UTMs fresh from `window.location.search` at submit). DROP the moot "verify existing flows read the cookie" target. ADD acceptance criterion: the paid-search page reads the typed attribution payload (sessionStorage/localStorage) and passes it into `submitPaidSearchLead`; the synthetic test asserts captured attribution actually reaches the POST body.
+- **Dedupe must truly no-op:** the proven insert (`Prefer: return=minimal`, no `on_conflict`) turns a duplicate into an HTTP 409 logged as a generic failure while the must-succeed owner email + `after()` Slack/CAPI still fire (duplicate emails/events). Fix: POST `/rest/v1/leads?on_conflict=idempotency_key` with `Prefer: resolution=ignore-duplicates,return=minimal` (or a pre-insert SELECT by `lead_id`); gate the owner email + `after()` side-effects on whether a NEW row was inserted. §10 dedupe test asserts NO second owner email/CAPI/Slack.
+
+### Minors (binding)
+- **§5 token-only rule:** design tokens only (`bg-primary`, `text-foreground`, `text-muted-foreground`, `bg-muted`, `border`) + the established accent vocabulary already in shipped hubs (emerald=included, sky=info, amber/rose=caution/excluded). No hardcoded hex/rgb, no new color families, no new font (Geist Sans/Mono via `@theme`).
+- **§5 hero pinned:** `<PageHero variant="dark" locale="es">` with the same eyebrow/heading/description/rightContent + emerald/sky/amber scope-card composition as `latam-market-page.tsx`.
+- **§3 routing file:** locale middleware is **`middleware.ts`** (repo root) — **`proxy.ts` does NOT exist**. The project `CLAUDE.md` is STALE on this (claims proxy.ts) — flag for separate correction.
+- **UI stack:** shadcn **`base-nova`** style over **`@base-ui/react`** primitives (not new-york/Radix). `CLAUDE.md` is STALE here too.
+- **§3 AR es-only parity + per-segment guard:** `argentina/[segment]` relies on in-page `permanentRedirect` for non-es (es canonical; en/ru not generated), consistent with argentina already absent from the EN destinations set. Each new segment page guards `locale === 'es'` at request time (generateStaticParams stops prerender, but direct hits need a runtime guard); `argentina/[segment]` returns only `{segment}`.
+- **§10/§11 no-side-effect via MOCKING, not env:** Slack (`lib/slack.ts`) + Meta CAPI (`lib/meta-capi.ts`) are gated only by env-var presence. The synthetic test MUST mock Resend/CAPI/Slack/Vercel and route owner email to a test address so the must-succeed path cannot send.
+- **§6 sink hygiene:** new attribution fields (click IDs/UTMs) pass through `escapeHtml()` at the owner-email render site and are treated as untrusted in Slack text — capture-time caps are not sufficient for HTML/Slack sinks.
+- **§6.2 note:** `attribution_id` is intentionally non-HttpOnly (opaque, client-generated, no click IDs); sensitive payload stays server-side/session-only.
+- **§7 cross-surface consistency:** `content/destinations.ts` uses "importación libre"/"importación libre de aranceles" for Chile (line 567) and Mexico (470,473). Hedge the Chile duty-free claim to match the new CL LP framing so paid traffic doesn't see contradictory admissibility claims one click apart.
+- **§5/§10 quote caveat:** the quote-readiness/form block carries the customs-responsibility caveat adjacent to the CTA (Meridian = origen→puerto; nacionalización/tributos/AFIDI/SAG/DGSA/SENASAG confirmed by despachante); add a §10 message-match assertion.
+- **§10 whatsapp_ref regex:** `^MF-[0-9A-HJKMNP-TV-Z]{8}$` (exactly 8), matching the §6.5 generator.
+- **§1/§6.7 account id:** `378-300-2123` (hyphenated, Google Ads UI) === `3783002123` (digits-only, `source_account_id`) — same account, two representations.
+- **§6.6 migration degradation:** the additive migration adds ~28 typed columns incl. `idempotency_key UNIQUE` + the jsonb; if the UNIQUE constraint is absent (partially-applied migration), fall back to a pre-insert SELECT by `lead_id` so lead capture never breaks (retry-tolerance must cover more than the jsonb column).
