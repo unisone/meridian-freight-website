@@ -13,6 +13,8 @@
  * destination despachante.
  */
 
+import { PAID_SEARCH_COPY } from "@/content/latam-paid-search-copy";
+
 // ─── Enums ──────────────────────────────────────────────────────────────────
 
 export const PAID_SEARCH_COUNTRIES = [
@@ -219,7 +221,7 @@ const VALID_PAIRS: readonly (readonly [PaidSearchCountrySlug, PaidSearchSegmentS
   ["uruguay", "flete-cosechadoras-usa"],
 ];
 
-// ─── Record factory (P1 placeholder copy — replaced with verified ES in P2) ──
+// ─── Record factory (verified P2 Spanish copy from content/latam-paid-search-copy) ──
 
 function buildDestination(
   countrySlug: PaidSearchCountrySlug,
@@ -229,6 +231,10 @@ function buildDestination(
   const s = SEGMENT_META[segmentSlug];
   const path = `/es/destinations/${countrySlug}/${segmentSlug}` as const;
   const trackingPrefix = `${countrySlug}_${s.key}`;
+  const copy = PAID_SEARCH_COPY[`${countrySlug}/${segmentSlug}`];
+  if (!copy) {
+    throw new Error(`Missing paid-search copy for ${countrySlug}/${segmentSlug}`);
+  }
 
   return {
     routeKey: `${countrySlug}/${segmentSlug}`,
@@ -236,62 +242,33 @@ function buildDestination(
     country: { code: c.code, slug: countrySlug, name: c.name, hubPath: `/es/destinations/${countrySlug}` },
     segment: { slug: segmentSlug, key: s.key, publicName: s.publicName, cargoClass: s.cargoClass, requestType: s.requestType },
     seo: {
-      title: `${s.publicName} de EE. UU. a ${c.name} | Meridian`,
-      description: `Coordine retiro, preparación, documentación de exportación y flete de ${s.equipmentEs} desde EE. UU. a ${c.name}, con alcance separado de aduana y costos locales.`,
+      title: copy.seoTitle,
+      description: copy.seoDescription,
       canonicalPath: path,
     },
     breadcrumbLabel: s.publicName,
-    eyebrow: `${s.equipmentEs[0].toUpperCase()}${s.equipmentEs.slice(1)} desde EE. UU. · ${c.name}`,
-    h1: `${s.publicName} desde EE. UU. a ${c.name}`,
-    heroBody: `Meridian coordina la operación del lado de EE. UU.: contacto con el vendedor, retiro, medición, preparación o desmontaje cuando corresponda, documentación de exportación y flete hasta el puerto acordado. La nacionalización, los tributos y la entrega interior en ${c.name} se gestionan por separado con su despachante. [P1 placeholder — copy verificada en P2]`,
-    heroBullets: [
-      "Coordinación con el vendedor o compra asistida bajo un alcance separado.",
-      "Retiro, medición, preparación y carga en origen.",
-      "Contenedor, flat rack, RoRo o carga de proyecto según el equipo.",
-      "Cotización internacional separada de los costos locales.",
-    ],
-    scopeIncluded: [
-      "Retiro y transporte en EE. UU./Canadá",
-      "Preparación, embalaje y documentación de exportación",
-      "Flete internacional al puerto acordado",
-    ],
-    scopeExcluded: [
-      "Nacionalización, aranceles, IVA y tasas locales",
-      "Despacho aduanero y permisos del importador",
-      "Inspección fitosanitaria en destino y entrega interior",
-    ],
+    eyebrow: copy.eyebrow,
+    h1: copy.h1,
+    heroBody: copy.heroBody,
+    heroBullets: copy.heroBullets,
+    scopeIncluded: copy.scopeIncluded,
+    scopeExcluded: copy.scopeExcluded,
     process: {
       heading: "Cómo coordinamos la operación",
-      intro: "La ruta se define a partir del equipo real, no de una tarifa genérica. Primero se confirma la información técnica y el alcance; después se reserva.",
-      steps: [
-        { title: "Comparta el equipo", body: `Enviá el anuncio, marca, modelo, año, ubicación y estado de compra del ${s.equipmentEs}.` },
-        { title: "Definimos medidas y modalidad", body: "Revisamos dimensiones, peso y si requiere desmontaje, contenedor, flat rack, RoRo o carga de proyecto." },
-        { title: "Coordinamos origen y exportación", body: "Organizamos retiro, preparación, carga y documentación de exportación según el alcance cotizado." },
-        { title: "Entregamos el expediente para destino", body: `Compartimos los documentos del tramo internacional para que su despachante gestione la nacionalización en ${c.name}.` },
-      ],
+      intro: copy.processIntro,
+      steps: copy.processSteps,
     },
     quoteReadiness: {
       heading: "Datos para preparar una cotización útil",
-      intro: "Con estos datos definimos el tramo internacional sin inventar medidas, ruta ni formato de carga.",
-      fields: [
-        "Link del equipo o factura proforma",
-        "Marca, modelo y año",
-        "Ubicación exacta en EE. UU. o Canadá",
-        "Estado de compra: evaluando, reservado o comprado",
-        "Dimensiones y peso disponibles",
-        "Ciudad de destino y fecha estimada",
-      ],
+      intro: copy.quoteIntro,
+      fields: copy.quoteFields,
     },
     compliance: {
-      heading: `Validación en ${c.name} antes de comprar o embarcar`,
-      body: `Los requisitos dependen de la clasificación, condición y uso del equipo. Su importador y despachante confirman elegibilidad, requisitos fitosanitarios, tributos, puerto y costos locales antes de cerrar la compra o autorizar el embarque. [P1 placeholder — caveats verificados por país en P2]`,
-      localResponsibility: `Meridian coordina el tramo contratado desde origen; la admisibilidad y nacionalización en ${c.name} quedan bajo responsabilidad del importador y sus profesionales locales.`,
+      heading: copy.complianceHeading,
+      body: copy.complianceBody,
+      localResponsibility: copy.localResponsibility,
     },
-    faq: [
-      { question: "¿Meridian vende la maquinaria?", answer: "No. Meridian es el operador de logística y exportación. Podemos coordinar con su vendedor o brindar asistencia de compra bajo un alcance separado." },
-      { question: "¿Pueden darme el costo final nacionalizado?", answer: "Cotizamos el alcance internacional que controlamos. Su despachante calcula aranceles, impuestos e inspecciones según la clasificación real del equipo." },
-      { question: "¿A qué puerto se envía?", answer: "El puerto se define según la naviera, la modalidad de carga, las dimensiones y el plan de su despachante. La página no promete un puerto único." },
-    ],
+    faq: copy.faq,
     officialSources: OFFICIAL_SOURCES[countrySlug],
     jsonLd: {
       serviceName: `Coordinación de ${s.publicName.toLowerCase()} desde EE. UU. a ${c.name}`,
@@ -299,11 +276,11 @@ function buildDestination(
       areaServedCountryName: c.name,
     },
     cta: {
-      heading: `Cotice su ${s.equipmentEs} desde EE. UU. a ${c.name}`,
-      description: "Comparta el equipo y el destino; le devolvemos el alcance del tramo internacional por escrito antes de reservar.",
+      heading: copy.ctaHeading,
+      description: copy.ctaDescription,
       whatsappLabel: "Cotizar por WhatsApp",
       calculatorLabel: "Calcular flete estimado",
-      whatsappPrefill: `#FRT_ES Hola, quiero cotizar ${s.publicName.toLowerCase()} desde EE. UU. a ${c.name}. Equipo: [marca/modelo/año]. Ubicación: [ciudad/estado]. Destino: [ciudad]. Ref: {{whatsapp_ref}}`,
+      whatsappPrefill: copy.whatsappPrefill,
     },
     tracking: {
       heroWhatsapp: `${trackingPrefix}_hero_whatsapp`,

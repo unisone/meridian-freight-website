@@ -17,7 +17,7 @@ Each item = behavior + how a **fresh verifier** confirms it (never builder self-
 
 P1 deliberately uses English-internal placeholder copy (real Spanish = P2). No attribution/lead pipeline yet (P3).
 
-## Phase 2 — Content + compliance + SEO (NEXT)
+## Phase 2 — Content + compliance + SEO (DONE — verified)
 Per-country Spanish + EN-internal copy with verified §7 caveats; JSON-LD (Service/Breadcrumb/FAQPage); metadata helper (prod canonical even on preview, es-only); AR hub AFIDI URL fix; cross-surface "importación libre" hedge. Gate: client native review.
 
 ## Phase 3 — Attribution + lead pipeline
