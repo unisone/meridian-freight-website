@@ -5,7 +5,6 @@ import {
   ClipboardCheck,
   ExternalLink,
   FileText,
-  MessageCircle,
   Ship,
   ShieldCheck,
 } from "lucide-react";
@@ -16,8 +15,8 @@ import { DarkCta } from "@/components/dark-cta";
 import { JsonLdScript } from "@/components/json-ld-script";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { TrackedCtaLink } from "@/components/tracked-cta-link";
+import { PaidSearchWhatsAppButton } from "@/components/destinations/paid-search-whatsapp-button";
 import { TrustBar } from "@/components/trust-bar";
 import { PaidSearchQuoteForm } from "@/components/destinations/paid-search-quote-form";
 import type { LatamPaidSearchDestination } from "@/content/latam-paid-search-destinations";
@@ -70,9 +69,6 @@ function ScopeCards({ record }: LatamPaidSearchPageProps) {
 
 export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
   const pageUrl = `${SITE.url}${record.seo.canonicalPath}`;
-  // P1: ref placeholder is stripped; P3 interpolates the real opaque whatsapp_ref.
-  const whatsappText = record.cta.whatsappPrefill.replace(/\s*Ref:\s*\{\{whatsapp_ref\}\}/, "");
-  const whatsappHref = `${CONTACT.whatsappUrl}?text=${encodeURIComponent(whatsappText)}`;
   const trustClaim = `Meridian ha coordinado más de ${formatCount(STATS.projectsCompleted, "es")} exportaciones a más de 40 países.`;
 
   const serviceJsonLd = {
@@ -142,23 +138,13 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
         rightContent={<ScopeCards record={record} />}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button
-            render={
-              <TrackedContactLink
-                href={whatsappHref}
-                type="whatsapp"
-                location={record.tracking.heroWhatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                ariaLabel={record.cta.whatsappLabel}
-              />
-            }
-            size="lg"
+          <PaidSearchWhatsAppButton
+            routeKey={record.routeKey}
+            prefillTemplate={record.cta.whatsappPrefill}
+            location={record.tracking.heroWhatsapp}
+            label={record.cta.whatsappLabel}
             className="h-12 rounded-xl bg-emerald-600 px-6 font-semibold text-white hover:bg-emerald-700"
-          >
-            <MessageCircle className="mr-2 h-4 w-4" />
-            {record.cta.whatsappLabel}
-          </Button>
+          />
           <Button
             render={
               <TrackedCtaLink
@@ -319,23 +305,13 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       </section>
 
       <DarkCta heading={record.cta.heading} description={record.cta.description}>
-        <Button
-          render={
-            <TrackedContactLink
-              href={whatsappHref}
-              type="whatsapp"
-              location={record.tracking.finalWhatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              ariaLabel={record.cta.whatsappLabel}
-            />
-          }
-          size="lg"
+        <PaidSearchWhatsAppButton
+          routeKey={record.routeKey}
+          prefillTemplate={record.cta.whatsappPrefill}
+          location={record.tracking.finalWhatsapp}
+          label={record.cta.whatsappLabel}
           className="h-12 rounded-xl bg-white px-6 font-semibold text-foreground hover:bg-muted"
-        >
-          <MessageCircle className="mr-2 h-4 w-4" />
-          {record.cta.whatsappLabel}
-        </Button>
+        />
         <Button
           render={
             <TrackedCtaLink
