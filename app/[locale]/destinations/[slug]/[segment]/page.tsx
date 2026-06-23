@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: record.seo.title,
     description: record.seo.description,
-    alternates: { canonical },
+    alternates: { canonical, languages: { es: canonical, "x-default": canonical } },
     openGraph: {
       type: "website",
       locale: getOgLocale("es"),

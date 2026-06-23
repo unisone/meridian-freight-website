@@ -167,7 +167,6 @@ export const paidSearchLeadSchema = z
     preferred_contact_method: z.enum(["whatsapp", "email", "phone"]).default("whatsapp"),
     equipment_type: z.string().min(1, "Equipment is required").max(200),
     make_model: z.string().max(200).optional().default(""),
-    year: z.string().max(10).optional().default(""),
     listing_url: z.string().max(500).optional().default(""),
     origin_location: z.string().max(200).optional().default(""),
     destination_location: z.string().max(200).optional().default(""),

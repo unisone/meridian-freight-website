@@ -355,7 +355,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Nacionalización, aranceles, IVA y despacho aduanero en Paraguay quedan a cargo de su despachante."
     ],
     "scopeIncluded": [
-      "Compra asistida y coordinación con vendedor en EE. UU. o Canadá (subasta, concesionario o privado).",
+      "Compra asistida y coordinación con vendedor en EE. UU. o Canadá (subasta, concesionario o privado), bajo un alcance separado.",
       "Retiro en origen, medición, desmontaje y embalaje cuando corresponde, etiquetado y carga.",
       "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA para EE. UU., CFIA para Canadá).",
       "Reserva de flete marítimo hacia el puerto de transbordo y coordinación del tramo logístico."
@@ -400,6 +400,10 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "localResponsibility": "La nacionalización, los aranceles, el IVA, el despacho aduanero, la inspección fitosanitaria en destino y la admisibilidad final son responsabilidad de su despachante o importador en Paraguay; Meridian no las promete ni las ejecuta.",
     "faq": [
       {
+        "question": "¿Meridian vende la maquinaria?",
+        "answer": "No. Meridian es el operador de logística y exportación del lado de EE. UU. y Canadá. Podemos coordinar con su vendedor o brindar compra asistida bajo un alcance separado, pero no somos la concesionaria del equipo."
+      },
+      {
         "question": "¿Puedo importar una unidad con más de 5 años de antigüedad?",
         "answer": "La Ley 7565/2025 contempla una antigüedad máxima de 5 años entre sus disposiciones. Según el texto de la ley, conviene verificarlo con su despachante: la admisibilidad final la determina SENAVE/MIC/DNIT vía su despachante, no la edad. No afirmamos que ese límite ya rija de una forma puntual antes de su reglamentación; ese punto lo confirma su despachante para la unidad concreta."
       },
@@ -433,7 +437,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Nacionalización, aranceles, IVA y despacho aduanero en Paraguay quedan a cargo de su despachante."
     ],
     "scopeIncluded": [
-      "Compra asistida y coordinación con vendedor de la cosechadora en EE. UU. o Canadá.",
+      "Compra asistida y coordinación con vendedor de la cosechadora en EE. UU. o Canadá, bajo un alcance separado.",
       "Retiro en origen, medición, desmontaje de cabezal/draper y embalaje cuando corresponde, etiquetado y carga.",
       "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA para EE. UU., CFIA para Canadá).",
       "Reserva de flete marítimo hacia el puerto de transbordo y coordinación del tramo logístico de la cosechadora y sus accesorios."
@@ -477,6 +481,10 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "complianceBody": "La Ley 7565/2025 establece medidas fitosanitarias y de mitigación de riesgo para la introducción al país de maquinaria, equipos e implementos agrícolas usados, incluidas las cosechadoras. La antigüedad máxima de 5 años es una de sus disposiciones, no el conjunto de la norma: la ley también contempla certificación, limpieza libre de suelo y restos vegetales —crítica en cosechadoras por el cabezal y la tolva—, inspección y una tasa de conservación de la biodiversidad. Según el texto de la ley, verifique cada requisito con su despachante. No afirmamos fechas exactas de promulgación o vigencia ni montos ni fórmulas de esa tasa. En toda mención de los 5 años aplica la misma regla: la admisibilidad final la determina SENAVE/MIC/DNIT vía su despachante, no la edad. DNIT actúa como aduana y tributos, SENAVE como autoridad fitosanitaria y MIC como registro de importadores y licencia previa.",
     "localResponsibility": "La nacionalización, los aranceles, el IVA, el despacho aduanero, la inspección fitosanitaria en destino y la admisibilidad final de la cosechadora son responsabilidad de su despachante o importador en Paraguay; Meridian no las promete ni las ejecuta.",
     "faq": [
+      {
+        "question": "¿Meridian vende la cosechadora?",
+        "answer": "No. Meridian es el operador de logística y exportación del lado de EE. UU. y Canadá. Podemos coordinar con su vendedor o brindar compra asistida bajo un alcance separado, pero no somos la concesionaria del equipo."
+      },
       {
         "question": "¿Puedo importar una cosechadora con más de 5 años de antigüedad?",
         "answer": "La Ley 7565/2025 contempla una antigüedad máxima de 5 años entre sus disposiciones. Según el texto de la ley, conviene verificarlo con su despachante: la admisibilidad final la determina SENAVE/MIC/DNIT vía su despachante, no la edad. No afirmamos que ese límite ya rija de una forma puntual antes de su reglamentación; ese punto lo confirma su despachante para la cosechadora concreta."
@@ -710,6 +718,10 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "localResponsibility": "Meridian coordina el tramo contratado desde origen; la admisibilidad y la nacionalización en Uruguay quedan bajo responsabilidad del importador y su despachante (ADAU).",
     "faq": [
       {
+        "question": "¿Meridian vende la maquinaria?",
+        "answer": "No. Meridian es el operador de logística y exportación del lado de EE. UU. y Canadá. Podemos coordinar con su vendedor o brindar compra asistida bajo un alcance separado, pero no somos la concesionaria del equipo."
+      },
+      {
         "question": "¿Pueden darme el costo final nacionalizado en Uruguay?",
         "answer": "No. Cotizamos el tramo logístico que controlamos (origen, exportación y flete marítimo). La TGA, el IVA y los recargos dependen de la clasificación NCM y los confirma su despachante (ADAU); la TGA del 2% aplica solo a bienes de capital BK/BIT con AEC>0% según el Decreto 426/011, no como tasa universal."
       },
@@ -787,6 +799,10 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "complianceBody": "La DGSA exige (Resolución 98/016, vigente) limpieza de origen, certificado fitosanitario con declaración adicional, tratamiento cuando corresponda e inspección de la DGSA al ingreso; en cosechadoras usadas la limpieza de tolva, sinfines y cabezal es crítica y la aceptación no está garantizada. El origen EE. UU. no tiene preferencias Mercosur. Los tributos dependen de la clasificación NCM: la TGA del 2% corresponde a bienes de capital BK/BIT con AEC>0% según el Decreto 426/011 (no es una tasa universal), más IVA y recargos según el caso. No publicamos un costo nacionalizado ni un arancel final: esos importes los confirma su despachante (ADAU).",
     "localResponsibility": "Meridian coordina el tramo contratado desde origen; la admisibilidad y la nacionalización de la cosechadora en Uruguay quedan bajo responsabilidad del importador y su despachante (ADAU).",
     "faq": [
+      {
+        "question": "¿Meridian vende la cosechadora?",
+        "answer": "No. Meridian es el operador de logística y exportación del lado de EE. UU. y Canadá. Podemos coordinar con su vendedor o brindar compra asistida bajo un alcance separado, pero no somos la concesionaria del equipo."
+      },
       {
         "question": "¿La cosechadora viaja entera o se desmonta el cabezal?",
         "answer": "Según las dimensiones, normalmente se desmonta el cabezal y la máquina viaja en flat rack o como carga de proyecto. Coordinamos la medición y el desmontaje en EE. UU. y lo definimos antes de reservar para cotizar el tramo logístico real."

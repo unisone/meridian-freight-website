@@ -39,7 +39,6 @@ function baseLead(overrides: Record<string, unknown> = {}): PaidSearchLeadData {
     preferred_contact_method: "whatsapp",
     equipment_type: "cosechadora",
     make_model: "JD 9600",
-    year: "2018",
     listing_url: "",
     origin_location: "Des Moines, IA",
     destination_location: "Rosario",

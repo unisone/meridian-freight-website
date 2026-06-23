@@ -144,7 +144,6 @@ export async function submitPaidSearchLead(
     destination_location: data.destination_location || null,
     consent_version: data.consent ? CONSENT_VERSION : null,
     submitted_at: nowIso,
-    year: data.year || null,
     listing_url: data.listing_url || null,
     dimensions: data.dimensions || null,
     weight: data.weight || null,
@@ -207,7 +206,7 @@ export async function submitPaidSearchLead(
             <p><strong>Name:</strong> ${safe(data.contact_name)}</p>
             <p><strong>Email:</strong> ${safe(data.contact_email)}</p>
             <p><strong>Phone:</strong> ${safe(data.contact_phone)}</p>
-            <p><strong>Equipment:</strong> ${safe(data.equipment_type)} ${safe(data.make_model)} ${safe(data.year)}</p>
+            <p><strong>Equipment:</strong> ${safe(data.equipment_type)} ${safe(data.make_model)}</p>
             <p><strong>Route:</strong> ${safe(record.seo.canonicalPath)} (${safe(record.segment.cargoClass)})</p>
             <p><strong>Origin → Destination:</strong> ${safe(data.origin_location)} → ${safe(data.destination_location)}</p>
             <p><strong>Message:</strong><br/>${safe(data.message).replace(/\n/g, "<br/>")}</p>

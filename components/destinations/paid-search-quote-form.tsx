@@ -124,6 +124,13 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
 
     setIsSubmitting(true);
     const attr = attrRef.current;
+    // Persist a prior WhatsApp-click ref (if any) so the WhatsApp→form-submit path correlates.
+    let whatsapp_ref = "";
+    try {
+      whatsapp_ref = sessionStorage.getItem(`ps_ref_${routeKey}`) || "";
+    } catch {
+      /* sessionStorage blocked — no prior WhatsApp ref to correlate */
+    }
     try {
       const result = await submitPaidSearchLead({
         routeKey,
@@ -146,6 +153,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         website: (fd.get("website") as string) || "",
         attribution_id: attr?.attribution_id || "",
         lead_id: attr?.lead_id || "",
+        whatsapp_ref,
         first_touch: attr?.first_touch,
         latest_touch: attr?.latest_touch,
       });
