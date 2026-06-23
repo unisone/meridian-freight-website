@@ -139,6 +139,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         dimensions: (fd.get("dimensions") as string) || "",
         weight: (fd.get("weight") as string) || "",
         purchase_status: (fd.get("purchase_status") as string) || "",
+        buyer_role: (fd.get("buyer_role") as string) || "",
         requested_timing: (fd.get("requested_timing") as string) || "",
         message: (fd.get("message") as string) || "",
         consent: fd.get("consent") === "on",
@@ -259,11 +260,12 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         </div>
       </div>
 
+      <div>
+        <Label htmlFor="make_model">Marca, modelo y año</Label>
+        <Input id="make_model" name="make_model" className="mt-1.5" />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="make_model">Marca, modelo y año</Label>
-          <Input id="make_model" name="make_model" className="mt-1.5" />
-        </div>
         <div>
           <Label htmlFor="purchase_status">Estado de compra</Label>
           <select
@@ -276,6 +278,21 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
             <option value="evaluando">Evaluando opciones</option>
             <option value="reservado">Reservado</option>
             <option value="comprado">Comprado</option>
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="buyer_role">Rol del comprador</Label>
+          <select
+            id="buyer_role"
+            name="buyer_role"
+            defaultValue=""
+            className="mt-1.5 flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
+          >
+            <option value="">Seleccione…</option>
+            <option value="importador_usuario_final">Importador / usuario final</option>
+            <option value="concesionario_revendedor">Concesionario o revendedor</option>
+            <option value="despachante_gestor">Despachante o gestor</option>
+            <option value="otro">Otro</option>
           </select>
         </div>
       </div>
