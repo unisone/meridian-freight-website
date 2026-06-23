@@ -1,0 +1,156 @@
+/**
+ * Paid-search attribution model + pure capture/merge logic (spec §4.2, §6.3, §9.5).
+ *
+ * Closes the gap where gbraid/wbraid + utm_matchtype/network/device were never
+ * captured. Allowlist-only parsing, sanitized + length-capped per spec §9.3.
+ * Route context (country/segment/cargo_class/...) is NEVER parsed from the URL —
+ * it is rederived server-side from the validated routeKey (trust boundary §9.2).
+ */
+
+import type {
+  PaidSearchCargoClass,
+  PaidSearchCountryCode,
+  PaidSearchRequestType,
+  PaidSearchSegmentKey,
+} from "@/content/latam-paid-search-destinations";
+
+export const PAID_ATTRIBUTION_QUERY_KEYS = [
+  "gclid",
+  "gbraid",
+  "wbraid",
+  "fbclid",
+  "msclkid",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "utm_matchtype",
+  "utm_network",
+  "utm_device",
+] as const;
+export type PaidAttributionQueryKey = (typeof PAID_ATTRIBUTION_QUERY_KEYS)[number];
+
+const CLICK_ID_KEYS: readonly string[] = ["gclid", "gbraid", "wbraid", "fbclid", "msclkid"];
+const MAX_CLICK_ID = 256;
+const MAX_UTM = 512;
+const MAX_URL = 2048;
+
+export interface PaidAttributionTouch {
+  capturedAt: string;
+  landingUrl: string;
+  referrer?: string;
+  gclid?: string;
+  gbraid?: string;
+  wbraid?: string;
+  fbclid?: string;
+  msclkid?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  utm_matchtype?: string;
+  utm_network?: string;
+  utm_device?: string;
+}
+
+export interface PaidRouteContext {
+  country: PaidSearchCountryCode;
+  segment: PaidSearchSegmentKey;
+  cargo_class: PaidSearchCargoClass;
+  landing_route: string;
+  request_type: PaidSearchRequestType;
+  router_tag: string;
+}
+
+export interface WhatsAppReferenceResponse {
+  lead_id: string;
+  whatsapp_ref: string;
+  expires_at: string;
+}
+
+/** Strip control chars / null bytes, trim, length-cap. Returns undefined for empty. */
+function sanitize(value: string | null, max: number): string | undefined {
+  if (!value) return undefined;
+  const stripped = value.replace(/[\u0000-\u001f]/g, "").trim();
+  if (!stripped) return undefined;
+  return stripped.slice(0, max);
+}
+
+/** Parse ONLY allowlisted attribution params from a landing URL into a sanitized touch. */
+export function parsePaidTouch(
+  landingUrl: string,
+  referrer?: string,
+  capturedAt?: string,
+): PaidAttributionTouch {
+  let search = "";
+  try {
+    search = new URL(landingUrl).search;
+  } catch {
+    search = "";
+  }
+  const params = new URLSearchParams(search);
+
+  const touch: PaidAttributionTouch = {
+    capturedAt: capturedAt ?? new Date().toISOString(),
+    landingUrl: landingUrl.slice(0, MAX_URL),
+  };
+  const ref = sanitize(referrer ?? null, MAX_URL);
+  if (ref) touch.referrer = ref;
+
+  for (const key of PAID_ATTRIBUTION_QUERY_KEYS) {
+    const max = CLICK_ID_KEYS.includes(key) ? MAX_CLICK_ID : MAX_UTM;
+    const val = sanitize(params.get(key), max);
+    if (val) (touch as unknown as Record<string, string>)[key] = val;
+  }
+  return touch;
+}
+
+/** A touch carries a paid signal if any click id or utm_source is present. */
+export function hasPaidSignal(touch: PaidAttributionTouch): boolean {
+  return Boolean(
+    touch.gclid || touch.gbraid || touch.wbraid || touch.fbclid || touch.utm_source,
+  );
+}
+
+/** Opaque, client-generated attribution id (carries NO click ids; safe for the readable cookie). */
+export function generateAttributionId(): string {
+  const rand =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  return `attr_${rand}`;
+}
+
+/** Full contract payload the lead Server Action emits (spec §6.7). */
+export interface PaidSearchLeadPayload extends PaidRouteContext {
+  schema_version: "paid-search-lead-v1";
+  lead_id: string;
+  idempotency_key: string;
+  attribution_id: string;
+  whatsapp_ref?: string;
+  page_route: string;
+  source_platform: "google_ads";
+  source_account_id: string;
+  google_ads_tag: string;
+  first_touch: PaidAttributionTouch;
+  latest_touch: PaidAttributionTouch;
+  equipment_type: string;
+  make_model: string;
+  year?: string;
+  listing_url?: string;
+  origin_location: string;
+  destination_location: string;
+  dimensions?: string;
+  weight?: string;
+  purchase_status: string;
+  requested_timing?: string;
+  buyer_role?: string;
+  contact_name: string;
+  contact_phone?: string;
+  contact_email?: string;
+  preferred_contact_method: "whatsapp" | "email" | "phone";
+  consent_version: string;
+  submitted_at: string;
+}

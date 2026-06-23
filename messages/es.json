@@ -1,4 +1,7 @@
 {
+  "Layout": {
+    "skipToContent": "Ir al contenido principal"
+  },
   "Common": {
     "getQuote": "Solicitar Cotización Gratis",
     "getFreeQuote": "Cotización Gratis",

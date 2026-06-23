@@ -169,7 +169,7 @@ export const argentinaMarketPage: ArgentinaMarketPageContent = {
       },
       {
         label: "AFIDI y evaluación de importaciones",
-        href: "https://www.argentina.gob.ar/servicio/solicitar-autorizacion-fitosanitaria-de-importacion-afidi-y-evaluacion-de-importaciones",
+        href: "https://www.argentina.gob.ar/servicio/gestionar-la-autorizacion-fitosanitaria-de-importacion-afidi-y-la-evaluacion-de",
       },
       {
         label: "Control SENASA sobre maquinaria usada",

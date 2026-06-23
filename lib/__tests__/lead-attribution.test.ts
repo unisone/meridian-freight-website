@@ -1,0 +1,74 @@
+import { describe, expect, it } from "vitest";
+import {
+  generateAttributionId,
+  hasPaidSignal,
+  parsePaidTouch,
+  PAID_ATTRIBUTION_QUERY_KEYS,
+} from "@/lib/lead-attribution";
+
+const FULL_URL =
+  "https://meridianexport.com/es/destinations/argentina/importacion-maquinaria-usa" +
+  "?gclid=G1&gbraid=GB1&wbraid=WB1&fbclid=FB1&msclkid=MS1" +
+  "&utm_source=google&utm_medium=cpc&utm_campaign=C&utm_term=K&utm_content=A" +
+  "&utm_matchtype=e&utm_network=g&utm_device=m&irrelevant=DROP";
+
+describe("parsePaidTouch", () => {
+  it("captures ALL 13 allowlisted keys incl. gbraid/wbraid/msclkid/utm_matchtype/network/device", () => {
+    const t = parsePaidTouch(FULL_URL, "https://www.google.com/", "2026-06-22T00:00:00Z");
+    for (const k of PAID_ATTRIBUTION_QUERY_KEYS) {
+      expect(t[k], `missing ${k}`).toBeTruthy();
+    }
+    expect(t.gbraid).toBe("GB1");
+    expect(t.wbraid).toBe("WB1");
+    expect(t.utm_matchtype).toBe("e");
+    expect(t.utm_network).toBe("g");
+    expect(t.utm_device).toBe("m");
+    expect(t.referrer).toBe("https://www.google.com/");
+    expect(t.capturedAt).toBe("2026-06-22T00:00:00Z");
+  });
+
+  it("ignores non-allowlisted params (no route-context spoofing via URL)", () => {
+    const t = parsePaidTouch(
+      "https://x.com/?country=CL&segment=heavy&irrelevant=1&gclid=G",
+    ) as unknown as Record<string, unknown>;
+    expect(t.country).toBeUndefined();
+    expect(t.segment).toBeUndefined();
+    expect(t.irrelevant).toBeUndefined();
+    expect(t.gclid).toBe("G");
+  });
+
+  it("strips control characters and caps length", () => {
+    const longUtm = "a".repeat(900);
+    const t = parsePaidTouch(
+      `https://x.com/?utm_campaign=${encodeURIComponent("ab\u0000\u001fcd")}&utm_term=${longUtm}`,
+    );
+    expect(t.utm_campaign).toBe("abcd");
+    expect(t.utm_term?.length).toBe(512);
+  });
+
+  it("handles an invalid URL without throwing", () => {
+    const t = parsePaidTouch("not-a-url");
+    expect(t.landingUrl).toBe("not-a-url");
+    expect(hasPaidSignal(t)).toBe(false);
+  });
+});
+
+describe("hasPaidSignal", () => {
+  it("true when any click id or utm_source present", () => {
+    expect(hasPaidSignal({ capturedAt: "t", landingUrl: "u", gbraid: "x" })).toBe(true);
+    expect(hasPaidSignal({ capturedAt: "t", landingUrl: "u", utm_source: "google" })).toBe(true);
+  });
+  it("false for a bare/direct touch", () => {
+    expect(hasPaidSignal({ capturedAt: "t", landingUrl: "u" })).toBe(false);
+    expect(hasPaidSignal({ capturedAt: "t", landingUrl: "u", utm_medium: "cpc" })).toBe(false);
+  });
+});
+
+describe("generateAttributionId", () => {
+  it("is opaque, prefixed, and unique", () => {
+    const a = generateAttributionId();
+    const b = generateAttributionId();
+    expect(a).toMatch(/^attr_/);
+    expect(a).not.toBe(b);
+  });
+});

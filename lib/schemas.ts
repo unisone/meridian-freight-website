@@ -134,3 +134,88 @@ export const bookingRequestSchema = z.object({
 });
 
 export type BookingRequestData = z.infer<typeof bookingRequestSchema>;
+
+// --- LATAM Paid-Search Lead (Gate B) ---
+// The client sends ONLY routeKey for route context; the server rederives
+// country/segment/cargo_class/landing_route/request_type from the registry
+// (trust boundary, spec §9.2). Click IDs/UTMs ride in first/latest touch.
+
+export const paidSearchTouchSchema = z.object({
+  capturedAt: z.string().max(40).optional(),
+  landingUrl: z.string().max(2048).optional(),
+  referrer: z.string().max(2048).optional(),
+  gclid: z.string().max(256).optional(),
+  gbraid: z.string().max(256).optional(),
+  wbraid: z.string().max(256).optional(),
+  fbclid: z.string().max(256).optional(),
+  msclkid: z.string().max(256).optional(),
+  utm_source: z.string().max(512).optional(),
+  utm_medium: z.string().max(512).optional(),
+  utm_campaign: z.string().max(512).optional(),
+  utm_term: z.string().max(512).optional(),
+  utm_content: z.string().max(512).optional(),
+  utm_matchtype: z.string().max(512).optional(),
+  utm_network: z.string().max(512).optional(),
+  utm_device: z.string().max(512).optional(),
+});
+
+export const paidSearchLeadSchema = z
+  .object({
+    routeKey: z.string().min(3).max(120),
+    contact_name: z.string().min(1, "Name is required").max(200),
+    contact_email: z.string().email("Invalid email address").optional().or(z.literal("")).default(""),
+    contact_phone: z.string().max(50).optional().default(""),
+    preferred_contact_method: z.enum(["whatsapp", "email", "phone"]).default("whatsapp"),
+    equipment_type: z.string().min(1, "Equipment is required").max(200),
+    make_model: z.string().max(200).optional().default(""),
+    listing_url: z.string().max(500).optional().default(""),
+    origin_location: z.string().max(200).optional().default(""),
+    destination_location: z.string().max(200).optional().default(""),
+    dimensions: z.string().max(300).optional().default(""),
+    weight: z.string().max(100).optional().default(""),
+    purchase_status: z.string().max(100).optional().default(""),
+    requested_timing: z.string().max(100).optional().default(""),
+    buyer_role: z.string().max(100).optional().default(""),
+    message: z.string().max(5000).optional().default(""),
+    consent: z.boolean().optional().default(false),
+    // Honeypot
+    website: z.string().max(500).optional().default(""),
+    // Attribution (server re-trusts by attribution_id where available)
+    attribution_id: z.string().max(80).optional().default(""),
+    whatsapp_ref: z.string().max(32).optional().default(""),
+    // Stable dedupe key (from createWhatsAppRef or a per-session id); server
+    // generates one if absent. idempotency_key === lead_id (spec §9.11).
+    lead_id: z.string().max(80).optional().default(""),
+    first_touch: paidSearchTouchSchema.optional(),
+    latest_touch: paidSearchTouchSchema.optional(),
+  })
+  .superRefine((d, ctx) => {
+    if (!d.contact_email && !d.contact_phone) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["contact_email"],
+        message: "Provide an email or a phone/WhatsApp number.",
+      });
+    }
+    // Consent is enforced server-side too, so a direct Server Action call can't
+    // bypass the browser checkbox (spec §9: don't trust the client).
+    if (!d.consent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["consent"],
+        message: "Consent is required.",
+      });
+    }
+  });
+
+export type PaidSearchLeadData = z.infer<typeof paidSearchLeadSchema>;
+export type PaidSearchLeadInput = z.input<typeof paidSearchLeadSchema>;
+
+export const whatsappRefRequestSchema = z.object({
+  routeKey: z.string().min(3).max(120),
+  attribution_id: z.string().max(80).optional().default(""),
+  first_touch: paidSearchTouchSchema.optional(),
+  latest_touch: paidSearchTouchSchema.optional(),
+});
+
+export type WhatsAppRefRequestData = z.infer<typeof whatsappRefRequestSchema>;
