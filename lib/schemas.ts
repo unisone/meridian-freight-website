@@ -148,6 +148,7 @@ export const paidSearchTouchSchema = z.object({
   gbraid: z.string().max(256).optional(),
   wbraid: z.string().max(256).optional(),
   fbclid: z.string().max(256).optional(),
+  msclkid: z.string().max(256).optional(),
   utm_source: z.string().max(512).optional(),
   utm_medium: z.string().max(512).optional(),
   utm_campaign: z.string().max(512).optional(),
@@ -194,6 +195,15 @@ export const paidSearchLeadSchema = z
         code: z.ZodIssueCode.custom,
         path: ["contact_email"],
         message: "Provide an email or a phone/WhatsApp number.",
+      });
+    }
+    // Consent is enforced server-side too, so a direct Server Action call can't
+    // bypass the browser checkbox (spec §9: don't trust the client).
+    if (!d.consent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["consent"],
+        message: "Consent is required.",
       });
     }
   });

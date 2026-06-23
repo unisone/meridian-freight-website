@@ -137,7 +137,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         contact_name: name,
         contact_email: email,
         contact_phone: phone,
-        preferred_contact_method: "whatsapp",
+        preferred_contact_method: phone ? "whatsapp" : "email",
         equipment_type: equipment,
         make_model: (fd.get("make_model") as string) || "",
         listing_url: (fd.get("listing_url") as string) || "",
@@ -181,7 +181,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
 
   if (isSubmitted) {
     return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
+      <div role="status" aria-live="polite" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
         <h3 ref={successRef} tabIndex={-1} className="text-xl font-bold text-foreground outline-none">
           Solicitud recibida
         </h3>
@@ -353,7 +353,10 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
           aria-describedby="ps-form-error"
           className="mt-1 h-4 w-4 rounded border-input"
         />
-        <span>{caveat}</span>
+        <span>
+          Autorizo a Meridian a contactarme y a usar mis datos para responder esta solicitud de cotización.{" "}
+          <span className="text-muted-foreground/80">{caveat}</span>
+        </span>
       </label>
 
       <Button

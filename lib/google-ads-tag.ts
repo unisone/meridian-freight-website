@@ -9,7 +9,11 @@
 
 import { TRACKING } from "@/lib/constants";
 
-export const EXPECTED_GOOGLE_ADS_TAG = "AW-17952470509";
+// Config-driven (env-overridable) with a pinned fallback — never a bare hardcode
+// baked into the guard. QA can override the expected tag without a code change.
+export const EXPECTED_GOOGLE_ADS_TAG = (
+  process.env.NEXT_PUBLIC_EXPECTED_GOOGLE_ADS_TAG ?? "AW-17952470509"
+).trim();
 
 export interface GoogleAdsTagCheck {
   ok: boolean;

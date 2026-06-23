@@ -24,6 +24,11 @@ function escapeHtml(input: string): string {
     .replace(/'/g, "&#039;");
 }
 
+/** Neutralize Slack mrkdwn control chars (<!channel>, <@user>, links) in untrusted text. */
+function escapeSlack(input: string | null | undefined): string {
+  return String(input ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 function newLeadId(): string {
   return typeof crypto !== "undefined" && "randomUUID" in crypto
     ? crypto.randomUUID()
@@ -119,6 +124,11 @@ export async function submitPaidSearchLead(
   const gclid = lt.gclid || ft.gclid || null;
   const gbraid = lt.gbraid || ft.gbraid || null;
   const wbraid = lt.wbraid || ft.wbraid || null;
+  // These pages are indexable, so only label a lead "google_ads" when a paid
+  // signal is actually present; organic/direct leads stay "website".
+  const isPaid = Boolean(
+    gclid || gbraid || wbraid || lt.fbclid || ft.fbclid || lt.msclkid || ft.msclkid || lt.utm_source || ft.utm_source,
+  );
 
   const paid_search_metadata = {
     schema_version: "paid-search-lead-v1",
@@ -131,6 +141,7 @@ export async function submitPaidSearchLead(
     request_type: record.segment.requestType,
     router_tag: ROUTER_TAG,
     fbclid: lt.fbclid || ft.fbclid || null,
+    msclkid: lt.msclkid || ft.msclkid || null,
     utm_matchtype: lt.utm_matchtype || ft.utm_matchtype || null,
     utm_network: lt.utm_network || ft.utm_network || null,
     utm_device: lt.utm_device || ft.utm_device || null,
@@ -170,7 +181,7 @@ export async function submitPaidSearchLead(
     // new flat columns (queryable / dedupe / correlation)
     lead_id,
     idempotency_key: lead_id,
-    source_platform: "google_ads",
+    source_platform: isPaid ? "google_ads" : "website",
     country: record.country.code,
     segment: record.segment.key,
     cargo_class: record.segment.cargoClass,
@@ -234,10 +245,10 @@ export async function submitPaidSearchLead(
   // 9. Background best-effort. Diagnostic events only; NO Google Ads upload (Gate B).
   after(async () => {
     const slackLines = [
-      `*New paid-search lead — ${record.country.name} [${record.segment.key}]:* ${data.contact_name}`,
-      data.contact_email ? `Email: ${data.contact_email}` : null,
-      data.contact_phone ? `Phone: ${data.contact_phone}` : null,
-      `Equipment: ${data.equipment_type} ${data.make_model}`.trim(),
+      `*New paid-search lead — ${record.country.name} [${record.segment.key}]:* ${escapeSlack(data.contact_name)}`,
+      data.contact_email ? `Email: ${escapeSlack(data.contact_email)}` : null,
+      data.contact_phone ? `Phone: ${escapeSlack(data.contact_phone)}` : null,
+      `Equipment: ${escapeSlack(data.equipment_type)} ${escapeSlack(data.make_model)}`.trim(),
       `Route: ${record.seo.canonicalPath}`,
     ]
       .filter(Boolean)
@@ -264,6 +275,32 @@ export async function submitPaidSearchLead(
       country: record.country.code,
       segment: record.segment.key,
     }).catch(() => {});
+
+    // Visitor auto-reply (best-effort, Spanish). Only when an email was provided.
+    if (data.contact_email) {
+      try {
+        await resend.emails.send({
+          from: CONTACT.fromEmail,
+          to: data.contact_email,
+          subject: `Recibimos su solicitud — Meridian (${record.country.name})`,
+          html: `
+            <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto">
+              <div style="background:#0ea5e9;color:white;padding:24px;border-radius:8px 8px 0 0">
+                <h1 style="margin:0;font-size:20px">Gracias por su consulta</h1>
+              </div>
+              <div style="background:#f9fafb;padding:24px;border-radius:0 0 8px 8px;color:#111827">
+                <p>Recibimos su solicitud de cotización para ${safe(data.equipment_type)} con destino a ${safe(record.country.name)}.</p>
+                <p>Revisaremos los datos del equipo y le responderemos con el alcance del tramo internacional (origen, exportación y flete marítimo) dentro de las próximas 24 horas hábiles. La nacionalización y los tributos los confirma su despachante en destino.</p>
+                <p>Si prefiere avanzar ahora, escríbanos por <a href="${CONTACT.whatsappUrl}">WhatsApp</a>.</p>
+                <p style="color:#6b7280;font-size:13px">— Equipo Meridian Freight</p>
+              </div>
+            </div>
+          `,
+        });
+      } catch (e) {
+        log({ level: "warn", msg: "visitor_autoreply_failed", route: "action:paid-search-lead", error: String(e) });
+      }
+    }
   });
 
   timer.done({ lead_id, country: record.country.code, segment: record.segment.key });

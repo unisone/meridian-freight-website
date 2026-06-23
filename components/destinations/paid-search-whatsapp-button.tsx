@@ -42,6 +42,11 @@ export function PaidSearchWhatsAppButton({
 
   async function handleClick() {
     setBusy(true);
+    // Open the tab SYNCHRONOUSLY inside the click gesture so it isn't popup-blocked
+    // (we await a Server Action before the URL is ready). Sever opener for security,
+    // then point it at wa.me once the ref resolves.
+    const win = window.open("about:blank", "_blank");
+    if (win) win.opener = null;
     let ref: string | undefined;
     const cacheKey = `ps_ref_${routeKey}`;
     try {
@@ -77,9 +82,12 @@ export function PaidSearchWhatsAppButton({
       /* analytics best-effort */
     }
     const url = buildWhatsAppUrl(CONTACT.phoneRaw, text);
-    const win = window.open(url, "_blank", "noopener,noreferrer");
-    // Popup blocked → fall back to a same-tab navigation so the chat still opens.
-    if (!win) window.location.href = url;
+    if (win) {
+      win.location.href = url;
+    } else {
+      // Popup blocked → fall back to a same-tab navigation so the chat still opens.
+      window.location.href = url;
+    }
     setBusy(false);
   }
 

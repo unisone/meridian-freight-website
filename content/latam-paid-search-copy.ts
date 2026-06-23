@@ -80,7 +80,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Contacto de tu despachante, si ya lo tenés"
     ],
     "complianceHeading": "Qué cambió en Argentina y qué tenés que validar antes de embarcar",
-    "complianceBody": "El Decreto 273/2025, vigente desde el 17/04/2025, eliminó el CIBU como requisito previo y lo reemplazó por una declaración jurada que tu despachante presenta en el Sistema Informático Malvina (SIM). Esto no eliminó los controles fitosanitarios, ambientales ni de seguridad: según la clasificación, condición y uso, la maquinaria agrícola usada puede requerir la Autorización Fitosanitaria de Importación (AFIDI) de SENASA, que se gestiona por SIGPV-IMPO antes de la transacción. SENASA inspecciona en puerto, por lo que el equipo debe llegar limpio, libre de suelo y restos vegetales. Meridian no gestiona AFIDI, el SIM ni la nacionalización.",
+    "complianceBody": "El Decreto 273/2025, vigente desde el 17/04/2025, eliminó el CIBU como requisito previo y lo reemplazó por una declaración jurada que tu despachante presenta en el Sistema Informático Malvina (SIM). Esto no eliminó los controles fitosanitarios, ambientales ni de seguridad: según la clasificación, condición y uso, la maquinaria agrícola usada normalmente requiere la Autorización Fitosanitaria de Importación (AFIDI) de SENASA, que se gestiona por SIGPV-IMPO antes de la transacción. SENASA inspecciona en puerto, por lo que el equipo debe llegar limpio, libre de suelo y restos vegetales. Meridian no gestiona AFIDI, el SIM ni la nacionalización.",
     "localResponsibility": "Meridian coordina el tramo contratado desde origen; la admisibilidad, la AFIDI y la nacionalización en Argentina quedan bajo responsabilidad de tu importador y su despachante.",
     "faq": [
       {
@@ -158,7 +158,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Contacto de tu despachante, si ya lo tenés"
     ],
     "complianceHeading": "Qué cambió en Argentina y qué tenés que validar antes de embarcar tu cosechadora",
-    "complianceBody": "El Decreto 273/2025, vigente desde el 17/04/2025, eliminó el CIBU como requisito previo y lo reemplazó por una declaración jurada que tu despachante presenta en el Sistema Informático Malvina (SIM). Esto no eliminó los controles fitosanitarios, ambientales ni de seguridad: por tratarse de maquinaria agrícola usada, la cosechadora puede requerir la Autorización Fitosanitaria de Importación (AFIDI) de SENASA, que se gestiona por SIGPV-IMPO antes de la transacción. SENASA inspecciona en puerto, así que la unidad debe llegar limpia, libre de suelo y restos vegetales. Meridian no gestiona AFIDI, el SIM ni la nacionalización.",
+    "complianceBody": "El Decreto 273/2025, vigente desde el 17/04/2025, eliminó el CIBU como requisito previo y lo reemplazó por una declaración jurada que tu despachante presenta en el Sistema Informático Malvina (SIM). Esto no eliminó los controles fitosanitarios, ambientales ni de seguridad: por tratarse de maquinaria agrícola usada, la cosechadora normalmente requiere la Autorización Fitosanitaria de Importación (AFIDI) de SENASA, que se gestiona por SIGPV-IMPO antes de la transacción. SENASA inspecciona en puerto, así que la unidad debe llegar limpia, libre de suelo y restos vegetales. Meridian no gestiona AFIDI, el SIM ni la nacionalización.",
     "localResponsibility": "Meridian coordina el flete de tu cosechadora desde origen; la admisibilidad, la AFIDI y la nacionalización en Argentina quedan bajo responsabilidad de tu importador y su despachante.",
     "faq": [
       {
@@ -167,7 +167,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         "question": "¿La cosechadora necesita AFIDI de SENASA?",
-        "answer": "Puede requerirla. Por ser maquinaria agrícola usada, según la clasificación y el uso puede necesitar la AFIDI, que se gestiona por SIGPV-IMPO antes de la transacción. Confirmá cada caso con tu despachante: Meridian no gestiona la AFIDI."
+        "answer": "Normalmente sí. Por ser maquinaria agrícola usada, la cosechadora suele requerir la AFIDI, que se gestiona por SIGPV-IMPO antes de la transacción. Confirmá tu caso con tu despachante: Meridian no gestiona la AFIDI."
       },
       {
         "question": "¿Pueden darme el costo final puesto en Argentina?",
@@ -236,7 +236,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Datos de su despachante o importador, si ya lo tiene"
     ],
     "complianceHeading": "Qué confirmar en Bolivia antes de comprar o embarcar",
-    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición de la unidad. SENASAG puede aplicar una inspección o autorización fitosanitaria —para maquinaria usada suele ser una verificación de limpieza, no necesariamente un permiso de productos vegetales—; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No dé por sentadas franquicias de IVA ni límites de antigüedad: los incentivos de la Ley 1613/2025 y el tope de 10 años vencieron el 31 de diciembre de 2025, así que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, almacenaje gratuito ni una ruta interior fija: esos puntos los define su despachante con la naviera y el agente de tránsito.",
+    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición de la unidad. SENASAG puede aplicar una inspección o autorización fitosanitaria; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No dé por sentadas franquicias de IVA ni límites de antigüedad: estos pueden cambiar y no asumimos un régimen específico, así que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, almacenaje gratuito ni una ruta interior fija: esos puntos los define su despachante con la naviera y el agente de tránsito.",
     "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU./Canadá; la admisibilidad y la nacionalización en Bolivia quedan bajo responsabilidad del importador y su despachante.",
     "faq": [
       {
@@ -252,8 +252,8 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
         "answer": "Puede aplicar. SENASAG decide según la subpartida, el origen y la condición del equipo; para maquinaria usada suele ser una inspección o verificación de limpieza más que un permiso de productos vegetales. Su despachante lo confirma antes del embarque, y nosotros emitimos el certificado fitosanitario de origen cuando corresponde."
       },
       {
-        "question": "¿Sigue vigente la exoneración de IVA y el límite de 10 años de 2025?",
-        "answer": "No. Los incentivos de la Ley 1613/2025 y el límite de antigüedad de 10 años expiraron el 31 de diciembre de 2025. Para 2026, su importador debe confirmar con la Aduana Nacional el régimen tributario que aplica a su unidad antes de comprar."
+        "question": "¿Hay exoneración de IVA o límite de antigüedad para importar a Bolivia?",
+        "answer": "El régimen de incentivos y los límites de antigüedad pueden cambiar con el tiempo. No dé por sentado ningún beneficio ni restricción: su importador debe confirmar con la Aduana Nacional el régimen tributario y de antigüedad vigente para su unidad antes de comprar."
       },
       {
         "question": "¿A qué puerto llega y cómo continúa hasta Bolivia?",
@@ -318,7 +318,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Datos de su despachante o importador, si ya lo tiene"
     ],
     "complianceHeading": "Qué confirmar en Bolivia antes de embarcar equipo pesado",
-    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición del equipo. SENASAG puede aplicar una inspección o autorización —para equipo pesado usado suele ser una verificación de limpieza, no necesariamente un permiso de productos vegetales—; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No dé por sentadas franquicias de IVA ni límites de antigüedad: los incentivos de la Ley 1613/2025 y el tope de 10 años vencieron el 31 de diciembre de 2025, por lo que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, período de almacenaje gratuito ni una ruta interior fija: la carga sobredimensionada exige que su despachante coordine puerto, agente de tránsito y transporte pesado interior caso por caso.",
+    "complianceBody": "Los requisitos dependen de la subpartida, el origen y la condición del equipo. SENASAG puede aplicar una inspección o autorización; su despachante lo confirma según el caso. La Aduana Nacional y su despachante manejan el registro de importador y la declaración de importación. No dé por sentadas franquicias de IVA ni límites de antigüedad: estos pueden cambiar y no asumimos un régimen específico, por lo que su importador debe confirmar el régimen tributario vigente para 2026. Tampoco prometemos tránsito garantizado por Arica, período de almacenaje gratuito ni una ruta interior fija: la carga sobredimensionada exige que su despachante coordine puerto, agente de tránsito y transporte pesado interior caso por caso.",
     "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU./Canadá; la admisibilidad y la nacionalización del equipo pesado en Bolivia quedan bajo responsabilidad del importador y su despachante.",
     "faq": [
       {
@@ -351,13 +351,13 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "heroBullets": [
       "Tramo en origen completo: compra asistida, retiro en EE. UU./Canadá, embalaje y reserva de flete marítimo.",
       "Certificado fitosanitario de origen (USDA APHIS o CFIA) emitido antes del embarque.",
-      "Filtro inicial bajo la Ley 7565/2025: revisamos antigüedad y estado antes de comprometer fondos.",
+      "Revisión documental preliminar bajo la Ley 7565/2025: revisamos antigüedad y estado antes de comprometer fondos.",
       "Nacionalización, aranceles, IVA y despacho aduanero en Paraguay quedan a cargo de su despachante."
     ],
     "scopeIncluded": [
       "Compra asistida y coordinación con vendedor en EE. UU. o Canadá (subasta, concesionario o privado), bajo un alcance separado.",
       "Retiro en origen, medición, desmontaje y embalaje cuando corresponde, etiquetado y carga.",
-      "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA para EE. UU., CFIA para Canadá).",
+      "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS para EE. UU., CFIA para Canadá).",
       "Reserva de flete marítimo hacia el puerto de transbordo y coordinación del tramo logístico."
     ],
     "scopeExcluded": [
@@ -369,7 +369,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "processIntro": "El orden importa: primero filtramos la unidad por la ley y por su estado, después armamos ruta, alcance y documentación. Así separamos desde el inicio el tramo que Meridian coordina del costo que confirma su despachante en Paraguay.",
     "processSteps": [
       {
-        "title": "Filtro inicial de la unidad",
+        "title": "Revisión preliminar de la unidad",
         "body": "Revisamos año de fabricación, horas, condición visible, vendedor y ubicación frente a la Ley 7565/2025. Si la unidad supera los 5 años o presenta señales que comprometen su ingreso, lo decimos antes de avanzar. La admisibilidad final la determina SENAVE/MIC/DNIT vía su despachante, no la edad."
       },
       {
@@ -421,7 +421,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       }
     ],
     "ctaHeading": "¿Vio una máquina en EE. UU. para Paraguay?",
-    "ctaDescription": "Envíenos el link, el año de fabricación, las horas, la ubicación de retiro y el destino. Confirmamos si pasa el filtro inicial de la Ley 7565/2025 y separamos el tramo que coordina Meridian del costo que confirma su despachante en Paraguay.",
+    "ctaDescription": "Envíenos el link, el año de fabricación, las horas, la ubicación de retiro y el destino. Hacemos una revisión documental preliminar frente a la Ley 7565/2025 —la admisibilidad la confirma su despachante con SENAVE/MIC/DNIT— y separamos el tramo que coordina Meridian del costo que confirma su despachante en Paraguay.",
     "whatsappPrefill": "#FRT_ES Importación de maquinaria de EE. UU. a Paraguay. Equipo: [marca/modelo/año]. Retiro en: [ciudad/estado]. Destino: [ciudad de Paraguay]. Quiero cotizar el tramo de origen. Ref: {{whatsapp_ref}}"
   },
   "paraguay/flete-cosechadoras-usa": {
@@ -433,13 +433,13 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "heroBullets": [
       "Tramo en origen completo para cosechadoras: retiro, desmontaje de cabezal, embalaje y reserva de flete marítimo.",
       "Certificado fitosanitario de origen (USDA APHIS o CFIA) emitido antes del embarque, con limpieza libre de suelo y restos vegetales.",
-      "Filtro inicial bajo la Ley 7565/2025: revisamos antigüedad y estado de la cosechadora antes de comprometer fondos.",
+      "Revisión documental preliminar bajo la Ley 7565/2025: revisamos antigüedad y estado de la cosechadora antes de comprometer fondos.",
       "Nacionalización, aranceles, IVA y despacho aduanero en Paraguay quedan a cargo de su despachante."
     ],
     "scopeIncluded": [
       "Compra asistida y coordinación con vendedor de la cosechadora en EE. UU. o Canadá, bajo un alcance separado.",
       "Retiro en origen, medición, desmontaje de cabezal/draper y embalaje cuando corresponde, etiquetado y carga.",
-      "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA para EE. UU., CFIA para Canadá).",
+      "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS para EE. UU., CFIA para Canadá).",
       "Reserva de flete marítimo hacia el puerto de transbordo y coordinación del tramo logístico de la cosechadora y sus accesorios."
     ],
     "scopeExcluded": [
@@ -451,7 +451,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "processIntro": "El orden importa, sobre todo en cosechadoras: primero filtramos la unidad por la ley y por su estado, después resolvemos cabezal, dimensiones, embalaje, ruta y documentación. Así separamos desde el inicio el tramo que Meridian coordina del costo que confirma su despachante en Paraguay.",
     "processSteps": [
       {
-        "title": "Filtro inicial de la cosechadora",
+        "title": "Revisión preliminar de la cosechadora",
         "body": "Revisamos año de fabricación, horas, estado del cabezal y la plataforma, vendedor y ubicación frente a la Ley 7565/2025. Si la unidad supera los 5 años o presenta señales que comprometen su ingreso, lo decimos antes de avanzar. La admisibilidad final la determina SENAVE/MIC/DNIT vía su despachante, no la edad."
       },
       {
@@ -503,7 +503,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       }
     ],
     "ctaHeading": "¿Vio una cosechadora en EE. UU. para Paraguay?",
-    "ctaDescription": "Envíenos el link, el año de fabricación, las horas, el tipo de cabezal, la ubicación de retiro y el destino. Confirmamos si pasa el filtro inicial de la Ley 7565/2025 y separamos el tramo que coordina Meridian del costo que confirma su despachante en Paraguay.",
+    "ctaDescription": "Envíenos el link, el año de fabricación, las horas, el tipo de cabezal, la ubicación de retiro y el destino. Hacemos una revisión documental preliminar frente a la Ley 7565/2025 —la admisibilidad la confirma su despachante con SENAVE/MIC/DNIT— y separamos el tramo que coordina Meridian del costo que confirma su despachante en Paraguay.",
     "whatsappPrefill": "#FRT_ES Flete de cosechadora de EE. UU. a Paraguay. Equipo: [marca/modelo/año]. Retiro en: [ciudad/estado]. Destino: [ciudad de Paraguay]. Quiero cotizar el tramo de origen. Ref: {{whatsapp_ref}}"
   },
   "chile/importacion-maquinaria-usa": {
@@ -714,7 +714,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Datos de su despachante (ADAU), si ya lo tiene"
     ],
     "complianceHeading": "Requisitos fitosanitarios y tributos en Uruguay antes de embarcar",
-    "complianceBody": "La DGSA exige (Resolución 98/016, vigente) limpieza de origen, certificado fitosanitario con declaración adicional, tratamiento cuando corresponda e inspección de la DGSA al ingreso; la aceptación no está garantizada. El origen EE. UU. no tiene preferencias Mercosur. Los tributos dependen de la clasificación NCM: la TGA del 2% corresponde a bienes de capital BK/BIT con AEC>0% según el Decreto 426/011 (no es una tasa universal), más IVA y recargos según el caso. No publicamos un costo nacionalizado ni un arancel final: esos importes los confirma su despachante (ADAU).",
+    "complianceBody": "La DGSA exige (Resolución 98/016, vigente) limpieza de origen, certificado fitosanitario con declaración adicional, tratamiento cuando corresponda e inspección de la DGSA al ingreso; la aceptación no está garantizada. El origen EE. UU. no tiene preferencias Mercosur. Los tributos dependen de la clasificación NCM: la TGA aplica según la clasificación (por ejemplo, a bienes de capital BK/BIT) y no es una tasa universal, más IVA y recargos según el caso. No publicamos un costo nacionalizado ni un arancel final: esos importes los confirma su despachante (ADAU).",
     "localResponsibility": "Meridian coordina el tramo contratado desde origen; la admisibilidad y la nacionalización en Uruguay quedan bajo responsabilidad del importador y su despachante (ADAU).",
     "faq": [
       {
@@ -723,7 +723,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         "question": "¿Pueden darme el costo final nacionalizado en Uruguay?",
-        "answer": "No. Cotizamos el tramo logístico que controlamos (origen, exportación y flete marítimo). La TGA, el IVA y los recargos dependen de la clasificación NCM y los confirma su despachante (ADAU); la TGA del 2% aplica solo a bienes de capital BK/BIT con AEC>0% según el Decreto 426/011, no como tasa universal."
+        "answer": "No. Cotizamos el tramo logístico que controlamos (origen, exportación y flete marítimo). La TGA, el IVA y los recargos dependen de la clasificación NCM y los confirma su despachante (ADAU); la TGA no es universal: aplica según la clasificación NCM (por ejemplo, a bienes de capital BK/BIT) y su despachante (ADAU) confirma la tasa vigente."
       },
       {
         "question": "¿Garantizan que la maquinaria será admitida en Uruguay?",
@@ -796,7 +796,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       "Datos de su despachante (ADAU), si ya lo tiene"
     ],
     "complianceHeading": "Requisitos fitosanitarios y tributos en Uruguay antes de embarcar",
-    "complianceBody": "La DGSA exige (Resolución 98/016, vigente) limpieza de origen, certificado fitosanitario con declaración adicional, tratamiento cuando corresponda e inspección de la DGSA al ingreso; en cosechadoras usadas la limpieza de tolva, sinfines y cabezal es crítica y la aceptación no está garantizada. El origen EE. UU. no tiene preferencias Mercosur. Los tributos dependen de la clasificación NCM: la TGA del 2% corresponde a bienes de capital BK/BIT con AEC>0% según el Decreto 426/011 (no es una tasa universal), más IVA y recargos según el caso. No publicamos un costo nacionalizado ni un arancel final: esos importes los confirma su despachante (ADAU).",
+    "complianceBody": "La DGSA exige (Resolución 98/016, vigente) limpieza de origen, certificado fitosanitario con declaración adicional, tratamiento cuando corresponda e inspección de la DGSA al ingreso; en cosechadoras usadas la limpieza de tolva, sinfines y cabezal es crítica y la aceptación no está garantizada. El origen EE. UU. no tiene preferencias Mercosur. Los tributos dependen de la clasificación NCM: la TGA aplica según la clasificación (por ejemplo, a bienes de capital BK/BIT) y no es una tasa universal, más IVA y recargos según el caso. No publicamos un costo nacionalizado ni un arancel final: esos importes los confirma su despachante (ADAU).",
     "localResponsibility": "Meridian coordina el tramo contratado desde origen; la admisibilidad y la nacionalización de la cosechadora en Uruguay quedan bajo responsabilidad del importador y su despachante (ADAU).",
     "faq": [
       {
@@ -813,7 +813,7 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         "question": "¿Pueden darme el costo final nacionalizado de la cosechadora?",
-        "answer": "No. Cotizamos el tramo logístico que controlamos. La TGA, el IVA y los recargos dependen de la clasificación NCM y los confirma su despachante (ADAU); la TGA del 2% aplica solo a bienes de capital BK/BIT con AEC>0% según el Decreto 426/011, no como tasa universal. El origen EE. UU. no tiene preferencias Mercosur."
+        "answer": "No. Cotizamos el tramo logístico que controlamos. La TGA, el IVA y los recargos dependen de la clasificación NCM y los confirma su despachante (ADAU); la TGA no es universal: aplica según la clasificación NCM (por ejemplo, a bienes de capital BK/BIT) y su despachante (ADAU) confirma la tasa vigente. El origen EE. UU. no tiene preferencias Mercosur."
       },
       {
         "question": "¿A qué puerto llega la cosechadora?",
