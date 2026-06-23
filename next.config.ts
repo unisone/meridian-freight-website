@@ -49,6 +49,7 @@ const connectSrc = [
   "https://*.supabase.co",
   "https://cdn.jsdelivr.net",
   "https://googleads.g.doubleclick.net",
+  "https://ad.doubleclick.net",
   "https://www.googleadservices.com",
   "https://www.google.com",
   "https://google.com",
