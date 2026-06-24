@@ -31,7 +31,7 @@ describe("createWhatsAppRef", () => {
   });
 
   it("rejects an invalid country/segment combo (registry-validated)", async () => {
-    const r = await createWhatsAppRef({ routeKey: "argentina/flete-equipo-pesado-usa" });
+    const r = await createWhatsAppRef({ routeKey: "argentina/flete-equipo-pesado-usa", attribution_id: "" });
     expect(r.success).toBe(false);
   });
 });
