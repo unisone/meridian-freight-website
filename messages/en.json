@@ -912,6 +912,7 @@
     "pendingRequests": "{count, plural, one {# other request pending} other {# other requests pending}}",
     "cbmAvailable": "{cbm} CBM",
     "availablePercent": "available ({percent}% free)",
+    "capacityBooked": "{percent} booked",
     "cbmTotal": "{cbm} CBM total"
   },
   "PartnersStrip": {

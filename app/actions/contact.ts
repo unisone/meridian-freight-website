@@ -65,7 +65,7 @@ const AUTO_REPLY_BODY: Record<string, (name: string, message: string) => string>
   `,
   es: (name, message) => `
     <p>Hola ${name},</p>
-    <p>Gracias por comunicarse con ${COMPANY.name}. Hemos recibido su mensaje y le responderemos dentro de las proximas <strong>24 horas</strong>.</p>
+    <p>Gracias por comunicarse con ${COMPANY.name}. Hemos recibido su mensaje y le responderemos dentro de las próximas <strong>24 horas</strong>.</p>
     <p style="margin-top:16px;color:#374151"><strong>Su mensaje:</strong><br/>${message}</p>
     <p style="margin-top:20px;color:#6b7280;font-size:13px">Si necesita agregar algo, simplemente responda a este correo.</p>
   `,

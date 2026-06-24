@@ -912,6 +912,7 @@
     "pendingRequests": "{count, plural, one {# другая заявка в обработке} few {# другие заявки в обработке} other {# других заявок в обработке}}",
     "cbmAvailable": "{cbm} куб.м",
     "availablePercent": "доступно ({percent}% свободно)",
+    "capacityBooked": "{percent} занято",
     "cbmTotal": "{cbm} куб.м всего"
   },
   "PartnersStrip": {
