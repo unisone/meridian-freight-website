@@ -24,6 +24,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ContactForm } from "@/components/contact-form";
 import { DarkCta } from "@/components/dark-cta";
 import { LatamRouteDiagram } from "@/components/destinations/latam-route-diagram";
 import { JsonLdScript } from "@/components/json-ld-script";
@@ -50,6 +51,16 @@ const EQUIPMENT_ICON_BY_HREF: Record<string, LucideIcon> = {
 };
 
 const CREDIBILITY_PILLAR_ICONS: LucideIcon[] = [Network, Scale, ReceiptText];
+
+// Organic-traffic quote-capture section. WhatsApp stays the primary CTA (hero + final
+// DarkCta); this is a secondary form for visitors who prefer email over WhatsApp.
+// Spanish-only by design — these pages only ever render at locale "es".
+const QUOTE_SECTION = {
+  eyebrow: "Cotización sin compromiso",
+  titlePrefix: "Solicite su cotización a",
+  intro:
+    "¿Prefiere recibir su cotización por correo? Cuéntenos qué equipo necesita, dónde está y a dónde va. Le respondemos en 24 horas con un desglose detallado — sin cargos ocultos.",
+};
 
 function SectionIntro({
   eyebrow,
@@ -598,6 +609,21 @@ export function LatamMarketPage({ content }: LatamMarketPageProps) {
                 </AccordionItem>
               ))}
             </Accordion>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionIntro
+            eyebrow={QUOTE_SECTION.eyebrow}
+            title={`${QUOTE_SECTION.titlePrefix} ${content.country}`}
+            intro={QUOTE_SECTION.intro}
+          />
+          <ScrollReveal className="mt-10 max-w-2xl">
+            <div className="rounded-2xl border bg-muted/50 p-6 sm:p-8">
+              <ContactForm />
+            </div>
           </ScrollReveal>
         </div>
       </section>
