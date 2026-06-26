@@ -27,9 +27,12 @@ const geistSans = Geist({
   subsets: ["latin", "cyrillic", "latin-ext"],
 });
 
+// Mono is used only for figures/tabular data (never above-the-fold), so we skip
+// preloading it — its 3 subset preloads were competing with the LCP hero image.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin", "cyrillic", "latin-ext"],
+  preload: false,
 });
 
 export const viewport: Viewport = {
