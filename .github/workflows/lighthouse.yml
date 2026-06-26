@@ -33,9 +33,31 @@ jobs:
           max_timeout: 120
           check_interval: 10
 
+      # Both Vercel projects for this repo (meridian-freight-export and
+      # meridian-freight-website) have Vercel Authentication enabled on previews,
+      # so the SSO login wall itself returns 200 and wait-for-vercel-preview
+      # reports "success". Detect that case here so we skip the audit cleanly
+      # instead of measuring the vercel.com/login page and failing the budget on
+      # every PR. To run Lighthouse against protected previews instead of
+      # skipping, configure Vercel "Protection Bypass for Automation" and wire
+      # the bypass header here.
+      - name: Check preview is reachable (not behind Vercel Authentication)
+        id: reachable
+        if: steps.vercel.outcome == 'success'
+        env:
+          PREVIEW_URL: ${{ steps.vercel.outputs.url }}
+        run: |
+          final=$(curl -s -m 20 -L -o /dev/null -w '%{url_effective}' "${PREVIEW_URL}/")
+          if printf '%s' "$final" | grep -qiE '://vercel\.com/'; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Preview ${PREVIEW_URL} is behind Vercel Authentication (redirects to ${final}); skipping Lighthouse audit."
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
       # Run Lighthouse on key pages
       - name: Lighthouse audit
-        if: steps.vercel.outcome == 'success'
+        if: steps.vercel.outcome == 'success' && steps.reachable.outputs.ok == 'true'
         uses: treosh/lighthouse-ci-action@v12
         id: lhci
         with:
@@ -50,7 +72,7 @@ jobs:
 
       # Post results as PR comment
       - name: Post results
-        if: always() && github.event_name == 'pull_request' && steps.vercel.outcome == 'success'
+        if: always() && github.event_name == 'pull_request' && steps.reachable.outputs.ok == 'true'
         uses: actions/github-script@v9
         with:
           script: |
@@ -138,7 +160,7 @@ jobs:
             }
 
       - name: Post protected preview note
-        if: always() && github.event_name == 'pull_request' && steps.vercel.outcome != 'success'
+        if: always() && github.event_name == 'pull_request' && (steps.vercel.outcome != 'success' || steps.reachable.outputs.ok != 'true')
         uses: actions/github-script@v9
         with:
           script: |
