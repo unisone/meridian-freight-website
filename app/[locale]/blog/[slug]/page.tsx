@@ -537,6 +537,21 @@ export default async function BlogPostPage({
                 {importGuide.buyerPacket.secondaryLabel}
               </TrackedContactLink>
             )}
+            {/* ES-only contextual link from the indexed guide to its country "money"
+                page — the 2nd inbound link that helps flip it discovered→crawled
+                (SEO audit A2 §3b). Money pages are ES-only; derived from country. */}
+            {isImportGuide && importGuide && locale === "es" && (
+              <p className="mt-4 text-sm text-white/80">
+                Vea el{" "}
+                <Link
+                  href={`/destinations/${importGuide.country}/importacion-maquinaria-usa`}
+                  className="font-semibold text-white underline underline-offset-4 hover:text-white/90"
+                >
+                  servicio de importación de maquinaria a {importGuide.countryLabel}
+                </Link>
+                : el proceso completo de importación de principio a fin.
+              </p>
+            )}
           </DarkCta>
         </ScrollReveal>
       </div>
