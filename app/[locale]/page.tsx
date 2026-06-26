@@ -9,9 +9,9 @@ import { PartnersStrip } from "@/components/partners-strip";
 import { ServicesGrid } from "@/components/services-grid";
 import { ProcessSteps } from "@/components/process-steps";
 import { ProjectGrid } from "@/components/project-grid";
-import { VideoSection } from "@/components/video-section";
+import { VideoSectionLazy } from "@/components/video-section-lazy";
 import { FaqAccordion } from "@/components/faq-accordion";
-import { ContactForm } from "@/components/contact-form";
+import { ContactFormLazy } from "@/components/contact-form-lazy";
 import { ContactInfo } from "@/components/contact-info";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
@@ -167,7 +167,7 @@ export default async function HomePage({
       </ScrollReveal>
 
       <ScrollReveal>
-        <VideoSection />
+        <VideoSectionLazy />
       </ScrollReveal>
 
       <ScrollReveal>
@@ -194,7 +194,7 @@ export default async function HomePage({
                 <h3 className="mb-6 text-2xl font-bold text-foreground">
                   {t("requestYourQuote")}
                 </h3>
-                <ContactForm />
+                <ContactFormLazy />
               </div>
               <ContactInfo />
             </div>
