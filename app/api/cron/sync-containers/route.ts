@@ -1,7 +1,7 @@
 /**
  * Cron job: Sync shared shipping containers from Google Sheet.
  * Runs every 15 minutes — upserts container listings into Supabase
- * and revalidates the /shared-shipping page on success.
+ * and revalidates the /schedule page on success.
  *
  * Protected by CRON_SECRET header verification (Vercel auto-sends this).
  */

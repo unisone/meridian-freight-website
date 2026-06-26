@@ -145,6 +145,21 @@ const nextConfig: NextConfig = {
         destination: "/:locale/pricing/calculator",
         permanent: true,
       },
+      // Legacy /shared-shipping → unified /schedule page (308 permanent).
+      // The page-level permanentRedirect() did NOT fire because the route was
+      // statically prerendered as a 200 HTML shell at build time; a config
+      // redirect runs before routing and reliably emits a 308, consolidating
+      // SEO link equity onto the canonical /schedule URL.
+      {
+        source: "/shared-shipping",
+        destination: "/schedule",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|ru)/shared-shipping",
+        destination: "/:locale/schedule",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {
