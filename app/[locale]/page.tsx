@@ -8,6 +8,7 @@ import { TrustBar } from "@/components/trust-bar";
 import { PartnersStrip } from "@/components/partners-strip";
 import { ServicesGrid } from "@/components/services-grid";
 import { ProcessSteps } from "@/components/process-steps";
+import { ImportByCountry } from "@/components/import-by-country";
 import { ProjectGrid } from "@/components/project-grid";
 import { VideoSectionLazy } from "@/components/video-section-lazy";
 import { FaqAccordion } from "@/components/faq-accordion";
@@ -121,6 +122,10 @@ export default async function HomePage({
 
       {/* ProcessSteps handles its own scroll-linked animation internally */}
       <ProcessSteps />
+
+      {/* ES-only: contextual in-body links from the indexed /es hub down to the
+          country import "money" pages (SEO audit A2 §3a — indexation lever). */}
+      {locale === "es" && <ImportByCountry />}
 
       {/* Mid-page CTA */}
       <ScrollReveal variant="fade">
