@@ -5,123 +5,171 @@ import { getAllEquipmentTypes } from "@/content/equipment";
 import { getAllDestinations } from "@/content/destinations";
 import { LATAM_PAID_SEARCH_DESTINATIONS } from "@/content/latam-paid-search-destinations";
 import { blogPosts } from "@/content/blog";
-import { isLatamMarketSlug, latamMarketPages } from "@/content/latam-market-pages";
+import {
+  isLatamMarketSlug,
+  latamMarketPages,
+  getLatamMarketPage,
+} from "@/content/latam-market-pages";
 import { getBlogLocalePolicy } from "@/lib/blog-locale-policy";
 
-type LocaleAlternate = "en" | "es" | "ru";
+type Locale = "en" | "es" | "ru";
 
-/** Generate hreflang alternates for a given path */
-function withAlternates(path: string, locales: LocaleAlternate[] = ["en", "es", "ru"]) {
-  const languages: Record<LocaleAlternate, string> = {
-    en: `${SITE.url}${path}`,
-    es: `${SITE.url}/es${path}`,
-    ru: `${SITE.url}/ru${path}`,
-  };
+/** locale URL prefix under `localePrefix: "as-needed"` (default `en` is unprefixed). */
+const PREFIX: Record<Locale, string> = { en: "", es: "/es", ru: "/ru" };
 
-  return {
-    languages: Object.fromEntries(
-      locales.map((locale) => [locale, languages[locale]]),
-    ) as Partial<Record<LocaleAlternate, string>>,
-  };
+/** Pages whose content models carry no date field exist in all three locales. */
+const TRILOCALE: Locale[] = ["en", "es", "ru"];
+
+/**
+ * Hand-maintained content date for pages whose content models carry no real
+ * date field (static pages, services, equipment, generic destinations, the
+ * Argentina hub). Replaces build-time `new Date()` so `lastmod` no longer
+ * churns on every deploy — Google distrusts a `lastmod` that changes with no
+ * content change. Bump this when that content materially changes.
+ */
+const STATIC_CONTENT_LASTMOD = new Date("2026-06-25");
+
+/** Absolute URL for a locale + locale-neutral path (`""` = home). */
+const abs = (locale: Locale, path: string) => `${SITE.url}${PREFIX[locale]}${path}`;
+
+/**
+ * Emit one reciprocal `<loc>` entry per locale for a single logical page.
+ *
+ * `path` is ALWAYS locale-neutral (no `/es` or `/ru` prefix; `""` for home).
+ * Every emitted entry shares ONE `languages` cluster — the full set of emitted
+ * locales plus `x-default` — which guarantees hreflang reciprocity (each URL in
+ * a language group lists the whole group, including itself, per Google's
+ * sitemap-hreflang contract).
+ *
+ * `locales` must list only the locales that return 200 directly AND are
+ * index-eligible for this page (so we never advertise a redirecting, 404, or
+ * robots-noindex variant).
+ */
+function localeGroup(opts: {
+  path: string;
+  locales: Locale[];
+  xDefault: Locale;
+  lastModified: Date;
+}): MetadataRoute.Sitemap {
+  const { path, locales, xDefault, lastModified } = opts;
+  const languages: Record<string, string> = Object.fromEntries(
+    locales.map((locale) => [locale, abs(locale, path)]),
+  );
+  languages["x-default"] = abs(xDefault, path);
+  return locales.map((locale) => ({
+    url: abs(locale, path),
+    lastModified,
+    alternates: { languages },
+  }));
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: SITE.url, lastModified: now, changeFrequency: "weekly", priority: 1.0, alternates: withAlternates("") },
-    { url: `${SITE.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8, alternates: withAlternates("/about") },
-    { url: `${SITE.url}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.9, alternates: withAlternates("/services") },
-    { url: `${SITE.url}/projects`, lastModified: now, changeFrequency: "monthly", priority: 0.8, alternates: withAlternates("/projects") },
-    { url: `${SITE.url}/destinations`, lastModified: now, changeFrequency: "monthly", priority: 0.8, alternates: withAlternates("/destinations") },
-    { url: `${SITE.url}/pricing`, lastModified: now, changeFrequency: "monthly", priority: 0.9, alternates: withAlternates("/pricing") },
-    { url: `${SITE.url}/pricing/calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.9, alternates: withAlternates("/pricing/calculator") },
-    { url: `${SITE.url}/schedule`, lastModified: now, changeFrequency: "daily", priority: 0.9, alternates: withAlternates("/schedule") },
-    { url: `${SITE.url}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.8, alternates: withAlternates("/faq") },
-    { url: `${SITE.url}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.8, alternates: withAlternates("/contact") },
-    { url: `${SITE.url}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8, alternates: withAlternates("/blog") },
-    { url: `${SITE.url}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3, alternates: withAlternates("/privacy") },
-    { url: `${SITE.url}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3, alternates: withAlternates("/terms") },
-    {
-      url: `${SITE.url}/es/destinations/argentina`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.85,
-      alternates: {
-        languages: {
-          es: `${SITE.url}/es/destinations/argentina`,
-        },
-      },
-    },
+  // ── Static pages (same content translated across all three locales) ──────────
+  const staticPaths = [
+    "", // home
+    "/about",
+    "/services",
+    "/equipment",
+    "/projects",
+    "/destinations",
+    "/pricing",
+    "/pricing/calculator",
+    "/schedule",
+    "/faq",
+    "/contact",
+    "/blog",
+    "/privacy",
+    "/terms",
   ];
+  const staticPages: MetadataRoute.Sitemap = staticPaths.flatMap((path) =>
+    localeGroup({ path, locales: TRILOCALE, xDefault: "en", lastModified: STATIC_CONTENT_LASTMOD }),
+  );
 
-  const servicePages: MetadataRoute.Sitemap = getAllServices('en').map((s) => ({
-    url: `${SITE.url}/services/${s.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-    alternates: withAlternates(`/services/${s.slug}`),
-  }));
+  // Argentina is a Spanish-only buyer hub (EN/RU 308 → ES); no EN/RU loc exists.
+  const argentinaHub: MetadataRoute.Sitemap = localeGroup({
+    path: "/destinations/argentina",
+    locales: ["es"],
+    xDefault: "es",
+    lastModified: STATIC_CONTENT_LASTMOD,
+  });
 
-  const equipmentPages: MetadataRoute.Sitemap = getAllEquipmentTypes('en').map((e) => ({
-    url: `${SITE.url}/equipment/${e.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-    alternates: withAlternates(`/equipment/${e.slug}`),
-  }));
+  // ── Services / equipment (same content translated) ───────────────────────────
+  const servicePages: MetadataRoute.Sitemap = getAllServices("en").flatMap((s) =>
+    localeGroup({
+      path: `/services/${s.slug}`,
+      locales: TRILOCALE,
+      xDefault: "en",
+      lastModified: STATIC_CONTENT_LASTMOD,
+    }),
+  );
 
-  const destinationPages: MetadataRoute.Sitemap = getAllDestinations('en').map((d) => ({
-    url: `${SITE.url}/destinations/${d.slug}`,
-    lastModified: now,
-    changeFrequency: d.slug === "kazakhstan" ? "weekly" as const : "monthly" as const,
-    priority: d.slug === "kazakhstan" ? 0.85 : 0.7,
-    alternates: withAlternates(
-      `/destinations/${d.slug}`,
-      isLatamMarketSlug(d.slug) ? ["en", "ru"] : ["en", "es", "ru"],
-    ),
-  }));
+  const equipmentPages: MetadataRoute.Sitemap = getAllEquipmentTypes("en").flatMap((e) =>
+    localeGroup({
+      path: `/equipment/${e.slug}`,
+      locales: TRILOCALE,
+      xDefault: "en",
+      lastModified: STATIC_CONTENT_LASTMOD,
+    }),
+  );
 
-  const latamMarketSitemapPages: MetadataRoute.Sitemap = latamMarketPages.map((page) => ({
-    url: `${SITE.url}${page.path}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.85,
-    alternates: {
-      languages: {
-        es: `${SITE.url}${page.path}`,
-      },
+  // ── Generic destination fact-sheets ─────────────────────────────────────────
+  // LATAM market slugs deliberately OMIT `es`: for those, `/es/destinations/{slug}`
+  // is a DISTINCT Spanish buyer hub (the latamMarketSitemapPages entry below), not
+  // a translation of this generic logistics page — so the two must NOT cross-link.
+  const destinationPages: MetadataRoute.Sitemap = getAllDestinations("en").flatMap((d) =>
+    localeGroup({
+      path: `/destinations/${d.slug}`,
+      locales: isLatamMarketSlug(d.slug) ? ["en", "ru"] : TRILOCALE,
+      xDefault: "en",
+      lastModified: STATIC_CONTENT_LASTMOD,
+    }),
+  );
+
+  // ── Spanish buyer hubs (distinct ES-only pages, real content dates) ──────────
+  // Derive the path from `slug`, NOT `page.path` (already `/es`-prefixed → would
+  // double-prefix to `/es/es/...`).
+  const latamMarketSitemapPages: MetadataRoute.Sitemap = latamMarketPages.flatMap((page) =>
+    localeGroup({
+      path: `/destinations/${page.slug}`,
+      locales: ["es"],
+      xDefault: "es",
+      lastModified: new Date(page.schema.dateModified),
+    }),
+  );
+
+  // ── es-only paid-search destination LPs (canonical, indexable) ───────────────
+  // `canonicalPath` is already `/es`-prefixed → strip it to the locale-neutral
+  // path. Borrow the parent market hub's real date when the country is a market
+  // slug (bolivia/paraguay/chile/uruguay); Argentina has none → static date.
+  const paidSearchSitemapPages: MetadataRoute.Sitemap = LATAM_PAID_SEARCH_DESTINATIONS.flatMap(
+    (d) => {
+      const path = d.seo.canonicalPath.replace(/^\/es/, "");
+      const marketPage = isLatamMarketSlug(d.country.slug)
+        ? getLatamMarketPage(d.country.slug)
+        : undefined;
+      const lastModified = marketPage
+        ? new Date(marketPage.schema.dateModified)
+        : STATIC_CONTENT_LASTMOD;
+      return localeGroup({ path, locales: ["es"], xDefault: "es", lastModified });
     },
-  }));
+  );
 
-  // es-only paid-search destination LPs (canonical to production, indexable).
-  const paidSearchSitemapPages: MetadataRoute.Sitemap = LATAM_PAID_SEARCH_DESTINATIONS.map((d) => ({
-    url: `${SITE.url}${d.seo.canonicalPath}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.85,
-    alternates: { languages: { es: `${SITE.url}${d.seo.canonicalPath}` } },
-  }));
-
+  // ── Blog posts (per-post indexability policy) ────────────────────────────────
+  // `indexableLocales` excludes the robots-noindex RU LATAM import-guides, so we
+  // never sitemap a noindex page. `xDefault` comes from the post's policy.
   const blogPages: MetadataRoute.Sitemap = blogPosts.flatMap((p) => {
     const policy = getBlogLocalePolicy(p.slug);
-    const indexable = policy.indexableLocales;
-    const alternateLocales = policy.alternateLocales as LocaleAlternate[];
-    const lastModified = new Date(p.updatedAt ?? p.publishedAt);
-    return indexable.map((locale) => {
-      const localePath = locale === "en" ? "" : `/${locale}`;
-      return {
-        url: `${SITE.url}${localePath}/blog/${p.slug}`,
-        lastModified,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-        alternates: withAlternates(`/blog/${p.slug}`, alternateLocales),
-      };
+    return localeGroup({
+      path: `/blog/${p.slug}`,
+      locales: policy.indexableLocales as Locale[],
+      xDefault: policy.xDefaultLocale,
+      lastModified: new Date(p.updatedAt ?? p.publishedAt),
     });
   });
 
   return [
     ...staticPages,
+    ...argentinaHub,
     ...servicePages,
     ...equipmentPages,
     ...destinationPages,
