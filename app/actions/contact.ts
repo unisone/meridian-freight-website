@@ -52,7 +52,9 @@ export type ContactActionResult = {
 
 const AUTO_REPLY_SUBJECTS: Record<string, string> = {
   en: `We received your message — ${COMPANY.name}`,
-  es: `Hemos recibido su mensaje — ${COMPANY.name}`,
+  // F1 Welcome + Handoff (AMH email-lifecycle-plan 2026-06-30): stronger subject
+  es: `Recibimos su consulta — ${COMPANY.name}`,
+  pt: `Recebemos sua consulta — ${COMPANY.name}`,
   ru: `Мы получили ваше сообщение — ${COMPANY.name}`,
 };
 
@@ -63,11 +65,40 @@ const AUTO_REPLY_BODY: Record<string, (name: string, message: string) => string>
     <p style="margin-top:16px;color:#374151"><strong>Your message:</strong><br/>${message}</p>
     <p style="margin-top:20px;color:#6b7280;font-size:13px">If you need to add anything, just reply to this email.</p>
   `,
-  es: (name, message) => `
+  // F1 Welcome + Handoff — ES (AMH email-lifecycle-plan 2026-06-30 §Flow 1)
+  // Mentions Alexey Rybnikov, 24h SLA, WhatsApp CTA, import-service positioning
+  es: (name, _message) => `
     <p>Hola ${name},</p>
-    <p>Gracias por comunicarse con ${COMPANY.name}. Hemos recibido su mensaje y le responderemos dentro de las próximas <strong>24 horas</strong>.</p>
-    <p style="margin-top:16px;color:#374151"><strong>Su mensaje:</strong><br/>${message}</p>
-    <p style="margin-top:20px;color:#6b7280;font-size:13px">Si necesita agregar algo, simplemente responda a este correo.</p>
+    <p>Recibimos su consulta. Alexey Rybnikov, nuestro director de exportaciones, revisará su caso y le escribirá en las próximas <strong>24 horas</strong>.</p>
+    <p>Si prefiere una respuesta más rápida, escríbanos directamente por WhatsApp:<br/>
+      <a href="https://wa.me/13105696777" style="color:#0F1E2E;font-weight:bold">Escribir por WhatsApp →</a>
+    </p>
+    <p style="margin-top:16px"><strong>¿Qué hacemos?</strong><br/>
+      Gestionamos la exportación completa de maquinaria pesada desde EE.UU. y Canadá hacia América Latina:
+      flete terrestre, empaque, despacho de aduana, flete marítimo y entrega en destino.
+      Un solo equipo, una sola factura.
+    </p>
+    <p style="margin-top:20px;color:#6b7280;font-size:13px">
+      Meridian Freight<br/>
+      <a href="mailto:contact@meridianexport.com" style="color:#6b7280">contact@meridianexport.com</a>
+    </p>
+  `,
+  // F1 Welcome + Handoff — PT-BR (for future pt locale support)
+  pt: (name, _message) => `
+    <p>Olá ${name},</p>
+    <p>Recebemos sua consulta. Alexey Rybnikov, nosso diretor de exportações, analisará seu caso e entrará em contato nas próximas <strong>24 horas</strong>.</p>
+    <p>Se preferir uma resposta mais rápida, fale conosco diretamente pelo WhatsApp:<br/>
+      <a href="https://wa.me/13105696777" style="color:#0F1E2E;font-weight:bold">Escrever pelo WhatsApp →</a>
+    </p>
+    <p style="margin-top:16px"><strong>O que fazemos?</strong><br/>
+      Gerenciamos a exportação completa de maquinário pesado dos EUA e do Canadá para a América Latina:
+      frete terrestre, embalagem, desembaraço aduaneiro, frete marítimo e entrega no destino.
+      Uma equipe, uma fatura.
+    </p>
+    <p style="margin-top:20px;color:#6b7280;font-size:13px">
+      Meridian Freight<br/>
+      <a href="mailto:contact@meridianexport.com" style="color:#6b7280">contact@meridianexport.com</a>
+    </p>
   `,
   ru: (name, message) => `
     <p>Здравствуйте, ${name},</p>
