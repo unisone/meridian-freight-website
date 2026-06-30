@@ -2,10 +2,13 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 
 /**
- * ES-ONLY homepage block. Links the indexed `/es` homepage DOWN to the 5 country
+ * ES-ONLY homepage block. Links the indexed `/es` homepage DOWN to all 7 country
  * "money" pages (the full import-process pages), so Google crawls them — the #1
  * indexation lever from the SEO audit (see
- * mf-claude-ads/campaigns/seo-organic/A2-internal-link-architecture.md §3a).
+ * mf-claude-ads/campaigns/seo-organic/A2-internal-link-architecture.md §3a, and the
+ * 2026-06-30 per-country plan: AR/CL/PE/VE money pages were "unknown to Google" — PE/VE
+ * had no inbound internal link at all). Also links UP to the import pillar, which was an
+ * orphan (zero inbound links) and likewise "unknown to Google".
  *
  * These pages exist only in Spanish, and the SEO spec bars cross-language in-body
  * links, so this renders only when `locale === "es"` (gated in app/[locale]/page.tsx).
@@ -19,7 +22,12 @@ const IMPORT_PAGES = [
   { href: "/destinations/uruguay/importacion-maquinaria-usa", anchor: "importar maquinaria agrícola a Uruguay" },
   { href: "/destinations/bolivia/importacion-maquinaria-usa", anchor: "importación de maquinaria pesada a Bolivia" },
   { href: "/destinations/chile/importacion-maquinaria-usa", anchor: "importar maquinaria agrícola a Chile" },
+  { href: "/destinations/peru/importacion-maquinaria-usa", anchor: "importar maquinaria pesada a Perú" },
+  { href: "/destinations/venezuela/importacion-maquinaria-usa", anchor: "importación de maquinaria a Venezuela" },
 ];
+
+/** The generic import authority pillar — was an orphan (no inbound links), so link it here. */
+const PILLAR_HREF = "/blog/importar-maquinaria-agricola-usa";
 
 export function ImportByCountry() {
   return (
@@ -54,6 +62,16 @@ export function ImportByCountry() {
           </li>
         ))}
       </ul>
+      <p className="mt-6 max-w-2xl text-muted-foreground">
+        ¿Es tu primera importación? Lee la{" "}
+        <Link
+          href={PILLAR_HREF}
+          className="font-medium text-primary hover:underline"
+        >
+          guía completa de importación de maquinaria agrícola desde EE.UU.
+        </Link>{" "}
+        para entender el proceso paso a paso.
+      </p>
     </section>
   );
 }

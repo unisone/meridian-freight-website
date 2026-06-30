@@ -36,7 +36,14 @@ import { renderMarkdown } from "@/lib/markdown";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export function generateStaticParams() {
-  return getAllBlogPosts("en").map((p) => ({ slug: p.slug }));
+  // Union of slugs across all locales so es-only / ru-only posts (e.g. the ES import
+  // pillar `importar-maquinaria-agricola-usa`, no EN counterpart) are prerendered, not
+  // left to on-demand rendering. Missing locale×slug combos `notFound()` as before.
+  const slugs = new Set<string>();
+  for (const locale of ["en", "es", "ru"]) {
+    for (const p of getAllBlogPosts(locale)) slugs.add(p.slug);
+  }
+  return [...slugs].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

@@ -240,7 +240,7 @@ Cada país latinoamericano tiene su propio régimen aduanero, requisitos fitosan
 - [Importar maquinaria agrícola de EE.UU. a Bolivia](/blog/import-farm-machinery-united-states-bolivia) — SENASAG, ASPB, rutas terrestres desde puertos de Arica e Ilo.
 - [Importar maquinaria agrícola de EE.UU. a Chile](/blog/import-farm-machinery-united-states-chile) — SAG, internación en Chile, puertos de Arica, San Antonio o Valparaíso.
 
-Si tu destino es Brasil, Perú o Venezuela, [contáctanos directamente](/contact) — tenemos experiencia en estos mercados y coordinamos la documentación según el régimen de cada país.
+Si tu destino es [Perú](/destinations/peru/importacion-maquinaria-usa) o [Venezuela](/destinations/venezuela/importacion-maquinaria-usa), revisa la página de importación de maquinaria de cada país. Para Brasil u otros destinos, [contáctanos directamente](/contact) — tenemos experiencia en estos mercados y coordinamos la documentación según el régimen de cada país.
 
 ## Maquinaria que importamos
 
