@@ -1,8 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import {
+  Component,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useSyncExternalStore,
+} from "react";
 import dynamic from "next/dynamic";
 import { MeshPhongMaterial, Color } from "three";
+import { Globe as GlobeIcon } from "lucide-react";
 
 const GlobeGL = dynamic(() => import("react-globe.gl"), { ssr: false });
 
@@ -121,6 +130,75 @@ const MARKER_SECONDARY = "rgba(0, 200, 200, 0.5)";
 const MARKER_SUBTLE = "rgba(100, 120, 140, 0.4)";
 const LABEL_COLOR = "rgba(255, 255, 255, 0.7)";
 
+// ─── WebGL resilience ───────────────────────────────────────────────────────
+
+/** True when the browser can create a WebGL context. Returns false in headless
+ *  crawlers, WebGL-disabled browsers, and some bots — the environments where the
+ *  globe would otherwise throw and take the whole /destinations route down. */
+function webglSupported(): boolean {
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+    );
+  } catch {
+    return false;
+  }
+}
+
+// `useSyncExternalStore` reads WebGL support without setState-in-effect and without
+// a hydration mismatch. SSR/hydration assume support (so WebGL users get the globe
+// with no fallback flash); clients without it re-render to the fallback after mount.
+let webglCache: boolean | undefined;
+const subscribeWebgl = () => () => {};
+function getWebglClientSnapshot(): boolean {
+  if (webglCache === undefined) webglCache = webglSupported();
+  return webglCache;
+}
+function getWebglServerSnapshot(): boolean {
+  return true;
+}
+
+/** Static, on-brand stand-in shown when the WebGL globe can't render. Fills the
+ *  same container (absolute inset) so there is no layout shift. */
+function GlobeFallback() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 text-primary">
+        <GlobeIcon className="h-8 w-8" />
+      </div>
+      <div>
+        <p className="text-lg font-bold text-white">Worldwide machinery export</p>
+        <p className="mt-1 text-sm text-slate-300">
+          40+ countries &middot; 6 continents &middot; 8 featured ocean routes from the USA &amp; Canada
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** Contains any render/runtime failure from the WebGL globe (e.g. WebGL context
+ *  creation throwing) to this widget, rendering the fallback instead of letting
+ *  the exception bubble to the page-level error boundary and blank the route. */
+class GlobeErrorBoundary extends Component<
+  { fallback: ReactNode; children: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: unknown) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("DestinationsGlobe: WebGL globe failed, showing fallback.", error);
+    }
+  }
+  render() {
+    return this.state.hasError ? this.props.fallback : this.props.children;
+  }
+}
+
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export function DestinationsGlobe({ className = "" }: { className?: string }) {
@@ -132,6 +210,12 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
   const [countries, setCountries] = useState<{ features: GeoFeature[] }>({
     features: [],
   });
+  // WebGL availability (false in headless crawlers / WebGL-disabled clients).
+  const webglOk = useSyncExternalStore(
+    subscribeWebgl,
+    getWebglClientSnapshot,
+    getWebglServerSnapshot,
+  );
 
   // Responsive sizing
   useEffect(() => {
@@ -268,9 +352,14 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
     <div
       ref={containerRef}
       className={`relative overflow-hidden rounded-2xl bg-black ${className}`}
+      style={{ minHeight: globeHeight }}
       role="img"
       aria-label="Interactive map showing worldwide shipping destinations"
     >
+      {webglOk === false ? (
+        <GlobeFallback />
+      ) : (
+        <GlobeErrorBoundary fallback={<GlobeFallback />}>
       <GlobeGL
         ref={globeRef}
         onGlobeReady={() => setGlobeReady(true)}
@@ -317,9 +406,11 @@ export function DestinationsGlobe({ className = "" }: { className?: string }) {
         enablePointerInteraction={true}
         animateIn={true}
       />
+        </GlobeErrorBoundary>
+      )}
 
-      {/* Loading skeleton — visible until globe renders */}
-      {!globeReady && (
+      {/* Loading skeleton — visible while the globe loads (hidden for the fallback) */}
+      {webglOk !== false && !globeReady && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="h-24 w-24 rounded-full border-2 border-muted border-t-primary animate-spin" />
         </div>
