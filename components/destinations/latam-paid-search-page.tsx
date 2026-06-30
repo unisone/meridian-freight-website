@@ -18,7 +18,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { PaidSearchWhatsAppButton } from "@/components/destinations/paid-search-whatsapp-button";
 import { TrustBar } from "@/components/trust-bar";
-import { PaidSearchQuoteForm } from "@/components/destinations/paid-search-quote-form";
+import { PaidSearchQuoteFormLazy } from "@/components/destinations/paid-search-quote-form-lazy";
 import type { LatamPaidSearchDestination } from "@/content/latam-paid-search-destinations";
 import { COMPANY, CONTACT, SITE, STATS } from "@/lib/constants";
 import { formatCount } from "@/lib/i18n-utils";
@@ -242,7 +242,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
               <p className="mt-2 mb-6 text-sm leading-relaxed text-muted-foreground">
                 Comparta el equipo y el destino; le devolvemos por escrito el alcance del tramo internacional.
               </p>
-              <PaidSearchQuoteForm routeKey={record.routeKey} caveat={record.compliance.localResponsibility} />
+              <PaidSearchQuoteFormLazy routeKey={record.routeKey} caveat={record.compliance.localResponsibility} />
             </div>
           </div>
         </div>
