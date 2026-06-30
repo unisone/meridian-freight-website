@@ -37,8 +37,12 @@ export function MetaPixel() {
 
   return (
     <>
-      {/* Load pixel with consent revoked by default (cookieless mode) */}
-      <Script id="meta-pixel" strategy="afterInteractive">
+      {/* Load pixel with consent revoked by default (cookieless mode).
+          lazyOnload keeps fbevents.js off the LCP/TBT critical path — the snippet
+          (and its async fbevents.js fetch) runs at browser idle after `load`, so it
+          no longer competes with the hero paint. PageView still fires; consent
+          upgrades and Lead events run on later user interaction. */}
+      <Script id="meta-pixel" strategy="lazyOnload">
         {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

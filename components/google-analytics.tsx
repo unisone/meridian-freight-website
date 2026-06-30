@@ -42,8 +42,12 @@ export function GoogleAnalytics() {
 
   return (
     <>
-      {/* Consent Mode v2 defaults — MUST run before gtag config */}
-      <Script id="gtag-consent-default" strategy="afterInteractive">
+      {/* Consent Mode v2 defaults — MUST run before gtag config.
+          lazyOnload defers GA off the LCP/TBT critical path (runs at browser
+          idle, after `load`). Ordering is preserved: next/script runs same-strategy
+          scripts in DOM order, and gtag.js replays window.dataLayer in array order,
+          so this consent 'default' is always queued before the gtag-init 'config'. */}
+      <Script id="gtag-consent-default" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -67,11 +71,11 @@ export function GoogleAnalytics() {
       {/* Load gtag.js */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
 
       {/* Initialize GA4 + optional Google Ads + content grouping */}
-      <Script id="gtag-init" strategy="afterInteractive">
+      <Script id="gtag-init" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           if (!window.gtag) { function gtag(){dataLayer.push(arguments);} window.gtag = gtag; }
