@@ -4,7 +4,7 @@ import { getAllServices } from "@/content/services";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { getAllDestinations } from "@/content/destinations";
 import { LATAM_PAID_SEARCH_DESTINATIONS } from "@/content/latam-paid-search-destinations";
-import { blogPosts } from "@/content/blog";
+import { getAllBlogPosts } from "@/content/blog";
 import {
   isLatamMarketSlug,
   latamMarketPages,
@@ -157,7 +157,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // ── Blog posts (per-post indexability policy) ────────────────────────────────
   // `indexableLocales` excludes the robots-noindex RU LATAM import-guides, so we
   // never sitemap a noindex page. `xDefault` comes from the post's policy.
-  const blogPages: MetadataRoute.Sitemap = blogPosts.flatMap((p) => {
+  // Union of all per-locale post lists, deduped by slug, so es-only / ru-only posts
+  // are not silently excluded. Before this, blog URLs were sourced from the EN list
+  // only, which dropped the ES-only import pillar `importar-maquinaria-agricola-usa`
+  // (no EN counterpart) from the sitemap entirely — a root cause of it being "unknown
+  // to Google". Per-post `indexableLocales` policy still decides which locale URLs emit.
+  const allBlogPosts = [
+    ...getAllBlogPosts("en"),
+    ...getAllBlogPosts("es"),
+    ...getAllBlogPosts("ru"),
+  ];
+  const seenBlogSlugs = new Set<string>();
+  const blogPages: MetadataRoute.Sitemap = allBlogPosts.flatMap((p) => {
+    if (seenBlogSlugs.has(p.slug)) return [];
+    seenBlogSlugs.add(p.slug);
     const policy = getBlogLocalePolicy(p.slug);
     return localeGroup({
       path: `/blog/${p.slug}`,

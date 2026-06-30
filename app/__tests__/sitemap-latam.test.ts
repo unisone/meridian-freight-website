@@ -36,4 +36,17 @@ describe("LATAM market sitemap entries", () => {
       expect(ruEntry?.alternates?.languages).toEqual(genericCluster);
     }
   });
+
+  // Regression: the ES-only import pillar (no EN counterpart) was excluded from the
+  // sitemap because blog URLs were sourced from the EN list only — a root cause of it
+  // being "unknown to Google". The sitemap now unions all per-locale post lists.
+  it("includes the es-only import pillar with a self-referential es/x-default cluster", () => {
+    const entries = sitemap();
+    const url = `${SITE.url}/es/blog/importar-maquinaria-agricola-usa`;
+    const entry = entries.find((e) => e.url === url);
+    expect(entry).toBeDefined();
+    expect(entry?.alternates?.languages).toEqual({ es: url, "x-default": url });
+    // and it must NOT advertise a non-existent EN/RU counterpart
+    expect(entries.some((e) => e.url === `${SITE.url}/blog/importar-maquinaria-agricola-usa`)).toBe(false);
+  });
 });
