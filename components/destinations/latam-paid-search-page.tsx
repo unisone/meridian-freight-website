@@ -24,6 +24,25 @@ import { COMPANY, CONTACT, SITE, STATS } from "@/lib/constants";
 import { formatCount } from "@/lib/i18n-utils";
 import { encodeJsonLd } from "@/lib/json-ld";
 
+/**
+ * Local customs-broker term by country dialect. The Southern Cone says
+ * "despachante"; Chile and Peru say "agente de aduana" (never "despachante");
+ * Venezuela says "agente aduanal". Keeps the shared template's destination-side
+ * labels dialect-correct per market.
+ */
+const BROKER_TERM_BY_CODE: Record<string, string> = {
+  AR: "despachante",
+  BO: "despachante",
+  PY: "despachante",
+  UY: "despachante",
+  CL: "agente de aduana",
+  PE: "agente de aduana",
+  VE: "agente aduanal",
+};
+function brokerTerm(record: LatamPaidSearchDestination): string {
+  return BROKER_TERM_BY_CODE[record.country.code] ?? "despachante";
+}
+
 interface LatamPaidSearchPageProps {
   record: LatamPaidSearchDestination;
 }
@@ -55,7 +74,7 @@ function ScopeCards({ record }: LatamPaidSearchPageProps) {
         </ul>
       </div>
       <div className="mt-4 rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">Su despachante confirma en destino</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">Su {brokerTerm(record)} confirma en destino</p>
         <ul className="mt-3 space-y-2">
           {record.scopeExcluded.map((item) => (
             <li key={item} className="flex gap-2 text-sm leading-relaxed text-sky-100">
@@ -188,7 +207,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Scope included / excluded */}
       <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Alcance" title="Qué incluye y qué no la cotización" intro="Separamos el tramo internacional que controlamos de los costos y trámites locales que confirma su despachante." />
+          <SectionIntro eyebrow="Alcance" title="Qué incluye y qué no la cotización" intro={`Separamos el tramo internacional que controlamos de los costos y trámites locales que confirma su ${brokerTerm(record)}.`} />
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-6">
@@ -207,7 +226,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
             <Card className="border-0 shadow-sm">
               <CardContent className="p-6">
                 <AlertTriangle className="h-8 w-8 text-amber-600" />
-                <h3 className="mt-4 text-lg font-bold text-foreground">Su despachante confirma en destino</h3>
+                <h3 className="mt-4 text-lg font-bold text-foreground">Su {brokerTerm(record)} confirma en destino</h3>
                 <ul className="mt-4 space-y-3">
                   {record.scopeExcluded.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
@@ -293,7 +312,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Official sources */}
       <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Fuentes oficiales" title="Fuentes oficiales para validar su operación" intro="Los requisitos pueden cambiar y dependen de la clasificación, condición y uso del equipo. Confirme su caso con su importador o despachante antes de comprar o embarcar." />
+          <SectionIntro eyebrow="Fuentes oficiales" title="Fuentes oficiales para validar su operación" intro={`Los requisitos pueden cambiar y dependen de la clasificación, condición y uso del equipo. Confirme su caso con su importador o ${brokerTerm(record)} antes de comprar o embarcar.`} />
           <div className="mt-10 grid gap-3 sm:grid-cols-2">
             {record.officialSources.map((source) => (
               <a
