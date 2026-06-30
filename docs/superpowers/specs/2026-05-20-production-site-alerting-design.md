@@ -36,7 +36,7 @@ Use a dedicated external uptime provider such as Better Stack, Checkly, Pingdom,
 Monitor these routes:
 
 - `/api/health`
-- `/es/blog/paraguay-import-guide`
+- `/es/blog/import-farm-machinery-united-states-paraguay`
 - `/es/destinations/argentina`
 - `/pricing/calculator`
 - `/schedule`
