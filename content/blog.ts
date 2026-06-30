@@ -909,3 +909,16 @@ export function getRecentPosts(limit = 5, locale: string = "en"): BlogPost[] {
 export function getAllBlogPosts(locale: string = "en"): BlogPost[] {
   return getPostsForLocale(locale);
 }
+
+/**
+ * Locale-qualified static params for the blog `[slug]` route: each post paired ONLY
+ * with the locales it actually exists in (drawn from the per-locale lists, which already
+ * include the LATAM import guides). Used with `dynamicParams = false` so any other blog
+ * URL — unknown slug, or a real slug in a locale with no translation (e.g. the es-only
+ * import pillar requested at /en/...) — returns a true 404 instead of a 200 soft-404.
+ */
+export function getBlogStaticParams(): { locale: string; slug: string }[] {
+  return Object.keys(blogPostsByLocale).flatMap((locale) =>
+    getAllBlogPosts(locale).map((p) => ({ locale, slug: p.slug })),
+  );
+}
