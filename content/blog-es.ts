@@ -237,7 +237,7 @@ Cada país latinoamericano tiene su propio régimen aduanero, requisitos fitosan
 - [Importar maquinaria agrícola de EE.UU. a Argentina](/blog/import-farm-machinery-united-states-argentina) — AFIDI, SENASA, Sistema Informático Malvina, despachante argentino y tributos de importación.
 - [Importar maquinaria agrícola de EE.UU. a Paraguay](/blog/import-farm-machinery-united-states-paraguay) — Ley 7565/2025, DNIT, SENAVE, rutas por hidrovía Paraguay-Paraná.
 - [Importar maquinaria agrícola de EE.UU. a Uruguay](/blog/import-farm-machinery-united-states-uruguay) — Resolución 98/016, MGAP, DIGESTA, puerto de Montevideo.
-- [Importar maquinaria agrícola de EE.UU. a Bolivia](/blog/import-farm-machinery-united-states-bolivia) — SENASAG, ODEPA, rutas terrestres desde puertos de Arica e Ilo.
+- [Importar maquinaria agrícola de EE.UU. a Bolivia](/blog/import-farm-machinery-united-states-bolivia) — SENASAG, ASPB, rutas terrestres desde puertos de Arica e Ilo.
 - [Importar maquinaria agrícola de EE.UU. a Chile](/blog/import-farm-machinery-united-states-chile) — SAG, internación en Chile, puertos de Arica, San Antonio o Valparaíso.
 
 Si tu destino es Brasil, Perú o Venezuela, [contáctanos directamente](/contact) — tenemos experiencia en estos mercados y coordinamos la documentación según el régimen de cada país.

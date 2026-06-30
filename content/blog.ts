@@ -251,7 +251,7 @@ Each Latin American country has its own customs regime, phytosanitary requiremen
 - [Import Farm Machinery from the USA to Argentina](/blog/import-farm-machinery-united-states-argentina) — AFIDI, SENASA, Sistema Informático Malvina, Argentine customs broker, and import taxes.
 - [Import Farm Machinery from the USA to Paraguay](/blog/import-farm-machinery-united-states-paraguay) — Ley 7565/2025, DNIT, SENAVE, routes via the Paraguay-Paraná waterway.
 - [Import Farm Machinery from the USA to Uruguay](/blog/import-farm-machinery-united-states-uruguay) — Resolution 98/016, MGAP, DIGESTA, Port of Montevideo.
-- [Import Farm Machinery from the USA to Bolivia](/blog/import-farm-machinery-united-states-bolivia) — SENASAG, ODEPA, overland routes from the ports of Arica and Ilo.
+- [Import Farm Machinery from the USA to Bolivia](/blog/import-farm-machinery-united-states-bolivia) — SENASAG, ASPB, overland routes from the ports of Arica and Ilo.
 - [Import Farm Machinery from the USA to Chile](/blog/import-farm-machinery-united-states-chile) — SAG, customs clearance in Chile, ports of Arica, San Antonio, or Valparaíso.
 
 If your destination is Brazil, Peru, or Venezuela, [contact us directly](/contact) — we have experience in these markets and coordinate documentation according to each country's regime.
