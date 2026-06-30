@@ -71,7 +71,7 @@ const AUTO_REPLY_BODY: Record<string, (name: string, message: string) => string>
     <p>Hola ${name},</p>
     <p>Recibimos su consulta. Alexey Rybnikov, nuestro director de exportaciones, revisará su caso y le escribirá en las próximas <strong>24 horas</strong>.</p>
     <p>Si prefiere una respuesta más rápida, escríbanos directamente por WhatsApp:<br/>
-      <a href="https://wa.me/13105696777" style="color:#0F1E2E;font-weight:bold">Escribir por WhatsApp →</a>
+      <a href="https://wa.me/16415161616" style="color:#0F1E2E;font-weight:bold">Escribir por WhatsApp →</a>
     </p>
     <p style="margin-top:16px"><strong>¿Qué hacemos?</strong><br/>
       Gestionamos la exportación completa de maquinaria pesada desde EE.UU. y Canadá hacia América Latina:
@@ -88,7 +88,7 @@ const AUTO_REPLY_BODY: Record<string, (name: string, message: string) => string>
     <p>Olá ${name},</p>
     <p>Recebemos sua consulta. Alexey Rybnikov, nosso diretor de exportações, analisará seu caso e entrará em contato nas próximas <strong>24 horas</strong>.</p>
     <p>Se preferir uma resposta mais rápida, fale conosco diretamente pelo WhatsApp:<br/>
-      <a href="https://wa.me/13105696777" style="color:#0F1E2E;font-weight:bold">Escrever pelo WhatsApp →</a>
+      <a href="https://wa.me/16415161616" style="color:#0F1E2E;font-weight:bold">Escrever pelo WhatsApp →</a>
     </p>
     <p style="margin-top:16px"><strong>O que fazemos?</strong><br/>
       Gerenciamos a exportação completa de maquinário pesado dos EUA e do Canadá para a América Latina:
