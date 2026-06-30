@@ -24,7 +24,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { DarkCta } from "@/components/dark-cta";
 import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
-import { getAllBlogPosts, getBlogPostBySlug } from "@/content/blog";
+import { getBlogPostBySlug, getBlogStaticParams } from "@/content/blog";
 import {
   buildWhatsappUrl,
   getImportGuideEnhancement,
@@ -35,15 +35,14 @@ import { getOgLocale, toBCP47 } from "@/lib/i18n-utils";
 import { renderMarkdown } from "@/lib/markdown";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
+// Only the (locale, slug) pairs that actually exist may render; any other blog URL —
+// an unknown slug, or a real slug requested in a locale it has no translation for
+// (e.g. /en/blog/importar-maquinaria-agricola-usa, an es-only pillar) — returns a true
+// 404 instead of a 200 soft-404. Mirrors the destinations route (which sets the same).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  // Union of slugs across all locales so es-only / ru-only posts (e.g. the ES import
-  // pillar `importar-maquinaria-agricola-usa`, no EN counterpart) are prerendered, not
-  // left to on-demand rendering. Missing locale×slug combos `notFound()` as before.
-  const slugs = new Set<string>();
-  for (const locale of ["en", "es", "ru"]) {
-    for (const p of getAllBlogPosts(locale)) slugs.add(p.slug);
-  }
-  return [...slugs].map((slug) => ({ slug }));
+  return getBlogStaticParams();
 }
 
 export async function generateMetadata({
