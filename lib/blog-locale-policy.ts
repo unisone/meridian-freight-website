@@ -7,6 +7,11 @@
  * generated for site parity but not indexable for these guides, because
  * Meridian does not currently have a Russian-speaking LATAM buyer flow.
  *
+ * The import-authority pillar pages have separate ES and EN slugs (Spanish-
+ * first for the ES version, English slug for the EN counterpart). Each is
+ * registered here with a single-locale policy to avoid generating hreflang
+ * alternates that point to non-existent cross-locale pages.
+ *
  * All other blog posts retain the default tri-locale indexable policy with
  * English as the x-default.
  */
@@ -32,9 +37,32 @@ const DEFAULT_BLOG_POLICY: BlogLocalePolicy = {
   xDefaultLocale: "en",
 };
 
+/**
+ * Import-authority pillar pages. Each slug is a standalone locale version
+ * (ES slug ≠ EN slug), so alternateLocales is limited to the slug's own
+ * locale — no cross-locale hreflang is emitted for non-existent counterparts.
+ */
+const IMPORT_PILLAR_POLICIES: Record<string, BlogLocalePolicy> = {
+  // Spanish-primary generic hub: /es/blog/importar-maquinaria-agricola-usa
+  "importar-maquinaria-agricola-usa": {
+    indexableLocales: ["es"],
+    alternateLocales: ["es"],
+    xDefaultLocale: "es",
+  },
+  // English counterpart hub: /blog/import-farm-machinery-from-usa
+  "import-farm-machinery-from-usa": {
+    indexableLocales: ["en"],
+    alternateLocales: ["en"],
+    xDefaultLocale: "en",
+  },
+};
+
 export function getBlogLocalePolicy(slug: string): BlogLocalePolicy {
   if (isLatamImportGuideSlug(slug)) {
     return LATAM_IMPORT_GUIDE_POLICY;
+  }
+  if (Object.prototype.hasOwnProperty.call(IMPORT_PILLAR_POLICIES, slug)) {
+    return IMPORT_PILLAR_POLICIES[slug];
   }
   return DEFAULT_BLOG_POLICY;
 }

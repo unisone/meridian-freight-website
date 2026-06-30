@@ -163,6 +163,123 @@ También puede revisar nuestra [guía para compradores de Paraguay](/es/destinat
   },
   ...latamImportGuidesEs,
   {
+    slug: "importar-maquinaria-agricola-usa",
+    title: "Cómo importar maquinaria agrícola usada desde EE.UU. a Latinoamérica",
+    metaTitle:
+      "Importar maquinaria agrícola usada desde EE.UU. a Latinoamérica | Meridian Export",
+    metaDescription:
+      "Una empresa reemplaza al camionero, empacador, agente de aduana y naviera. Proceso, flete y despacho de maquinaria agrícola usada desde EE.UU. a Argentina, Paraguay, Uruguay, Bolivia y Chile.",
+    keywords: [
+      "importar maquinaria agricola",
+      "importar maquinaria agricola desde estados unidos",
+      "maquinaria agricola importada",
+      "maquinaria agricola usada de estados unidos",
+      "flete de maquinaria agricola",
+      "flete de maquinaria desde estados unidos",
+      "transporte de maquinaria agricola desde estados unidos",
+    ],
+    publishedAt: "2026-06-30",
+    author: "Meridian Freight Team",
+    excerpt:
+      "Una sola empresa reemplaza al camionero, al empacador, al agente de aduana y a la naviera. Proceso completo de importación de maquinaria agrícola usada desde EE.UU. hasta tu campo en LATAM.",
+    category: "Importación",
+    readingTimeMinutes: 10,
+    content: `## Una sola empresa: desde EE.UU. hasta tu campo
+
+Si ya elegiste la maquinaria que necesitas y la encontraste en Estados Unidos, la pregunta que sigue no es "¿cómo la compro?" — es "¿cómo la traigo?". Esa diferencia importa: Meridian no vende maquinaria. Coordina el tramo completo desde que la unidad está en manos del vendedor en EE.UU. hasta que llega sellada, documentada y despachada a tu destino en Latinoamérica.
+
+Un solo interlocutor reemplaza al camionero, al empacador, al freight forwarder, al agente de aduana y a la naviera. Una sola factura. Sin traspasos entre empresas que no se conocen entre sí.
+
+Tú eliges la máquina. Nosotros la traemos y la nacionalizamos.
+
+[Escríbenos por WhatsApp](https://wa.me/16415161616) antes de comprar — revisamos la unidad contigo antes de transferir fondos.
+
+## El proceso de importación, paso a paso
+
+Importar maquinaria agrícola desde EE.UU. tiene cinco etapas. Cada una tiene un responsable claro.
+
+**1. Envías la unidad antes de comprar**
+
+Antes de transferir fondos, comparte el enlace del anuncio o subasta, marca, modelo, año, número de serie, horas, fotos y ZIP de retiro. Meridian revisa los datos del lado de exportación: peso, dimensiones, si la unidad cabe en contenedor o necesita flat rack, y si la documentación del vendedor está en orden. Este es el momento correcto para contactarnos — no después de pagar.
+
+**2. Retiro y transporte interno en EE.UU.**
+
+Una vez confirmada la operación, coordinamos el retiro directamente desde la granja, subasta o concesionario. El transporte interno en EE.UU. se cotiza por distancia: un tractor en Iowa tiene un costo distinto a uno en Dakota del Norte o Texas. Para maquinaria sobredimensionada — cosechadoras, pulverizadoras autopropulsadas grandes — se coordina transporte especializado con los permisos de ruta que correspondan.
+
+**3. Preparación, embalaje y carga**
+
+La maquinaria que entra en contenedor pasa por nuestras instalaciones en Albion, Iowa: desmontaje parcial cuando aplica, limpieza fitosanitaria, embalaje seguro, fotos del proceso. La que va en flat rack se prepara en el puerto de salida. Todo queda documentado con fotos antes de que el contenedor se selle.
+
+**4. Documentación de exportación y flete marítimo**
+
+Preparamos todos los documentos de exportación: Bill of Lading, Commercial Invoice, Packing List, declaración AES/EEI y certificado fitosanitario cuando aplica. Coordinamos la reserva marítima hacia el puerto acordado — Buenos Aires, Santos, Paranaguá, Montevideo, Arica u otros según destino. El flete marítimo incluye el seguro de carga.
+
+**5. Entrega en destino y despacho de aduana**
+
+Cuando el envío llega al puerto de destino, el tramo de importación lo maneja tu despachante o agente local habilitado en el país. Ellos confirman la clasificación arancelaria, tributos, inspecciones sanitarias y fitosanitarias locales, y la entrega final al campo o almacén. Meridian los acompaña con documentación completa para que el despacho no tenga sorpresas.
+
+[Escríbenos por WhatsApp](https://wa.me/16415161616) para revisar la logística de tu equipo específico y destino.
+
+## Flete y transporte: contenedor o flat rack
+
+El tipo de embalaje y la ruta marítima dependen de las dimensiones y el tipo de maquinaria.
+
+**Contenedor estándar (20' o 40'):** tractores compactos y medianos, sembradoras de menor porte, implementos agrícolas, repuestos. Ventaja: menor coste de flete marítimo y menor exposición durante el tránsito. La maquinaria debe poder desmontarse para entrar en las dimensiones internas del contenedor.
+
+**Flat rack (plataforma abierta):** cosechadoras, pulverizadoras autopropulsadas de gran tamaño, excavadoras, cargadores y equipos sobredimensionados. La unidad viaja fijada sobre la plataforma, cubierta cuando aplica. El coste de flete marítimo es mayor, pero es la solución técnicamente correcta para equipos que no caben en contenedor.
+
+Los tiempos de tránsito marítimo varían según el puerto de salida en EE.UU. (Savannah, Houston, Nueva Orleans, Los Ángeles, Newark) y el puerto de destino en LATAM. Para una estimación inicial según tu equipo y destino, usa nuestra [calculadora de flete](/pricing/calculator).
+
+## Importación por país: guías específicas
+
+Cada país latinoamericano tiene su propio régimen aduanero, requisitos fitosanitarios y organismos de control. Antes de comprar la maquinaria, revisa la guía del país de destino para entender qué confirma tu despachante local y qué coordina Meridian:
+
+- [Importar maquinaria agrícola de EE.UU. a Argentina](/blog/import-farm-machinery-united-states-argentina) — AFIDI, SENASA, Sistema Informático Malvina, despachante argentino y tributos de importación.
+- [Importar maquinaria agrícola de EE.UU. a Paraguay](/blog/import-farm-machinery-united-states-paraguay) — Ley 7565/2025, DNIT, SENAVE, rutas por hidrovía Paraguay-Paraná.
+- [Importar maquinaria agrícola de EE.UU. a Uruguay](/blog/import-farm-machinery-united-states-uruguay) — Resolución 98/016, MGAP, DIGESTA, puerto de Montevideo.
+- [Importar maquinaria agrícola de EE.UU. a Bolivia](/blog/import-farm-machinery-united-states-bolivia) — SENASAG, ASPB, rutas terrestres desde puertos de Arica e Ilo.
+- [Importar maquinaria agrícola de EE.UU. a Chile](/blog/import-farm-machinery-united-states-chile) — SAG, internación en Chile, puertos de Arica, San Antonio o Valparaíso.
+
+Si tu destino es Brasil, Perú o Venezuela, [contáctanos directamente](/contact) — tenemos experiencia en estos mercados y coordinamos la documentación según el régimen de cada país.
+
+## Maquinaria que importamos
+
+Meridian trabaja con todos los tipos de maquinaria agrícola usada proveniente de EE.UU. y Canadá:
+
+- **Cosechadoras:** John Deere, Case IH, Claas, New Holland — versiones de fila, axiales e híbridas; con cabezales de cereal, draper, maíz y girasol.
+- **Tractores:** cualquier potencia, tracción simple y doble tracción, con o sin cabina, con o sin implementos adjuntos.
+- **Sembradoras:** de precisión, de tiro directo, de siembra directa; desmontables para envío en contenedor.
+- **Pulverizadoras autopropulsadas:** equipos sobredimensionados con gestión de permisos especiales de transporte en EE.UU.
+- **Excavadoras y equipos de movimiento de tierra:** retroexcavadoras, bulldozers, motoniveladoras, cargadores frontales.
+- **Cabezales y accesorios:** draper, maíz, girasol, hileras — cuando forman parte del mismo envío que la cosechadora.
+
+¿No ves tu tipo de equipo en esta lista? [Contáctanos](/contact) — si la unidad está en EE.UU. o Canadá y tiene documentación de título claro, probablemente podemos coordinarlo.
+
+## Preguntas frecuentes
+
+### ¿Cuánto cuesta importar maquinaria agrícola desde EE.UU.?
+
+El costo total tiene cuatro componentes: transporte interno en EE.UU. desde el punto de retiro hasta el puerto o instalación de embalaje; preparación y embalaje; flete marítimo y seguro; y los costos del lado de destino — aduana, impuestos, gastos portuarios locales y entrega final. Meridian cotiza los tres primeros; tu despachante local confirma el cuarto.
+
+Usa la [calculadora de flete](/pricing/calculator) para una estimación inicial basada en el tipo de equipo y el destino. Para una cotización detallada, [escríbenos por WhatsApp](https://wa.me/16415161616) o desde nuestra [página de contacto](/contact).
+
+### ¿Quién se encarga de la aduana en el país de destino?
+
+El despacho de aduana en el país de destino lo maneja tu despachante o agente local — la persona o empresa habilitada ante la aduana de tu país. Meridian entrega documentación de exportación completa para que el despacho sea predecible: Bill of Lading, factura comercial, packing list, declaración AES/EEI y certificados fitosanitarios cuando aplican. El despachante usa esa documentación para clasificar, valorar y despachar la mercancía según el régimen local.
+
+### ¿Cuánto demora el envío desde EE.UU. a LATAM?
+
+El tiempo total depende del punto de retiro en EE.UU., la ruta marítima y el régimen de despacho en destino. El tramo de preparación y embarque en EE.UU. puede tomar entre dos y seis semanas según el tipo de equipo y la disponibilidad de bodega. El tránsito marítimo varía entre dos y seis semanas adicionales según el destino y la naviera. El despacho en destino depende de tu despachante y de los organismos de control locales. Para un estimado ajustado a tu caso concreto, [contáctanos](/contact).
+
+### ¿Es seguro comprar maquinaria que no puedo ver en persona?
+
+Coordinar una inspección presencial o contratar un inspector independiente antes de comprar es posible y recomendable para equipos de alto valor. Meridian puede recibir al inspector y coordinar el acceso a la unidad. Antes de cualquier movimiento, revisamos contigo los datos del vendedor, el número de serie y la documentación de título para identificar señales de alerta obvias.
+
+Lo que Meridian no hace: valorar la condición mecánica de la unidad ni garantizar el estado del equipo al momento de la compra. Eso lo confirma la inspección independiente y el historial del vendedor.
+
+[Escríbenos por WhatsApp](https://wa.me/16415161616) antes de comprar — es el mejor momento para revisar la operación juntos y evitar sorpresas después de la transferencia.`,
+  },
+  {
     slug: "complete-guide-shipping-farm-equipment-usa",
     title:
       "Guia Completa para Enviar Maquinaria Agricola desde los Estados Unidos",

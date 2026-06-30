@@ -177,6 +177,123 @@ You can also review our [Paraguay buyer hub](/es/destinations/paraguay), [agricu
   },
   ...latamImportGuidesEn,
   {
+    slug: "import-farm-machinery-from-usa",
+    title: "How to Import Farm Machinery from the USA to Latin America",
+    metaTitle:
+      "Import Used Farm Machinery from the USA to Latin America | Meridian Export",
+    metaDescription:
+      "One company replaces the trucker, packer, customs broker, and freight line. Full process for importing used farm machinery from the USA to Argentina, Paraguay, Uruguay, Bolivia, and Chile.",
+    keywords: [
+      "import farm machinery from USA",
+      "import agricultural machinery from United States",
+      "used farm machinery from USA",
+      "farm machinery freight from USA",
+      "agricultural machinery shipping from United States",
+      "import used tractor from USA",
+      "import combine harvester from USA",
+    ],
+    publishedAt: "2026-06-30",
+    author: "Meridian Freight Team",
+    excerpt:
+      "One company replaces the trucker, packer, customs broker, and freight line. Full process for importing used farm machinery from the USA — from pickup to cleared customs at your destination.",
+    category: "Importing",
+    readingTimeMinutes: 9,
+    content: `## One Company: From the USA to Your Farm
+
+If you have already chosen the machinery you need and found it in the United States, the next question is not "how do I buy it?" — it is "how do I bring it home?". That difference matters: Meridian does not sell machinery. We coordinate the entire chain from the moment the unit is in the seller's hands in the USA until it arrives sealed, documented, and cleared at your destination in Latin America.
+
+One point of contact replaces the trucker, the packer, the freight forwarder, the customs broker, and the ocean carrier. One invoice. No handoffs between companies that have never worked together.
+
+You choose the machine. We ship it and clear it.
+
+[Message us on WhatsApp](https://wa.me/16415161616) before you buy — we review the unit with you before any funds transfer.
+
+## The Import Process, Step by Step
+
+Importing farm machinery from the USA has five stages. Each stage has a clear responsible party.
+
+**1. Send the unit details before you buy**
+
+Before transferring funds, share the listing link or auction page, make, model, year, serial number, hours, photos, and the pickup ZIP code. Meridian reviews the export-side data: weight, dimensions, whether the unit fits a container or needs a flat rack, and whether the seller's documentation is in order. This is the right time to contact us — not after payment.
+
+**2. Pickup and inland transport in the USA**
+
+Once the deal is confirmed, we coordinate pickup directly from the farm, auction, or dealership. Inland transport in the USA is priced by distance: a tractor in Iowa costs differently than one in North Dakota or Texas. For oversized equipment — combines, large self-propelled sprayers — we arrange specialized transport with the required route permits.
+
+**3. Preparation, packing, and loading**
+
+Machinery that fits in a container moves through our facility in Albion, Iowa: partial dismantling when needed, phytosanitary cleaning, secure packing, and photo documentation at each step. Equipment traveling on a flat rack is prepared at the export port. Everything is documented with photos before the container is sealed.
+
+**4. Export documentation and ocean freight**
+
+We prepare all export documents: Bill of Lading, Commercial Invoice, Packing List, AES/EEI filing, and phytosanitary certificate when required. We book ocean freight to the agreed port — Buenos Aires, Santos, Paranaguá, Montevideo, Arica, or others depending on the destination. Ocean freight includes cargo insurance.
+
+**5. Customs clearance and delivery at destination**
+
+When the shipment arrives at the destination port, the import leg is handled by your local customs broker or agent licensed in the destination country. They confirm tariff classification, duties and taxes, local sanitary and phytosanitary inspections, and final delivery to the farm or warehouse. Meridian supports them with complete documentation so clearance has no surprises.
+
+[Message us on WhatsApp](https://wa.me/16415161616) to review the logistics for your specific equipment and destination.
+
+## Freight and Transport: Container or Flat Rack
+
+The packing type and ocean route depend on the dimensions and type of machinery.
+
+**Standard container (20' or 40'):** compact and mid-size tractors, smaller planters, farm implements, spare parts. Advantage: lower ocean freight cost and less exposure during transit. The machinery must be partially dismantled to fit within container internal dimensions.
+
+**Flat rack (open platform):** combines, large self-propelled sprayers, excavators, loaders, and oversized equipment. The unit is secured to the platform and covered when applicable. Ocean freight cost is higher, but it is the technically correct solution for equipment that does not fit in a container.
+
+Ocean transit times vary depending on the export port in the USA (Savannah, Houston, New Orleans, Los Angeles, Newark) and the destination port in Latin America. For an initial estimate based on your equipment and destination, use our [freight calculator](/pricing/calculator).
+
+## Import by Country: Country-Specific Guides
+
+Each Latin American country has its own customs regime, phytosanitary requirements, and regulatory agencies. Before buying the machinery, review the guide for your destination country to understand what your local broker confirms and what Meridian coordinates:
+
+- [Import Farm Machinery from the USA to Argentina](/blog/import-farm-machinery-united-states-argentina) — AFIDI, SENASA, Sistema Informático Malvina, Argentine customs broker, and import taxes.
+- [Import Farm Machinery from the USA to Paraguay](/blog/import-farm-machinery-united-states-paraguay) — Ley 7565/2025, DNIT, SENAVE, routes via the Paraguay-Paraná waterway.
+- [Import Farm Machinery from the USA to Uruguay](/blog/import-farm-machinery-united-states-uruguay) — Resolution 98/016, MGAP, DIGESTA, Port of Montevideo.
+- [Import Farm Machinery from the USA to Bolivia](/blog/import-farm-machinery-united-states-bolivia) — SENASAG, ASPB, overland routes from the ports of Arica and Ilo.
+- [Import Farm Machinery from the USA to Chile](/blog/import-farm-machinery-united-states-chile) — SAG, customs clearance in Chile, ports of Arica, San Antonio, or Valparaíso.
+
+If your destination is Brazil, Peru, or Venezuela, [contact us directly](/contact) — we have experience in these markets and coordinate documentation according to each country's regime.
+
+## Machinery We Import
+
+Meridian works with all types of used farm machinery from the USA and Canada:
+
+- **Combine harvesters:** John Deere, Case IH, Claas, New Holland — row-crop, axial-flow, and hybrid models; with grain, draper, corn, and sunflower heads.
+- **Tractors:** any horsepower range, 2WD and 4WD, with or without cab, with or without attached implements.
+- **Planters:** precision, pull-type, no-till; can be dismantled for container shipping.
+- **Self-propelled sprayers:** oversized equipment with management of special transport permits in the USA.
+- **Excavators and earthmoving equipment:** backhoes, bulldozers, motor graders, front loaders.
+- **Headers and attachments:** draper, corn, sunflower, row-crop — when shipped as part of the same consignment as the combine.
+
+Don't see your type of equipment on this list? [Contact us](/contact) — if the unit is in the USA or Canada and has clear title documentation, we can most likely coordinate it.
+
+## Frequently Asked Questions
+
+### How much does it cost to import farm machinery from the USA?
+
+The total cost has four components: inland transport in the USA from the pickup point to the port or packing facility; preparation and packing; ocean freight and insurance; and destination-side costs — customs duties and taxes, local port charges, and final delivery. Meridian quotes the first three; your local customs broker confirms the fourth.
+
+Use the [freight calculator](/pricing/calculator) for an initial estimate based on equipment type and destination. For a detailed quote, [message us on WhatsApp](https://wa.me/16415161616) or reach us through our [contact page](/contact).
+
+### Who handles customs at the destination country?
+
+Customs clearance at the destination is handled by your local customs broker or agent — the person or firm licensed to operate before the customs authority in your country. Meridian delivers complete export documentation for predictable clearance: Bill of Lading, commercial invoice, packing list, AES/EEI filing, and phytosanitary certificates when applicable. The broker uses that documentation to classify, value, and clear the goods under local regulations.
+
+### How long does shipping from the USA to Latin America take?
+
+Total time depends on the pickup location in the USA, the ocean route, and the clearance process at destination. The preparation and loading phase in the USA typically takes two to six weeks depending on equipment type and vessel availability. Ocean transit adds two to six more weeks depending on destination and carrier. Clearance at destination depends on your broker and local regulatory agencies. For an estimate tailored to your specific situation, [contact us](/contact).
+
+### Is it safe to buy machinery I cannot inspect in person?
+
+Arranging an in-person inspection or hiring an independent inspector before buying is possible and recommended for high-value equipment. Meridian can receive the inspector and coordinate access to the unit. Before any movement, we review the seller's data, the serial number, and title documentation with you to identify obvious red flags.
+
+What Meridian does not do: assess the mechanical condition of the unit or guarantee the equipment's state at the time of purchase. That is confirmed by the independent inspection and the seller's track record.
+
+[Message us on WhatsApp](https://wa.me/16415161616) before you buy — that is the best time to review the deal together and avoid surprises after the transfer.`,
+  },
+  {
     slug: "complete-guide-shipping-farm-equipment-usa",
     title: "Complete Guide to Shipping Farm Equipment from the USA",
     metaTitle:
