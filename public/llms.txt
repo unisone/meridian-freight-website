@@ -1,58 +1,63 @@
-# Meridian Freight Inc.
+# Meridian Freight
 
-> Full-service machinery export company. We handle equipment pickup, dismantling, container packing, export documentation, and worldwide ocean shipping from the USA and Canada.
+> Full-service machinery import logistics company. We handle the complete export + shipping + customs clearance of heavy equipment from the USA and Canada to Latin America — inland freight, container packing, ocean freight, import customs (aduana), and door-to-door delivery. One company, every step handled. You keep your supplier; we ship and clear it.
 
-## About
+## What We Do
 
-Meridian Freight Inc. is a machinery export and logistics company headquartered in Albion, Iowa. Since 2013, we have shipped 1,000+ pieces of heavy equipment to ports in Latin America, Africa, the Middle East, and Central Asia. We serve international buyers who purchase used American agricultural, construction, and industrial equipment and need it professionally packed and shipped overseas.
+Meridian Freight is the logistics and customs-clearance partner for LATAM buyers who are importing used agricultural and construction machinery from the United States or Canada. We are not an equipment dealer — we are the freight, packing, and aduana company that makes the import possible.
 
-Our key differentiator: one company handles the entire chain from seller to port — pickup, dismantling, packing, documentation, and ocean freight. One team, one invoice, zero handoffs.
+Our single-company model replaces the need for a separate trucker, packer, customs broker, and freight line. One team. One invoice. One point of contact from the seller's yard to the buyer's door.
+
+Service lines:
+1. **Heavy machinery export logistics** — combines, tractors, excavators, planters, sprayers, headers, dozers, loaders
+2. **John Deere parts export**
+3. **Air freight for urgent shipments**
+
+## Import Authority — How to Import Farm Machinery from the USA
+
+The definitive guide to importing used agricultural equipment from the United States to Latin America — covering seller coordination, US export clearance, ocean freight, and import customs at destination.
+
+- [How to Import Farm Machinery from the USA (English)](https://meridianexport.com/blog/import-farm-machinery-from-usa) — Complete process guide: seller pickup, inland transport, container packing, export docs, ocean freight, and customs at destination
+- [Cómo importar maquinaria agrícola de EE.UU. (Español)](https://meridianexport.com/es/blog/importar-maquinaria-agricola-usa) — Guía completa del proceso: recogida en origen, transporte terrestre, empaque, documentación de exportación, flete marítimo y despacho de aduana
+
+## Country Import Guides (Spanish — LATAM Buyers)
+
+Step-by-step import guides for each country: customs authority, phytosanitary requirements, permitted ports, applicable tariffs, and local broker/importador context.
+
+- [Importar maquinaria de EE.UU. a Argentina](https://meridianexport.com/es/blog/import-farm-machinery-united-states-argentina) — AFIDI, SENASA, Sistema Informático Malvina, despachante argentino y tributos de importación
+- [Importar maquinaria de EE.UU. a Paraguay](https://meridianexport.com/es/blog/import-farm-machinery-united-states-paraguay) — Ley 7565/2025, DNIT, SENAVE, hidrovía Paraguay-Paraná
+- [Importar maquinaria de EE.UU. a Uruguay](https://meridianexport.com/es/blog/import-farm-machinery-united-states-uruguay) — Resolución 98/016, MGAP, DIGESTA, puerto de Montevideo
+- [Importar maquinaria de EE.UU. a Bolivia](https://meridianexport.com/es/blog/import-farm-machinery-united-states-bolivia) — SENASAG, rutas terrestres desde Arica e Ilo
+- [Importar maquinaria de EE.UU. a Chile](https://meridianexport.com/es/blog/import-farm-machinery-united-states-chile) — SAG, internación, puertos de Arica, San Antonio y Valparaíso
 
 ## Services
 
-- [Machinery Dismantling & Container Packing](https://meridianexport.com/services/machinery-packing): Professional disassembly, tagging, photographing, and secure container packing for heavy machinery
-- [Container Loading & Export Shipping](https://meridianexport.com/services/container-loading): Space-optimized container loading and international shipping via Maersk, Hapag-Lloyd, and CMA CGM
-- [Agricultural Equipment Services](https://meridianexport.com/services/agricultural): Specialized handling for combines, tractors, planters, sprayers, and tillage equipment including phytosanitary compliance
-- [Equipment Sourcing & Procurement](https://meridianexport.com/services/equipment-sales): Locate and inspect used machinery from dealers, auctions, and private sellers across North America
-- [Export Documentation & Compliance](https://meridianexport.com/services/documentation): Complete export paperwork — invoices, packing lists, bills of lading, certificates of origin, phytosanitary certificates
-- [Equipment Storage & Warehousing](https://meridianexport.com/services/warehousing): Secure storage at Iowa HQ and 6 partner warehouses across USA and Canada
+- [Machinery Dismantling & Container Packing](https://meridianexport.com/services/machinery-packing) — Professional disassembly, tagging, and secure container packing for heavy machinery
+- [Container Loading & Export Shipping](https://meridianexport.com/services/container-loading) — Space-optimized loading and international shipping via Maersk, Hapag-Lloyd, CMA CGM
+- [Agricultural Equipment Logistics](https://meridianexport.com/services/agricultural) — Specialized handling for combines, tractors, planters, sprayers, and tillage equipment including phytosanitary compliance
+- [Export Documentation & Compliance](https://meridianexport.com/services/documentation) — Complete US export paperwork: invoices, packing lists, bills of lading, certificates of origin, phytosanitary certificates
+- [Equipment Sourcing & Procurement](https://meridianexport.com/services/equipment-sales) — Locate and inspect used machinery from dealers, auctions, and private sellers across North America
+- [Equipment Storage & Warehousing](https://meridianexport.com/services/warehousing) — Secure storage at Iowa HQ and 6 partner warehouses across the USA and Canada
 
-## Key Pages
+## LATAM Destination Hubs
 
-- [Homepage](https://meridianexport.com/): Overview of all services and company capabilities
-- [Pricing](https://meridianexport.com/pricing): Reference rates for 60+ equipment types and 20+ shipping routes
-- [Freight Calculator](https://meridianexport.com/pricing/calculator): Free instant cost estimator for machinery export
-- [Argentina Buyer Guide](https://meridianexport.com/es/destinations/argentina): Spanish guide for Argentine buyers evaluating used U.S. ag equipment, port-to-port scope, and local-import handoff
-- [Paraguay Buyer Guide](https://meridianexport.com/es/destinations/paraguay): Spanish guide for Paraguayan buyers evaluating used U.S. agricultural machinery, Ley 7565/2025, cleaning, certificates, and Paraguay-Parana routing
-- [Uruguay Buyer Guide](https://meridianexport.com/es/destinations/uruguay): Spanish guide for Uruguayan buyers evaluating used U.S. agricultural machinery, Montevideo routing, DGSA Resolucion 98/016, cleaning, and inspection
-- [Bolivia Buyer Guide](https://meridianexport.com/es/destinations/bolivia): Spanish guide for Bolivian buyers evaluating used U.S. agricultural machinery, Santa Cruz demand, transit routing, SENASAG context, and broker/importador validation
-- [Projects](https://meridianexport.com/projects): Portfolio of completed exports — John Deere combines, Case IH headers, sprayers, excavators
-- [FAQ](https://meridianexport.com/faq): Answers to common questions about shipping timelines, container sizes, pricing, documentation
-- [About](https://meridianexport.com/about): Company history, locations, and differentiators
-- [Contact](https://meridianexport.com/contact): Get a free quote — response within 24 hours
+Spanish-language destination pages for buyers in each country — port routing, import regulations, and how Meridian handles the full chain.
 
-## Equipment We Handle
+- [Importar a Argentina](https://meridianexport.com/es/destinations/argentina) — AFIDI, Buenos Aires / Rosario routing
+- [Importar a Paraguay](https://meridianexport.com/es/destinations/paraguay) — Asunción, hidrovía Paraguay-Paraná
+- [Importar a Uruguay](https://meridianexport.com/es/destinations/uruguay) — Montevideo, DGSA
+- [Importar a Bolivia](https://meridianexport.com/es/destinations/bolivia) — Santa Cruz, puertos de Arica e Ilo
+- [Importar a Chile](https://meridianexport.com/es/destinations/chile) — Arica, San Antonio, Valparaíso
 
-Combines (John Deere, Case IH, Claas), Tractors (John Deere, Case IH, Kubota), Excavators (CAT, Komatsu, Hitachi), Bulldozers, Wheel Loaders, Cranes, Planters (Kinze, John Deere), Sprayers (self-propelled and pull-type), Headers (draper, corn, stripper), Tillage Equipment (discs, rippers, field cultivators), Mining Equipment, Forestry Equipment, Road-Building Equipment.
+## Contact & Quote
 
-## Shipping Destinations
-
-Latin America (Brazil, Colombia, Mexico), Middle East (UAE, Turkey, Saudi Arabia, Iraq), Africa (Nigeria, Kenya, South Africa, Ghana), Central Asia (Kazakhstan, Uzbekistan), Eastern Europe (Romania, Ukraine, Georgia), and anywhere with a seaport.
+- [Get a Free Quote](https://meridianexport.com/contact) — Describe your machine and destination; response within 24 hours
+- WhatsApp: [+1 (641) 516-1616](https://wa.me/16415161616) — Fastest response for LATAM buyers
+- Email: contact@meridianexport.com
+- Address: 2107 148th, Albion, IA 50005, USA
 
 ## Languages
 
-This website is available in three languages:
 - English (default): https://meridianexport.com
 - Spanish (Latin America): https://meridianexport.com/es
-- Spanish LATAM buyer hubs: Paraguay, Uruguay, Bolivia, and Argentina under https://meridianexport.com/es/destinations/
-- Russian (Kazakhstan/CIS): https://meridianexport.com/ru
-- Russian Kazakhstan buyer hub: https://meridianexport.com/ru/destinations/kazakhstan
-
-## Contact
-
-- Phone/WhatsApp: +1 (641) 516-1616
-- Email: alex.r@meridianexport.com
-- CC: alex.z@meridianexport.com
-- Address: 2107 148th, Albion, IA 50005, USA
-- Website: https://meridianexport.com
-- Languages: English, Russian, Spanish, Arabic
+- Russian (Kazakhstan / CIS): https://meridianexport.com/ru
