@@ -15,7 +15,7 @@ import {
   type PaidSearchSegmentSlug,
 } from "@/content/latam-paid-search-destinations";
 
-const EXPECTED_ROUTE_COUNT = 10;
+const EXPECTED_ROUTE_COUNT = 14;
 const ARGENTINA_SLUG: PaidSearchCountrySlug = "argentina";
 
 const destinationByRouteKey: ReadonlyMap<PaidSearchRouteKey, LatamPaidSearchDestination> =
@@ -61,7 +61,7 @@ export function getPaidSearchDestination(
 }
 
 /**
- * Static params for the dynamic `[slug]/[segment]` route — the EIGHT
+ * Static params for the dynamic `[slug]/[segment]` route — the TWELVE
  * non-Argentina combos. Argentina is served by its own static-parent branch
  * (`argentina/[segment]`), so it is excluded here.
  */

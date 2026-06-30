@@ -10,8 +10,8 @@ import {
 } from "@/lib/latam-paid-search-routes";
 
 describe("latam paid-search route registry", () => {
-  it("contains exactly 10 records (ROUTE-001)", () => {
-    expect(LATAM_PAID_SEARCH_DESTINATIONS).toHaveLength(10);
+  it("contains exactly 14 records (ROUTE-001)", () => {
+    expect(LATAM_PAID_SEARCH_DESTINATIONS).toHaveLength(14);
   });
 
   it("has unique route keys (ROUTE-002)", () => {
@@ -47,7 +47,7 @@ describe("latam paid-search route registry", () => {
 });
 
 describe("getPaidSearchDestination (ROUTE-002 / lookup + locale)", () => {
-  it("resolves all 10 valid es combos", () => {
+  it("resolves all 14 valid es combos", () => {
     for (const r of LATAM_PAID_SEARCH_DESTINATIONS) {
       const found = getPaidSearchDestination("es", r.country.slug, r.segment.slug);
       expect(found?.routeKey).toBe(r.routeKey);
@@ -67,9 +67,9 @@ describe("getPaidSearchDestination (ROUTE-002 / lookup + locale)", () => {
 });
 
 describe("static params (ROUTE-004)", () => {
-  it("dynamic [slug]/[segment] returns the 8 non-Argentina combos", () => {
+  it("dynamic [slug]/[segment] returns the 12 non-Argentina combos", () => {
     const params = getPaidSearchStaticParams();
-    expect(params).toHaveLength(8);
+    expect(params).toHaveLength(12);
     expect(params.every((p) => p.slug !== "argentina")).toBe(true);
   });
 
@@ -81,7 +81,7 @@ describe("static params (ROUTE-004)", () => {
     );
   });
 
-  it("dynamic + argentina static params together cover all 10 routes exactly once", () => {
+  it("dynamic + argentina static params together cover all 14 routes exactly once", () => {
     const dyn = getPaidSearchStaticParams().map((p) => `${p.slug}/${p.segment}`);
     const ar = getArgentinaPaidSearchStaticParams().map((p) => `argentina/${p.segment}`);
     const all = [...dyn, ...ar].sort();

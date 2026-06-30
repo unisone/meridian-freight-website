@@ -1,8 +1,9 @@
 /**
  * LATAM paid-search destination routes (Gate B).
  *
- * 10 immutable records driving /es/destinations/{country}/{segment} pages, the
- * landing destinations for the 10 paused Gate A Google Ads campaigns.
+ * 14 immutable records driving /es/destinations/{country}/{segment} pages, the
+ * landing destinations for the LATAM Gate A Google Ads campaigns (AR/BO/PY/CL/UY
+ * + PE/VE added 2026-06-29).
  *
  * Spec: docs/superpowers/specs/2026-06-22-latam-paid-search-destinations-design.md
  *
