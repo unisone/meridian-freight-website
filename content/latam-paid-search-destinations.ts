@@ -23,6 +23,8 @@ export const PAID_SEARCH_COUNTRIES = [
   "paraguay",
   "chile",
   "uruguay",
+  "peru",
+  "venezuela",
 ] as const;
 export type PaidSearchCountrySlug = (typeof PAID_SEARCH_COUNTRIES)[number];
 
@@ -33,7 +35,7 @@ export const PAID_SEARCH_SEGMENTS = [
 ] as const;
 export type PaidSearchSegmentSlug = (typeof PAID_SEARCH_SEGMENTS)[number];
 
-export type PaidSearchCountryCode = "AR" | "BO" | "PY" | "CL" | "UY";
+export type PaidSearchCountryCode = "AR" | "BO" | "PY" | "CL" | "UY" | "PE" | "VE";
 export type PaidSearchSegmentKey =
   | "machinery_import"
   | "combine_shipping"
@@ -144,6 +146,8 @@ const COUNTRY_META: Record<
   paraguay: { code: "PY", name: "Paraguay" },
   chile: { code: "CL", name: "Chile" },
   uruguay: { code: "UY", name: "Uruguay" },
+  peru: { code: "PE", name: "Perú" },
+  venezuela: { code: "VE", name: "Venezuela" },
 };
 
 const SEGMENT_META: Record<
@@ -205,6 +209,17 @@ const OFFICIAL_SOURCES: Record<PaidSearchCountrySlug, readonly PaidSearchOfficia
     { id: "UY-01", label: "DGSA — Resolución 98/016", url: "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-98016-dgsa-requisitos-fitosanitarios-para-introduccion-pais", description: "Requisitos fitosanitarios: limpieza de origen, tratamiento/certificación e inspección." },
     { id: "UY-02", label: "Aduanas — Tasa Global Arancelaria", url: "https://www.aduanas.gub.uy/innovaportal/v/7032/3/innova.front/tasa-global-arancelaria-tga.html", description: "Referencia general de la TGA (la tasa del 2% corresponde a bienes de capital BK/BIT según Decreto 426/011)." },
   ],
+  peru: [
+    { id: "PE-01", label: "SUNAT — Régimen de importación", url: "https://www.sunat.gob.pe/orientacionaduanera/importacion/index.html", description: "Autoridad aduanera y tributaria (SUNAT/Aduanas): régimen de importación para el consumo, despacho aduanero, aranceles e IGV; la nacionalización se gestiona mediante un agente de aduana." },
+    { id: "PE-02", label: "SENASA — RD N° D000027-2024-MIDAGRI-SENASA-DSV", url: "https://busquedas.elperuano.pe/dispositivo/NL/2308680-1", description: "Requisitos fitosanitarios de cumplimiento obligatorio para el ingreso de maquinaria y equipos agrícolas usados: limpios, libres de suelo y restos vegetales, con inspección al ingreso." },
+    { id: "PE-03", label: "SENASA — Servicio Nacional de Sanidad Agraria del Perú", url: "https://www.gob.pe/senasa", description: "Autoridad fitosanitaria nacional; inspecciona la maquinaria agrícola usada al ingreso y determina limpieza o desinfección cuando hay tierra o restos vegetales." },
+    { id: "PE-04", label: "Acuerdo de Promoción Comercial (TLC) Perú — EE. UU.", url: "https://www.acuerdoscomerciales.gob.pe/En_Vigencia/EEUU/inicio.html", description: "TLC con EE. UU. en vigor desde el 1 de febrero de 2009 (MINCETUR): desgravación arancelaria para bienes de origen estadounidense que cumplen las reglas de origen; el arancel y el IGV los confirma el agente de aduana." },
+  ],
+  venezuela: [
+    { id: "VE-01", label: "SENIAT", url: "https://www.seniat.gob.ve/", description: "Servicio Nacional Integrado de Administración Aduanera y Tributaria: autoridad aduanera y tributaria de Venezuela. Despacho, declaración (DUA), clasificación arancelaria, IVA y nacionalización ante el SENIAT vía su agente aduanal." },
+    { id: "VE-02", label: "INSAI", url: "https://www.insai.gob.ve/", description: "Instituto Nacional de Salud Agrícola Integral: autoridad fitosanitaria de Venezuela. Permisos de importación e inspección al ingreso; la maquinaria usada debe llegar limpia, libre de suelo y restos vegetales." },
+    { id: "VE-03", label: "INSAI — Certificados de Importación y Exportación", url: "https://www.insai.gob.ve/certificaciones", description: "Trámite de certificados y permisos fitosanitarios de importación/exportación del INSAI; el certificado fitosanitario de origen suele referenciar el número del permiso de importación del INSAI." },
+  ],
 };
 
 /** The 10 curated valid pairs (NOT the full 5x2 product). */
@@ -219,6 +234,10 @@ const VALID_PAIRS: readonly (readonly [PaidSearchCountrySlug, PaidSearchSegmentS
   ["chile", "flete-equipo-pesado-usa"],
   ["uruguay", "importacion-maquinaria-usa"],
   ["uruguay", "flete-cosechadoras-usa"],
+  ["peru", "importacion-maquinaria-usa"],
+  ["peru", "flete-equipo-pesado-usa"],
+  ["venezuela", "importacion-maquinaria-usa"],
+  ["venezuela", "flete-equipo-pesado-usa"],
 ];
 
 // ─── Record factory (verified P2 Spanish copy from content/latam-paid-search-copy) ──

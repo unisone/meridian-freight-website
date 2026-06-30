@@ -823,5 +823,326 @@ export const PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     "ctaHeading": "Cotice el flete de su cosechadora desde EE. UU. a Uruguay",
     "ctaDescription": "Comparta el modelo y el destino; le devolvemos por escrito el alcance del tramo internacional antes de reservar. La nacionalización y los tributos los confirma su despachante (ADAU).",
     "whatsappPrefill": "#FRT_ES Hola, quiero cotizar el flete de una cosechadora desde EE. UU. a Uruguay. Equipo: [marca/modelo/año/cabezal]. Ubicación: [ciudad/estado]. Destino: [ciudad de Uruguay]. Ref: {{whatsapp_ref}}"
+  },
+  "peru/importacion-maquinaria-usa": {
+      "seoTitle": "Importar maquinaria de EE. UU. a Perú",
+      "seoDescription": "Coordinamos el tramo de EE. UU. a Perú: retiro, embalaje, documentación y flete de maquinaria usada. La nacionalización la gestiona su agente de aduana.",
+      "eyebrow": "Importación de maquinaria desde EE. UU. · Perú",
+      "h1": "Importación de maquinaria desde EE. UU. a Perú",
+      "heroBody": "Meridian coordina el tramo de origen para su importación de maquinaria desde EE. UU. y Canadá a Perú: contacto con el vendedor, retiro, medición, desmontaje o embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo hasta el puerto acordado, habitualmente el Callao. La nacionalización, los aranceles, el IGV, el despacho aduanero ante la SUNAT y la entrega interior en Perú los gestiona por separado su agente de aduana. Le entregamos el alcance del tramo internacional por escrito antes de reservar.",
+      "heroBullets": [
+          "Operación coordinada del lado de EE. UU. y Canadá, con compra asistida bajo alcance separado.",
+          "Retiro, medición, desmontaje y embalaje en origen según el equipo.",
+          "Certificado fitosanitario de origen (USDA APHIS o CFIA) y documentación de exportación.",
+          "Cotización del flete marítimo separada de los aranceles, el IGV y los costos locales peruanos."
+      ],
+      "scopeIncluded": [
+          "Compra asistida y retiro del equipo en EE. UU. o Canadá",
+          "Medición, desmontaje y embalaje cuando corresponde",
+          "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA)",
+          "Reserva del flete marítimo hasta el puerto peruano acordado (habitualmente el Callao)"
+      ],
+      "scopeExcluded": [
+          "Nacionalización, aranceles, IGV y tributos en Perú",
+          "Despacho aduanero ante la SUNAT y permisos a cargo del importador",
+          "Inspección fitosanitaria del SENASA al ingreso en Perú",
+          "Entrega interior dentro de Perú"
+      ],
+      "processIntro": "La ruta se arma a partir del equipo real, no de una tarifa genérica. Primero confirmamos la información técnica y el alcance del tramo de EE. UU. a Perú; luego reservamos. La admisibilidad y la nacionalización quedan del lado de su agente de aduana en Perú.",
+      "processSteps": [
+          {
+              "title": "Comparta el equipo",
+              "body": "Envíe el anuncio o la factura proforma con marca, modelo, año, ubicación en EE. UU. o Canadá y estado de compra de la maquinaria."
+          },
+          {
+              "title": "Definimos medidas y modalidad",
+              "body": "Revisamos dimensiones, peso y si requiere desmontaje, contenedor, flat rack, RoRo o carga de proyecto. Conviene limpiar la unidad y dejarla libre de suelo y restos vegetales antes de embarcar."
+          },
+          {
+              "title": "Coordinamos origen y exportación",
+              "body": "Organizamos retiro, embalaje, carga, documentación de exportación y el certificado fitosanitario de origen (USDA APHIS o CFIA), y reservamos el flete marítimo."
+          },
+          {
+              "title": "Entregamos el expediente para Perú",
+              "body": "Compartimos los documentos del tramo internacional para que su agente de aduana gestione el despacho ante la SUNAT, los tributos y la inspección del SENASA al ingreso en Perú."
+          }
+      ],
+      "quoteIntro": "Con estos datos definimos el tramo de EE. UU. a Perú sin inventar medidas, ruta ni formato de carga. Cuanto más completa la información, más útil es la cotización.",
+      "quoteFields": [
+          "Link del equipo o factura proforma",
+          "Marca, modelo y año",
+          "Ubicación exacta en EE. UU. o Canadá",
+          "Estado de compra: evaluando, reservado o comprado",
+          "Dimensiones y peso disponibles",
+          "Ciudad de destino en Perú y fecha estimada"
+      ],
+      "complianceHeading": "Requisito fitosanitario del SENASA y nacionalización ante la SUNAT",
+      "complianceBody": "La maquinaria agrícola usada debe llegar a Perú limpia, libre de suelo, restos vegetales y plagas, conforme a los requisitos fitosanitarios de cumplimiento obligatorio que fija el SENASA (Resolución Directoral N° D000027-2024-MIDAGRI-SENASA-DSV) para el ingreso de maquinaria y equipos agrícolas usados. El SENASA inspecciona la maquinaria al ingreso: si presenta tierra o restos vegetales, puede ordenar limpieza y desinfección, y la admisión no está garantizada de antemano. La nacionalización se realiza ante la SUNAT mediante un agente de aduana, obligatorio cuando el valor CIF supera los US$ 2.000. El origen EE. UU. puede acceder a la preferencia arancelaria del TLC con EE. UU. (Acuerdo de Promoción Comercial, APC), pero el arancel aplicable, el IGV del 18% y los demás tributos los calcula y confirma su agente de aduana según la subpartida y el cumplimiento de las reglas de origen. Preparamos y embalamos en origen cuidando la limpieza del equipo, pero la decisión de admisión corresponde al SENASA y a la SUNAT en el punto de ingreso.",
+      "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU. y Canadá; la admisibilidad, la inspección del SENASA al ingreso y la nacionalización ante la SUNAT en Perú quedan bajo responsabilidad del importador y su agente de aduana.",
+      "faq": [
+          {
+              "question": "¿Meridian vende la maquinaria?",
+              "answer": "No. Meridian es el operador de logística y exportación del lado de EE. UU. y Canadá. Podemos coordinar con su vendedor o brindar compra asistida bajo un alcance separado, pero no somos la concesionaria del equipo."
+          },
+          {
+              "question": "¿Pueden darme el costo final nacionalizado en Perú?",
+              "answer": "No. Cotizamos el tramo internacional que controlamos. Los aranceles, el IGV (18%) y las tasas locales los calcula su agente de aduana según la clasificación real del equipo y el TLC con EE. UU. La calculadora es una referencia del tramo logístico, no el costo final nacionalizado."
+          },
+          {
+              "question": "¿El equipo entra a Perú aprobado por el SENASA?",
+              "answer": "No. El SENASA inspecciona la maquinaria agrícola usada al ingreso conforme a la Resolución Directoral N° D000027-2024-MIDAGRI-SENASA-DSV. Debe llegar limpia, libre de suelo, restos vegetales y plagas. Si no cumple, puede ordenarse limpieza y desinfección por cuenta del importador. No hay una aprobación previa del SENASA antes de esa inspección."
+          },
+          {
+              "question": "¿El TLC con EE. UU. elimina los impuestos de importación?",
+              "answer": "No del todo. El Acuerdo de Promoción Comercial (TLC) con EE. UU. puede reducir o eliminar el arancel para el equipo de origen estadounidense que cumple las reglas de origen, pero el IGV del 18% y otros tributos siguen aplicando. El arancel final y los tributos los confirma su agente de aduana ante la SUNAT, no Meridian."
+          },
+          {
+              "question": "¿A qué puerto llega la carga en Perú?",
+              "answer": "Habitualmente el Callao, el principal puerto del país; según naviera, carga y destino también puede usarse Paita. No fijamos un puerto obligatorio: la modalidad de carga, las dimensiones y el plan de su agente de aduana definen el puerto de descarga."
+          }
+      ],
+      "ctaHeading": "Cotice su importación de maquinaria desde EE. UU. a Perú",
+      "ctaDescription": "Comparta el equipo y el destino en Perú; le devolvemos el alcance del tramo internacional por escrito antes de reservar. La nacionalización y los tributos los confirma su agente de aduana ante la SUNAT.",
+      "whatsappPrefill": "#FRT_ES Hola, quiero importar maquinaria desde EE. UU. a Perú. Equipo: [marca/modelo/año]. Ubicación: [ciudad/estado]. Destino: [ciudad en Perú]. Ref: {{whatsapp_ref}}"
+  },
+  "peru/flete-equipo-pesado-usa": {
+      "seoTitle": "Flete de equipo pesado EE. UU. a Perú",
+      "seoDescription": "Coordinamos el flete de equipo pesado de EE. UU. a Perú: retiro, embalaje, documentación y reserva marítima. La aduana la gestiona su agente de aduana.",
+      "eyebrow": "Flete de equipo pesado desde EE. UU. · Perú",
+      "h1": "Flete de equipo pesado desde EE. UU. a Perú",
+      "heroBody": "Meridian coordina el flete de su equipo pesado de EE. UU. y Canadá a Perú: retiro en origen, medición, desmontaje o embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) cuando corresponde y reserva del flete marítimo en contenedor, flat rack, RoRo o carga de proyecto según las dimensiones, habitualmente hasta el Callao. La nacionalización, los aranceles, el IGV, el despacho aduanero ante la SUNAT y la entrega interior en Perú los gestiona por separado su agente de aduana. Le confirmamos por escrito el alcance del tramo internacional antes de reservar.",
+      "heroBullets": [
+          "Coordinación de equipo pesado y sobredimensionado del lado de EE. UU. y Canadá.",
+          "Retiro, medición, desmontaje y embalaje en origen según las dimensiones.",
+          "Flat rack, RoRo o carga de proyecto para piezas que no van en contenedor estándar.",
+          "Cotización del flete marítimo separada de los aranceles, el IGV y los costos locales en Perú."
+      ],
+      "scopeIncluded": [
+          "Retiro y transporte del equipo pesado en EE. UU. o Canadá",
+          "Medición, desmontaje y embalaje para flat rack, RoRo o carga de proyecto",
+          "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA) cuando corresponde",
+          "Reserva del flete marítimo hasta el puerto peruano acordado (habitualmente el Callao)"
+      ],
+      "scopeExcluded": [
+          "Nacionalización, aranceles, IGV y tributos en Perú",
+          "Despacho aduanero ante la SUNAT y permisos a cargo del importador",
+          "Inspección del SENASA al ingreso cuando aplica al equipo",
+          "Entrega interior y permisos de transporte sobredimensionado dentro de Perú"
+      ],
+      "processIntro": "El equipo pesado se cotiza por sus medidas reales: peso, alto, ancho y largo definen la modalidad. Primero confirmamos las dimensiones y el alcance del tramo de EE. UU. a Perú; luego reservamos. La nacionalización queda del lado de su agente de aduana en Perú.",
+      "processSteps": [
+          {
+              "title": "Comparta el equipo y sus medidas",
+              "body": "Envíe marca, modelo, año, ubicación en EE. UU. o Canadá y, si las tiene, las dimensiones y el peso del equipo pesado."
+          },
+          {
+              "title": "Definimos la modalidad de carga",
+              "body": "Según peso y dimensiones determinamos si va en contenedor, flat rack, RoRo o como carga de proyecto, y si requiere desmontaje parcial."
+          },
+          {
+              "title": "Coordinamos origen y exportación",
+              "body": "Organizamos retiro, embalaje, carga, documentación de exportación y el certificado fitosanitario de origen (USDA APHIS o CFIA) cuando aplica, y reservamos el flete marítimo."
+          },
+          {
+              "title": "Entregamos el expediente para Perú",
+              "body": "Compartimos los documentos del tramo internacional para que su agente de aduana gestione el despacho ante la SUNAT, los tributos y, cuando aplica, la inspección del SENASA al ingreso en Perú."
+          }
+      ],
+      "quoteIntro": "Para equipo pesado, las medidas mandan. Con estos datos definimos la modalidad y el tramo de EE. UU. a Perú sin suponer dimensiones ni ruta.",
+      "quoteFields": [
+          "Link del equipo o factura proforma",
+          "Marca, modelo y año",
+          "Ubicación exacta en EE. UU. o Canadá",
+          "Dimensiones y peso (alto, ancho, largo)",
+          "Estado de compra: evaluando, reservado o comprado",
+          "Ciudad de destino en Perú y fecha estimada"
+      ],
+      "complianceHeading": "Nacionalización ante la SUNAT y control del SENASA al ingreso",
+      "complianceBody": "La nacionalización del equipo pesado usado se realiza ante la SUNAT mediante un agente de aduana, obligatorio cuando el valor CIF supera los US$ 2.000, que clasifica la subpartida y calcula el arancel, el IGV del 18% y los demás tributos. El origen EE. UU. puede acceder a la preferencia arancelaria del TLC con EE. UU. (Acuerdo de Promoción Comercial, APC), pero el arancel final y el cumplimiento de las reglas de origen los confirma su agente de aduana, no Meridian. Si el equipo es maquinaria agrícola usada, además aplican los requisitos fitosanitarios obligatorios del SENASA (Resolución Directoral N° D000027-2024-MIDAGRI-SENASA-DSV): debe llegar limpio, libre de suelo y restos vegetales, y el SENASA inspecciona al ingreso. Preparamos y embalamos en origen cuidando la limpieza del equipo, pero la decisión de admisión corresponde a la SUNAT y al SENASA en el punto de ingreso; su agente de aduana confirma qué controles aplican a la unidad concreta.",
+      "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU. y Canadá; la admisibilidad, el control del SENASA cuando aplica y la nacionalización ante la SUNAT en Perú quedan bajo responsabilidad del importador y su agente de aduana.",
+      "faq": [
+          {
+              "question": "¿Cómo se envía el equipo que no entra en un contenedor estándar?",
+              "answer": "Según las dimensiones y el peso usamos flat rack, RoRo o carga de proyecto, con desmontaje parcial cuando conviene. La modalidad se fija con las medidas reales del equipo, no con una tarifa genérica."
+          },
+          {
+              "question": "¿Pueden darme el costo final nacionalizado en Perú?",
+              "answer": "No. Cotizamos el tramo internacional que controlamos. Los aranceles, el IGV (18%) y las tasas locales los calcula su agente de aduana según la clasificación real del equipo y el TLC con EE. UU. La calculadora es una referencia del tramo logístico, no el costo final nacionalizado."
+          },
+          {
+              "question": "¿El equipo pesado necesita inspección del SENASA?",
+              "answer": "Depende del equipo. El SENASA fija requisitos fitosanitarios obligatorios para la maquinaria agrícola usada (Resolución Directoral N° D000027-2024-MIDAGRI-SENASA-DSV); el equipo de construcción o minería puede no estar alcanzado de la misma forma. Su agente de aduana confirma qué controles aplican a la unidad concreta. En todos los casos preparamos el equipo limpio y libre de suelo y restos vegetales en origen."
+          },
+          {
+              "question": "¿El TLC con EE. UU. elimina los impuestos de importación?",
+              "answer": "No del todo. El Acuerdo de Promoción Comercial (TLC) con EE. UU. puede reducir o eliminar el arancel para el equipo de origen estadounidense que cumple las reglas de origen, pero el IGV del 18% y otros tributos siguen aplicando. El arancel final y los tributos los confirma su agente de aduana ante la SUNAT, no Meridian."
+          },
+          {
+              "question": "¿A qué puerto llega el equipo pesado en Perú?",
+              "answer": "Habitualmente el Callao, el principal puerto del país; según naviera, carga y destino también puede usarse Paita. No fijamos un puerto obligatorio: el peso, las dimensiones, la modalidad de carga y el plan de su agente de aduana definen el puerto de descarga."
+          }
+      ],
+      "ctaHeading": "Cotice el flete de su equipo pesado desde EE. UU. a Perú",
+      "ctaDescription": "Comparta el equipo, sus medidas y el destino en Perú; le devolvemos el alcance del tramo internacional por escrito antes de reservar. La nacionalización y los tributos los confirma su agente de aduana ante la SUNAT.",
+      "whatsappPrefill": "#FRT_ES Hola, quiero cotizar flete de equipo pesado desde EE. UU. a Perú. Equipo: [marca/modelo/año]. Medidas: [alto/ancho/largo/peso]. Ubicación: [ciudad/estado]. Destino: [ciudad en Perú]. Ref: {{whatsapp_ref}}"
+  },
+  "venezuela/importacion-maquinaria-usa": {
+      "seoTitle": "Importar maquinaria de EE. UU. a Venezuela",
+      "seoDescription": "Coordinamos el tramo de EE. UU. a Venezuela: retiro, embalaje, documentación y flete marítimo de maquinaria usada. La nacionalización la gestiona su agente aduanal.",
+      "eyebrow": "Maquinaria usada desde EE. UU. · Venezuela",
+      "h1": "Importación de maquinaria desde EE. UU. a Venezuela",
+      "heroBody": "Meridian coordina el tramo de origen para su importación de maquinaria desde EE. UU. y Canadá a Venezuela: contacto con el vendedor o compra asistida, retiro, medición, desmontaje o embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo, habitualmente a Puerto Cabello o La Guaira. La nacionalización, los aranceles, el IVA, el despacho aduanero ante el SENIAT y la entrega interior en Venezuela los gestiona por separado su agente aduanal e importador. Operamos el tramo de EE. UU. conforme a las regulaciones de exportación estadounidenses aplicables y le entregamos el alcance del tramo internacional por escrito antes de reservar.",
+      "heroBullets": [
+          "Operación coordinada del lado de EE. UU. y Canadá, con compra asistida bajo alcance separado.",
+          "Retiro, medición, desmontaje y embalaje en origen según el equipo.",
+          "Certificado fitosanitario de origen (USDA APHIS o CFIA) y documentación de exportación.",
+          "Cotización del flete marítimo a Puerto Cabello o La Guaira, separada de los costos locales venezolanos."
+      ],
+      "scopeIncluded": [
+          "Compra asistida y retiro del equipo en EE. UU. o Canadá, bajo un alcance separado",
+          "Medición, desmontaje y embalaje cuando corresponde",
+          "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA)",
+          "Reserva del flete marítimo hasta el puerto venezolano acordado"
+      ],
+      "scopeExcluded": [
+          "Nacionalización, aranceles, IVA y tributos en Venezuela (SENIAT)",
+          "Despacho aduanero y declaración (DUA) a cargo de su agente aduanal",
+          "Permiso de importación o inspección fitosanitaria del INSAI al ingreso",
+          "Permisos del importador y entrega interior en Venezuela"
+      ],
+      "processIntro": "La ruta se arma a partir del equipo real, no de una tarifa genérica. Primero confirmamos la información técnica, la elegibilidad del lado de EE. UU. y el alcance del tramo a Venezuela; luego reservamos. La nacionalización y la admisibilidad quedan del lado de su agente aduanal en Venezuela.",
+      "processSteps": [
+          {
+              "title": "Comparta el equipo",
+              "body": "Envíe el anuncio o la factura proforma con marca, modelo, año, ubicación en EE. UU. o Canadá y estado de compra de la maquinaria usada."
+          },
+          {
+              "title": "Definimos medidas y modalidad",
+              "body": "Revisamos dimensiones, peso y si requiere desmontaje, y elegimos contenedor, flat rack, RoRo o carga de proyecto. Conviene que la unidad quede limpia, libre de suelo y restos vegetales antes de embarcar."
+          },
+          {
+              "title": "Coordinamos origen y exportación",
+              "body": "Organizamos retiro, embalaje, carga, documentación de exportación y el certificado fitosanitario de origen (USDA APHIS o CFIA), y reservamos el flete marítimo a Puerto Cabello o La Guaira."
+          },
+          {
+              "title": "Entregamos el expediente para Venezuela",
+              "body": "Compartimos los documentos del tramo internacional para que su agente aduanal tramite el control del INSAI cuando corresponde, la declaración ante el SENIAT y la nacionalización en Venezuela."
+          }
+      ],
+      "quoteIntro": "Con estos datos definimos el tramo de EE. UU. a Venezuela sin inventar medidas, ruta ni formato de carga. Mientras tanto, valide con su agente aduanal el requisito del INSAI y la admisibilidad de la unidad.",
+      "quoteFields": [
+          "Link del equipo o factura proforma",
+          "Marca, modelo y año de la maquinaria",
+          "Ubicación exacta en EE. UU. o Canadá",
+          "Estado de compra: evaluando, reservado o comprado",
+          "Dimensiones y peso disponibles",
+          "Ciudad de destino en Venezuela y fecha estimada",
+          "Datos de su agente aduanal o importador, si ya lo tiene"
+      ],
+      "complianceHeading": "Qué confirma su agente aduanal ante el SENIAT y el INSAI",
+      "complianceBody": "La maquinaria usada debe llegar a Venezuela limpia, libre de suelo, restos vegetales y plagas. El INSAI es la autoridad fitosanitaria: según la clasificación, el origen y la condición del equipo, su agente aduanal confirma si aplica un permiso de importación o una inspección fitosanitaria al ingreso, y el certificado fitosanitario de origen suele hacer referencia a ese permiso. El SENIAT es la autoridad aduanera y tributaria: su agente aduanal presenta la declaración (DUA), clasifica el arancel y liquida el IVA y demás tributos sobre el valor CIF. No prometemos un costo final nacionalizado ni la admisión garantizada de la unidad: esos puntos los determinan el SENIAT y el INSAI vía su agente aduanal. Del lado de EE. UU., Meridian coordina la exportación conforme a las regulaciones estadounidenses aplicables y revisa cada operación antes de comprometer fondos.",
+      "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU. y Canadá; la admisibilidad, el requisito del INSAI, la inspección al ingreso y la nacionalización ante el SENIAT en Venezuela quedan bajo responsabilidad del importador y su agente aduanal.",
+      "faq": [
+          {
+              "question": "¿Meridian vende la maquinaria o la nacionaliza en Venezuela?",
+              "answer": "No. Meridian es el operador de logística y exportación del lado de EE. UU. y Canadá. Podemos coordinar con su vendedor o brindar compra asistida bajo un alcance separado, pero la nacionalización, los tributos y el despacho ante el SENIAT los gestiona su agente aduanal en Venezuela."
+          },
+          {
+              "question": "¿Pueden darme el costo final nacionalizado en Venezuela?",
+              "answer": "No. Cotizamos el tramo internacional que controlamos. Los aranceles, el IVA y las tasas locales los calcula su agente aduanal según la clasificación real del equipo y el valor CIF. La calculadora es una referencia del tramo logístico, no el costo final nacionalizado."
+          },
+          {
+              "question": "¿Necesito un permiso del INSAI para maquinaria usada?",
+              "answer": "Puede aplicar. El INSAI decide según la clasificación, el origen y la condición del equipo; para maquinaria usada suele tratarse de una inspección o verificación de limpieza más que de un permiso de productos vegetales. Su agente aduanal lo confirma antes del embarque, y nosotros emitimos el certificado fitosanitario de origen (USDA APHIS o CFIA) cuando corresponde."
+          },
+          {
+              "question": "¿A qué puerto llega la maquinaria en Venezuela?",
+              "answer": "Habitualmente a Puerto Cabello o La Guaira, pero no está garantizado: el puerto depende de la naviera, la modalidad de carga, las dimensiones y el plan de su agente aduanal. La página no promete un puerto único."
+          },
+          {
+              "question": "¿La operación cumple con las regulaciones de EE. UU.?",
+              "answer": "Meridian coordina el tramo de exportación conforme a las regulaciones de exportación estadounidenses aplicables y revisa cada operación antes de comprometer fondos. Confirmamos por escrito el alcance del tramo internacional; la nacionalización en destino corresponde a su agente aduanal."
+          }
+      ],
+      "ctaHeading": "Cotice su importación de maquinaria desde EE. UU. a Venezuela",
+      "ctaDescription": "Comparta el equipo y el destino en Venezuela; le devolvemos el alcance del tramo internacional por escrito antes de reservar. La nacionalización y el despacho los confirma su agente aduanal ante el SENIAT y el INSAI.",
+      "whatsappPrefill": "#FRT_ES Hola, quiero cotizar la importación de maquinaria desde EE. UU. a Venezuela. Equipo: [marca/modelo/año]. Ubicación en EE. UU.: [ciudad/estado]. Destino: [ciudad de Venezuela]. Ref: {{whatsapp_ref}}"
+  },
+  "venezuela/flete-equipo-pesado-usa": {
+      "seoTitle": "Flete de equipo pesado EE. UU. a Venezuela",
+      "seoDescription": "Coordinamos el flete de equipo pesado de EE. UU. a Venezuela: retiro, embalaje, documentación y reserva marítima. La aduana la gestiona su agente aduanal.",
+      "eyebrow": "Equipo pesado desde EE. UU. · Venezuela",
+      "h1": "Flete de equipo pesado desde EE. UU. a Venezuela",
+      "heroBody": "Meridian coordina el flete de su equipo pesado de EE. UU. y Canadá a Venezuela: retiro en origen, medición, desmontaje o embalaje cuando corresponde, documentación de exportación, certificado fitosanitario de origen (USDA APHIS o CFIA) y reserva del flete marítimo en flat rack, RoRo o carga de proyecto según las dimensiones, habitualmente a Puerto Cabello o La Guaira. La nacionalización, los aranceles, el IVA, el despacho ante el SENIAT y la entrega interior en Venezuela los gestiona por separado su agente aduanal. Operamos el tramo de EE. UU. conforme a las regulaciones de exportación estadounidenses aplicables y le confirmamos por escrito el alcance del tramo internacional antes de reservar.",
+      "heroBullets": [
+          "Coordinación de equipo pesado y sobredimensionado del lado de EE. UU. y Canadá.",
+          "Retiro, medición, desmontaje y embalaje en origen según las dimensiones.",
+          "Flat rack, RoRo o carga de proyecto para piezas que no van en contenedor estándar.",
+          "Cotización del flete marítimo a Puerto Cabello o La Guaira, separada de los tributos y costos locales."
+      ],
+      "scopeIncluded": [
+          "Retiro y transporte del equipo pesado en EE. UU. o Canadá",
+          "Medición, desmontaje y embalaje para flat rack, RoRo o carga de proyecto",
+          "Documentación de exportación y certificado fitosanitario de origen (USDA APHIS o CFIA)",
+          "Reserva del flete marítimo hasta el puerto venezolano acordado"
+      ],
+      "scopeExcluded": [
+          "Nacionalización, aranceles, IVA y tributos en Venezuela (SENIAT)",
+          "Despacho aduanero y declaración (DUA) a cargo de su agente aduanal",
+          "Inspección o permiso fitosanitario del INSAI al ingreso cuando corresponde",
+          "Entrega interior y permisos de transporte sobredimensionado dentro de Venezuela"
+      ],
+      "processIntro": "El equipo pesado se cotiza por sus medidas reales: peso, alto, ancho y largo definen la modalidad. Primero confirmamos las dimensiones, la elegibilidad del lado de EE. UU. y el alcance del tramo a Venezuela; luego reservamos. La nacionalización queda del lado de su agente aduanal.",
+      "processSteps": [
+          {
+              "title": "Comparta el equipo y sus medidas",
+              "body": "Envíe marca, modelo, año, ubicación en EE. UU. o Canadá y, si las tiene, las dimensiones y el peso del equipo pesado."
+          },
+          {
+              "title": "Definimos la modalidad de carga",
+              "body": "Según peso y dimensiones determinamos si va en contenedor, flat rack, RoRo o como carga de proyecto, y si requiere desmontaje parcial o permisos de transporte en origen."
+          },
+          {
+              "title": "Coordinamos origen y exportación",
+              "body": "Organizamos retiro, manejo especializado, carga, documentación de exportación y el certificado fitosanitario de origen (USDA APHIS o CFIA), y reservamos el flete marítimo a Puerto Cabello o La Guaira."
+          },
+          {
+              "title": "Entregamos el expediente para Venezuela",
+              "body": "Compartimos los documentos del tramo internacional para que su agente aduanal gestione la declaración ante el SENIAT, el control del INSAI cuando corresponde y la nacionalización en Venezuela."
+          }
+      ],
+      "quoteIntro": "Para equipo pesado, las medidas mandan. Con estos datos definimos la modalidad y el tramo de EE. UU. a Venezuela sin suponer dimensiones ni ruta. La parte de destino la confirma su agente aduanal.",
+      "quoteFields": [
+          "Link del equipo o factura proforma",
+          "Marca, modelo y año del equipo pesado",
+          "Peso y dimensiones (alto, ancho, largo)",
+          "Ubicación exacta en EE. UU. o Canadá",
+          "Estado de compra: evaluando, reservado o comprado",
+          "Ciudad de destino en Venezuela y fecha estimada"
+      ],
+      "complianceHeading": "Qué confirma su agente aduanal ante el SENIAT y el INSAI",
+      "complianceBody": "El equipo pesado usado debe llegar a Venezuela limpio, libre de suelo, restos vegetales y plagas. El INSAI es la autoridad fitosanitaria: según la clasificación, el origen y la condición del equipo, su agente aduanal confirma si aplica una inspección o un permiso de importación al ingreso, sobre todo en maquinaria que tuvo contacto con suelo. El SENIAT es la autoridad aduanera y tributaria: su agente aduanal presenta la declaración (DUA), clasifica el arancel y liquida el IVA y demás tributos sobre el valor CIF. No prometemos un costo final nacionalizado ni la admisión garantizada de la unidad: esos puntos los determinan el SENIAT y el INSAI vía su agente aduanal. Del lado de EE. UU., Meridian coordina la exportación conforme a las regulaciones estadounidenses aplicables y revisa cada operación antes de comprometer fondos.",
+      "localResponsibility": "Meridian coordina el tramo contratado desde EE. UU. y Canadá; la admisibilidad, el control del INSAI y la nacionalización del equipo pesado ante el SENIAT en Venezuela quedan bajo responsabilidad del importador y su agente aduanal.",
+      "faq": [
+          {
+              "question": "¿Meridian nacionaliza o entrega el equipo pesado en Venezuela?",
+              "answer": "No. Meridian coordina el tramo de origen y exportación desde EE. UU. y Canadá: retiro, manejo especializado, documentos de exportación y reserva marítima. La nacionalización, el despacho ante el SENIAT y el transporte interior pesado en Venezuela los gestiona su agente aduanal e importador."
+          },
+          {
+              "question": "¿Cómo se decide entre contenedor, flat rack, RoRo o carga de proyecto?",
+              "answer": "Según el peso, las dimensiones y si el equipo es autopropulsado o requiere desmontaje. Por eso pedimos medidas reales desde el primer mensaje: no cotizamos un formato de carga sobre suposiciones."
+          },
+          {
+              "question": "¿Pueden darme el costo final nacionalizado en Venezuela?",
+              "answer": "No. Cotizamos el tramo internacional que controlamos. Los aranceles, el IVA y las tasas locales los calcula su agente aduanal según la clasificación real del equipo y el valor CIF. La calculadora es una referencia del tramo logístico, no el costo final nacionalizado."
+          },
+          {
+              "question": "¿A qué puerto llega el equipo pesado en Venezuela?",
+              "answer": "Habitualmente a Puerto Cabello o La Guaira, pero no está garantizado: el peso, las dimensiones, la modalidad de carga y el plan de su agente aduanal definen el puerto de descarga. Puerto Cabello suele manejar carga pesada y sobredimensionada, pero el puerto final lo confirma su agente aduanal."
+          }
+      ],
+      "ctaHeading": "Cotice el flete de su equipo pesado desde EE. UU. a Venezuela",
+      "ctaDescription": "Comparta el equipo, sus medidas y el destino en Venezuela; le devolvemos el alcance del tramo internacional por escrito antes de reservar. El despacho lo confirma su agente aduanal ante el SENIAT.",
+      "whatsappPrefill": "#FRT_ES Hola, quiero cotizar flete de equipo pesado desde EE. UU. a Venezuela. Equipo: [marca/modelo/año]. Medidas: [alto/ancho/largo/peso]. Ubicación: [ciudad/estado]. Destino: [ciudad de Venezuela]. Ref: {{whatsapp_ref}}"
   }
 };
