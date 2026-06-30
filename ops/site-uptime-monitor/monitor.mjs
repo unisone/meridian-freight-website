@@ -32,7 +32,7 @@ const DEFAULT_TARGETS = [
   },
   {
     id: "paraguay-guide-es",
-    path: "/es/blog/paraguay-import-guide",
+    path: "/es/blog/import-farm-machinery-united-states-paraguay",
     expectedStatus: 200,
     expectedText: "Paraguay",
   },

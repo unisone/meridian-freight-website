@@ -75,7 +75,7 @@ jobs:
           # Locale + dynamic blog routes — these were the canary for the
           # 2026-05-19 @swc/helpers ESM tracing SEV (the static homepage stayed
           # 200 via edge cache while dynamic locale + blog lambdas 500'd).
-          for path in "/es" "/ru" "/es/destinations/argentina" "/blog/paraguay-import-guide" "/es/blog/paraguay-import-guide"; do
+          for path in "/es" "/ru" "/es/destinations/argentina" "/blog/import-farm-machinery-united-states-paraguay" "/es/blog/import-farm-machinery-united-states-paraguay"; do
             check_page "$path"
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${SITE}${path}")
             if [ "$STATUS" -eq 200 ]; then

@@ -42,7 +42,7 @@ The monitor currently checks:
 - `https://meridianexport.com/`
 - `https://meridianexport.com/pricing/calculator`
 - `https://meridianexport.com/schedule`
-- `https://meridianexport.com/es/blog/paraguay-import-guide`
+- `https://meridianexport.com/es/blog/import-farm-machinery-united-states-paraguay`
 - `https://meridianexport.com/es/destinations/argentina`
 
 The endpoint is protected with `CRON_SECRET`. Manual test calls must include:
@@ -113,7 +113,7 @@ Do not use GitHub Actions as the production uptime monitor for this site. GitHub
 
 ```bash
 curl -i https://meridianexport.com/api/health
-curl -I https://meridianexport.com/es/blog/paraguay-import-guide
+curl -I https://meridianexport.com/es/blog/import-farm-machinery-united-states-paraguay
 curl -I https://meridianexport.com/pricing/calculator
 ```
 
