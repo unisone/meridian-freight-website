@@ -124,7 +124,7 @@ export function StepSpecs({
                     type="number"
                     inputMode="decimal"
                     min={1}
-                    step={100}
+                    step={1}
                     value={equipmentValueUsd ?? ""}
                     onChange={(event) => {
                       const parsed = Number.parseFloat(event.target.value);

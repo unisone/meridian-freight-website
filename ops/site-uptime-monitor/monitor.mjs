@@ -42,6 +42,18 @@ const DEFAULT_TARGETS = [
     expectedStatus: 200,
     expectedText: "Argentina",
   },
+  {
+    id: "ghana-lp-en",
+    path: "/destinations/ghana/farm-tractors-usa",
+    expectedStatus: 200,
+    expectedText: "Ghana",
+  },
+  {
+    id: "kenya-destination-en",
+    path: "/destinations/kenya",
+    expectedStatus: 200,
+    expectedText: "Kenya",
+  },
 ];
 
 function requiredEnv(env, key) {

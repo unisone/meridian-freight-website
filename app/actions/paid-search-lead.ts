@@ -4,7 +4,7 @@ import { after } from "next/server";
 import { Resend } from "resend";
 import { track } from "@vercel/analytics/server";
 import { paidSearchLeadSchema, type PaidSearchLeadInput } from "@/lib/schemas";
-import { getPaidSearchDestination } from "@/lib/latam-paid-search-routes";
+import { resolvePaidSearchRoute } from "@/lib/latam-paid-search-routes";
 import { assertGoogleAdsTagMatches } from "@/lib/google-ads-tag";
 import { CONTACT } from "@/lib/constants";
 import { notifySlack } from "@/lib/slack";
@@ -12,7 +12,9 @@ import { sendCAPIEvent } from "@/lib/meta-capi";
 import { startTimer, log } from "@/lib/logger";
 
 const SOURCE_ACCOUNT_ID = "3783002123";
-const ROUTER_TAG = (process.env.FREIGHT_ROUTER_TAG ?? "#FRT_ES").trim() || "#FRT_ES";
+/** es leads keep the existing #FRT_ES (env-overridable); en (Africa) leads use #FRT_EN. */
+const ROUTER_TAG_ES = (process.env.FREIGHT_ROUTER_TAG ?? "#FRT_ES").trim() || "#FRT_ES";
+const ROUTER_TAG_EN = "#FRT_EN";
 const CONSENT_VERSION = "paid-search-consent-v1";
 
 function escapeHtml(input: string): string {
@@ -90,12 +92,15 @@ export async function submitPaidSearchLead(
   if (data.website) return { success: true };
 
   // 3. TRUST BOUNDARY: rederive route context from the validated routeKey ONLY.
-  const [country, segment] = data.routeKey.split("/");
-  const record = getPaidSearchDestination("es", country ?? "", segment ?? "");
+  // Locale is derived SERVER-SIDE from the resolved record (never a client value);
+  // es → LATAM registry, en → Africa registry, both keyed off record.locale.
+  const record = resolvePaidSearchRoute(data.routeKey);
   if (!record) {
     timer.error("unknown_route", { routeKey: data.routeKey });
     return { success: false, error: "Unsupported route." };
   }
+  const locale = record.locale;
+  const ROUTER_TAG = locale === "en" ? ROUTER_TAG_EN : ROUTER_TAG_ES;
 
   // 4. Google Ads tag guard (record mismatch, never throw / never add a conversion).
   const tagCheck = assertGoogleAdsTagMatches();
@@ -168,9 +173,12 @@ export async function submitPaidSearchLead(
     email: data.contact_email || null,
     phone: data.contact_phone || null,
     // leads.message is NOT NULL — synthesize a summary when the user leaves it blank.
+    // Locale-aware: es keeps the Spanish summary byte-for-byte; en gets English.
     message:
       data.message?.trim() ||
-      `Solicitud de cotización (paid-search): ${data.equipment_type} → ${record.country.name}`,
+      (locale === "en"
+        ? `Quote request (paid-search): ${data.equipment_type} → ${record.country.name}`
+        : `Solicitud de cotización (paid-search): ${data.equipment_type} → ${record.country.name}`),
     source_page: `paid-search: ${record.seo.canonicalPath}`,
     status: "new",
     utm_source: lt.utm_source || ft.utm_source || null,
@@ -276,14 +284,30 @@ export async function submitPaidSearchLead(
       segment: record.segment.key,
     }).catch(() => {});
 
-    // Visitor auto-reply (best-effort, Spanish). Only when an email was provided.
+    // Visitor auto-reply (best-effort). Locale-aware: es keeps the Spanish body
+    // byte-for-byte; en (Africa) gets an English body. Only when an email is present.
     if (data.contact_email) {
-      try {
-        await resend.emails.send({
-          from: CONTACT.fromEmail,
-          to: data.contact_email,
-          subject: `Recibimos su solicitud — Meridian (${record.country.name})`,
-          html: `
+      const autoReply =
+        locale === "en"
+          ? {
+              subject: `We received your request — Meridian (${record.country.name})`,
+              html: `
+            <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto">
+              <div style="background:#0ea5e9;color:white;padding:24px;border-radius:8px 8px 0 0">
+                <h1 style="margin:0;font-size:20px">Thanks for your enquiry</h1>
+              </div>
+              <div style="background:#f9fafb;padding:24px;border-radius:0 0 8px 8px;color:#111827">
+                <p>We received your quote request for ${safe(data.equipment_type)} bound for ${safe(record.country.name)}.</p>
+                <p>We source the machine in the USA, inspect it at origin before you pay, ship it, and clear your customs. We'll review the details and reply with the scope of the international leg within the next 24 business hours. The exact duty line and admissibility are confirmed by your licensed customs broker at destination.</p>
+                <p>If you'd rather move now, message us on <a href="${CONTACT.whatsappUrl}">WhatsApp</a>.</p>
+                <p style="color:#6b7280;font-size:13px">— The Meridian Freight team</p>
+              </div>
+            </div>
+          `,
+            }
+          : {
+              subject: `Recibimos su solicitud — Meridian (${record.country.name})`,
+              html: `
             <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto">
               <div style="background:#0ea5e9;color:white;padding:24px;border-radius:8px 8px 0 0">
                 <h1 style="margin:0;font-size:20px">Gracias por su consulta</h1>
@@ -296,6 +320,13 @@ export async function submitPaidSearchLead(
               </div>
             </div>
           `,
+            };
+      try {
+        await resend.emails.send({
+          from: CONTACT.fromEmail,
+          to: data.contact_email,
+          subject: autoReply.subject,
+          html: autoReply.html,
         });
       } catch (e) {
         log({ level: "warn", msg: "visitor_autoreply_failed", route: "action:paid-search-lead", error: String(e) });

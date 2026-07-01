@@ -877,6 +877,247 @@ Brazil is one of Meridian Freight's core shipping lanes. We know the ports, the 
 
 [Get a free quote](/contact) for your Brazil-bound shipment, or use our [freight calculator](/pricing/calculator) for an instant cost estimate.`,
   },
+  {
+    slug: "shipping-heavy-equipment-usa-to-kenya",
+    title:
+      "Shipping Heavy Equipment from the USA to Kenya: Cost, PVoC and Timeline (2026)",
+    metaTitle: "Ship Heavy Equipment USA to Kenya (2026)",
+    metaDescription:
+      "What it costs to ship heavy equipment from the USA to Kenya, why KEBS PVoC Route A origin inspection is the compliance path, Mombasa timelines, and how to start.",
+    keywords: [
+      "shipping heavy equipment from USA to Kenya",
+      "ship construction equipment to Kenya",
+      "heavy machinery import Kenya",
+      "KEBS PVoC used machinery Kenya",
+      "Mombasa heavy equipment shipping",
+      "import excavator from USA to Kenya",
+      "used heavy equipment Kenya import cost",
+    ],
+    publishedAt: "2026-07-01",
+    author: "Meridian Freight Team",
+    excerpt:
+      "An answer-first guide for Kenyan buyers importing heavy equipment from the USA: what drives the cost, why KEBS PVoC Route A means origin inspection, Mombasa timelines, and how machinery shipping differs from parcel shipping.",
+    category: "Kenya",
+    readingTimeMinutes: 8,
+    content: `## The Short Answer
+
+If you are importing heavy equipment from the USA to Kenya — an excavator, wheel loader, motor grader, backhoe, dozer, or a large agricultural machine — three things decide whether the project goes smoothly: the true landed cost drivers, meeting KEBS PVoC before the machine ships, and a realistic timeline through the Port of Mombasa.
+
+This guide answers those three questions in order. It is written for Kenyan buyers, contractors, and importers comparing a US machine against buying locally. It does not replace your Kenyan clearing agent — every duty and tax line is confirmed per shipment by your licensed agent, not promised here.
+
+Meridian has coordinated the export leg for 1,000+ machines to 40+ countries since 2013, with a near-perfect first-time customs-clearance record on the export documentation we prepare. We do not sell the machine. We move it, prepare it, and get it to the vessel with clean paperwork — and, for Kenya specifically, we make the origin inspection part of that same process.
+
+[Message us on WhatsApp](https://wa.me/16415161616) before you buy — we review the unit with you before any funds transfer.
+
+## What Actually Drives the Cost
+
+There is no single "price to ship a machine to Kenya," because the cost is a stack of separate line items, and the machine's size decides most of them. Anyone who quotes you one flat number before seeing the unit is guessing.
+
+The real cost drivers are:
+
+- **Machine dimensions and weight.** A compact machine that fits inside a container ships very differently from an oversized dozer or grader that needs a flat rack or roll-on/roll-off handling. This is the single biggest variable.
+- **US inland transport.** Moving the machine from the seller, auction, or dealer to the export port. Priced by distance and by whether the unit needs specialized oversize transport and route permits.
+- **Preparation, cleaning, and loading.** Partial dismantling when needed, phytosanitary and pre-shipment cleaning, secure packing, and photo documentation.
+- **Ocean freight and insurance to Mombasa.** Driven by container vs. flat rack vs. RoRo, the export port, and the carrier.
+- **PVoC inspection and certification** in the country of origin (covered below).
+- **Kenya-side costs** — import duty, VAT, IDF and other levies, port charges, and inland delivery — all confirmed by your clearing agent, not by Meridian.
+
+We quote the export-side line items as ranges based on the actual machine and route once you send the details. We do not publish specific dollar figures here, because a real number depends on your exact unit, pickup location, and sailing — and any duty or tax figure must be confirmed by your Kenyan clearing agent per shipment. Use our [freight calculator](/pricing/calculator) for an initial export-side estimate, then send us the machine for a firm quote.
+
+## KEBS PVoC: Why Origin Inspection Is the Compliance Path
+
+This is the part most first-time importers miss, and it is where Meridian's process is built for Kenya specifically.
+
+Kenya runs the **Pre-Export Verification of Conformity (PVoC)** programme through the Kenya Bureau of Standards (KEBS). Goods imported into Kenya generally need a **Certificate of Conformity (CoC)** to clear customs. For used machinery, the relevant route is **PVoC Route A: conformity is verified by inspection in the country of origin, before the machine is shipped.**
+
+Read that again, because it changes the whole plan: the inspection does not happen when the machine arrives in Mombasa. It happens in the USA, before loading. If you buy a machine and ship it without that origin inspection and certificate, you can arrive at Mombasa without the document you need to clear — an expensive place to discover a paperwork gap.
+
+This is exactly why Meridian's origin inspection **is** the compliance path rather than an extra hurdle. Because we already handle the machine on the ground in the USA — pickup, preparation, cleaning, loading — coordinating the Route A origin inspection into that same window is a natural fit, not a bolt-on. The machine is inspected where it already is, before it sails.
+
+What stays outside our lane: the CoC is issued by the appointed inspection body under the KEBS programme, and the final customs entry, duty classification, and clearance in Mombasa are handled by **your licensed Kenyan clearing agent**. Confirm the current PVoC requirements and the exact duty line for your machine with KEBS and your agent before you commit — those are per-shipment confirmations, not guarantees we make for you.
+
+You can read how the Kenya-side authorities split up on our [Kenya heavy equipment page](/destinations/kenya/heavy-equipment-usa) and the broader [Kenya destination overview](/destinations/kenya).
+
+## Mombasa and the Timeline
+
+The **Port of Mombasa** is the gateway for heavy equipment entering Kenya, and for most inland Kenyan destinations — Nairobi, Nakuru, Eldoret, and beyond — it is the port your machine will arrive through.
+
+A realistic timeline has three phases, and none of them are instant:
+
+- **US preparation and loading:** typically a few weeks, depending on pickup distance, the machine, whether it needs dismantling, and vessel availability. The Route A origin inspection is scheduled inside this window.
+- **Ocean transit to Mombasa:** several weeks depending on the export port and the carrier's routing.
+- **Clearance and inland delivery in Kenya:** driven by your clearing agent, KRA processing, and any inspection on arrival.
+
+Treat these as planning ranges, not promises — the exact numbers depend on your unit, the sailing, and Kenya-side processing that your agent controls. The point is to plan for weeks-to-months end to end, not days, and to start the PVoC step early so it never becomes the bottleneck.
+
+## Machinery Shipping Is Not Parcel Shipping
+
+One qualifying point that saves a lot of confusion: importing a machine is a different discipline from sending a parcel or a small consignment.
+
+If you are moving a single carton, a pallet of parts, or a personal consignment, that is a courier or groupage job — small, standardized, and priced off a rate card. Heavy equipment is the opposite: a high-value, oversized, non-standard unit that has to be assessed individually, prepared, possibly dismantled, inspected under PVoC Route A, and matched to the right freight mode. The paperwork, the inspection regime, and the handling are all machinery-specific.
+
+Meridian's lane is that machinery work — used heavy equipment and agricultural machines from the US and Canadian dealer and auction network, moved as a single coordinated project from the seller's yard to the vessel. If your question is really about a small parcel, a courier is the better tool. If it is a machine, that is exactly what we do.
+
+## How to Start
+
+Send us the unit before you buy. With the listing or auction link, make, model, year, serial number, hours, photos, the US pickup ZIP, and your Kenyan destination, we can screen the export scope, size the freight, and build the Route A origin inspection into the plan — before any funds move.
+
+[Message us on WhatsApp](https://wa.me/16415161616) or reach us through the [contact page](/contact) to review your machine and destination. For an initial export-side estimate, use the [freight calculator](/pricing/calculator).`,
+  },
+  {
+    slug: "import-used-tractors-usa-to-ghana",
+    title: "How to Import a Used Tractor from the USA to Ghana",
+    metaTitle: "Import a Used Tractor USA to Ghana",
+    metaDescription:
+      "How Ghanaian buyers import a used tractor from the USA: the payment path, GRA duty, GSA import inspection, sourcing from US dealers and auctions, and inspection before you pay.",
+    keywords: [
+      "import used tractor from USA to Ghana",
+      "ship tractor from USA to Ghana",
+      "used farm tractor Ghana import",
+      "GRA duty agricultural machinery Ghana",
+      "GSA import inspection Ghana",
+      "buy US tractor Ghana",
+      "Tema port tractor import",
+    ],
+    publishedAt: "2026-07-01",
+    author: "Meridian Freight Team",
+    excerpt:
+      "A step-by-step guide for Ghanaian buyers importing a used tractor from the USA: sourcing, the payment path, inspection before you pay, GRA duty, and GSA import inspection.",
+    category: "Ghana",
+    readingTimeMinutes: 7,
+    content: `## The Short Answer
+
+Importing a used tractor from the USA to Ghana is very doable, and the process is more predictable than most first-time buyers expect — as long as you get one thing right: inspect before you pay, and separate what Meridian coordinates from what your Ghanaian clearing agent confirms.
+
+This guide walks the path a Ghanaian buyer actually follows: finding the right tractor in the US dealer and auction network, checking it before money moves, the payment sequence, and how duty (GRA) and import inspection (GSA) work on the Ghana side. It does not replace your licensed clearing agent — every duty and tax line is confirmed per shipment by your agent, not promised here.
+
+Meridian does not sell tractors. We coordinate the export leg — pickup, preparation, documentation, and ocean freight — and we have done it for 1,000+ machines to 40+ countries since 2013, with a near-perfect first-time customs-clearance record on the export documentation we prepare.
+
+[Message us on WhatsApp](https://wa.me/16415161616) before you buy — we review the unit with you before any funds transfer.
+
+## Sourcing from the US Dealer and Auction Network
+
+The reason so many Ghanaian buyers look to the USA is depth of supply. The US market carries a large, constantly-turning inventory of used tractors across every horsepower class — 2WD and 4WD, with or without cab, with or without attached implements — through dealers and equipment auctions.
+
+That depth is an advantage and a trap. A well-maintained unit at a good price is common; so is a tired machine with hidden hours or a title problem. The skill is not finding a tractor — it is screening the right one before you commit. Meridian works across that US and Canadian dealer and auction network, and we review the export-side data on the unit you are considering: dimensions, weight, whether it fits a container, and whether the seller's title and documentation are in order.
+
+Send us the listing or auction link, make, model, year, serial number, hours, and photos, and we screen it with you first.
+
+## Inspect Before You Pay
+
+This is the single most important habit, and it is the reason to talk to us **before** the transfer, not after.
+
+Buying a machine you cannot stand next to is normal in this trade — but it should never be blind. For a used tractor, arranging an inspection or an independent inspector before payment is possible and, for higher-value units, recommended. Meridian can coordinate access to the machine for an inspector. Before any movement, we also review the seller's data, the serial number, and the title documentation with you to catch obvious red flags.
+
+What Meridian does not do is assess the tractor's mechanical condition or guarantee its state at purchase — that is what the independent inspection and the seller's track record are for. The rule is simple: money moves after the unit checks out, not before.
+
+## The Payment Path, in Order
+
+A clean import follows a clear sequence, and each step has an owner:
+
+- **Screen the unit** with Meridian and, ideally, an inspector — before committing.
+- **Confirm the purchase** with the seller once the machine checks out.
+- **Meridian coordinates the export leg** — US pickup and inland transport, preparation and cleaning, packing and loading, and export documentation (Bill of Lading, commercial invoice, packing list, AES/EEI filing, and phytosanitary certificate when required).
+- **Ocean freight to Ghana** — routed to the Port of Tema (or the agreed port), with cargo insurance.
+- **Your Ghanaian clearing agent takes over at arrival** — customs entry, duty and tax, GSA inspection, port charges, and final delivery.
+
+One point of contact for the export leg, one invoice, no handoffs between companies that have never worked together. The Ghana-side leg stays with your licensed agent, who is the party authorized to clear the goods.
+
+## GRA Duty and GSA Inspection
+
+Two Ghanaian authorities matter for your tractor, and it helps to know which does what.
+
+**Ghana Revenue Authority (GRA)** is customs and tax: import entry, duty and tariff classification, VAT, and levies such as NHIL and GETFund. Agricultural machinery can attract favourable — sometimes zero-rated — duty treatment in Ghana, which is part of why a US tractor can pencil out. But treat that as **verify-before-you-quote, not a promise**: whether your specific tractor qualifies, and at what rate, is confirmed by GRA classification through your clearing agent, per shipment. Do not budget on a zero-rate assumption until your agent confirms the exact duty line for your unit.
+
+**Ghana Standards Authority (GSA)** runs import inspection — a conformity assessment for imported goods, including used machinery. Importers register with the GSA and provide a certificate of conformance against the applicable Ghana Standard. Your agent coordinates this on the Ghana side; confirm the current GSA requirements with them before you commit.
+
+The pattern to remember: Meridian delivers clean export documentation so clearance has no surprises; GRA duty and GSA inspection are confirmed and handled by your Ghanaian agent. Neither Meridian nor this page promises a landed cost or a duty rate — those are per-shipment confirmations.
+
+You can see how these authorities line up on our [Ghana farm tractors page](/destinations/ghana/farm-tractors-usa) and the [Ghana destination overview](/destinations/ghana).
+
+## How to Start
+
+Send us the tractor before you buy. With the listing or auction link, make, model, year, serial number, hours, photos, the US pickup ZIP, and your Ghanaian destination, we screen the export scope and price the freight — before any funds move — while your agent confirms the GRA and GSA side.
+
+[Message us on WhatsApp](https://wa.me/16415161616) or use the [contact page](/contact) to review your unit. For an initial export-side estimate, try the [freight calculator](/pricing/calculator).`,
+  },
+  {
+    slug: "kebs-pvoc-used-machinery-origin-inspection",
+    title:
+      "KEBS PVoC for Used Machinery: Why Origin Inspection Is Required — and How We Do It",
+    metaTitle: "KEBS PVoC for Used Machinery Explained",
+    metaDescription:
+      "A plain-English explanation of Kenya's KEBS PVoC for used machinery: what Route A origin inspection requires, what Meridian's origin inspection covers, and what stays with your clearing agent.",
+    keywords: [
+      "KEBS PVoC used machinery",
+      "PVoC Route A origin inspection Kenya",
+      "Certificate of Conformity Kenya machinery",
+      "KEBS PVoC explained",
+      "used machinery inspection Kenya import",
+      "PVoC compliance Kenya",
+    ],
+    publishedAt: "2026-07-01",
+    author: "Meridian Freight Team",
+    excerpt:
+      "A plain explanation of Kenya's KEBS PVoC programme for used machinery: what Route A origin inspection requires, what Meridian's origin inspection covers, and what stays with the buyer and clearing agent.",
+    category: "Kenya",
+    readingTimeMinutes: 6,
+    content: `## The Short Answer
+
+If you are importing used machinery into Kenya, KEBS PVoC is the compliance step most first-time buyers underestimate. The key fact: for used machinery, conformity is verified by inspection **in the country of origin, before the machine ships** — not on arrival in Mombasa. That is PVoC Route A, and it is why Meridian builds the origin inspection into the export process rather than treating it as an afterthought.
+
+This page explains PVoC plainly, what Route A actually requires, what our origin inspection covers, and — just as important — what stays with you and your Kenyan clearing agent. Nothing here replaces KEBS guidance or your licensed agent; the current requirements and your machine's exact treatment are confirmed per shipment.
+
+## What PVoC Actually Is
+
+**PVoC** stands for **Pre-Export Verification of Conformity**. It is a programme run by the **Kenya Bureau of Standards (KEBS)** to confirm that goods imported into Kenya meet the applicable standards **before** they arrive in the country.
+
+The practical output of the programme is a **Certificate of Conformity (CoC)**. For goods that fall under PVoC, that certificate is generally required to clear the goods through customs in Kenya. No valid conformity document, and your machine can sit at Mombasa while you sort out paperwork that was supposed to be done before it sailed.
+
+The whole idea of PVoC is in the name: **pre-export**. It is designed to catch conformity issues at origin, where they can still be fixed, instead of at the border, where they are expensive.
+
+## What Route A Requires
+
+PVoC has more than one route, and the route that applies to used machinery is **Route A**.
+
+Under **Route A, conformity is verified by physical inspection in the country of origin**, before shipment. For a used machine coming from the USA, that means the inspection happens in the USA — at the yard, dealer, or facility where the machine already is — while it is being prepared for export. The appointed inspection body under the KEBS programme carries out the verification and, when the machine passes, the Certificate of Conformity is issued for that shipment.
+
+The sequence that matters:
+
+- The machine is inspected **at origin**, before loading.
+- The Certificate of Conformity is issued **for that shipment**.
+- The machine then sails with the conformity document already in hand.
+- At Mombasa, your clearing agent uses that document as part of the customs entry.
+
+Skip the origin inspection and you have skipped the step that produces the document you need to clear. That is the failure mode Route A is built to prevent.
+
+## What Meridian's Origin Inspection Covers
+
+Here is why Route A fits the way Meridian already works.
+
+Because we coordinate the machine on the ground in the USA — pickup, preparation, phytosanitary and pre-shipment cleaning, packing, loading, and photo documentation — the machine is already in our hands, at a known location, in the export window. Scheduling the Route A origin inspection into that same window is a natural fit, not a bolt-on: the inspection body sees the machine where it already is, before it sails, alongside the preparation we are doing anyway.
+
+So Meridian's role on the inspection is coordination and access: we present the machine, in the right condition, at the right time, with the export documentation (Bill of Lading, commercial invoice, packing list, and the rest) lined up so the inspection and the shipment move together. We have done this export-side coordination for 1,000+ machines to 40+ countries since 2013, with a near-perfect first-time customs-clearance record on the export documentation we prepare — the origin inspection is the same discipline applied to Kenya's specific requirement.
+
+## What Stays With the Buyer and Clearing Agent
+
+Being precise about the boundary keeps everyone out of trouble.
+
+Meridian does **not** issue the Certificate of Conformity — that is issued by the appointed inspection body under the KEBS PVoC programme. And Meridian does **not** clear your machine in Kenya. The customs entry, duty and tariff classification, import VAT and levies, any inspection on arrival, port charges, and final delivery all stay with **your licensed Kenyan clearing agent**, who is the party authorized to operate before the customs authority.
+
+Two things you should confirm per shipment, not assume:
+
+- **Current PVoC scope and requirements** — check with KEBS and your agent that your machine falls under the programme and what the current process is; the details are confirmed per shipment, not guaranteed here.
+- **The duty line for your machine** — your clearing agent confirms classification and the exact duty and taxes; no landed cost is promised on this page.
+
+## Where This Fits
+
+PVoC is one piece of a used-machinery import into Kenya. For how the cost, port, and timeline fit around it, see our guide on [shipping heavy equipment from the USA to Kenya](/blog/shipping-heavy-equipment-usa-to-kenya). For how the Kenya-side authorities divide up, see the [Kenya destination overview](/destinations/kenya).
+
+If you want the origin inspection handled as part of one coordinated export project, that is exactly what we do.
+
+[Message us on WhatsApp](https://wa.me/16415161616) or use the [contact page](/contact) to review your machine and destination before you buy.`,
+  },
 ];
 
 // ── Locale-aware accessors ──────────────────────────────────────────────────

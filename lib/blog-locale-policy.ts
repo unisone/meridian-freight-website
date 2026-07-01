@@ -57,12 +57,34 @@ const IMPORT_PILLAR_POLICIES: Record<string, BlogLocalePolicy> = {
   },
 };
 
+/**
+ * Africa Wave-1 blog guides. These support the English-only Africa destination
+ * pages (Kenya/Ghana) and have no ES or RU counterparts — the copy lives only in
+ * `content/blog.ts`, not `blog-es.ts`/`blog-ru.ts`. Each is a standalone `en`
+ * group (self-referential x-default) so the sitemap and hreflang never advertise
+ * a non-existent `/es` or `/ru` variant that would 404.
+ */
+const AFRICA_WAVE1_GUIDE_SLUGS = new Set<string>([
+  "shipping-heavy-equipment-usa-to-kenya",
+  "import-used-tractors-usa-to-ghana",
+  "kebs-pvoc-used-machinery-origin-inspection",
+]);
+
+const AFRICA_WAVE1_GUIDE_POLICY: BlogLocalePolicy = {
+  indexableLocales: ["en"],
+  alternateLocales: ["en"],
+  xDefaultLocale: "en",
+};
+
 export function getBlogLocalePolicy(slug: string): BlogLocalePolicy {
   if (isLatamImportGuideSlug(slug)) {
     return LATAM_IMPORT_GUIDE_POLICY;
   }
   if (Object.prototype.hasOwnProperty.call(IMPORT_PILLAR_POLICIES, slug)) {
     return IMPORT_PILLAR_POLICIES[slug];
+  }
+  if (AFRICA_WAVE1_GUIDE_SLUGS.has(slug)) {
+    return AFRICA_WAVE1_GUIDE_POLICY;
   }
   return DEFAULT_BLOG_POLICY;
 }

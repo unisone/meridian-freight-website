@@ -31,8 +31,9 @@ const PaidSearchQuoteForm = dynamic(
 interface PaidSearchQuoteFormLazyProps {
   routeKey: string;
   caveat: string;
+  locale: "es" | "en";
 }
 
-export function PaidSearchQuoteFormLazy({ routeKey, caveat }: PaidSearchQuoteFormLazyProps) {
-  return <PaidSearchQuoteForm routeKey={routeKey} caveat={caveat} />;
+export function PaidSearchQuoteFormLazy({ routeKey, caveat, locale }: PaidSearchQuoteFormLazyProps) {
+  return <PaidSearchQuoteForm routeKey={routeKey} caveat={caveat} locale={locale} />;
 }

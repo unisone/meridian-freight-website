@@ -434,6 +434,114 @@ const destinationsEn: Destination[] = [
       { question: "What farm equipment is in demand in Bolivia?", answer: "Combines, tractors, planters, and sprayers are in high demand for Bolivia's growing soybean and grain sector. The Santa Cruz department is the agricultural powerhouse and the primary destination for imported US farm equipment.", category: "Bolivia" },
     ],
   },
+  {
+    slug: "ghana",
+    country: "Ghana",
+    port: "Tema",
+    region: "Africa",
+    metaTitle: "Ship Machinery to Ghana — Tema Port",
+    metaDescription:
+      "Import used machinery from the USA to Tema, Ghana. We source the machine, inspect it at origin, ship it, and clear your Ghana customs. We're an importer, not a dealer.",
+    keywords: [
+      "ship equipment to ghana",
+      "machinery export ghana",
+      "import machinery to ghana",
+      "used tractors to ghana",
+      "heavy equipment shipping tema",
+      "container shipping ghana",
+    ],
+    heroDescription:
+      "We import used machinery from the USA and Canada to Tema — Ghana's largest port and the gateway to the interior. We're not a dealer: we source the machine in the US, inspect it at origin before you pay, book the ocean freight to Tema, and clear your Ghana customs through a licensed broker.",
+    transitDays: "22-32",
+    carriers: ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
+    commonEquipment: [
+      "Tractors",
+      "Excavators",
+      "Loaders",
+      "Combines",
+      "Bulldozers",
+    ],
+    shippingNotes:
+      "Meridian handles the US export side and coordinates clearance into Ghana. A licensed Ghana customs broker confirms the exact import-duty line and used-age admissibility for your specific machine against the current Ghana Revenue Authority (GRA) tariff before you commit — agricultural machinery can attract a zero-rated import duty, but that is a verify-before-quoting item, not a promise, and VAT, NHIL/GETFund levies and other charges may still apply. Used machinery may also require conformity assessment under the Ghana Standards Authority (GSA) import inspection programme. We never quote a final landed cost until your broker confirms these lines for your unit.",
+    containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
+    faqs: [
+      { question: "Are you a machinery dealer in Ghana?", answer: "No. We don't sell machines or hold stock in Ghana. We are an importer: we source the used machine in the USA, inspect it at origin before you pay, ship it to Tema, and clear your Ghana customs through a licensed broker.", category: "Ghana" },
+      { question: "Who confirms Ghana import duty and used-age admissibility?", answer: "A licensed Ghana customs broker confirms the exact duty line and used-age admissibility for your specific machine against the current GRA tariff before you commit. Agricultural machinery can attract a zero-rated duty, but that is verified per machine, and VAT and levies may still apply. Used machinery may also need GSA import-inspection conformity assessment.", category: "Ghana" },
+      { question: "What equipment is commonly imported into Ghana?", answer: "Tractors, excavators, loaders, combines, and bulldozers are common. We source across the US dealer and auction network and inspect the actual machine at origin so you're buying a verified unit, not a photo.", category: "Ghana" },
+    ],
+  },
+  {
+    slug: "kenya",
+    country: "Kenya",
+    port: "Mombasa",
+    region: "Africa",
+    metaTitle: "Ship Machinery to Kenya — Mombasa Port",
+    metaDescription:
+      "Import used machinery from the USA to Mombasa, Kenya. We source the machine, inspect it at origin, ship it, and clear your Kenya customs. We're an importer, not a dealer.",
+    keywords: [
+      "ship equipment to kenya",
+      "machinery export kenya",
+      "import machinery to kenya",
+      "used tractors to kenya",
+      "heavy equipment shipping mombasa",
+      "container shipping kenya",
+    ],
+    heroDescription:
+      "We import used machinery from the USA and Canada to Mombasa — Kenya's largest port and the gateway to East Africa. We're not a dealer: we source the machine in the US, inspect it at origin before you pay, book the ocean freight to Mombasa, and clear your Kenya customs through a licensed clearing agent.",
+    transitDays: "30-42",
+    carriers: ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
+    commonEquipment: [
+      "Tractors",
+      "Excavators",
+      "Loaders",
+      "Combines",
+      "Bulldozers",
+    ],
+    shippingNotes:
+      "Meridian handles the US export side and coordinates clearance into Kenya. A licensed Kenyan clearing agent confirms the exact import-duty line and used-age admissibility for your specific machine against the current Kenya Revenue Authority (KRA) tariff before you commit. Imports into Kenya must also meet Kenya Bureau of Standards (KEBS) requirements under the Pre-Export Verification of Conformity (PVoC) programme — under PVoC Route A, conformity is verified by inspection in the country of origin, which is exactly where we inspect the machine before you pay. A roughly 8-year age limit applies to some vehicle categories, so used-machinery admissibility is confirmed per shipment, and import VAT and other charges may apply. We never quote a final landed cost until your agent confirms these lines for your unit.",
+    containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
+    faqs: [
+      { question: "Are you a machinery dealer in Kenya?", answer: "No. We don't sell machines or hold stock in Kenya. We are an importer: we source the used machine in the USA, inspect it at origin before you pay, ship it to Mombasa, and clear your Kenya customs through a licensed clearing agent.", category: "Kenya" },
+      { question: "How does origin inspection help with Kenya's KEBS PVoC?", answer: "Kenya's KEBS Pre-Export Verification of Conformity (PVoC) programme has a Route A that verifies conformity by inspection in the country of origin. We already inspect the actual machine at origin before you pay, so the compliance step happens where we work. A Certificate of Conformity is required to clear the goods, coordinated by your clearing agent.", category: "Kenya" },
+      { question: "Who confirms Kenya import duty and used-age admissibility?", answer: "A licensed Kenyan clearing agent confirms the exact duty line and used-age admissibility for your specific machine against the current KRA tariff before you commit. A roughly 8-year age limit applies to some vehicle categories, so admissibility is verified per shipment, and import VAT may still apply.", category: "Kenya" },
+    ],
+  },
+  {
+    slug: "tanzania",
+    country: "Tanzania",
+    port: "Dar es Salaam",
+    region: "Africa",
+    metaTitle: "Ship Machinery to Tanzania — Dar es Salaam",
+    metaDescription:
+      "Import used machinery from the USA to Dar es Salaam, Tanzania. We source the machine, inspect it at origin, ship it, and clear your Tanzania customs. We're an importer, not a dealer.",
+    keywords: [
+      "ship equipment to tanzania",
+      "machinery export tanzania",
+      "import machinery to tanzania",
+      "used tractors to tanzania",
+      "heavy equipment shipping dar es salaam",
+      "container shipping tanzania",
+    ],
+    heroDescription:
+      "We import used machinery from the USA and Canada to Dar es Salaam — Tanzania's largest port and the gateway to East and Central Africa. We're not a dealer: we source the machine in the US, inspect it at origin before you pay, book the ocean freight to Dar es Salaam, and clear your Tanzania customs through a licensed clearing agent.",
+    transitDays: "32-45",
+    carriers: ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
+    commonEquipment: [
+      "Tractors",
+      "Excavators",
+      "Loaders",
+      "Combines",
+      "Bulldozers",
+    ],
+    shippingNotes:
+      "Meridian handles the US export side and coordinates clearance into Tanzania. A licensed Tanzanian clearing agent confirms the exact import-duty line and used-age admissibility for your specific machine against the current Tanzania Revenue Authority (TRA) tariff before you commit. Imports into Tanzania must also meet Tanzania Bureau of Standards (TBS) requirements: TBS Pre-Shipment Verification of Conformity (PVoC) is mandatory, conformity is verified before shipment, and a Certificate of Conformity is required to clear the goods — inspecting the machine at origin is how we support that. Used-machinery admissibility is confirmed per shipment, and import VAT and other charges may apply. We never quote a final landed cost until your agent confirms these lines for your unit.",
+    containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
+    faqs: [
+      { question: "Are you a machinery dealer in Tanzania?", answer: "No. We don't sell machines or hold stock in Tanzania. We are an importer: we source the used machine in the USA, inspect it at origin before you pay, ship it to Dar es Salaam, and clear your Tanzania customs through a licensed clearing agent.", category: "Tanzania" },
+      { question: "How does origin inspection help with Tanzania's TBS PVoC?", answer: "Tanzania's TBS Pre-Shipment Verification of Conformity (PVoC) is mandatory: conformity is verified before shipment. We inspect the actual machine at origin before you pay, which fits how the process is meant to run. A Certificate of Conformity is required to clear the goods, coordinated by your clearing agent.", category: "Tanzania" },
+      { question: "Who confirms Tanzania import duty and used-age admissibility?", answer: "A licensed Tanzanian clearing agent confirms the exact duty line and used-age admissibility for your specific machine against the current TRA tariff before you commit. Admissibility is verified per shipment, and import VAT and other charges may still apply.", category: "Tanzania" },
+    ],
+  },
 ];
 
 // ES: LATAM destinations first (Mexico, Colombia, Brazil), then rest

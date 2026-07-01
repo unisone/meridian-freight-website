@@ -45,6 +45,18 @@ export function generateStaticParams() {
 }
 
 function getGenericDestinationLanguageAlternates(slug: string) {
+  // Africa Wave-1 hubs are ENGLISH-ONLY (no es/ru content), so emitting es/ru
+  // alternates would produce soft-404s. Mirror app/sitemap.ts: for Africa hubs,
+  // return only a self-referential en + x-default (locale-neutral URL, no /en).
+  const dest = getDestinationBySlug(slug, "en");
+  if (dest?.region === "Africa") {
+    const canonical = `${SITE.url}/destinations/${slug}`;
+    return {
+      en: canonical,
+      "x-default": canonical,
+    };
+  }
+
   const languages: Record<string, string> = {
     en: `${SITE.url}/destinations/${slug}`,
     ru: `${SITE.url}/ru/destinations/${slug}`,
