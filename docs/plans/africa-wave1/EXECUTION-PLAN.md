@@ -92,14 +92,18 @@ Segments: `farm-tractors-usa` + `heavy-equipment-usa` (KE/TZ), `farm-tractors-us
 
 ---
 
-## Phase 3 — Indexation & guides — 🔒 GATED on Phase 2
+## Phase 3 — Indexation & guides — 🔄 CONTENT DONE, indexing gated on deploy
 
-| # | Task | Status | Verify |
+| # | Task | Status | Evidence |
 |---|---|---|---|
-| 3.1 | Sitemap includes all new EN routes (hubs + LPs) (T1.7) | ⬜ | sitemap test asserts canonical paths present |
-| 3.2 | Deploy to prod; GSC Request Indexing for all new URLs same day | ⬜ | GSC submission log/screenshots |
-| 3.3 | 3 EN guides in `content/blog.ts`: Kenya cost/PVoC · Ghana used tractors · KEBS origin-inspection explainer; interlinked hub↔guide | ⬜ | guides live 200, sitemapped, links resolve |
-| 3.4 | Rank-tracking baseline (4 measured SERPs) registered as diff-anchor | ⬜ | snapshot stored, re-runnable |
+| 3.1 | Sitemap includes all new EN routes (hubs + LPs) | ✅ | render-verified in sitemap.xml (en-only groups) |
+| 3.3 | 3 EN guides (`058fa98`): Kenya cost/PVoC · Ghana tractors · KEBS explainer, interlinked | ✅ | all 3 render 200, internal links present, sitemap en-only (no es/ru leak); 261 tests |
+| 3.5 | Monitor + smoke-test Africa URLs (`8a0d14f`) | ✅ | Ghana LP/hub + Kenya hub/LP added |
+| 3.2 | Deploy to prod; GSC Request Indexing for all 9 URLs same day | ⬜ (gated) | needs prod deploy first |
+| 3.4 | Rank-tracking baseline (4 measured SERPs) as diff-anchor | ⬜ | after deploy |
+
+**Website build COMPLETE on `feat/africa-wave1`:** 6 LPs + 3 hubs + 3 guides + monitor, all verified, clean tree, 261 tests, tsc clean. Commits: `adcf8ec` Ghana · `77c96f3` KE/TZ · `8a0d14f` monitor · `058fa98` guides.
+**⚠ Deploy entanglement:** the branch also carries the pre-existing `feat/import-authority-pillar` blog work + the Phase-0 hygiene commits. Merging to main deploys all three together — operator decision on scope before deploy.
 
 ---
 
