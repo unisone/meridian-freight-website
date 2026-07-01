@@ -32,32 +32,33 @@
 
 ---
 
-## Phase 0 — Repo hygiene (finish stray WIP, clean start) — 🔄 IN PROGRESS
+## Phase 0 — Repo hygiene (finish stray WIP, clean start) — ✅ DONE
 
-The website repo has uncommitted work unrelated to Africa. Per operator: finish any loose ends, commit clean, then branch for Africa.
+Uncommitted work was investigated by a fresh agent: **230/230 vitest passing, typecheck clean (exit 0), no TODO/stub markers, all 4 code groups complete and tested.** No loose ends to finish. Committed in logical groups; bulky QA snapshots + session tooling gitignored (not source).
 
-| # | Task | Status | Verify |
+| # | Task | Status | Evidence |
 |---|---|---|---|
-| 0.1 | Investigate + test all uncommitted/untracked WIP (cron-auth, 404 handling, cookie-consent/config, calculator, docs) | 🔄 | investigation agent running: completeness + `vitest` + build/typecheck |
-| 0.2 | Finish any loose end the investigation surfaces (no half-wired features) | ⬜ | fresh verifier: feature complete + tests green |
-| 0.3 | Commit the WIP in logical groups with clear messages | ⬜ | `git log` shows clean, scoped commits |
-| 0.4 | Cut `feat/africa-wave1` branch for the Africa build | ⬜ | `git branch --show-current` = feat/africa-wave1 |
+| 0.1 | Investigate + test all uncommitted WIP | ✅ | agent: 230/230 vitest, tsc exit 0, per-group complete |
+| 0.2 | Finish loose ends | ✅ | none found — all groups internally consistent + tested |
+| 0.3 | Commit WIP in logical groups | ✅ | `da07a33` cron-auth · `c14de8e` 404 · `a8e3edc` a11y/config · `04d458a` calculator · `7e4c5fd` docs |
+| 0.4 | Cut `feat/africa-wave1` branch | ✅ | branch = feat/africa-wave1; plans committed `f6cefc9`; tree clean |
 
 ---
 
-## Phase 1 — Diagnose & repair the English /destinations section — ⬜ PENDING
+## Phase 1 — /destinations health — ✅ RESOLVED (no outage; 404 hygiene already fixed)
 
-**Symptom (production, meridianexport.com, 2026-07-01):** every EN destinations URL returns HTTP 200 + "Something went wrong" error boundary; unknown slugs soft-404. **Open question the investigation resolves:** does this reproduce on the build branch, or is it production/main-only (i.e., already fixed here)? Phase scope adapts to the answer.
+**Correction:** the earlier "whole EN /destinations section is broken in production" was a **grep false positive** — the matched string "Something went wrong" ships in the next-intl message payload on every *healthy* page, not as a rendered error boundary. Verified on production 2026-07-01:
+- `/destinations`, `/destinations/kazakhstan`, `/destinations/brazil` → HTTP 200, real hero H1s ("Ship Machinery to Kazakhstan"), 13–20 route markers, **no error-boundary H1**. Pages are healthy.
+- Agent confirmed: `git diff main...HEAD` for all destinations code is empty; dev-server render succeeds; `getAllDestinations`/slug pages fall back / `notFound()` safely, never throw.
 
-| # | Task | Status | Verify |
+**One real item — already built, ships on deploy:** production returns a **soft-404** (HTTP 200 + "page not found" content) for unknown slugs. The committed 404 work (`c14de8e`: `globalNotFound` + localized not-found) makes these return a real HTTP 404 (verified locally). No new code needed.
+
+| # | Task | Status | Evidence |
 |---|---|---|---|
-| 1.1 | Confirm whether the breakage reproduces on the build branch; identify root cause (file:line) | ⬜ | dev-server curl of `/destinations` + `/destinations/kazakhstan`, or code-level RCA with evidence |
-| 1.2 | Fix the throw so all 14 EN destination pages + index render 200 with real content | ⬜ | verifier curls the matrix: all 200, real content, no error boundary |
-| 1.3 | Unknown destination slug → real 404 (locale-aware `generateStaticParams` + `dynamicParams=false`, mirroring PR #180 blog fix) | ⬜ | verifier: bogus slug returns 404, not soft-200 |
-| 1.4 | ES/RU destinations unaffected | ⬜ | verifier + existing tests green |
-| 1.5 | Add ≥1 EN destination URL to uptime monitor + smoke test (none today → this outage went unalerted) | ⬜ | `ops/site-uptime-monitor/monitor.mjs` + `.github/workflows/smoke-test.yml` include it |
-
-*If 1.1 finds it does NOT reproduce on this branch: 1.2/1.4 collapse to a regression check, and the fix is a deploy of the current branch — recorded as such, not re-coded.*
+| 1.1 | Confirm outage claim | ✅ | production probe: healthy render, false positive corrected |
+| 1.2 | Real 404 for unknown slugs | ✅ (code) / ⬜ (deploy) | fixed in `c14de8e`; verify HTTP 404 in prod after Phase 3 deploy |
+| 1.3 | Add ≥1 EN destination URL to uptime monitor + smoke test | ⬜ | `ops/site-uptime-monitor/monitor.mjs` + `.github/workflows/smoke-test.yml` include it (do in Phase 3 with the new Africa URLs) |
+| 1.4 | (Optional) prod-side RCA if any real error surfaces in Sentry/Vercel logs | ⏸️ | separate prod investigation only if Sentry shows a real thrown digest — none evidenced |
 
 ---
 
