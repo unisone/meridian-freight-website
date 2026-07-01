@@ -10,8 +10,8 @@ import {
 } from "@/lib/latam-paid-search-routes";
 
 describe("africa paid-search route registry", () => {
-  it("contains exactly 2 Ghana records (own count invariant, distinct from LATAM's 14)", () => {
-    expect(AFRICA_PAID_SEARCH_DESTINATIONS).toHaveLength(2);
+  it("contains exactly 6 records (Ghana + Kenya + Tanzania × 2 segments; own count invariant, distinct from LATAM's 14)", () => {
+    expect(AFRICA_PAID_SEARCH_DESTINATIONS).toHaveLength(6);
   });
 
   it("every record is locale en with a locale-neutral canonical path", () => {
@@ -32,9 +32,16 @@ describe("africa paid-search route registry", () => {
     expect(new Set(paths).size).toBe(paths.length);
   });
 
-  it("covers both Ghana segments", () => {
+  it("covers both segments for each of Ghana, Kenya and Tanzania", () => {
     const keys = AFRICA_PAID_SEARCH_DESTINATIONS.map((r) => r.routeKey).sort();
-    expect(keys).toEqual(["ghana/farm-tractors-usa", "ghana/heavy-equipment-usa"]);
+    expect(keys).toEqual([
+      "ghana/farm-tractors-usa",
+      "ghana/heavy-equipment-usa",
+      "kenya/farm-tractors-usa",
+      "kenya/heavy-equipment-usa",
+      "tanzania/farm-tractors-usa",
+      "tanzania/heavy-equipment-usa",
+    ]);
   });
 
   it("derives cargo_class and request_type consistently from segment", () => {
@@ -70,20 +77,40 @@ describe("africa paid-search route registry", () => {
     }
   });
 
-  it("official sources are the named Ghana authorities (GRA + GSA)", () => {
+  it("official sources are the named per-country authorities (customs + standards/PVoC)", () => {
+    // Each country pairs its customs/revenue authority with its standards/PVoC authority.
+    const expectedHosts: Record<string, [string, string]> = {
+      ghana: ["gra.gov.gh", "gsa.gov.gh"],
+      kenya: ["kra.go.ke", "kebs.org"],
+      tanzania: ["tra.go.tz", "tbs.go.tz"],
+    };
     for (const r of AFRICA_PAID_SEARCH_DESTINATIONS) {
       const hosts = r.officialSources.map((s) => new URL(s.url).host);
-      expect(hosts.some((h) => h.includes("gra.gov.gh"))).toBe(true);
-      expect(hosts.some((h) => h.includes("gsa.gov.gh"))).toBe(true);
+      const [customs, standards] = expectedHosts[r.country.slug];
+      expect(hosts.some((h) => h.includes(customs))).toBe(true);
+      expect(hosts.some((h) => h.includes(standards))).toBe(true);
     }
   });
 });
 
 describe("locale-parametric resolver + trust boundary", () => {
-  it("resolves en Ghana combos via getPaidSearchDestination('en', ...)", () => {
+  it("resolves every en Africa combo via getPaidSearchDestination('en', ...)", () => {
     for (const r of AFRICA_PAID_SEARCH_DESTINATIONS) {
       const found = getPaidSearchDestination("en", r.country.slug, r.segment.slug);
       expect(found?.routeKey).toBe(r.routeKey);
+      expect(found?.locale).toBe("en");
+    }
+  });
+
+  it("resolves Kenya and Tanzania route keys server-side", () => {
+    for (const key of [
+      "kenya/farm-tractors-usa",
+      "kenya/heavy-equipment-usa",
+      "tanzania/farm-tractors-usa",
+      "tanzania/heavy-equipment-usa",
+    ]) {
+      const found = resolvePaidSearchRoute(key);
+      expect(found?.routeKey).toBe(key);
       expect(found?.locale).toBe("en");
     }
   });
@@ -109,11 +136,16 @@ describe("locale-parametric resolver + trust boundary", () => {
 });
 
 describe("africa static params", () => {
-  it("returns all Ghana combos for the dynamic [slug]/[segment] route", () => {
+  it("returns all Ghana, Kenya and Tanzania combos for the dynamic [slug]/[segment] route", () => {
     const params = getAfricaPaidSearchStaticParams();
-    expect(params).toHaveLength(2);
-    expect(params.map((p) => `${p.slug}/${p.segment}`).sort()).toEqual(
-      ["ghana/farm-tractors-usa", "ghana/heavy-equipment-usa"],
-    );
+    expect(params).toHaveLength(6);
+    expect(params.map((p) => `${p.slug}/${p.segment}`).sort()).toEqual([
+      "ghana/farm-tractors-usa",
+      "ghana/heavy-equipment-usa",
+      "kenya/farm-tractors-usa",
+      "kenya/heavy-equipment-usa",
+      "tanzania/farm-tractors-usa",
+      "tanzania/heavy-equipment-usa",
+    ]);
   });
 });

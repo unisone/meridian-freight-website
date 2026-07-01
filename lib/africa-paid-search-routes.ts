@@ -2,10 +2,9 @@
  * Server-side route registry helpers for the Africa (English) paid-search LPs.
  *
  * This mirrors `lib/latam-paid-search-routes.ts` but keeps a SEPARATE per-locale
- * count invariant: the Africa array asserts its OWN N (Ghana slice N=2; grows to
- * 6 when Kenya + Tanzania are added). The LATAM `es` array and its
- * EXPECTED_ROUTE_COUNT=14 are untouched — that assertion gates every live LATAM
- * page and must not move.
+ * count invariant: the Africa array asserts its OWN N (Ghana + Kenya + Tanzania,
+ * two segments each = 6). The LATAM `es` array and its EXPECTED_ROUTE_COUNT=14
+ * are untouched — that assertion gates every live LATAM page and must not move.
  *
  * The lookup / trust-boundary resolver itself is shared and lives in
  * `lib/latam-paid-search-routes.ts` (one locale-parametric resolver, not a
@@ -18,8 +17,8 @@ import {
   type AfricaPaidSearchSegmentSlug,
 } from "@/content/africa-paid-search-destinations";
 
-/** Ghana vertical slice = 2 routes; bump to 6 when KE/TZ join the array. */
-const EXPECTED_AFRICA_ROUTE_COUNT = 2;
+/** Ghana + Kenya + Tanzania, two segments each = 6 routes. */
+const EXPECTED_AFRICA_ROUTE_COUNT = 6;
 
 const africaByRouteKey = new Map(
   AFRICA_PAID_SEARCH_DESTINATIONS.map((record) => [record.routeKey, record]),

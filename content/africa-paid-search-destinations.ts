@@ -25,7 +25,7 @@ export type { PaidSearchDestination, PaidSearchStep };
 
 // ─── Enums ──────────────────────────────────────────────────────────────────
 
-export const AFRICA_PAID_SEARCH_COUNTRIES = ["ghana"] as const;
+export const AFRICA_PAID_SEARCH_COUNTRIES = ["ghana", "kenya", "tanzania"] as const;
 export type AfricaPaidSearchCountrySlug = (typeof AFRICA_PAID_SEARCH_COUNTRIES)[number];
 
 export const AFRICA_PAID_SEARCH_SEGMENTS = [
@@ -34,7 +34,7 @@ export const AFRICA_PAID_SEARCH_SEGMENTS = [
 ] as const;
 export type AfricaPaidSearchSegmentSlug = (typeof AFRICA_PAID_SEARCH_SEGMENTS)[number];
 
-export type AfricaPaidSearchCountryCode = "GH";
+export type AfricaPaidSearchCountryCode = "GH" | "KE" | "TZ";
 export type AfricaPaidSearchSegmentKey = "farm_tractor_import" | "heavy_equipment_import";
 export type AfricaPaidSearchRequestType =
   | "farm_tractor_import_quote"
@@ -51,6 +51,8 @@ const COUNTRY_META: Record<
   { code: AfricaPaidSearchCountryCode; name: string }
 > = {
   ghana: { code: "GH", name: "Ghana" },
+  kenya: { code: "KE", name: "Kenya" },
+  tanzania: { code: "TZ", name: "Tanzania" },
 };
 
 const SEGMENT_META: Record<
@@ -77,9 +79,15 @@ const SEGMENT_META: Record<
 };
 
 /**
- * Verified official sources per country. Ghana: Ghana Revenue Authority (GRA)
- * for the duty line + entry, and Ghana Standards Authority (GSA) import
- * inspection for used-machinery conformity. URLs are the named authorities' own.
+ * Verified official sources per country. Each country pairs its customs/revenue
+ * authority (duty line + entry) with its standards authority (PVoC / import
+ * conformity). URLs are the named authorities' own, verified live (HTTP 200)
+ * against the authority homepage — deep-path URLs on these sites are unstable
+ * (JS-driven navigation, redirecting index.php paths), so the verified homepage
+ * is used per the "no unverified URL" rule.
+ *   Ghana:    GRA (customs) + GSA (import inspection).
+ *   Kenya:    KRA (customs) + KEBS (PVoC — Route A origin inspection).
+ *   Tanzania: TRA (customs) + TBS (mandatory PVoC pre-shipment conformity).
  */
 const OFFICIAL_SOURCES: Record<
   AfricaPaidSearchCountrySlug,
@@ -101,15 +109,51 @@ const OFFICIAL_SOURCES: Record<
         "GSA import inspection: conformity assessment for high-risk imported goods, including used machinery, brought into Ghana. Importers register with the GSA and provide a certificate of conformance against the applicable Ghana Standard.",
     },
   ],
+  kenya: [
+    {
+      id: "KE-01",
+      label: "Kenya Revenue Authority (KRA) — Customs & Border Control",
+      url: "https://www.kra.go.ke/",
+      description:
+        "Kenya's customs and tax authority: import entry, tariff/duty classification, import VAT and other levies. Your licensed clearing agent confirms the exact duty line for your machine here, along with used-machinery admissibility.",
+    },
+    {
+      id: "KE-02",
+      label: "Kenya Bureau of Standards (KEBS) — PVoC",
+      url: "https://www.kebs.org/",
+      description:
+        "KEBS runs the Pre-Export Verification of Conformity (PVoC) programme for goods imported into Kenya. Under PVoC Route A, conformity is verified by inspection in the country of origin before shipment — so an origin inspection is the built-in compliance path, not an extra step. A Certificate of Conformity is required to clear the goods.",
+    },
+  ],
+  tanzania: [
+    {
+      id: "TZ-01",
+      label: "Tanzania Revenue Authority (TRA) — Customs & Excise",
+      url: "https://www.tra.go.tz/",
+      description:
+        "Tanzania's customs and tax authority: import entry, tariff/duty classification, import VAT and other levies. Your licensed clearing agent confirms the exact duty line for your machine here, along with used-machinery admissibility.",
+    },
+    {
+      id: "TZ-02",
+      label: "Tanzania Bureau of Standards (TBS) — PVoC",
+      url: "https://www.tbs.go.tz/",
+      description:
+        "TBS operates a mandatory Pre-Shipment Verification of Conformity (PVoC) programme for regulated goods imported into Tanzania. Conformity is verified before shipment and a Certificate of Conformity is required to clear the goods.",
+    },
+  ],
 };
 
-/** The curated valid pairs for the Ghana slice (both segments). */
+/** The curated valid pairs for the Africa Wave-1 slice (both segments per country). */
 const VALID_PAIRS: readonly (readonly [
   AfricaPaidSearchCountrySlug,
   AfricaPaidSearchSegmentSlug,
 ])[] = [
   ["ghana", "farm-tractors-usa"],
   ["ghana", "heavy-equipment-usa"],
+  ["kenya", "farm-tractors-usa"],
+  ["kenya", "heavy-equipment-usa"],
+  ["tanzania", "farm-tractors-usa"],
+  ["tanzania", "heavy-equipment-usa"],
 ];
 
 // ─── Record factory (verified English copy from africa-paid-search-copy) ──────

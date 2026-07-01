@@ -28,16 +28,22 @@ describe("Africa Wave-1 sitemap entries", () => {
     }
   });
 
-  it("indexes the Ghana organic hub as en-only (no es/ru variants)", () => {
-    const hubUrl = `${SITE.url}/destinations/ghana`;
-    const hub = byUrl.get(hubUrl);
-    expect(hub).toBeDefined();
-    expect(hub?.alternates?.languages).toEqual({
-      en: hubUrl,
-      "x-default": hubUrl,
-    });
-    // The es/ru fallback variants must NOT be sitemapped.
-    expect(byUrl.get(`${SITE.url}/es/destinations/ghana`)).toBeUndefined();
-    expect(byUrl.get(`${SITE.url}/ru/destinations/ghana`)).toBeUndefined();
+  it("indexes each Africa organic hub as en-only (no es/ru variants)", () => {
+    for (const slug of ["ghana", "kenya", "tanzania"]) {
+      const hubUrl = `${SITE.url}/destinations/${slug}`;
+      const hub = byUrl.get(hubUrl);
+      expect(hub, `missing hub entry for ${hubUrl}`).toBeDefined();
+      expect(hub?.alternates?.languages).toEqual({
+        en: hubUrl,
+        "x-default": hubUrl,
+      });
+      // The es/ru fallback variants must NOT be sitemapped.
+      expect(byUrl.get(`${SITE.url}/es/destinations/${slug}`)).toBeUndefined();
+      expect(byUrl.get(`${SITE.url}/ru/destinations/${slug}`)).toBeUndefined();
+    }
+  });
+
+  it("covers all six Africa paid-search LPs (Ghana + Kenya + Tanzania × 2 segments)", () => {
+    expect(AFRICA_PAID_SEARCH_DESTINATIONS).toHaveLength(6);
   });
 });

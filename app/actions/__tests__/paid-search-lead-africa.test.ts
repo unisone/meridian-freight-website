@@ -138,3 +138,94 @@ describe("submitPaidSearchLead — Ghana (en) route", () => {
     expect(res.success).toBe(false);
   });
 });
+
+describe("submitPaidSearchLead — Kenya + Tanzania (en) routes", () => {
+  it("rederives Kenya farm-tractor context with #FRT_EN and Mombasa landing route", async () => {
+    const res = await submitPaidSearchLead(
+      baseLead({
+        routeKey: "kenya/farm-tractors-usa",
+        destination_location: "Nairobi",
+        attribution_id: "attr_ke",
+        lead_id: "lead-ke-1",
+        first_touch: {
+          ...FULL_TOUCH,
+          landingUrl:
+            "https://meridianexport.com/destinations/kenya/farm-tractors-usa?gclid=G",
+        },
+        latest_touch: {
+          ...FULL_TOUCH,
+          landingUrl:
+            "https://meridianexport.com/destinations/kenya/farm-tractors-usa?gclid=G",
+        },
+      }),
+    );
+    expect(res.success).toBe(true);
+    const body = leadInsertBody()!;
+    const meta = body.paid_search_metadata as Record<string, unknown>;
+    expect(body.country).toBe("KE");
+    expect(body.segment).toBe("farm_tractor_import");
+    expect(body.cargo_class).toBe("farm_tractor");
+    expect(meta.request_type).toBe("farm_tractor_import_quote");
+    expect(meta.landing_route).toBe("/destinations/kenya/farm-tractors-usa");
+    expect(meta.router_tag).toBe("#FRT_EN");
+  });
+
+  it("resolves the Kenya heavy-equipment segment", async () => {
+    const res = await submitPaidSearchLead(
+      baseLead({ routeKey: "kenya/heavy-equipment-usa", lead_id: "lead-ke-2", attribution_id: "attr_ke2" }),
+    );
+    expect(res.success).toBe(true);
+    const body = leadInsertBody()!;
+    expect(body.country).toBe("KE");
+    expect(body.segment).toBe("heavy_equipment_import");
+    expect(body.cargo_class).toBe("heavy_oog");
+  });
+
+  it("rederives Tanzania farm-tractor context with #FRT_EN and Dar es Salaam landing route", async () => {
+    const res = await submitPaidSearchLead(
+      baseLead({
+        routeKey: "tanzania/farm-tractors-usa",
+        destination_location: "Dar es Salaam",
+        attribution_id: "attr_tz",
+        lead_id: "lead-tz-1",
+        first_touch: {
+          ...FULL_TOUCH,
+          landingUrl:
+            "https://meridianexport.com/destinations/tanzania/farm-tractors-usa?gclid=G",
+        },
+        latest_touch: {
+          ...FULL_TOUCH,
+          landingUrl:
+            "https://meridianexport.com/destinations/tanzania/farm-tractors-usa?gclid=G",
+        },
+      }),
+    );
+    expect(res.success).toBe(true);
+    const body = leadInsertBody()!;
+    const meta = body.paid_search_metadata as Record<string, unknown>;
+    expect(body.country).toBe("TZ");
+    expect(body.segment).toBe("farm_tractor_import");
+    expect(body.cargo_class).toBe("farm_tractor");
+    expect(meta.request_type).toBe("farm_tractor_import_quote");
+    expect(meta.landing_route).toBe("/destinations/tanzania/farm-tractors-usa");
+    expect(meta.router_tag).toBe("#FRT_EN");
+  });
+
+  it("resolves the Tanzania heavy-equipment segment", async () => {
+    const res = await submitPaidSearchLead(
+      baseLead({ routeKey: "tanzania/heavy-equipment-usa", lead_id: "lead-tz-2", attribution_id: "attr_tz2" }),
+    );
+    expect(res.success).toBe(true);
+    const body = leadInsertBody()!;
+    expect(body.country).toBe("TZ");
+    expect(body.segment).toBe("heavy_equipment_import");
+    expect(body.cargo_class).toBe("heavy_oog");
+  });
+
+  it("rejects an unsupported Kenya combo", async () => {
+    const res = await submitPaidSearchLead(
+      baseLead({ routeKey: "kenya/importacion-maquinaria-usa" }),
+    );
+    expect(res.success).toBe(false);
+  });
+});
