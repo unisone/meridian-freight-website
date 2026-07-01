@@ -7,6 +7,7 @@
  */
 
 import { revalidatePath } from "next/cache";
+import { isAuthorizedCronRequest } from "@/lib/cron-auth";
 import { notifySlack } from "@/lib/slack";
 import { log, startTimer } from "@/lib/logger";
 import { syncContainersFromSheet } from "@/lib/sync-containers";
@@ -15,8 +16,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   // Verify cron secret (Vercel sends this automatically for cron jobs)
-  const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isAuthorizedCronRequest(request)) {
     return new Response("Unauthorized", { status: 401 });
   }
 
