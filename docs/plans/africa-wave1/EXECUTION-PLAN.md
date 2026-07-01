@@ -107,6 +107,8 @@ Segments: `farm-tractors-usa` + `heavy-equipment-usa` (KE/TZ), `farm-tractors-us
 ### ✅ DEPLOY BLOCKER RESOLVED — reconciled onto current main (2026-07-01)
 `feat/africa-deploy` = feat/africa-wave1 rebased onto `origin/main` (pillar dupes dropped). Conflicts resolved incl. the non-trivial one: main's per-country `brokerTerm` × my locale-labels refactor → the 3 broker labels are now `(broker)=>string`; es keeps per-country terms, en gets English. Post-rebase type fix `bf0557c`. **Re-verified:** tsc clean, 266/266 tests, `npm run build` exit 0, render check confirms AR=despachante / CL=agente de aduana / VE=agente aduanal / GH=customs broker / KE=clearing agent. **Ready to push to prod.**
 
+**DEPLOY STATUS (2026-07-01):** reconciled branch `feat/africa-deploy` pushed; **PR #183 opened to `main`** (operator chose PR-review gate over direct push — https://github.com/unisone/meridian-freight-website/pull/183). Vercel prod deploy fires on merge. Post-merge: verify 9 URLs live + GSC Request Indexing. Phase 4 (ad staging, no spend) + Phase 5 (tracking + live-spend gate) still pending.
+
 <details><summary>Original blocker (for the record)</summary>
 `feat/africa-wave1` branched off a **stale main**. Real `origin/main` is **8 PRs ahead** (#176–#182: import-authority pillar, LATAM indexation, blog soft-404 fix, WebGL globe guard, uptime-monitor fixes). The branch also contains **stale duplicates** of already-merged work: the 2 pillar commits (`e011158`/`7e89d19`) duplicate **#176**. A straight merge would clobber #181/#182 and double the pillar post. **Do not merge as-is.**
 
