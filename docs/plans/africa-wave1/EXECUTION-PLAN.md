@@ -102,8 +102,17 @@ Segments: `farm-tractors-usa` + `heavy-equipment-usa` (KE/TZ), `farm-tractors-us
 | 3.2 | Deploy to prod; GSC Request Indexing for all 9 URLs same day | ⬜ (gated) | needs prod deploy first |
 | 3.4 | Rank-tracking baseline (4 measured SERPs) as diff-anchor | ⬜ | after deploy |
 
-**Website build COMPLETE on `feat/africa-wave1`:** 6 LPs + 3 hubs + 3 guides + monitor, all verified, clean tree, 261 tests, tsc clean. Commits: `adcf8ec` Ghana · `77c96f3` KE/TZ · `8a0d14f` monitor · `058fa98` guides.
-**⚠ Deploy entanglement:** the branch also carries the pre-existing `feat/import-authority-pillar` blog work + the Phase-0 hygiene commits. Merging to main deploys all three together — operator decision on scope before deploy.
+**Website build COMPLETE on `feat/africa-wave1`:** 6 LPs + 3 hubs + 3 guides + monitor, all verified, clean tree, 261 tests, tsc clean, `npm run build` exit 0 (9 EN routes prerendered). Commits: `adcf8ec` Ghana · `77c96f3` KE/TZ · `8a0d14f` monitor · `058fa98` guides.
+
+### ⛔ DEPLOY BLOCKER — stale base (discovered pre-deploy 2026-07-01)
+`feat/africa-wave1` branched off a **stale main**. Real `origin/main` is **8 PRs ahead** (#176–#182: import-authority pillar, LATAM indexation, blog soft-404 fix, WebGL globe guard, uptime-monitor fixes). The branch also contains **stale duplicates** of already-merged work: the 2 pillar commits (`e011158`/`7e89d19`) duplicate **#176**. A straight merge would clobber #181/#182 and double the pillar post. **Do not merge as-is.**
+
+**Reconciliation recipe (turnkey; ~6 keep-both conflicts):**
+1. `git checkout -b feat/africa-deploy feat/africa-wave1`
+2. `git rebase --onto origin/main 7e89d19` — replays the 14 hygiene+Africa+docs commits onto current main; drops the 2 pillar dupes.
+3. Resolve conflicts (Africa additions + main's changes coexist) in: `app/sitemap.ts`, `components/destinations/latam-paid-search-page.tsx`, `content/blog.ts`, `lib/blog-locale-policy.ts`, `ops/site-uptime-monitor/monitor.mjs`, `.github/workflows/smoke-test.yml`. NOTE: main's #182 renamed the Paraguay guide slug to `import-farm-machinery-united-states-paraguay` in monitor+smoke — keep main's version, add Africa URLs on top.
+4. Re-verify: `npm run build` (exit 0) + `npx vitest run` (all pass) + dev-server render of the 9 Africa routes.
+5. THEN deploy (merge/push to main → Vercel) + GSC Request Indexing. **Live ad spend stays gated (Phase 5).**
 
 ---
 
