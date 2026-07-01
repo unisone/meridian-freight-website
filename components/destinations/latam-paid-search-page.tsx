@@ -19,7 +19,8 @@ import { TrackedCtaLink } from "@/components/tracked-cta-link";
 import { PaidSearchWhatsAppButton } from "@/components/destinations/paid-search-whatsapp-button";
 import { TrustBar } from "@/components/trust-bar";
 import { PaidSearchQuoteFormLazy } from "@/components/destinations/paid-search-quote-form-lazy";
-import type { LatamPaidSearchDestination } from "@/content/latam-paid-search-destinations";
+import type { PaidSearchDestination } from "@/content/latam-paid-search-destinations";
+import { getPaidSearchChromeLabels } from "@/content/paid-search-labels";
 import { COMPANY, CONTACT, SITE, STATS } from "@/lib/constants";
 import { formatCount } from "@/lib/i18n-utils";
 import { encodeJsonLd } from "@/lib/json-ld";
@@ -38,13 +39,17 @@ const BROKER_TERM_BY_CODE: Record<string, string> = {
   CL: "agente de aduana",
   PE: "agente de aduana",
   VE: "agente aduanal",
+  // Africa Wave-1 (en) — English broker terms per the LP copy.
+  GH: "customs broker",
+  KE: "clearing agent",
+  TZ: "clearing agent",
 };
 function brokerTerm(record: LatamPaidSearchDestination): string {
   return BROKER_TERM_BY_CODE[record.country.code] ?? "despachante";
 }
 
 interface LatamPaidSearchPageProps {
-  record: LatamPaidSearchDestination;
+  record: PaidSearchDestination;
 }
 
 function SectionIntro({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: string }) {
@@ -60,10 +65,11 @@ function SectionIntro({ eyebrow, title, intro }: { eyebrow: string; title: strin
 }
 
 function ScopeCards({ record }: LatamPaidSearchPageProps) {
+  const labels = getPaidSearchChromeLabels(record.locale);
   return (
     <div className="w-full max-w-xl lg:w-[440px]">
       <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">Meridian coordina</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{labels.scopeMeridianHeading}</p>
         <ul className="mt-3 space-y-2">
           {record.scopeIncluded.map((item) => (
             <li key={item} className="flex gap-2 text-sm leading-relaxed text-sky-100">
@@ -74,7 +80,7 @@ function ScopeCards({ record }: LatamPaidSearchPageProps) {
         </ul>
       </div>
       <div className="mt-4 rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">Su {brokerTerm(record)} confirma en destino</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{labels.scopeBrokerHeading(brokerTerm(record))}</p>
         <ul className="mt-3 space-y-2">
           {record.scopeExcluded.map((item) => (
             <li key={item} className="flex gap-2 text-sm leading-relaxed text-sky-100">
@@ -90,6 +96,7 @@ function ScopeCards({ record }: LatamPaidSearchPageProps) {
 
 export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
   const pageUrl = `${SITE.url}${record.seo.canonicalPath}`;
+  const labels = getPaidSearchChromeLabels(record.locale);
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
@@ -101,7 +108,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
     url: pageUrl,
     provider: { "@type": "Organization", name: COMPANY.name, url: SITE.url, telephone: CONTACT.phone },
     areaServed: { "@type": "Country", name: record.jsonLd.areaServedCountryName },
-    availableLanguage: { "@type": "Language", name: "Spanish", alternateName: record.locale },
+    availableLanguage: { "@type": "Language", name: labels.jsonLdLanguageName, alternateName: record.locale },
   };
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -121,10 +128,10 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
 
       <PageHero
         variant="dark"
-        locale="es"
+        locale={record.locale}
         currentPath={`/destinations/${record.country.slug}/${record.segment.slug}`}
         breadcrumbs={[
-          { label: "Destinos", href: "/destinations" },
+          { label: labels.breadcrumbDestinations, href: "/destinations" },
           { label: record.country.name, href: `/destinations/${record.country.slug}` },
           { label: record.breadcrumbLabel },
         ]}
@@ -153,7 +160,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
             size="lg"
             className="h-12 rounded-xl bg-white px-6 font-semibold text-foreground hover:bg-muted"
           >
-            Solicitar cotización
+            {labels.requestQuote}
           </Button>
           <PaidSearchWhatsAppButton
             routeKey={record.routeKey}
@@ -185,7 +192,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Process */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Proceso" title={record.process.heading} intro={record.process.intro} />
+          <SectionIntro eyebrow={labels.eyebrowProcess} title={record.process.heading} intro={record.process.intro} />
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             {record.process.steps.map((step, i) => (
               <div key={step.title} className="rounded-xl border bg-white p-5 shadow-sm">
@@ -207,12 +214,12 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Scope included / excluded */}
       <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Alcance" title="Qué incluye y qué no la cotización" intro={`Separamos el tramo internacional que controlamos de los costos y trámites locales que confirma su ${brokerTerm(record)}.`} />
+          <SectionIntro eyebrow={labels.eyebrowScope} title={labels.scopeTitle} intro={labels.scopeIntro(brokerTerm(record))} />
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-6">
                 <ClipboardCheck className="h-8 w-8 text-emerald-600" />
-                <h3 className="mt-4 text-lg font-bold text-foreground">Meridian coordina</h3>
+                <h3 className="mt-4 text-lg font-bold text-foreground">{labels.scopeMeridianHeading}</h3>
                 <ul className="mt-4 space-y-3">
                   {record.scopeIncluded.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
@@ -226,7 +233,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
             <Card className="border-0 shadow-sm">
               <CardContent className="p-6">
                 <AlertTriangle className="h-8 w-8 text-amber-600" />
-                <h3 className="mt-4 text-lg font-bold text-foreground">Su {brokerTerm(record)} confirma en destino</h3>
+                <h3 className="mt-4 text-lg font-bold text-foreground">{labels.scopeBrokerHeading(brokerTerm(record))}</h3>
                 <ul className="mt-4 space-y-3">
                   {record.scopeExcluded.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
@@ -244,7 +251,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Quote readiness + form */}
       <section id="cotizar" className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Cotización" title={record.quoteReadiness.heading} intro={record.quoteReadiness.intro} />
+          <SectionIntro eyebrow={labels.eyebrowQuote} title={record.quoteReadiness.heading} intro={record.quoteReadiness.intro} />
           <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
               <ul className="grid gap-3">
@@ -257,11 +264,11 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
               </ul>
             </div>
             <div className="rounded-2xl border bg-white p-6 shadow-sm sm:p-8">
-              <h3 className="text-lg font-bold text-foreground">Solicitar cotización</h3>
+              <h3 className="text-lg font-bold text-foreground">{labels.quoteFormHeading}</h3>
               <p className="mt-2 mb-6 text-sm leading-relaxed text-muted-foreground">
-                Comparta el equipo y el destino; le devolvemos por escrito el alcance del tramo internacional.
+                {labels.quoteFormIntro}
               </p>
-              <PaidSearchQuoteFormLazy routeKey={record.routeKey} caveat={record.compliance.localResponsibility} />
+              <PaidSearchQuoteFormLazy routeKey={record.routeKey} caveat={record.compliance.localResponsibility} locale={record.locale} />
             </div>
           </div>
         </div>
@@ -270,7 +277,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Compliance */}
       <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Cumplimiento local" title={record.compliance.heading} />
+          <SectionIntro eyebrow={labels.eyebrowCompliance} title={record.compliance.heading} />
           <div className="mt-8 max-w-3xl rounded-2xl border bg-white p-6 shadow-sm sm:p-8">
             <div className="flex items-start gap-4">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
@@ -280,12 +287,12 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
             </div>
           </div>
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-            Meridian ha coordinado más de{" "}
+            {labels.statsSentencePrefix}{" "}
             <span className="font-mono font-bold tabular-nums text-foreground">
-              {formatCount(STATS.projectsCompleted, "es")}
+              {formatCount(STATS.projectsCompleted, record.locale)}
             </span>{" "}
-            exportaciones a más de{" "}
-            <span className="font-mono font-bold tabular-nums text-foreground">40</span> países.
+            {labels.statsSentenceMiddle}{" "}
+            <span className="font-mono font-bold tabular-nums text-foreground">40</span> {labels.statsSentenceSuffix}
           </p>
         </div>
       </section>
@@ -293,7 +300,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* FAQ */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Preguntas frecuentes" title="Preguntas frecuentes" intro="Lo que más nos consultan los compradores antes de embarcar." />
+          <SectionIntro eyebrow={labels.eyebrowFaq} title={labels.faqTitle} intro={labels.faqIntro} />
           <ScrollReveal className="mt-10 max-w-4xl">
             <Accordion className="space-y-3">
               {record.faq.map((entry, i) => (
@@ -312,7 +319,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Official sources */}
       <section className="bg-muted py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Fuentes oficiales" title="Fuentes oficiales para validar su operación" intro={`Los requisitos pueden cambiar y dependen de la clasificación, condición y uso del equipo. Confirme su caso con su importador o ${brokerTerm(record)} antes de comprar o embarcar.`} />
+          <SectionIntro eyebrow={labels.eyebrowSources} title={labels.sourcesTitle} intro={labels.sourcesIntro(brokerTerm(record))} />
           <div className="mt-10 grid gap-3 sm:grid-cols-2">
             {record.officialSources.map((source) => (
               <a
@@ -320,7 +327,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
                 href={source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${source.label} (fuente oficial, abre en una pestaña nueva)`}
+                aria-label={labels.sourceOpensNewTab(source.label)}
                 className="group rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md"
               >
                 <span className="flex items-start justify-between gap-4">
@@ -339,7 +346,7 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
       {/* Related resources */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionIntro eyebrow="Recursos relacionados" title="Siga explorando" />
+          <SectionIntro eyebrow={labels.eyebrowRelated} title={labels.relatedTitle} />
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             {record.internalLinks.map((link) => (
               <TrackedCtaLink

@@ -4,6 +4,7 @@ import { getAllServices } from "@/content/services";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { getAllDestinations } from "@/content/destinations";
 import { LATAM_PAID_SEARCH_DESTINATIONS } from "@/content/latam-paid-search-destinations";
+import { AFRICA_PAID_SEARCH_DESTINATIONS } from "@/content/africa-paid-search-destinations";
 import { getAllBlogPosts } from "@/content/blog";
 import {
   isLatamMarketSlug,
@@ -116,14 +117,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // LATAM market slugs deliberately OMIT `es`: for those, `/es/destinations/{slug}`
   // is a DISTINCT Spanish buyer hub (the latamMarketSitemapPages entry below), not
   // a translation of this generic logistics page — so the two must NOT cross-link.
-  const destinationPages: MetadataRoute.Sitemap = getAllDestinations("en").flatMap((d) =>
-    localeGroup({
+  // Africa Wave-1 hubs are ENGLISH-ONLY (no es/ru content), so they sitemap en-only.
+  const AFRICA_HUB_SLUGS = new Set(
+    getAllDestinations("en")
+      .filter((d) => d.region === "Africa")
+      .map((d) => d.slug),
+  );
+  const destinationPages: MetadataRoute.Sitemap = getAllDestinations("en").flatMap((d) => {
+    const locales: Locale[] = AFRICA_HUB_SLUGS.has(d.slug)
+      ? ["en"]
+      : isLatamMarketSlug(d.slug)
+        ? ["en", "ru"]
+        : TRILOCALE;
+    return localeGroup({
       path: `/destinations/${d.slug}`,
-      locales: isLatamMarketSlug(d.slug) ? ["en", "ru"] : TRILOCALE,
+      locales,
       xDefault: "en",
       lastModified: STATIC_CONTENT_LASTMOD,
-    }),
-  );
+    });
+  });
 
   // ── Spanish buyer hubs (distinct ES-only pages, real content dates) ──────────
   // Derive the path from `slug`, NOT `page.path` (already `/es`-prefixed → would
@@ -153,6 +165,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return localeGroup({ path, locales: ["es"], xDefault: "es", lastModified });
     },
   );
+
+  // ── en-only Africa paid-search LPs (canonical, indexable) ────────────────────
+  // Standalone `en` hreflang group (self-referential x-default); NOT cross-linked
+  // to any other locale. `canonicalPath` is already locale-neutral (no /en to
+  // strip). Uses the static content date — no per-country market hub exists.
+  const africaPaidSearchSitemapPages: MetadataRoute.Sitemap =
+    AFRICA_PAID_SEARCH_DESTINATIONS.flatMap((d) =>
+      localeGroup({
+        path: d.seo.canonicalPath,
+        locales: ["en"],
+        xDefault: "en",
+        lastModified: STATIC_CONTENT_LASTMOD,
+      }),
+    );
 
   // ── Blog posts (per-post indexability policy) ────────────────────────────────
   // `indexableLocales` excludes the robots-noindex RU LATAM import-guides, so we
@@ -188,6 +214,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...destinationPages,
     ...latamMarketSitemapPages,
     ...paidSearchSitemapPages,
+    ...africaPaidSearchSitemapPages,
     ...blogPages,
   ];
 }

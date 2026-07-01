@@ -434,6 +434,42 @@ const destinationsEn: Destination[] = [
       { question: "What farm equipment is in demand in Bolivia?", answer: "Combines, tractors, planters, and sprayers are in high demand for Bolivia's growing soybean and grain sector. The Santa Cruz department is the agricultural powerhouse and the primary destination for imported US farm equipment.", category: "Bolivia" },
     ],
   },
+  {
+    slug: "ghana",
+    country: "Ghana",
+    port: "Tema",
+    region: "Africa",
+    metaTitle: "Ship Machinery to Ghana — Tema Port | Meridian Export",
+    metaDescription:
+      "Import used machinery from the USA to Tema, Ghana. We source the machine, inspect it at origin, ship it, and clear your Ghana customs. We're an importer, not a dealer.",
+    keywords: [
+      "ship equipment to ghana",
+      "machinery export ghana",
+      "import machinery to ghana",
+      "used tractors to ghana",
+      "heavy equipment shipping tema",
+      "container shipping ghana",
+    ],
+    heroDescription:
+      "We import used machinery from the USA and Canada to Tema — Ghana's largest port and the gateway to the interior. We're not a dealer: we source the machine in the US, inspect it at origin before you pay, book the ocean freight to Tema, and clear your Ghana customs through a licensed broker.",
+    transitDays: "22-32",
+    carriers: ["Maersk", "Hapag-Lloyd", "CMA CGM", "MSC"],
+    commonEquipment: [
+      "Tractors",
+      "Excavators",
+      "Loaders",
+      "Combines",
+      "Bulldozers",
+    ],
+    shippingNotes:
+      "Meridian handles the US export side and coordinates clearance into Ghana. A licensed Ghana customs broker confirms the exact import-duty line and used-age admissibility for your specific machine against the current Ghana Revenue Authority (GRA) tariff before you commit — agricultural machinery can attract a zero-rated import duty, but that is a verify-before-quoting item, not a promise, and VAT, NHIL/GETFund levies and other charges may still apply. Used machinery may also require conformity assessment under the Ghana Standards Authority (GSA) import inspection programme. We never quote a final landed cost until your broker confirms these lines for your unit.",
+    containerOptions: ["40ft High-Cube", "Flat Rack", "Open Top", "20ft Standard"],
+    faqs: [
+      { question: "Are you a machinery dealer in Ghana?", answer: "No. We don't sell machines or hold stock in Ghana. We are an importer: we source the used machine in the USA, inspect it at origin before you pay, ship it to Tema, and clear your Ghana customs through a licensed broker.", category: "Ghana" },
+      { question: "Who confirms Ghana import duty and used-age admissibility?", answer: "A licensed Ghana customs broker confirms the exact duty line and used-age admissibility for your specific machine against the current GRA tariff before you commit. Agricultural machinery can attract a zero-rated duty, but that is verified per machine, and VAT and levies may still apply. Used machinery may also need GSA import-inspection conformity assessment.", category: "Ghana" },
+      { question: "What equipment is commonly imported into Ghana?", answer: "Tractors, excavators, loaders, combines, and bulldozers are common. We source across the US dealer and auction network and inspect the actual machine at origin so you're buying a verified unit, not a photo.", category: "Ghana" },
+    ],
+  },
 ];
 
 // ES: LATAM destinations first (Mexico, Colombia, Brazil), then rest

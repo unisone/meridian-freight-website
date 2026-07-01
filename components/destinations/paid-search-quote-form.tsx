@@ -16,11 +16,14 @@ import {
 import { trackGA4Event, trackPixelEvent } from "@/lib/tracking";
 import { track as vercelTrack } from "@vercel/analytics";
 import { CONTACT } from "@/lib/constants";
+import { getPaidSearchChromeLabels } from "@/content/paid-search-labels";
 
 interface PaidSearchQuoteFormProps {
   routeKey: string;
   /** Customs-responsibility caveat rendered adjacent to the CTA (spec §15). */
   caveat: string;
+  /** Drives which locale's UI-chrome labels render (es LATAM / en Africa). */
+  locale: "es" | "en";
 }
 
 interface AttrState {
@@ -38,7 +41,8 @@ function newLeadId(): string {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormProps) {
+export function PaidSearchQuoteForm({ routeKey, caveat, locale }: PaidSearchQuoteFormProps) {
+  const t = getPaidSearchChromeLabels(locale).form;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -97,27 +101,27 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
     const email = ((fd.get("contact_email") as string) || "").trim();
     const phone = ((fd.get("contact_phone") as string) || "").trim();
     if (!name) {
-      setError("Ingrese su nombre.");
+      setError(t.errName);
       focusField(form, "contact_name");
       return;
     }
     if (!equipment) {
-      setError("Indique el tipo de equipo.");
+      setError(t.errEquipment);
       focusField(form, "equipment_type");
       return;
     }
     if (!email && !phone) {
-      setError("Ingrese un email o un teléfono/WhatsApp para que podamos responderle.");
+      setError(t.errContact);
       focusField(form, "contact_email");
       return;
     }
     if (email && !EMAIL_RE.test(email)) {
-      setError("Ingrese un email válido.");
+      setError(t.errEmail);
       focusField(form, "contact_email");
       return;
     }
     if (!fd.get("consent")) {
-      setError("Debe aceptar las condiciones para continuar.");
+      setError(t.errConsent);
       focusField(form, "consent");
       return;
     }
@@ -170,10 +174,10 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
           trackPixelEvent("Lead", { content_name: `paid_search:${routeKey}` }, result.eventId);
         }
       } else {
-        setError(result.error || "No pudimos enviar su solicitud. Intente nuevamente.");
+        setError(result.error || t.errSubmit);
       }
     } catch {
-      setError("No pudimos enviar su solicitud. Intente nuevamente.");
+      setError(t.errSubmit);
     } finally {
       setIsSubmitting(false);
     }
@@ -183,10 +187,10 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
     return (
       <div role="status" aria-live="polite" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
         <h3 ref={successRef} tabIndex={-1} className="text-xl font-bold text-foreground outline-none">
-          Solicitud recibida
+          {t.successHeading}
         </h3>
         <p className="mt-2 text-muted-foreground">
-          Gracias. Revisaremos los datos del equipo y le responderemos con el alcance del tramo internacional. Le contactaremos dentro de las próximas 24 horas.
+          {t.successBody}
         </p>
         <a
           href={CONTACT.whatsappUrl}
@@ -194,7 +198,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
           rel="noopener noreferrer"
           className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-semibold text-emerald-700 underline-offset-4 hover:underline"
         >
-          ¿Prefiere avanzar ahora? Escríbanos por WhatsApp
+          {t.successWhatsApp}
         </a>
       </div>
     );
@@ -214,14 +218,14 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Los campos marcados con <span aria-hidden="true">*</span>
-        <span className="sr-only"> asterisco</span> son obligatorios.
+        {t.requiredHintPrefix}<span aria-hidden="true">*</span>
+        <span className="sr-only">{t.requiredHintAsteriskSr}</span>{t.requiredHintSuffix}
       </p>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="contact_name">
-            Nombre <span aria-hidden="true" className="text-destructive">*</span>
+            {t.labelName} <span aria-hidden="true" className="text-destructive">*</span>
           </Label>
           <Input
             id="contact_name"
@@ -234,14 +238,14 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
           />
         </div>
         <div>
-          <Label htmlFor="contact_phone">WhatsApp o teléfono</Label>
+          <Label htmlFor="contact_phone">{t.labelPhone}</Label>
           <Input id="contact_phone" name="contact_phone" type="tel" autoComplete="tel" className="mt-1.5" />
         </div>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="contact_email">Email</Label>
+          <Label htmlFor="contact_email">{t.labelEmail}</Label>
           <Input
             id="contact_email"
             name="contact_email"
@@ -254,7 +258,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         </div>
         <div>
           <Label htmlFor="equipment_type">
-            Equipo <span aria-hidden="true" className="text-destructive">*</span>
+            {t.labelEquipment} <span aria-hidden="true" className="text-destructive">*</span>
           </Label>
           <Input
             id="equipment_type"
@@ -262,84 +266,84 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
             required
             aria-required="true"
             aria-describedby="ps-form-error"
-            placeholder="Ej.: cosechadora, tractor, excavadora"
+            placeholder={t.equipmentPlaceholder}
             className="mt-1.5"
           />
         </div>
       </div>
 
       <div>
-        <Label htmlFor="make_model">Marca, modelo y año</Label>
+        <Label htmlFor="make_model">{t.labelMakeModel}</Label>
         <Input id="make_model" name="make_model" className="mt-1.5" />
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="purchase_status">Estado de compra</Label>
+          <Label htmlFor="purchase_status">{t.labelPurchaseStatus}</Label>
           <select
             id="purchase_status"
             name="purchase_status"
             defaultValue=""
             className="mt-1.5 flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
           >
-            <option value="">Seleccione…</option>
-            <option value="evaluando">Evaluando opciones</option>
-            <option value="reservado">Reservado</option>
-            <option value="comprado">Comprado</option>
+            <option value="">{t.selectPlaceholder}</option>
+            <option value="evaluando">{t.purchaseEvaluating}</option>
+            <option value="reservado">{t.purchaseReserved}</option>
+            <option value="comprado">{t.purchasePurchased}</option>
           </select>
         </div>
         <div>
-          <Label htmlFor="buyer_role">Rol del comprador</Label>
+          <Label htmlFor="buyer_role">{t.labelBuyerRole}</Label>
           <select
             id="buyer_role"
             name="buyer_role"
             defaultValue=""
             className="mt-1.5 flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
           >
-            <option value="">Seleccione…</option>
-            <option value="importador_usuario_final">Importador / usuario final</option>
-            <option value="concesionario_revendedor">Concesionario o revendedor</option>
-            <option value="despachante_gestor">Despachante o gestor</option>
-            <option value="otro">Otro</option>
+            <option value="">{t.selectPlaceholder}</option>
+            <option value="importador_usuario_final">{t.roleImporter}</option>
+            <option value="concesionario_revendedor">{t.roleDealer}</option>
+            <option value="despachante_gestor">{t.roleBroker}</option>
+            <option value="otro">{t.roleOther}</option>
           </select>
         </div>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="origin_location">Ubicación en EE. UU./Canadá</Label>
+          <Label htmlFor="origin_location">{t.labelOrigin}</Label>
           <Input id="origin_location" name="origin_location" className="mt-1.5" />
         </div>
         <div>
-          <Label htmlFor="destination_location">Ciudad de destino</Label>
+          <Label htmlFor="destination_location">{t.labelDestination}</Label>
           <Input id="destination_location" name="destination_location" className="mt-1.5" />
         </div>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="dimensions">Dimensiones (alto × ancho × largo)</Label>
-          <Input id="dimensions" name="dimensions" placeholder="Ej.: 3,5 × 2,5 × 6 m" className="mt-1.5" />
+          <Label htmlFor="dimensions">{t.labelDimensions}</Label>
+          <Input id="dimensions" name="dimensions" placeholder={t.dimensionsPlaceholder} className="mt-1.5" />
         </div>
         <div>
-          <Label htmlFor="weight">Peso aproximado</Label>
-          <Input id="weight" name="weight" placeholder="Ej.: 12.000 kg" className="mt-1.5" />
+          <Label htmlFor="weight">{t.labelWeight}</Label>
+          <Input id="weight" name="weight" placeholder={t.weightPlaceholder} className="mt-1.5" />
         </div>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="listing_url">Link del equipo o factura proforma</Label>
+          <Label htmlFor="listing_url">{t.labelListingUrl}</Label>
           <Input id="listing_url" name="listing_url" className="mt-1.5" />
         </div>
         <div>
-          <Label htmlFor="requested_timing">Fecha estimada de embarque</Label>
-          <Input id="requested_timing" name="requested_timing" placeholder="Ej.: agosto 2026" className="mt-1.5" />
+          <Label htmlFor="requested_timing">{t.labelTiming}</Label>
+          <Input id="requested_timing" name="requested_timing" placeholder={t.timingPlaceholder} className="mt-1.5" />
         </div>
       </div>
 
       <div>
-        <Label htmlFor="message">Detalles adicionales</Label>
+        <Label htmlFor="message">{t.labelMessage}</Label>
         <Textarea id="message" name="message" rows={4} className="mt-1.5 resize-y" />
       </div>
 
@@ -354,7 +358,7 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
           className="mt-1 h-4 w-4 rounded border-input"
         />
         <span>
-          Autorizo a Meridian a contactarme y a usar mis datos para responder esta solicitud de cotización.{" "}
+          {t.consentText}{" "}
           <span className="text-muted-foreground/80">{caveat}</span>
         </span>
       </label>
@@ -368,12 +372,12 @@ export function PaidSearchQuoteForm({ routeKey, caveat }: PaidSearchQuoteFormPro
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            Enviando…
+            {t.submitting}
           </>
         ) : (
           <>
             <Send className="mr-2 h-5 w-5" />
-            Solicitar cotización
+            {t.submit}
           </>
         )}
       </Button>

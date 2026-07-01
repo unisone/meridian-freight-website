@@ -66,26 +66,37 @@ export interface PaidSearchStep {
   readonly body: string;
 }
 
-export interface LatamPaidSearchDestination {
-  readonly routeKey: PaidSearchRouteKey;
-  readonly locale: "es";
+/**
+ * Locale-parametric record shape shared by the LATAM (`es`) and Africa (`en`)
+ * paid-search registries. The `locale` discriminant is widened to `"es" | "en"`
+ * so a single resolver + a single page component can serve both, while the
+ * resolver still matches `record.locale === locale` post-lookup so an `es`
+ * routeKey can never cross-resolve as `en` (trust-boundary safety).
+ *
+ * Registries stay SEPARATE (this array asserts 14; the Africa array asserts its
+ * own N) — do not merge them. Only the record TYPE is shared.
+ */
+export interface PaidSearchDestination {
+  readonly routeKey: string;
+  readonly locale: "es" | "en";
   readonly country: {
-    readonly code: PaidSearchCountryCode;
-    readonly slug: PaidSearchCountrySlug;
+    readonly code: string;
+    readonly slug: string;
     readonly name: string;
-    readonly hubPath: `/es/destinations/${PaidSearchCountrySlug}`;
+    /** Locale-prefixed for es (`/es/destinations/...`), locale-neutral for en. */
+    readonly hubPath: string;
   };
   readonly segment: {
-    readonly slug: PaidSearchSegmentSlug;
-    readonly key: PaidSearchSegmentKey;
+    readonly slug: string;
+    readonly key: string;
     readonly publicName: string;
-    readonly cargoClass: PaidSearchCargoClass;
-    readonly requestType: PaidSearchRequestType;
+    readonly cargoClass: string;
+    readonly requestType: string;
   };
   readonly seo: {
     readonly title: string;
     readonly description: string;
-    readonly canonicalPath: `/es/destinations/${string}`;
+    readonly canonicalPath: string;
   };
   readonly breadcrumbLabel: string;
   readonly eyebrow: string;
@@ -134,6 +145,36 @@ export interface LatamPaidSearchDestination {
     readonly finalCalculator: string;
   };
   readonly internalLinks: readonly { readonly label: string; readonly href: string }[];
+}
+
+/**
+ * Narrow, LATAM-specific record shape. Structurally a `PaidSearchDestination`
+ * (so LATAM records flow into the shared, locale-parametric resolver unchanged),
+ * but it pins the es-only literal types — `locale: "es"`, the LATAM country/
+ * segment slug unions, and the `/es`-prefixed paths — so the LATAM route lib and
+ * its `PaidSearchRouteKey`-keyed Map keep their exact static typing.
+ */
+export interface LatamPaidSearchDestination extends PaidSearchDestination {
+  readonly routeKey: PaidSearchRouteKey;
+  readonly locale: "es";
+  readonly country: {
+    readonly code: PaidSearchCountryCode;
+    readonly slug: PaidSearchCountrySlug;
+    readonly name: string;
+    readonly hubPath: `/es/destinations/${PaidSearchCountrySlug}`;
+  };
+  readonly segment: {
+    readonly slug: PaidSearchSegmentSlug;
+    readonly key: PaidSearchSegmentKey;
+    readonly publicName: string;
+    readonly cargoClass: PaidSearchCargoClass;
+    readonly requestType: PaidSearchRequestType;
+  };
+  readonly seo: {
+    readonly title: string;
+    readonly description: string;
+    readonly canonicalPath: `/es/destinations/${string}`;
+  };
 }
 
 // ─── Per-country / per-segment metadata ─────────────────────────────────────

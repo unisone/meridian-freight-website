@@ -1,7 +1,7 @@
 "use server";
 
 import { whatsappRefRequestSchema, type WhatsAppRefRequestData } from "@/lib/schemas";
-import { getPaidSearchDestination } from "@/lib/latam-paid-search-routes";
+import { resolvePaidSearchRoute } from "@/lib/latam-paid-search-routes";
 import { log } from "@/lib/logger";
 
 // Opaque, URL-safe ref (spec §6.5): MF- + 8 Crockford base32 chars (no I/L/O/U).
@@ -9,7 +9,9 @@ import { log } from "@/lib/logger";
 const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 const REF_TTL_DAYS = 90;
 const SOURCE_ACCOUNT_ID = "3783002123";
-const ROUTER_TAG = (process.env.FREIGHT_ROUTER_TAG ?? "#FRT_ES").trim() || "#FRT_ES";
+/** es refs keep the existing #FRT_ES (env-overridable); en (Africa) refs use #FRT_EN. */
+const ROUTER_TAG_ES = (process.env.FREIGHT_ROUTER_TAG ?? "#FRT_ES").trim() || "#FRT_ES";
+const ROUTER_TAG_EN = "#FRT_EN";
 
 function generateRef(): string {
   const bytes = new Uint8Array(8);
@@ -73,10 +75,12 @@ export async function createWhatsAppRef(raw: WhatsAppRefRequestData): Promise<Wh
   if (!parsed.success) return { success: false, error: "invalid_request" };
   const data = parsed.data;
 
-  // TRUST BOUNDARY: route context is rederived from the validated routeKey, never the client.
-  const [country, segment] = data.routeKey.split("/");
-  const record = getPaidSearchDestination("es", country ?? "", segment ?? "");
+  // TRUST BOUNDARY: route context is rederived from the validated routeKey, never
+  // the client. Locale is derived server-side from record.locale (es→LATAM,
+  // en→Africa), so the router tag follows the resolved record, not a client value.
+  const record = resolvePaidSearchRoute(data.routeKey);
   if (!record) return { success: false, error: "unknown_route" };
+  const ROUTER_TAG = record.locale === "en" ? ROUTER_TAG_EN : ROUTER_TAG_ES;
 
   const lead_id = newLeadId();
   const whatsapp_ref = generateRef();

@@ -6,6 +6,7 @@ import {
   getPaidSearchDestination,
   getPaidSearchStaticParams,
 } from "@/lib/latam-paid-search-routes";
+import { getAfricaPaidSearchStaticParams } from "@/lib/africa-paid-search-routes";
 import { SITE } from "@/lib/constants";
 import { getOgLocale } from "@/lib/i18n-utils";
 
@@ -16,9 +17,13 @@ interface PageProps {
 // Only the curated combos are valid → any other param is a true 404 (not soft-200).
 export const dynamicParams = false;
 
-// es-only; the static argentina/ folder serves AR via its own branch.
+// es LATAM (the static argentina/ folder serves AR via its own branch) + en
+// Africa (locale-neutral URL, so the `en` locale param renders unprefixed).
 export function generateStaticParams() {
-  return getPaidSearchStaticParams().map((p) => ({ locale: "es", ...p }));
+  return [
+    ...getPaidSearchStaticParams().map((p) => ({ locale: "es", ...p })),
+    ...getAfricaPaidSearchStaticParams().map((p) => ({ locale: "en", ...p })),
+  ];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -26,13 +31,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const record = getPaidSearchDestination(locale, slug, segment);
   if (!record) return {};
   const canonical = `${SITE.url}${record.seo.canonicalPath}`;
+  // hreflang: African LPs are a standalone `en` group (self-referential x-default);
+  // LATAM LPs stay a standalone `es` group. The two are DIFFERENT pages, never
+  // translations, so they must not cross-link.
+  const languages =
+    record.locale === "en"
+      ? { en: canonical, "x-default": canonical }
+      : { es: canonical, "x-default": canonical };
   return {
     title: record.seo.title,
     description: record.seo.description,
-    alternates: { canonical, languages: { es: canonical, "x-default": canonical } },
+    alternates: { canonical, languages },
     openGraph: {
       type: "website",
-      locale: getOgLocale("es"),
+      locale: getOgLocale(record.locale),
       url: canonical,
       title: record.seo.title,
       description: record.seo.description,
