@@ -181,3 +181,19 @@ Four-dimension review (fresh specialist agents), all converged **production-read
 **⚠ Carry to Phase 5 (tracking):** the site CSP blocks Meta Pixel (`form-action`/`frame-src` exclude facebook.com). Does NOT affect the WhatsApp→gclid→OCI conversion spine the campaigns judge on, but confirm whether Pixel should be allow-listed or is intentionally off before relying on Meta conversion data.
 
 **Website: QA-complete, ready to ship. Google Ads: 3 campaigns staged + PAUSED, untouched, gated on operator go/no-go.**
+
+---
+
+## ✅ SHIPPED TO PRODUCTION (2026-07-01)
+
+PR #183 merged to main (`91468e8`) → Vercel prod deploy. **Verified live on meridianexport.com:**
+- 12/12 Africa URLs return HTTP 200 with real content (3 hubs + 6 LPs + 3 guides).
+- Unknown destination slug → real HTTP 404 (soft-404 fix shipped).
+- All 12 URLs present in the production sitemap.
+- GSC Day-0 baseline: all "unknown to Google" (just deployed; sitemap live+registered → auto-crawl expected 1–7 days). URL-level Request Indexing = optional GSC-UI operator accelerant (no API).
+- IndexNow secret not available locally → skipped (sitemap covers Google, the primary market).
+
+**Checkpoint:** re-inspect the 12 URLs in GSC at +7d to measure discovered→indexed→ranked, alongside the LATAM cadence.
+
+## Google Ads — STAGED + PAUSED (awaiting operator go/no-go)
+3 campaign build docs in `mf-claude-ads/campaigns/paid-africa/` (Ghana +parcel cage; Kenya +KEBS PVoC RSA wedge; Tanzania +live-SERP dealers). **Not converted to ops.json, not dry-run, not applied — zero spend.** On operator GO: ops.json → `mutate.py` validate-only dry-run → apply PAUSED → verify Gate-B tracking on a live Africa LP → enable. Budgets GH$12/KE$12/TZ$10 per day proposed; operator sets final.
