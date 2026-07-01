@@ -104,7 +104,10 @@ Segments: `farm-tractors-usa` + `heavy-equipment-usa` (KE/TZ), `farm-tractors-us
 
 **Website build COMPLETE on `feat/africa-wave1`:** 6 LPs + 3 hubs + 3 guides + monitor, all verified, clean tree, 261 tests, tsc clean, `npm run build` exit 0 (9 EN routes prerendered). Commits: `adcf8ec` Ghana · `77c96f3` KE/TZ · `8a0d14f` monitor · `058fa98` guides.
 
-### ⛔ DEPLOY BLOCKER — stale base (discovered pre-deploy 2026-07-01)
+### ✅ DEPLOY BLOCKER RESOLVED — reconciled onto current main (2026-07-01)
+`feat/africa-deploy` = feat/africa-wave1 rebased onto `origin/main` (pillar dupes dropped). Conflicts resolved incl. the non-trivial one: main's per-country `brokerTerm` × my locale-labels refactor → the 3 broker labels are now `(broker)=>string`; es keeps per-country terms, en gets English. Post-rebase type fix `bf0557c`. **Re-verified:** tsc clean, 266/266 tests, `npm run build` exit 0, render check confirms AR=despachante / CL=agente de aduana / VE=agente aduanal / GH=customs broker / KE=clearing agent. **Ready to push to prod.**
+
+<details><summary>Original blocker (for the record)</summary>
 `feat/africa-wave1` branched off a **stale main**. Real `origin/main` is **8 PRs ahead** (#176–#182: import-authority pillar, LATAM indexation, blog soft-404 fix, WebGL globe guard, uptime-monitor fixes). The branch also contains **stale duplicates** of already-merged work: the 2 pillar commits (`e011158`/`7e89d19`) duplicate **#176**. A straight merge would clobber #181/#182 and double the pillar post. **Do not merge as-is.**
 
 **Reconciliation recipe (turnkey; ~6 keep-both conflicts):**
@@ -113,6 +116,7 @@ Segments: `farm-tractors-usa` + `heavy-equipment-usa` (KE/TZ), `farm-tractors-us
 3. Resolve conflicts (Africa additions + main's changes coexist) in: `app/sitemap.ts`, `components/destinations/latam-paid-search-page.tsx`, `content/blog.ts`, `lib/blog-locale-policy.ts`, `ops/site-uptime-monitor/monitor.mjs`, `.github/workflows/smoke-test.yml`. NOTE: main's #182 renamed the Paraguay guide slug to `import-farm-machinery-united-states-paraguay` in monitor+smoke — keep main's version, add Africa URLs on top.
 4. Re-verify: `npm run build` (exit 0) + `npx vitest run` (all pass) + dev-server render of the 9 Africa routes.
 5. THEN deploy (merge/push to main → Vercel) + GSC Request Indexing. **Live ad spend stays gated (Phase 5).**
+</details>
 
 ---
 
