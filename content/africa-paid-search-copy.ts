@@ -25,17 +25,17 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     eyebrow: "Used farm tractors from the USA · Ghana",
     h1: "Import Farm Tractors from the USA to Ghana — We Don't Sell, We Import",
     heroBody:
-      "Meridian is not a tractor dealership and we don't hold stock in Ghana. We are an origin-to-door importer: we source used farm tractors across the US dealer and auction network, inspect the actual machine at origin before you pay, book the ocean freight to Tema, and clear your Ghana customs through a licensed broker. If you're a Ghanaian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. A licensed Ghana customs broker confirms the exact duty line and used-age admissibility for your specific tractor before you commit.",
+      "Buying a US farm tractor to Ghana means matching the make, model, horsepower and implements to your fields — then getting it cleaned of soil and plant debris so it clears phytosanitary rules and doesn't stall at the port. Meridian handles both. We are not a tractor dealership and we don't hold stock in Ghana; we are an origin-to-door importer that sources used farm tractors across the US dealer and auction network, inspects the actual machine at origin before you pay, books the ocean freight to Tema, and clears your Ghana customs through a licensed broker. If you're a Ghanaian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. A licensed Ghana customs broker confirms the exact duty line and used-age admissibility for your specific tractor before you commit.",
     heroBullets: [
       "We source the used tractor in the USA and inspect it at origin before you pay.",
-      "Export documentation, phytosanitary certificate of origin (USDA APHIS) and ocean-freight booking to Tema.",
+      "Export documentation, phytosanitary certificate (USDA APHIS) where required, and ocean-freight booking to Tema.",
       "We clear your Ghana customs through a licensed broker — not just a drop at the port.",
-      "EN/ES/RU/AR support over WhatsApp throughout the shipment.",
+      "English and WhatsApp support throughout the shipment.",
     ],
     scopeIncluded: [
       "Sourcing the used tractor across the US dealer and auction network",
       "Origin inspection of the actual machine before you pay",
-      "Export documentation and phytosanitary certificate of origin (USDA APHIS)",
+      "Export documentation and phytosanitary certificate (USDA APHIS) where required",
       "Ocean-freight booking to Tema and Ghana customs clearance via a licensed broker",
     ],
     scopeExcluded: [
@@ -57,7 +57,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         title: "Export, freight and documents",
-        body: "We handle export documentation, the phytosanitary certificate of origin (USDA APHIS) and book the ocean freight to Tema in the right container or on a flat rack for the machine.",
+        body: "We handle export documentation, the phytosanitary certificate (USDA APHIS) where required, and book the ocean freight to Tema in the right container or on a flat rack for the machine.",
       },
       {
         title: "We clear your Ghana customs",
@@ -103,7 +103,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       {
         question: "Do you actually clear customs, or just drop it at the port?",
         answer:
-          "We clear it. A licensed Ghana customs broker files the GRA entry and clears your tractor as part of the service — we don't just leave the machine at Tema. That end-to-end clearance, with near-perfect first-time customs clearance across the countries we serve, is one of the two things that set us apart.",
+          "We clear it. A licensed Ghana customs broker files the GRA entry and clears your tractor as part of the service — we don't just leave the machine at Tema. That end-to-end clearance, with near-perfect first-time customs clearance on the export documentation we prepare, is one of the two things that set us apart.",
       },
     ],
     ctaHeading: "Import a used US tractor to Ghana — sourced, inspected and cleared",
@@ -119,12 +119,12 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     eyebrow: "Used heavy equipment from the USA · Ghana",
     h1: "Import Heavy Equipment from the USA to Ghana — We Don't Sell, We Import",
     heroBody:
-      "Meridian is not an equipment dealership and we don't hold stock in Ghana. We are an origin-to-door importer: we source used heavy equipment across the US dealer and auction network, inspect the actual machine at origin before you pay, book the ocean freight to Tema, and clear your Ghana customs through a licensed broker. If you're a Ghanaian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. A licensed Ghana customs broker confirms the exact duty line and used-age admissibility for your specific machine before you commit.",
+      "With used heavy equipment to Ghana, the weight and dimensions decide everything: an excavator, loader or dozer ships on a flat rack, by RoRo, or in-container depending on its real size, and getting that load format right is what keeps the freight cost honest. Meridian works from the actual measurements. We are not an equipment dealership and we don't hold stock in Ghana; we are an origin-to-door importer that sources used heavy equipment across the US dealer and auction network, inspects the actual machine at origin before you pay, books the ocean freight to Tema, and clears your Ghana customs through a licensed broker. If you're a Ghanaian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. A licensed Ghana customs broker confirms the exact duty line and used-age admissibility for your specific machine before you commit.",
     heroBullets: [
       "We source the used excavator, loader or dozer in the USA and inspect it at origin before you pay.",
       "Export documentation and ocean-freight booking to Tema on flat rack, RoRo or in-container as the machine requires.",
       "We clear your Ghana customs through a licensed broker — not just a drop at the port.",
-      "EN/ES/RU/AR support over WhatsApp throughout the shipment.",
+      "English and WhatsApp support throughout the shipment.",
     ],
     scopeIncluded: [
       "Sourcing the used machine across the US dealer and auction network",
@@ -197,7 +197,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       {
         question: "Do you actually clear customs, or just drop it at the port?",
         answer:
-          "We clear it. A licensed Ghana customs broker files the GRA entry and clears your machine as part of the service — we don't just leave it at Tema. That end-to-end clearance, with near-perfect first-time customs clearance across the countries we serve, is one of the two things that set us apart.",
+          "We clear it. A licensed Ghana customs broker files the GRA entry and clears your machine as part of the service — we don't just leave it at Tema. That end-to-end clearance, with near-perfect first-time customs clearance on the export documentation we prepare, is one of the two things that set us apart.",
       },
     ],
     ctaHeading: "Import used US heavy equipment to Ghana — sourced, inspected and cleared",
@@ -213,18 +213,18 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     eyebrow: "Used farm tractors from the USA · Kenya",
     h1: "Import Farm Tractors from the USA to Kenya — We Don't Sell, We Import",
     heroBody:
-      "Meridian is not a tractor dealership and we don't hold stock in Kenya. We are an origin-to-door importer: we source used farm tractors across the US dealer and auction network, inspect the actual machine at origin before you pay, book the ocean freight to Mombasa, and clear your Kenya customs through a licensed clearing agent. If you're a Kenyan buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. That origin inspection is also how Kenya's own rules expect compliance to work: KEBS Pre-Export Verification of Conformity (PVoC) Route A verifies conformity by inspection in the country of origin, so we build the compliance step into where we already work. A licensed Kenyan clearing agent confirms the exact duty line and used-age admissibility for your specific tractor before you commit.",
+      "Buying a US farm tractor to Kenya starts with the machine itself — the make, model, horsepower and implements that suit your fields — and with cleaning it of soil and plant debris so it clears phytosanitary rules instead of stalling at Mombasa. Meridian handles both. We are not a tractor dealership and we don't hold stock in Kenya; we are an origin-to-door importer that sources used farm tractors across the US dealer and auction network, inspects the actual machine at origin before you pay, books the ocean freight to Mombasa, and clears your Kenya customs through a licensed clearing agent. If you're a Kenyan buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. That origin inspection also fits how Kenya's own rules expect compliance to work. KEBS Pre-Export Verification of Conformity (PVoC) Route A verifies conformity by inspection in the country of origin, so the compliance step happens exactly where we already work. A licensed Kenyan clearing agent confirms the exact duty line and used-age admissibility for your specific tractor before you commit.",
     heroBullets: [
       "We source the used tractor in the USA and inspect it at origin before you pay.",
       "Origin inspection lines up with KEBS PVoC Route A — conformity verified in the country of origin.",
-      "Export documentation, phytosanitary certificate of origin (USDA APHIS) and ocean-freight booking to Mombasa.",
+      "Export documentation, phytosanitary certificate (USDA APHIS) where required, and ocean-freight booking to Mombasa.",
       "We clear your Kenya customs through a licensed clearing agent — not just a drop at the port.",
-      "EN/ES/RU/AR support over WhatsApp throughout the shipment.",
+      "English and WhatsApp support throughout the shipment.",
     ],
     scopeIncluded: [
       "Sourcing the used tractor across the US dealer and auction network",
       "Origin inspection of the actual machine before you pay",
-      "Export documentation and phytosanitary certificate of origin (USDA APHIS)",
+      "Export documentation and phytosanitary certificate (USDA APHIS) where required",
       "Ocean-freight booking to Mombasa and Kenya customs clearance via a licensed clearing agent",
     ],
     scopeExcluded: [
@@ -246,7 +246,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         title: "Export, freight and documents",
-        body: "We handle export documentation, the phytosanitary certificate of origin (USDA APHIS) and book the ocean freight to Mombasa in the right container or on a flat rack for the machine.",
+        body: "We handle export documentation, the phytosanitary certificate (USDA APHIS) where required, and book the ocean freight to Mombasa in the right container or on a flat rack for the machine.",
       },
       {
         title: "We clear your Kenya customs",
@@ -292,7 +292,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       {
         question: "Do you actually clear customs, or just drop it at the port?",
         answer:
-          "We clear it. A licensed Kenyan clearing agent files the KRA entry and clears your tractor as part of the service — we don't just leave the machine at Mombasa. That end-to-end clearance, with near-perfect first-time customs clearance across the countries we serve, is one of the two things that set us apart.",
+          "We clear it. A licensed Kenyan clearing agent files the KRA entry and clears your tractor as part of the service — we don't just leave the machine at Mombasa. That end-to-end clearance, with near-perfect first-time customs clearance on the export documentation we prepare, is one of the two things that set us apart.",
       },
     ],
     ctaHeading: "Import a used US tractor to Kenya — sourced, inspected and cleared",
@@ -308,13 +308,13 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     eyebrow: "Used heavy equipment from the USA · Kenya",
     h1: "Import Heavy Equipment from the USA to Kenya — We Don't Sell, We Import",
     heroBody:
-      "Meridian is not an equipment dealership and we don't hold stock in Kenya. We are an origin-to-door importer: we source used heavy equipment across the US dealer and auction network, inspect the actual machine at origin before you pay, book the ocean freight to Mombasa, and clear your Kenya customs through a licensed clearing agent. If you're a Kenyan buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. That origin inspection is also how Kenya's own rules expect compliance to work: KEBS Pre-Export Verification of Conformity (PVoC) Route A verifies conformity by inspection in the country of origin, so we build the compliance step into where we already work. A licensed Kenyan clearing agent confirms the exact duty line and used-age admissibility for your specific machine before you commit.",
+      "With used heavy equipment to Kenya, the weight and dimensions drive the plan: an excavator, loader or dozer ships on a flat rack, by RoRo, or in-container depending on its real size, and pinning that load format down is what keeps the freight to Mombasa priced honestly. Meridian works from the actual measurements. We are not an equipment dealership and we don't hold stock in Kenya; we are an origin-to-door importer that sources used heavy equipment across the US dealer and auction network, inspects the actual machine at origin before you pay, books the ocean freight to Mombasa, and clears your Kenya customs through a licensed clearing agent. If you're a Kenyan buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. That origin inspection also fits how Kenya's own rules expect compliance to work. KEBS Pre-Export Verification of Conformity (PVoC) Route A verifies conformity by inspection in the country of origin, so the compliance step happens exactly where we already work. A licensed Kenyan clearing agent confirms the exact duty line and used-age admissibility for your specific machine before you commit.",
     heroBullets: [
       "We source the used excavator, loader or dozer in the USA and inspect it at origin before you pay.",
       "Origin inspection lines up with KEBS PVoC Route A — conformity verified in the country of origin.",
       "Export documentation and ocean-freight booking to Mombasa on flat rack, RoRo or in-container as the machine requires.",
       "We clear your Kenya customs through a licensed clearing agent — not just a drop at the port.",
-      "EN/ES/RU/AR support over WhatsApp throughout the shipment.",
+      "English and WhatsApp support throughout the shipment.",
     ],
     scopeIncluded: [
       "Sourcing the used machine across the US dealer and auction network",
@@ -387,7 +387,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       {
         question: "Do you actually clear customs, or just drop it at the port?",
         answer:
-          "We clear it. A licensed Kenyan clearing agent files the KRA entry and clears your machine as part of the service — we don't just leave it at Mombasa. That end-to-end clearance, with near-perfect first-time customs clearance across the countries we serve, is one of the two things that set us apart.",
+          "We clear it. A licensed Kenyan clearing agent files the KRA entry and clears your machine as part of the service — we don't just leave it at Mombasa. That end-to-end clearance, with near-perfect first-time customs clearance on the export documentation we prepare, is one of the two things that set us apart.",
       },
     ],
     ctaHeading: "Import used US heavy equipment to Kenya — sourced, inspected and cleared",
@@ -403,18 +403,18 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     eyebrow: "Used farm tractors from the USA · Tanzania",
     h1: "Import Farm Tractors from the USA to Tanzania — We Don't Sell, We Import",
     heroBody:
-      "Meridian is not a tractor dealership and we don't hold stock in Tanzania. We are an origin-to-door importer: we source used farm tractors across the US dealer and auction network, inspect the actual machine at origin before you pay, book the ocean freight to Dar es Salaam, and clear your Tanzania customs through a licensed clearing agent. If you're a Tanzanian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. Tanzania's TBS Pre-Shipment Verification of Conformity (PVoC) is mandatory — conformity is verified before shipment — so inspecting the machine at origin fits how the process is meant to run. A licensed Tanzanian clearing agent confirms the exact duty line and used-age admissibility for your specific tractor before you commit.",
+      "Buying a US farm tractor to Tanzania comes down to the machine — the make, model, horsepower and implements your fields actually need — and to cleaning it of soil and plant debris so it clears phytosanitary rules rather than stalling at Dar es Salaam. Meridian handles both. We are not a tractor dealership and we don't hold stock in Tanzania; we are an origin-to-door importer that sources used farm tractors across the US dealer and auction network, inspects the actual machine at origin before you pay, books the ocean freight to Dar es Salaam, and clears your Tanzania customs through a licensed clearing agent. If you're a Tanzanian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. Tanzania's TBS Pre-Shipment Verification of Conformity (PVoC) is mandatory — conformity is verified before shipment — so inspecting the machine at origin fits how the process is meant to run. A licensed Tanzanian clearing agent confirms the exact duty line and used-age admissibility for your specific tractor before you commit.",
     heroBullets: [
       "We source the used tractor in the USA and inspect it at origin before you pay.",
       "Origin inspection fits Tanzania's mandatory TBS PVoC — conformity verified before shipment.",
-      "Export documentation, phytosanitary certificate of origin (USDA APHIS) and ocean-freight booking to Dar es Salaam.",
+      "Export documentation, phytosanitary certificate (USDA APHIS) where required, and ocean-freight booking to Dar es Salaam.",
       "We clear your Tanzania customs through a licensed clearing agent — not just a drop at the port.",
-      "EN/ES/RU/AR support over WhatsApp throughout the shipment.",
+      "English and WhatsApp support throughout the shipment.",
     ],
     scopeIncluded: [
       "Sourcing the used tractor across the US dealer and auction network",
       "Origin inspection of the actual machine before you pay",
-      "Export documentation and phytosanitary certificate of origin (USDA APHIS)",
+      "Export documentation and phytosanitary certificate (USDA APHIS) where required",
       "Ocean-freight booking to Dar es Salaam and Tanzania customs clearance via a licensed clearing agent",
     ],
     scopeExcluded: [
@@ -436,7 +436,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       },
       {
         title: "Export, freight and documents",
-        body: "We handle export documentation, the phytosanitary certificate of origin (USDA APHIS) and book the ocean freight to Dar es Salaam in the right container or on a flat rack for the machine.",
+        body: "We handle export documentation, the phytosanitary certificate (USDA APHIS) where required, and book the ocean freight to Dar es Salaam in the right container or on a flat rack for the machine.",
       },
       {
         title: "We clear your Tanzania customs",
@@ -482,7 +482,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       {
         question: "Do you actually clear customs, or just drop it at the port?",
         answer:
-          "We clear it. A licensed Tanzanian clearing agent files the TRA entry and clears your tractor as part of the service — we don't just leave the machine at Dar es Salaam. That end-to-end clearance, with near-perfect first-time customs clearance across the countries we serve, is one of the two things that set us apart.",
+          "We clear it. A licensed Tanzanian clearing agent files the TRA entry and clears your tractor as part of the service — we don't just leave the machine at Dar es Salaam. That end-to-end clearance, with near-perfect first-time customs clearance on the export documentation we prepare, is one of the two things that set us apart.",
       },
     ],
     ctaHeading: "Import a used US tractor to Tanzania — sourced, inspected and cleared",
@@ -498,13 +498,13 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
     eyebrow: "Used heavy equipment from the USA · Tanzania",
     h1: "Import Heavy Equipment from the USA to Tanzania — We Don't Sell, We Import",
     heroBody:
-      "Meridian is not an equipment dealership and we don't hold stock in Tanzania. We are an origin-to-door importer: we source used heavy equipment across the US dealer and auction network, inspect the actual machine at origin before you pay, book the ocean freight to Dar es Salaam, and clear your Tanzania customs through a licensed clearing agent. If you're a Tanzanian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. Tanzania's TBS Pre-Shipment Verification of Conformity (PVoC) is mandatory — conformity is verified before shipment — so inspecting the machine at origin fits how the process is meant to run. A licensed Tanzanian clearing agent confirms the exact duty line and used-age admissibility for your specific machine before you commit.",
+      "With used heavy equipment to Tanzania, the weight and dimensions set the plan: an excavator, loader or dozer moves on a flat rack, by RoRo, or in-container depending on its real size, and nailing that load format is what keeps the freight to Dar es Salaam honestly priced. Meridian works from the actual measurements. We are not an equipment dealership and we don't hold stock in Tanzania; we are an origin-to-door importer that sources used heavy equipment across the US dealer and auction network, inspects the actual machine at origin before you pay, books the ocean freight to Dar es Salaam, and clears your Tanzania customs through a licensed clearing agent. If you're a Tanzanian buyer who wants a US machine landed and cleared — not a local reseller looking for stock — this is built for you. Two things set us apart: we clear your customs (we don't just drop the machine at the port), and we inspect the used machine at origin so you're not buying a photo. Tanzania's TBS Pre-Shipment Verification of Conformity (PVoC) is mandatory — conformity is verified before shipment — so inspecting the machine at origin fits how the process is meant to run. A licensed Tanzanian clearing agent confirms the exact duty line and used-age admissibility for your specific machine before you commit.",
     heroBullets: [
       "We source the used excavator, loader or dozer in the USA and inspect it at origin before you pay.",
       "Origin inspection fits Tanzania's mandatory TBS PVoC — conformity verified before shipment.",
       "Export documentation and ocean-freight booking to Dar es Salaam on flat rack, RoRo or in-container as the machine requires.",
       "We clear your Tanzania customs through a licensed clearing agent — not just a drop at the port.",
-      "EN/ES/RU/AR support over WhatsApp throughout the shipment.",
+      "English and WhatsApp support throughout the shipment.",
     ],
     scopeIncluded: [
       "Sourcing the used machine across the US dealer and auction network",
@@ -577,7 +577,7 @@ export const AFRICA_PAID_SEARCH_COPY: Record<string, PaidSearchCopy> = {
       {
         question: "Do you actually clear customs, or just drop it at the port?",
         answer:
-          "We clear it. A licensed Tanzanian clearing agent files the TRA entry and clears your machine as part of the service — we don't just leave it at Dar es Salaam. That end-to-end clearance, with near-perfect first-time customs clearance across the countries we serve, is one of the two things that set us apart.",
+          "We clear it. A licensed Tanzanian clearing agent files the TRA entry and clears your machine as part of the service — we don't just leave it at Dar es Salaam. That end-to-end clearance, with near-perfect first-time customs clearance on the export documentation we prepare, is one of the two things that set us apart.",
       },
     ],
     ctaHeading: "Import used US heavy equipment to Tanzania — sourced, inspected and cleared",

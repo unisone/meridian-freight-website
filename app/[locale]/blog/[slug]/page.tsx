@@ -122,25 +122,6 @@ export default async function BlogPostPage({
     ? buildWhatsappUrl(importGuide.cta.whatsappMessage)
     : null;
 
-  const breadcrumbList = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: tb("blogBreadcrumb"),
-        item: `${SITE.url}${localePath}/blog`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: post.title,
-        item: pageUrl,
-      },
-    ],
-  };
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -186,10 +167,6 @@ export default async function BlogPostPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbList) }}
       />
 
       <div>

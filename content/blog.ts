@@ -991,7 +991,7 @@ Importing a used tractor from the USA to Ghana is very doable, and the process i
 
 This guide walks the path a Ghanaian buyer actually follows: finding the right tractor in the US dealer and auction network, checking it before money moves, the payment sequence, and how duty (GRA) and import inspection (GSA) work on the Ghana side. It does not replace your licensed clearing agent — every duty and tax line is confirmed per shipment by your agent, not promised here.
 
-Meridian does not sell tractors. We coordinate the export leg — pickup, preparation, documentation, and ocean freight — and we have done it for 1,000+ machines to 40+ countries since 2013, with a near-perfect first-time customs-clearance record on the documentation we prepare.
+Meridian does not sell tractors. We coordinate the export leg — pickup, preparation, documentation, and ocean freight — and we have done it for 1,000+ machines to 40+ countries since 2013, with a near-perfect first-time customs-clearance record on the export documentation we prepare.
 
 [Message us on WhatsApp](https://wa.me/16415161616) before you buy — we review the unit with you before any funds transfer.
 
@@ -1097,7 +1097,7 @@ Here is why Route A fits the way Meridian already works.
 
 Because we coordinate the machine on the ground in the USA — pickup, preparation, phytosanitary and pre-shipment cleaning, packing, loading, and photo documentation — the machine is already in our hands, at a known location, in the export window. Scheduling the Route A origin inspection into that same window is a natural fit, not a bolt-on: the inspection body sees the machine where it already is, before it sails, alongside the preparation we are doing anyway.
 
-So Meridian's role on the inspection is coordination and access: we present the machine, in the right condition, at the right time, with the export documentation (Bill of Lading, commercial invoice, packing list, and the rest) lined up so the inspection and the shipment move together. We have done this export-side coordination for 1,000+ machines to 40+ countries since 2013, with a near-perfect first-time customs-clearance record on the documentation we prepare — the origin inspection is the same discipline applied to Kenya's specific requirement.
+So Meridian's role on the inspection is coordination and access: we present the machine, in the right condition, at the right time, with the export documentation (Bill of Lading, commercial invoice, packing list, and the rest) lined up so the inspection and the shipment move together. We have done this export-side coordination for 1,000+ machines to 40+ countries since 2013, with a near-perfect first-time customs-clearance record on the export documentation we prepare — the origin inspection is the same discipline applied to Kenya's specific requirement.
 
 ## What Stays With the Buyer and Clearing Agent
 

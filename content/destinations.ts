@@ -439,7 +439,7 @@ const destinationsEn: Destination[] = [
     country: "Ghana",
     port: "Tema",
     region: "Africa",
-    metaTitle: "Ship Machinery to Ghana — Tema Port | Meridian Export",
+    metaTitle: "Ship Machinery to Ghana — Tema Port",
     metaDescription:
       "Import used machinery from the USA to Tema, Ghana. We source the machine, inspect it at origin, ship it, and clear your Ghana customs. We're an importer, not a dealer.",
     keywords: [
@@ -475,7 +475,7 @@ const destinationsEn: Destination[] = [
     country: "Kenya",
     port: "Mombasa",
     region: "Africa",
-    metaTitle: "Ship Machinery to Kenya — Mombasa Port | Meridian Export",
+    metaTitle: "Ship Machinery to Kenya — Mombasa Port",
     metaDescription:
       "Import used machinery from the USA to Mombasa, Kenya. We source the machine, inspect it at origin, ship it, and clear your Kenya customs. We're an importer, not a dealer.",
     keywords: [
@@ -511,7 +511,7 @@ const destinationsEn: Destination[] = [
     country: "Tanzania",
     port: "Dar es Salaam",
     region: "Africa",
-    metaTitle: "Ship Machinery to Tanzania — Dar es Salaam | Meridian Export",
+    metaTitle: "Ship Machinery to Tanzania — Dar es Salaam",
     metaDescription:
       "Import used machinery from the USA to Dar es Salaam, Tanzania. We source the machine, inspect it at origin, ship it, and clear your Tanzania customs. We're an importer, not a dealer.",
     keywords: [
