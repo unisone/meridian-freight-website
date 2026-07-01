@@ -124,6 +124,8 @@ Segments: `farm-tractors-usa` + `heavy-equipment-usa` (KE/TZ), `farm-tractors-us
 
 ## Phase 4 — Staged Google Ads (GH/KE/TZ) — 🔒 GATED on Phase 2 (URLs live) — absorbs prior DONE.md T2.1–T2.5
 
+**4a STAGED ✅ (mf-claude-ads `4ea0795`):** all 3 campaigns authored — Ghana (parcel-cage patched), Kenya (KEBS PVoC Route-A wedge), Tanzania (dealer cage filled from a live TZ SERP 2026-07-02). PAUSED-on-create, budgets BLOCKED (operator), nothing applied. **4b (ops.json + `mutate.py` validate-only dry-run) is gated on PR #183 merge** — the campaign final URLs must resolve (pages live) before URL validation passes.
+
 Mirror the live Gate-A doctrine. Build in `mf-claude-ads`. Absorb the existing staged Ghana build (`campaigns/paid-africa/2026-07-01-ghana-gate-a-build.md`); patch its cage with the **parcel-negative theme** (live-SERP finding).
 | # | Task (prior ref) | Status | Verify |
 |---|---|---|---|
