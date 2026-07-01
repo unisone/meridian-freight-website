@@ -62,7 +62,10 @@ Uncommitted work was investigated by a fresh agent: **230/230 vitest passing, ty
 
 ---
 
-## Phase 2 — Wave-1 pages (Ghana slice first, then KE/TZ) — 🔒 GATED on Phase 0/1
+## Phase 2 — Wave-1 pages (Ghana slice first, then KE/TZ) — 🔄 IN PROGRESS
+
+**Ghana slice ✅ BUILT + VERIFIED + COMMITTED (`adcf8ec`).** Fresh adversarial verifier: 8/9 PASS with hard evidence (es non-regression proven by git-stash A/B render diff — the highest risk, cleared; EN LPs, hub, true 404s, trust boundary, separate per-locale count invariants, sitemap all PASS). One blocker caught + fixed: dead GSA "G-CAP" URL → live `gsa.gov.gh/import-inspection/` (verifier V8). 254/254 tests, tsc clean.
+**Kenya + Tanzania 🔄 replicating** (data rows + copy + hubs on the verified shared infra; count invariant 2→6).
 
 Two layers per country, all English, locale-neutral URLs. **Decision (logged):** build the organic hubs too (strategy + SEO plan want them; also removes the prior plan's internal-link-404 workaround).
 
