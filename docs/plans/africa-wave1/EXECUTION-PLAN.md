@@ -165,3 +165,19 @@ Each phase ends with a **fresh-context verifier agent** whose only inputs are th
 - No African deal history — never cite specific African shipments.
 - Thin search demand — pilot sized accordingly.
 - Swahili demand `no data` — English-first.
+
+---
+
+## PRE-SHIP QA — ✅ COMPLETE (2026-07-01)
+
+Four-dimension review (fresh specialist agents), all converged **production-ready after fixes**:
+- **Content/copy** — "unusually disciplined"; gate + differentiators + compliance hedging correct; no fabrication, no trademark misuse. 2 HIGH polish + mediums.
+- **Regulatory fact-check** — **all 9 claims CONFIRMED** vs current 2025–2026 sources (KEBS PVoC Route A, Kenya 8yr rule = passenger-vehicle only & correctly hedged, Tanzania TBS PVoC, Ghana GRA zero-rate + GSA import inspection, ports, carriers, all 6 gov URLs live). 0 inaccuracies.
+- **On-page/technical SEO** — ship-ready after 1 HIGH (hub hreflang). Canonicals, LP/guide hreflang, schema, sitemap en-only, internal linking, OG all passed.
+- **Design/UX/a11y** — production-ready, no blockers. Pages equivalent to verified LATAM; mobile-solid (sticky CTA bar), WCAG AA contrast, aria/labels present, no literal `{{whatsapp_ref}}`. 1 HIGH (doubled title).
+
+**Fixes applied + verified (`d49a6b4`):** hub hreflang (blocker), doubled title (blocker), clearance-scope standardization, language-bullet de-noise, Kenya hero split, 6-LP heroBody de-duplication, phytosanitary precision, breadcrumb-schema de-dupe. tsc 0 · 266 tests · LATAM byte-identical · render-verified (Africa hubs en+x-default only, non-Africa unchanged, es 200).
+
+**⚠ Carry to Phase 5 (tracking):** the site CSP blocks Meta Pixel (`form-action`/`frame-src` exclude facebook.com). Does NOT affect the WhatsApp→gclid→OCI conversion spine the campaigns judge on, but confirm whether Pixel should be allow-listed or is intentionally off before relying on Meta conversion data.
+
+**Website: QA-complete, ready to ship. Google Ads: 3 campaigns staged + PAUSED, untouched, gated on operator go/no-go.**
