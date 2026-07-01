@@ -12,7 +12,7 @@ Last updated: 2026-04-21
 
 ## Environment Variable Scoping
 
-### Production only (14 vars)
+### Production only
 
 These are intentionally **absent** from Preview and Development to prevent data pollution:
 
@@ -20,10 +20,12 @@ These are intentionally **absent** from Preview and Development to prevent data 
 |----------|-----------|-------------------|
 | Analytics | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Test traffic pollutes GA4 reports |
 | Meta Pixel | `NEXT_PUBLIC_META_PIXEL_ID`, `META_PIXEL_ID`, `META_ACCESS_TOKEN` | Test events corrupt ad attribution and CAPI conversions |
-| Slack | `SLACK_BOT_TOKEN`, `SLACK_CHANNEL_ID` | Preview form submits would spam the real channel |
+| Slack | `SLACK_BOT_TOKEN`, `SLACK_FORM_INTAKE_CHANNEL_ID`, `SLACK_CHANNEL_ID` fallback | Preview form submits would spam the real channel |
 | SEO | `INDEXNOW_KEY`, `INDEXNOW_SECRET` | Don't submit preview URLs to search engines |
 | SEO | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, `NEXT_PUBLIC_BING_SITE_VERIFICATION` | Verification only matters on production domain |
 | Google Sheets | `GOOGLE_SPREADSHEET_ID`, `GOOGLE_SHEET_TAB_NAME`, `GOOGLE_PRIVATE_KEY`, `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Don't write test data to production spreadsheet |
+| Google Ads | `NEXT_PUBLIC_GOOGLE_ADS_ID`, `NEXT_PUBLIC_GADS_LEAD_LABEL`, `NEXT_PUBLIC_GADS_WHATSAPP_LABEL`, `NEXT_PUBLIC_EXPECTED_GOOGLE_ADS_TAG` | Preview traffic should not fire paid conversion tags |
+| Paid-search routing | `FREIGHT_ROUTER_TAG` | Production WhatsApp/router tag only matters for live intake |
 
 ### All environments (core infra)
 
@@ -32,7 +34,7 @@ These are intentionally **absent** from Preview and Development to prevent data 
 | `RESEND_API_KEY` | Form testing needs email delivery in preview |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Calculator needs DB; test leads are easily identifiable |
 | `CRON_SECRET` | Cron only fires on production, but endpoint auth is harmless |
-| `SENTRY_*` (7 vars) | Managed by Sentry Vercel integration; useful for preview error tracking |
+| `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN` | Managed by Sentry Vercel integration; useful for preview error tracking |
 
 ## Graceful Degradation
 
@@ -45,6 +47,8 @@ The app handles missing env vars without crashing:
 | `META_ACCESS_TOKEN` | CAPI events silently skipped |
 | `SLACK_BOT_TOKEN` | Slack notifications silently skipped |
 | `GOOGLE_*` | Google Sheets sync silently skipped |
+| `NEXT_PUBLIC_GADS_*` | Google Ads conversion labels are omitted from client tracking |
+| `FREIGHT_ROUTER_TAG` | Paid-search WhatsApp/router copy falls back to `#FRT_ES` |
 | `SUPABASE_URL` | Calculator shows "unavailable" with contact CTAs |
 | `INDEXNOW_KEY` | IndexNow submission skipped |
 
