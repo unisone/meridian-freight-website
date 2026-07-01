@@ -62,10 +62,11 @@ Uncommitted work was investigated by a fresh agent: **230/230 vitest passing, ty
 
 ---
 
-## Phase 2 — Wave-1 pages (Ghana slice first, then KE/TZ) — 🔄 IN PROGRESS
+## Phase 2 — Wave-1 pages (Ghana slice first, then KE/TZ) — ✅ DONE
 
-**Ghana slice ✅ BUILT + VERIFIED + COMMITTED (`adcf8ec`).** Fresh adversarial verifier: 8/9 PASS with hard evidence (es non-regression proven by git-stash A/B render diff — the highest risk, cleared; EN LPs, hub, true 404s, trust boundary, separate per-locale count invariants, sitemap all PASS). One blocker caught + fixed: dead GSA "G-CAP" URL → live `gsa.gov.gh/import-inspection/` (verifier V8). 254/254 tests, tsc clean.
-**Kenya + Tanzania 🔄 replicating** (data rows + copy + hubs on the verified shared infra; count invariant 2→6).
+**Ghana slice ✅ (`adcf8ec`).** Fresh adversarial verifier: 8/9 PASS with hard evidence (es non-regression proven by git-stash A/B render diff — highest risk, cleared). One blocker caught + fixed: dead GSA "G-CAP" URL → live `gsa.gov.gh/import-inspection/`.
+**Kenya + Tanzania ✅ (`77c96f3`).** Data-only on verified infra (LATAM + Ghana + shared infra untouched, confirmed by diff). Count invariant 2→6. Official URLs KRA/KEBS/TRA/TBS verified live (200). Render-verified in a dev server: all 6 LPs + 3 hubs render EN gate H1; invalid combo → 404; Kenya KEBS Route-A/PVoC/Mombasa wedge present. **261/261 tests, tsc clean.**
+Copy is first-draft for operator review (Kenya ~8yr age-limit + TZ mandatory-PVoC framing flagged for broker confirmation; hedged as per-shipment in copy). 6 routes live on branch: {ghana,kenya,tanzania}/{farm-tractors-usa,heavy-equipment-usa} + 3 hubs.
 
 Two layers per country, all English, locale-neutral URLs. **Decision (logged):** build the organic hubs too (strategy + SEO plan want them; also removes the prior plan's internal-link-404 workaround).
 
