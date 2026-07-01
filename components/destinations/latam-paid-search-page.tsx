@@ -44,7 +44,7 @@ const BROKER_TERM_BY_CODE: Record<string, string> = {
   KE: "clearing agent",
   TZ: "clearing agent",
 };
-function brokerTerm(record: LatamPaidSearchDestination): string {
+function brokerTerm(record: PaidSearchDestination): string {
   return BROKER_TERM_BY_CODE[record.country.code] ?? "despachante";
 }
 
