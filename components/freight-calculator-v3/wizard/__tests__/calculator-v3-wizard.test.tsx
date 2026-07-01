@@ -270,6 +270,22 @@ describe("CalculatorV3Wizard", () => {
     ).toBeInTheDocument();
   });
 
+  it("accepts round-dollar equipment values without native step mismatch", async () => {
+    const user = userEvent.setup();
+    render(<CalculatorV3Wizard locale="en" />);
+
+    await user.click(await screen.findByRole("button", { name: /^Combines$/i }));
+
+    const equipmentValueInput = await screen.findByLabelText(
+      /equipment value/i,
+    ) as HTMLInputElement;
+    await user.type(equipmentValueInput, "125000");
+
+    expect(equipmentValueInput.value).toBe("125000");
+    expect(equipmentValueInput.validity.stepMismatch).toBe(false);
+    expect(equipmentValueInput.checkValidity()).toBe(true);
+  });
+
   it("completes funnel: equipment -> destination -> opens email gate -> submits", async () => {
     setupContainerModeFixtures();
     const user = userEvent.setup();
