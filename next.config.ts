@@ -86,6 +86,12 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    globalNotFound: true,
+  },
+  turbopack: {
+    root: process.cwd(),
+  },
   // Page + API lambdas need @swc/helpers ESM on the Vercel filesystem. Vercel's
   // NFT does not consistently trace these files (manifests as
   // "Cannot find module '/var/task/node_modules/@swc/helpers/esm/_interop_require_default.js'"
