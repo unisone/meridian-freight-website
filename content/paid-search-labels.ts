@@ -137,7 +137,9 @@ export const PAID_SEARCH_CHROME_LABELS: Record<PaidSearchLocale, PaidSearchChrom
     statsSentencePrefix: "Meridian ha coordinado más de",
     statsSentenceMiddle: "exportaciones a más de",
     statsSentenceSuffix: "países.",
-    eyebrowFaq: "Preguntas frecuentes",
+    // W8 (Africa audit): intentional deviation from the original hardcoded Spanish —
+    // the eyebrow duplicated faqTitle verbatim; "FAQ" removes the double heading text.
+    eyebrowFaq: "FAQ",
     faqTitle: "Preguntas frecuentes",
     faqIntro: "Lo que más nos consultan los compradores antes de embarcar.",
     eyebrowSources: "Fuentes oficiales",
@@ -212,7 +214,8 @@ export const PAID_SEARCH_CHROME_LABELS: Record<PaidSearchLocale, PaidSearchChrom
     statsSentencePrefix: "Meridian has coordinated more than",
     statsSentenceMiddle: "exports to more than",
     statsSentenceSuffix: "countries.",
-    eyebrowFaq: "Frequently asked questions",
+    // W8 (Africa audit): eyebrow shortened to "FAQ" so it no longer duplicates faqTitle.
+    eyebrowFaq: "FAQ",
     faqTitle: "Frequently asked questions",
     faqIntro: "What buyers ask us most before they ship.",
     eyebrowSources: "Official sources",

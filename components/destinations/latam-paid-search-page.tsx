@@ -64,36 +64,6 @@ function SectionIntro({ eyebrow, title, intro }: { eyebrow: string; title: strin
   );
 }
 
-function ScopeCards({ record }: LatamPaidSearchPageProps) {
-  const labels = getPaidSearchChromeLabels(record.locale);
-  return (
-    <div className="w-full max-w-xl lg:w-[440px]">
-      <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{labels.scopeMeridianHeading}</p>
-        <ul className="mt-3 space-y-2">
-          {record.scopeIncluded.map((item) => (
-            <li key={item} className="flex gap-2 text-sm leading-relaxed text-sky-100">
-              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mt-4 rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{labels.scopeBrokerHeading(brokerTerm(record))}</p>
-        <ul className="mt-3 space-y-2">
-          {record.scopeExcluded.map((item) => (
-            <li key={item} className="flex gap-2 text-sm leading-relaxed text-sky-100">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
 export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
   const pageUrl = `${SITE.url}${record.seo.canonicalPath}`;
   const labels = getPaidSearchChromeLabels(record.locale);
@@ -152,7 +122,6 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
           </div>
         }
         icon={Ship}
-        rightContent={<ScopeCards record={record} />}
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Button
@@ -308,7 +277,10 @@ export function LatamPaidSearchPage({ record }: LatamPaidSearchPageProps) {
                   <AccordionTrigger className="py-5 text-left text-base font-semibold text-foreground hover:text-sky-700">
                     {entry.question}
                   </AccordionTrigger>
-                  <AccordionContent className="pb-5 text-muted-foreground">{entry.answer}</AccordionContent>
+                  {/* keepMounted: answers must exist in the SSR/static HTML (not just the
+                      FAQPage JSON-LD) so search engines index the answer text; Base UI adds
+                      `hidden` while collapsed, which preflight CSS renders as display:none. */}
+                  <AccordionContent keepMounted className="pb-5 text-muted-foreground">{entry.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

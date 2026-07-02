@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
 import { getDestinationBySlug, getDestinationStaticParams } from "@/content/destinations";
+import { AFRICA_PAID_SEARCH_DESTINATIONS } from "@/content/africa-paid-search-destinations";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
@@ -40,6 +41,15 @@ export const revalidate = 900; // Keep the Kazakhstan lane board aligned with th
 // Mirrors the blog [slug] route (PR #180). ISR (revalidate=900) still refreshes
 // the enumerated params; only on-demand rendering of NEW params is disabled.
 export const dynamicParams = false;
+
+/**
+ * Descriptive-anchor cargo noun per Africa paid-search segment, so the hub links
+ * read "Import used farm tractors from the USA to Kenya" (not the LP's long H1).
+ */
+const AFRICA_ROUTE_ANCHOR_NOUN: Record<string, string> = {
+  farm_tractor_import: "used farm tractors",
+  heavy_equipment_import: "used heavy equipment",
+};
 
 function getEquipmentSlug(name: string, locale: string): string | null {
   const types = getAllEquipmentTypes(locale);
@@ -203,6 +213,14 @@ export default async function DestinationPage({
     { icon: Ship, label: td("carriers"), value: dest.carriers.join(", ") },
     { icon: Box, label: td("containerOptions"), value: dest.containerOptions.join(", ") },
   ];
+
+  // Africa paid-search LPs under this hub (e.g. ghana → the 2 segment routes).
+  // Empty for every non-Africa slug, so the "Import routes" section only renders
+  // on hubs that actually have dedicated route pages. Africa hubs are EN-only
+  // (dynamicParams=false enumerates them solely in en), so English copy is safe.
+  const importRoutes = AFRICA_PAID_SEARCH_DESTINATIONS.filter(
+    (route) => route.country.slug === slug,
+  );
 
   const processSteps = [
     {
@@ -369,6 +387,40 @@ export default async function DestinationPage({
             </div>
           </div>
         </section>
+
+        {/* Import routes (Africa paid-search LPs under this hub) */}
+        {importRoutes.length > 0 && (
+          <section className="py-16 md:py-20">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
+                Import routes
+              </h2>
+              <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
+                Dedicated pages for the machinery we ship on this route most, with
+                the process, scope and quote checklist for each.
+              </p>
+              <div className="mt-8 grid gap-6 sm:grid-cols-2">
+                {importRoutes.map((route) => (
+                  <Link
+                    key={route.routeKey}
+                    href={route.seo.canonicalPath}
+                    className="group block h-full rounded-xl border bg-white p-6 shadow-sm transition hover:shadow-md"
+                  >
+                    <span className="flex items-start justify-between gap-4">
+                      <span className="text-lg font-bold leading-snug text-foreground group-hover:text-primary">
+                        Import {AFRICA_ROUTE_ANCHOR_NOUN[route.segment.key] ?? route.segment.publicName.toLowerCase()} from the USA to {route.country.name}
+                      </span>
+                      <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-primary transition group-hover:translate-x-0.5" />
+                    </span>
+                    <span className="mt-3 block text-sm leading-relaxed text-muted-foreground">
+                      {route.seo.description}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* FAQ */}
         {dest.faqs && dest.faqs.length > 0 && (
