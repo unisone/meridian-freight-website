@@ -211,9 +211,7 @@ export default async function BlogPostPage({
                   <p className="text-sm font-semibold uppercase tracking-wider text-primary">
                     {tb("guideLabel")}
                   </p>
-                  <p className="mt-3 max-w-3xl text-base leading-relaxed text-muted-foreground">
-                    {post.excerpt}
-                  </p>
+                  {/* The post excerpt renders once, in the hero description — not repeated here. */}
                   {importGuide && (
                     <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/80">
                       {importGuide.scopeIntro}
@@ -373,9 +371,10 @@ export default async function BlogPostPage({
                       <p className="text-sm font-semibold uppercase tracking-wider text-primary">
                         {tb("articleDetails")}
                       </p>
-                      <h2 className="mt-2 text-lg font-bold text-foreground">
+                      {/* Not a document heading — just the category label on the details card. */}
+                      <p className="mt-2 text-lg font-bold text-foreground">
                         {post.category}
-                      </h2>
+                      </p>
                     </div>
                     <div className="space-y-3 text-sm">
                       <div className="flex items-center gap-3">

@@ -37,7 +37,10 @@ describe("paid-search chrome labels — es byte-identical", () => {
     expect(es.statsSentencePrefix).toBe("Meridian ha coordinado más de");
     expect(es.statsSentenceMiddle).toBe("exportaciones a más de");
     expect(es.statsSentenceSuffix).toBe("países.");
-    expect(es.eyebrowFaq).toBe("Preguntas frecuentes");
+    // INTENTIONAL deviation from the original hardcoded Spanish (Africa audit W8):
+    // the FAQ eyebrow used to duplicate faqTitle verbatim; it is now "FAQ" in both
+    // locales. This is the only approved departure from the byte-identical set.
+    expect(es.eyebrowFaq).toBe("FAQ");
     expect(es.faqTitle).toBe("Preguntas frecuentes");
     expect(es.faqIntro).toBe("Lo que más nos consultan los compradores antes de embarcar.");
     expect(es.eyebrowSources).toBe("Fuentes oficiales");

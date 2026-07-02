@@ -11,8 +11,8 @@
  * canonical paths are `/destinations/{country}/{segment}` with NO `/en` prefix —
  * the exact form used as the live Google Ads final URLs.
  *
- * Copy is verified-first-draft English (content/africa-paid-search-copy.ts),
- * pending operator review before go-live. Facts are grounded ONLY in the
+ * Copy (content/africa-paid-search-copy.ts) is reviewed + de-slop rewrite
+ * 2026-07-02 (post-audit). Facts are grounded ONLY in the
  * approved Ghana positioning; no African deal history is ever cited and no
  * trademark names appear in visible copy.
  */
@@ -62,6 +62,8 @@ const SEGMENT_META: Record<
     cargoClass: AfricaPaidSearchCargoClass;
     requestType: AfricaPaidSearchRequestType;
     publicName: string;
+    /** Plain cargo noun for prose/JSON-LD sentences ("Importing {serviceNoun} from…"). */
+    serviceNoun: string;
   }
 > = {
   "farm-tractors-usa": {
@@ -69,12 +71,14 @@ const SEGMENT_META: Record<
     cargoClass: "farm_tractor",
     requestType: "farm_tractor_import_quote",
     publicName: "Farm tractor import",
+    serviceNoun: "farm tractors",
   },
   "heavy-equipment-usa": {
     key: "heavy_equipment_import",
     cargoClass: "heavy_oog",
     requestType: "heavy_equipment_import_quote",
     publicName: "Heavy equipment import",
+    serviceNoun: "heavy equipment",
   },
 };
 
@@ -219,7 +223,9 @@ function buildDestination(
     faq: copy.faq,
     officialSources: OFFICIAL_SOURCES[countrySlug],
     jsonLd: {
-      serviceName: `Importing ${s.publicName.toLowerCase()} from the USA to ${c.name}`,
+      // serviceNoun, not publicName: publicName is "Farm tractor import", which would
+      // concatenate to the ungrammatical "Importing farm tractor import from…".
+      serviceName: `Importing ${s.serviceNoun} from the USA to ${c.name}`,
       serviceType: "Freight forwarding and import coordination for used machinery",
       areaServedCountryName: c.name,
     },

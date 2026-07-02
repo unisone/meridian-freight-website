@@ -119,9 +119,9 @@ export function Footer() {
 
           {/* Column 2: Quick Links */}
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <p className="text-sm font-semibold uppercase tracking-wider text-white">
               {t("quickLinks")}
-            </h2>
+            </p>
             <ul className="mt-4 space-y-3">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
@@ -146,9 +146,9 @@ export function Footer() {
 
           {/* Column 3: Services */}
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <p className="text-sm font-semibold uppercase tracking-wider text-white">
               {t("services")}
-            </h2>
+            </p>
             <ul className="mt-4 space-y-3">
               {SERVICE_LINKS.map((link) => (
                 <li key={link.href}>
@@ -165,9 +165,9 @@ export function Footer() {
 
           {/* Column 4: Equipment */}
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <p className="text-sm font-semibold uppercase tracking-wider text-white">
               {t("equipment")}
-            </h2>
+            </p>
             <ul className="mt-4 space-y-3">
               {EQUIPMENT_LINKS.map((link) => (
                 <li key={link.href}>
@@ -184,9 +184,9 @@ export function Footer() {
 
           {/* Column 5: Destinations */}
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <p className="text-sm font-semibold uppercase tracking-wider text-white">
               {t("destinations")}
-            </h2>
+            </p>
             <ul className="mt-4 space-y-3">
               {DESTINATION_LINKS.map((link) => (
                 <li key={link.href}>
@@ -203,9 +203,9 @@ export function Footer() {
 
           {/* Column 6: Legal */}
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <p className="text-sm font-semibold uppercase tracking-wider text-white">
               {t("legal")}
-            </h2>
+            </p>
             <ul className="mt-4 space-y-3">
               <li>
                 <Link
@@ -226,9 +226,9 @@ export function Footer() {
             </ul>
 
             <div className="mt-8">
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-white">
+              <p className="text-sm font-semibold uppercase tracking-wider text-white">
                 {t("getAQuote")}
-              </h2>
+              </p>
               <p className="mt-3 text-sm text-slate-400">
                 {t("quoteDescription")}
               </p>
