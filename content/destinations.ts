@@ -1392,3 +1392,23 @@ export function getDestinationBySlug(slug: string, locale: string = 'en'): Desti
 export function getAllDestinations(locale: string = 'en'): Destination[] {
   return destinations[locale] ?? destinations.en;
 }
+
+/**
+ * Locale-qualified static params for the destinations [slug] route.
+ *
+ * Emits ONLY the (locale, slug) pairs that exist in that locale's own array —
+ * no en-fallback inflation. Paired with `dynamicParams = false` on the route,
+ * any other combination (unknown slug, or a real slug in a locale it has no
+ * content for, e.g. /es/destinations/ghana — Africa hubs are EN-only) returns
+ * a true 404 instead of a streamed 200 soft-404. Mirrors getBlogStaticParams()
+ * (PR #180).
+ *
+ * Note: `argentina` is intentionally absent from all three arrays — it is
+ * served by the static app/[locale]/destinations/argentina/ folder, which
+ * shadows this dynamic route.
+ */
+export function getDestinationStaticParams(): { locale: string; slug: string }[] {
+  return Object.keys(destinations).flatMap((locale) =>
+    destinations[locale].map((d) => ({ locale, slug: d.slug })),
+  );
+}

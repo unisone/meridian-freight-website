@@ -16,7 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/page-hero";
 import { ScrollReveal, StaggerItem } from "@/components/scroll-reveal";
-import { getDestinationBySlug, getAllDestinations } from "@/content/destinations";
+import { getDestinationBySlug, getDestinationStaticParams } from "@/content/destinations";
 import { getAllEquipmentTypes } from "@/content/equipment";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { DarkCta } from "@/components/dark-cta";
@@ -32,6 +32,15 @@ import { buildLatamMarketMetadata } from "@/lib/latam-market-metadata";
 
 export const revalidate = 900; // Keep the Kazakhstan lane board aligned with the public schedule.
 
+// Only the (locale, slug) pairs that actually exist may render; any other URL —
+// an unknown slug (/destinations/zzz-nope), or a real slug requested in a locale
+// it has no content for (e.g. /es/destinations/ghana — Africa hubs are EN-only) —
+// returns a true 404 instead of a streamed 200 soft-404. Without this, the route
+// streams: status 200 + <head> are flushed before the runtime notFound() throws.
+// Mirrors the blog [slug] route (PR #180). ISR (revalidate=900) still refreshes
+// the enumerated params; only on-demand rendering of NEW params is disabled.
+export const dynamicParams = false;
+
 function getEquipmentSlug(name: string, locale: string): string | null {
   const types = getAllEquipmentTypes(locale);
   const match = types.find(
@@ -41,7 +50,7 @@ function getEquipmentSlug(name: string, locale: string): string | null {
 }
 
 export function generateStaticParams() {
-  return getAllDestinations('en').map((d) => ({ slug: d.slug }));
+  return getDestinationStaticParams();
 }
 
 function getGenericDestinationLanguageAlternates(slug: string) {

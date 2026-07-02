@@ -56,7 +56,7 @@ Uncommitted work was investigated by a fresh agent: **230/230 vitest passing, ty
 | # | Task | Status | Evidence |
 |---|---|---|---|
 | 1.1 | Confirm outage claim | ✅ | production probe: healthy render, false positive corrected |
-| 1.2 | Real 404 for unknown slugs | ✅ | shipped in PR #183; verified in prod 2026-07-01: `/destinations/ghana/nonexistent-xyz` → HTTP 404 |
+| 1.2 | Real 404 for unknown slugs | 🔄 | segment route ✅ (prod 404 verified). REVALIDATION FINDING: parent country route (`/destinations/zzz-nope`, `/es/destinations/ghana`) still serves indexable 200 shells — streamed-notFound soft-404. Fix in flight: locale-aware generateStaticParams + dynamicParams=false (PR #180 pattern), branch fix/destinations-country-soft-404 |
 | 1.3 | Add ≥1 EN destination URL to uptime monitor + smoke test | ✅ | `8a0d14f`: ghana-lp-en + kenya-destination-en in monitor; Africa URLs in smoke-test; post-merge smoke run PASSED |
 | 1.4 | (Optional) prod-side RCA if any real error surfaces in Sentry/Vercel logs | ⏸️ | separate prod investigation only if Sentry shows a real thrown digest — none evidenced |
 
@@ -107,7 +107,7 @@ Segments: `farm-tractors-usa` + `heavy-equipment-usa` (KE/TZ), `farm-tractors-us
 ### ✅ DEPLOY BLOCKER RESOLVED — reconciled onto current main (2026-07-01)
 `feat/africa-deploy` = feat/africa-wave1 rebased onto `origin/main` (pillar dupes dropped). Conflicts resolved incl. the non-trivial one: main's per-country `brokerTerm` × my locale-labels refactor → the 3 broker labels are now `(broker)=>string`; es keeps per-country terms, en gets English. Post-rebase type fix `bf0557c`. **Re-verified:** tsc clean, 266/266 tests, `npm run build` exit 0, render check confirms AR=despachante / CL=agente de aduana / VE=agente aduanal / GH=customs broker / KE=clearing agent. **Ready to push to prod.**
 
-**DEPLOY STATUS (2026-07-01):** reconciled branch `feat/africa-deploy` pushed; **PR #183 opened to `main`** (operator chose PR-review gate over direct push — https://github.com/unisone/meridian-freight-website/pull/183). Vercel prod deploy fires on merge. Post-merge: verify 9 URLs live + GSC Request Indexing. Phase 4 (ad staging, no spend) + Phase 5 (tracking + live-spend gate) still pending.
+**DEPLOY STATUS (2026-07-01):** reconciled branch `feat/africa-deploy` pushed; **PR #183 opened (superseded — merged as `91468e8`, see SHIPPED section) to `main`** (operator chose PR-review gate over direct push — https://github.com/unisone/meridian-freight-website/pull/183). Vercel prod deploy fires on merge. Post-merge: verify 9 URLs live + GSC Request Indexing. Phase 4 (ad staging, no spend) + Phase 5 (tracking + live-spend gate) still pending.
 
 <details><summary>Original blocker (for the record)</summary>
 `feat/africa-wave1` branched off a **stale main**. Real `origin/main` is **8 PRs ahead** (#176–#182: import-authority pillar, LATAM indexation, blog soft-404 fix, WebGL globe guard, uptime-monitor fixes). The branch also contains **stale duplicates** of already-merged work: the 2 pillar commits (`e011158`/`7e89d19`) duplicate **#176**. A straight merge would clobber #181/#182 and double the pillar post. **Do not merge as-is.**
@@ -142,7 +142,7 @@ Mirror the live Gate-A doctrine. Build in `mf-claude-ads`. Absorb the existing s
 | # | Task | Status | Verify |
 |---|---|---|---|
 | 5.1 | Gate-B tracking end-to-end on an Africa LP: `?gclid=TEST` → `paid_search_refs` row → lead email carries UTM/gclid | ⬜ | verifier exercises the flow; evidence of the row + email |
-| 5.2 | Africa cluster added to Dual Surface Scorecard (metrics `no data` until they exist) | ⬜ | scorecard shows the cluster |
+| 5.2 | Africa cluster added to Dual Surface Scorecard | ✅ | added 2026-07-01 (marketing-brain `98abb00`): LEAD indexation/impressions/position rows + LAG #FRT_EN leads, Day-0 anchors, all `no data` until real |
 | 5.3 | Operator sets final budgets + confirms go/no-go | ⬜ | recorded operator confirmation |
 | 5.4 | `mutate.py ops.json --apply` → read-back verify → enable campaigns | ⬜ | live read-back: campaigns ENABLED, budgets set |
 | 5.5 | Post-launch smoke: LPs 200, conversion action live, first-day spend within cap | ⬜ | verifier read of account + LPs |
@@ -196,4 +196,4 @@ PR #183 merged to main (`91468e8`) → Vercel prod deploy. **Verified live on me
 **Checkpoint:** re-inspect the 12 URLs in GSC at +7d to measure discovered→indexed→ranked, alongside the LATAM cadence.
 
 ## Google Ads — STAGED + PAUSED (awaiting operator go/no-go)
-3 campaign build docs in `mf-claude-ads/campaigns/paid-africa/` (Ghana +parcel cage; Kenya +KEBS PVoC RSA wedge; Tanzania +live-SERP dealers). **Not converted to ops.json, not dry-run, not applied — zero spend.** On operator GO: ops.json → `mutate.py` validate-only dry-run → apply PAUSED → verify Gate-B tracking on a live Africa LP → enable. Budgets GH$12/KE$12/TZ$10 per day proposed; operator sets final.
+3 campaign build docs + **validated ops.json** in `mf-claude-ads/campaigns/paid-africa/` (GH 92 / KE 69 / TZ 101 ops; mutate.py validate-only exit 0 ×3; self-conflict + cage-completion fixes applied; see `OPS-STAGING-STATUS.md`). **Not applied — zero spend.** On operator GO: ops.json → `mutate.py` validate-only dry-run → apply PAUSED → verify Gate-B tracking on a live Africa LP → enable. Budgets GH$12/KE$12/TZ$10 per day proposed; operator sets final.
