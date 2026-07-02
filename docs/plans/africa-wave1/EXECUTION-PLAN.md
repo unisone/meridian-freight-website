@@ -141,10 +141,10 @@ Mirror the live Gate-A doctrine. Build in `mf-claude-ads`. Absorb the existing s
 
 | # | Task | Status | Verify |
 |---|---|---|---|
-| 5.1 | Gate-B tracking end-to-end on an Africa LP: `?gclid=TEST` → `paid_search_refs` row → lead email carries UTM/gclid | ⬜ | verifier exercises the flow; evidence of the row + email |
+| 5.1 | Gate-B tracking end-to-end on an Africa LP | ✅ | verified live 2026-07-02: real browser click on Kenya LP with `?gclid=TESTGATE0702` → WhatsApp handoff `#FRT_EN … Ref: MF-RJ9Y4YHN` (server action ran, ref+gclid persisted, prefill interpolated) |
 | 5.2 | Africa cluster added to Dual Surface Scorecard | ✅ | added 2026-07-01 (marketing-brain `98abb00`): LEAD indexation/impressions/position rows + LAG #FRT_EN leads, Day-0 anchors, all `no data` until real |
-| 5.3 | Operator sets final budgets + confirms go/no-go | ⬜ | recorded operator confirmation |
-| 5.4 | `mutate.py ops.json --apply` → read-back verify → enable campaigns | ⬜ | live read-back: campaigns ENABLED, budgets set |
+| 5.3 | Operator sets final budgets + confirms go/no-go | ⬜ THE gate | operator will start minimal; recommendation on file: enable Kenya only at ~$10/day first, GH/TZ stay paused until Kenya's first read |
+| 5.4 | Apply → read-back → enable | ✅ applied+verified / 🔒 enable | APPLIED 2026-07-02 (operator authorized setup-without-running): campaigns 23992879325/23992879580/23997378637 live-verified PAUSED, budgets $12/$12/$10, 6 ad groups + 66 kw + 169 negatives + 6 RSAs (policy review in progress). ENABLE = operator GO only |
 | 5.5 | Post-launch smoke: LPs 200, conversion action live, first-day spend within cap | ⬜ | verifier read of account + LPs |
 
 ---
