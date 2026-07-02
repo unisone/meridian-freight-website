@@ -197,3 +197,8 @@ PR #183 merged to main (`91468e8`) → Vercel prod deploy. **Verified live on me
 
 ## Google Ads — STAGED + PAUSED (awaiting operator go/no-go)
 3 campaign build docs + **validated ops.json** in `mf-claude-ads/campaigns/paid-africa/` (GH 92 / KE 69 / TZ 101 ops; mutate.py validate-only exit 0 ×3; self-conflict + cage-completion fixes applied; see `OPS-STAGING-STATUS.md`). **Not applied — zero spend.** On operator GO: ops.json → `mutate.py` validate-only dry-run → apply PAUSED → verify Gate-B tracking on a live Africa LP → enable. Budgets GH$12/KE$12/TZ$10 per day proposed; operator sets final.
+
+## ⛔ NEW LAUNCH GATE (operator, 2026-07-02): OpenClaw agent Africa-readiness
+
+Ads must NOT be enabled until the WhatsApp agents are trained for the Africa market. **Confirmed blocker:** the app's campaign-tag registry (mf-chatbot-ui) has NO `#FRT_EN` — the tag every Africa LP sends in its WhatsApp prefill. Today an African lead falls through generic triage to agents with LATAM/Spanish-only knowledge. Workstreams: (1) register `#FRT_EN` routing (agent + domain + EN language) with contract tests + ADR; (2) Africa knowledge pack for the routed agent (GH/KE/TZ regulatory facts from the fact-checked brain docs, English playbook, gate qualification, broker hedges, qualified-lead criteria); (3) simulated-conversation QA (English Ghana/Kenya/TZ buyers) via the repo QA harness. Discovery workflow running 2026-07-02.
+**Enable checklist is now:** operator GO + budgets → #FRT_EN routing live → agent knowledge deployed + QA'd → all 12 ads APPROVED → enable.
