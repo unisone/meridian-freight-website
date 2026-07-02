@@ -56,7 +56,7 @@ Uncommitted work was investigated by a fresh agent: **230/230 vitest passing, ty
 | # | Task | Status | Evidence |
 |---|---|---|---|
 | 1.1 | Confirm outage claim | ✅ | production probe: healthy render, false positive corrected |
-| 1.2 | Real 404 for unknown slugs | 🔄 | segment route ✅ (prod 404 verified). REVALIDATION FINDING: parent country route (`/destinations/zzz-nope`, `/es/destinations/ghana`) still serves indexable 200 shells — streamed-notFound soft-404. Fix in flight: locale-aware generateStaticParams + dynamicParams=false (PR #180 pattern), branch fix/destinations-country-soft-404 |
+| 1.2 | Real 404 for unknown slugs | ✅ | CLOSED via PR #184 (`6d164d1`): locale-aware getDestinationStaticParams + dynamicParams=false on the country route (streamed-notFound root cause). Verified in prod 2026-07-02: 13/13 matrix PASS — /destinations/zzz-nope 404, /es/destinations/ghana 404, /ru/destinations/ghana 404; all real pages (EN/ES/RU + LATAM LPs + Africa) 200 |
 | 1.3 | Add ≥1 EN destination URL to uptime monitor + smoke test | ✅ | `8a0d14f`: ghana-lp-en + kenya-destination-en in monitor; Africa URLs in smoke-test; post-merge smoke run PASSED |
 | 1.4 | (Optional) prod-side RCA if any real error surfaces in Sentry/Vercel logs | ⏸️ | separate prod investigation only if Sentry shows a real thrown digest — none evidenced |
 
