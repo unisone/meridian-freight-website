@@ -11,8 +11,8 @@
  * canonical paths are `/destinations/{country}/{segment}` with NO `/en` prefix —
  * the exact form used as the live Google Ads final URLs.
  *
- * Copy is verified-first-draft English (content/africa-paid-search-copy.ts),
- * pending operator review before go-live. Facts are grounded ONLY in the
+ * Copy (content/africa-paid-search-copy.ts) is reviewed + de-slop rewrite
+ * 2026-07-02 (post-audit). Facts are grounded ONLY in the
  * approved Ghana positioning; no African deal history is ever cited and no
  * trademark names appear in visible copy.
  */
